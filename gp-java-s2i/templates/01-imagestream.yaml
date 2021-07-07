@@ -1,0 +1,11 @@
+{{- if (eq .Values.build.output.kind "ImageStreamTag") }}
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: {{ include "s2i.name" . }}
+  labels:
+    {{- include "s2i.labels" . | nindent 4 }}
+spec:
+  lookupPolicy:
+    local: true
+{{- end }}
