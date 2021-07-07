@@ -10,7 +10,7 @@ name: Build and push Helm charts
 
 jobs:
   release:
-    runs-on: [self-hosted, Linux, x64, environment-central]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Publish Helm charts
