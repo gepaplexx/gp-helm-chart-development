@@ -4,7 +4,7 @@ metadata:
   name: {{ include "gpApp.name" . }}
   labels:
     {{- include "gpApp.labels" . | nindent 4 }}
-{{- if and .Values.build.enabled (eq .Values.build.output.kind "ImageStreamTag") }}
+{{- if .Values.image.fromImageStream }}
   annotations:
     image.openshift.io/triggers: |-
       [

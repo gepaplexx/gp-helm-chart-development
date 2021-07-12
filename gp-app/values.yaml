@@ -1,9 +1,11 @@
 image:
   ## Name of the image you want to build/deploy
   ## Defaults to the release name
-  name: 
+  name: nginxinc/nginx-unprivileged
   ## Tag that you want to build/deploy
-  tag: 
+  tag: latest
+  ## If image is from image stream
+  fromImageStream: false
 
 ## Application/Deployment-specific values (For configuring Deployment, Service, Route, ConfigMap, etc)
 deploy:
@@ -47,7 +49,6 @@ deploy:
   ## Freeform Liveness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
   livenessProbe:
     httpGet:
-      path: /q/health/live
       port: 8080
     initialDelaySeconds: 60
   ## If you don't want a livenessProbe, override like this in your values file
@@ -56,7 +57,6 @@ deploy:
   ## Freeform Readiness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
   readinessProbe:
     httpGet:
-      path: /q/health/ready
       port: 8080
     initialDelaySeconds: 60
   ## If you don't want a readinessProbe, override like this in your values file
