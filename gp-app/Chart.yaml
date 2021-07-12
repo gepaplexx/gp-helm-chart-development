@@ -1,0 +1,7 @@
+apiVersion: v2
+description: BKE-App Helm Chart
+keywords:
+- runtimes
+- bke
+name: gp-app
+version: 1.0.0
