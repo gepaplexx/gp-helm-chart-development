@@ -1,6 +1,6 @@
 {{- if .Release.IsInstall }}
 Your deployment is created!
-{{- if .Values.image.fromImageStream }}
+{{- if or .Values.image.fromImageStream .Values.gps2i.enabled }}
 Note that your Deployment will report "ErrImagePull" and "ImagePullBackOff" until the build is complete. Once the build is complete, your image will be automatically rolled out.
 {{- end }}
 {{- end }}
