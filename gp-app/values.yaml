@@ -1,11 +1,28 @@
+global:
+  # Override the release name
+  nameOverride:
+  # used runtime
+  runtime: quarkus
+
 image:
   ## Name of the image you want to build/deploy
   ## Defaults to the release name
-  name: nginxinc/nginx-unprivileged
+  name: 
   ## Tag that you want to build/deploy
   tag: latest
-  ## If image is from image stream
+  ## Triggers Autoupdate of Pod when Build finishes
+  ## Can be enabled, even then build.enabled = false
+  ## for separately deployed builds
   fromImageStream: false
+
+gps2i:
+  ## Enables s2i build helm chart dependency
+  enabled: false
+  ## s2i build parameters
+  build:
+    uri: https://github.com/gepaplexx/gp-test-services
+    ref: develop
+    contextDir: serviceA
 
 ## Application/Deployment-specific values (For configuring Deployment, Service, Route, ConfigMap, etc)
 deploy:
@@ -49,6 +66,7 @@ deploy:
   ## Freeform Liveness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
   livenessProbe:
     httpGet:
+      path: /q/health/live
       port: 8080
     initialDelaySeconds: 60
   ## If you don't want a livenessProbe, override like this in your values file
@@ -57,6 +75,7 @@ deploy:
   ## Freeform Readiness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
   readinessProbe:
     httpGet:
+      path: /q/health/ready
       port: 8080
     initialDelaySeconds: 60
   ## If you don't want a readinessProbe, override like this in your values file
@@ -104,7 +123,3 @@ deploy:
   #  - name: my-extra-container
   #    command: ["sleep", "infinity"]
   #    image: registry.redhat.io/ubi8/ubi-minimal
-
-global:
-  ## Override the release name
-  nameOverride:

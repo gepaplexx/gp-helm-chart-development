@@ -2,6 +2,10 @@
 {{ default .Release.Name .Values.global.nameOverride }}
 {{- end -}}
 
+{{- define "gpApp.defaultImageName" -}}
+{{ default .Release.Name .Values.global.nameOverride }}{{- if .Values.global.runtime}}-{{ .Values.global.runtime }}{{- end}}
+{{- end -}}
+
 {{- define "gpApp.labels" -}}
 helm.sh/chart: {{ .Chart.Name }}
 {{ include "gpApp.selectorLabels" . }}
@@ -18,5 +22,5 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{- define "gpApp.imageName" -}}
-{{ default (include "gpApp.name" .) .Values.image.name }}:{{ .Values.image.tag }}
+{{ default (include "gpApp.defaultImageName" .) .Values.image.name }}:{{ .Values.image.tag }}
 {{- end -}}
