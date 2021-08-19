@@ -23,7 +23,7 @@ version: 1.0.2
 appVersion: 1.0.0
 
 dependencies:
-- name: gp-java-s2i
+- name: gp-bke-s2i
   version: "0.1.0"
   repository: "https://gepaplexx.github.io/gp-helm-charts/"
   condition: gps2i.enabled
