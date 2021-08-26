@@ -1,0 +1,14 @@
+applicationName: quarkus
+
+workspace:
+  size: 1Gi
+
+pipelineRun:
+  create: true
+  sourceRepo: https://github.com/gepaplexx/gp-test-services.git
+  sourceRevision: 0d41126cfd0af6471e8d09e7af92aecd0a3a84a6
+  shortSourceRevision: 0d41126
+  dockerfile: # default = ./src/main/docker/Dockerfile.jvm
+  imageRegistry: image-registry.openshift-image-registry.svc.cluster.local:5000
+  imageRepository: # default = Release.Namespace
+  contextdir: serviceA

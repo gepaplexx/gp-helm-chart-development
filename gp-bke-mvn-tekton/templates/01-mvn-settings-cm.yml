@@ -1,0 +1,7 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: maven
+  namespace: {{ .Release.Namespace }}
+data:
+  settings.xml: "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n<settings xmlns=\"http://maven.apache.org/SETTINGS/1.1.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.1.0 http://maven.apache.org/xsd/settings-1.1.0.xsd\">\n  <profiles>\n\n\t<!-- Configure the Quarkus Maven repository -->\n\t<profile>\n\t  <id>red-hat-enterprise-maven-repository</id>\n\t  <repositories>\n\t    <repository>\n\t      <id>red-hat-enterprise-maven-repository</id>\n\t      <url>https://maven.repository.redhat.com/ga/</url>\n\t      <releases>\n\t\t<enabled>true</enabled>\n\t      </releases>\n\t      <snapshots>\n\t\t<enabled>false</enabled>\n\t      </snapshots>\n\t    </repository>\n\t  </repositories>\n\t  <pluginRepositories>\n\t    <pluginRepository>\n\t      <id>red-hat-enterprise-maven-repository</id>\n\t      <url>https://maven.repository.redhat.com/ga/</url>\n\t      <releases>\n\t\t<enabled>true</enabled>\n\t      </releases>\n\t      <snapshots>\n\t\t<enabled>false</enabled>\n\t      </snapshots>\n\t    </pluginRepository>\n\t  </pluginRepositories>\n\t</profile>\n  \n  </profiles>\n \n  <activeProfiles>\n\t<activeProfile>red-hat-enterprise-maven-repository</activeProfile>\n  </activeProfiles>\n\n</settings>\n"

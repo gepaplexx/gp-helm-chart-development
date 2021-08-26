@@ -1,0 +1,33 @@
+{{- if .Values.pipelineRun.create -}}
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: {{ .Values.applicationName }}-pipeline-run-{{ .Release.Revision }}
+spec:
+  pipelineRef:
+    name: build-and-push-quarkus-pipeline
+  params:
+    - name: application
+      value: {{ .Values.applicationName }}
+    - name: source-repo-url
+      value: {{ .Values.pipelineRun.sourceRepo }}
+    - name: source-revision
+      value: {{ .Values.pipelineRun.sourceRevision }}
+    - name: short-source-revision
+      value: "{{ .Values.pipelineRun.shortSourceRevision }}"
+    - name: dockerfile
+      value: {{ .Values.pipelineRun.dockerfile | default "./src/main/docker/Dockerfile.jvm" | quote }}
+    - name: image-registry
+      value: {{ .Values.pipelineRun.imageRegistry }}
+    - name: image-repository
+      value: {{ .Values.pipelineRun.imageRepository | default .Release.Namespace | quote }}
+    - name: contextdir
+      value: {{ .Values.pipelineRun.contextdir }}
+  workspaces:
+  - name: source
+    persistentvolumeclaim:
+      claimName: source-pvc 
+  - name: maven-settings
+    configMap: 
+       name: maven
+{{- end }}
