@@ -5,7 +5,7 @@ metadata:
   name: {{ .Values.applicationName }}-pipeline-run-{{ .Release.Revision }}
 spec:
   pipelineRef:
-    name: build-and-push-quarkus-pipeline
+    name: build-and-push-{{ .Values.applicationName }}-pipeline
   params:
     - name: application
       value: {{ .Values.applicationName }}
