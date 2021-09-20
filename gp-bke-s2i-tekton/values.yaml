@@ -1,0 +1,13 @@
+applicationName: 
+
+workspace:
+  size: 1Gi
+
+pipelineRun:
+  create: true
+  sourceRepo: # eg.: https://github.com/gattma/gp-management.git
+  sourceRevision: # eg.: 957ff8da4ce01a0908e26d67c806392b1e484c37
+  imageRegistry: # image-registry.openshift-image-registry.svc.cluster.local:5000
+  imageRepository: # default = Release.Namespace
+  builderImage: # image-registry.openshift-image-registry.svc:5000/mega-test-gattma/s2i-angular@sha256:210f4f235770b559f63fdcae02425ac95a55ca4660cb0c19dbdf1aded6c48495
+  contextDir: # eg.: frontend/management-ui
