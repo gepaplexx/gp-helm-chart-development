@@ -66,7 +66,7 @@ spec:
       - name: GOALS
         value: ["-f", "$(params.source-revision)/$(params.contextdir)/pom.xml", "clean", "package"] 
       - name: MAVEN_IMAGE
-        value: maven:3.6.3-adoptopenjdk-11        
+        value: {{ .Values.pipeline.mvn.image }}
   - name: image-build-and-push
     taskRef:
       name: buildah

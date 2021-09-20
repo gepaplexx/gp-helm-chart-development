@@ -1,5 +1,9 @@
 applicationName: quarkus
 
+pipeline:
+  mvn:
+    image: maven:3.6.3-adoptopenjdk-11
+
 workspace:
   size: 1Gi
 
