@@ -54,6 +54,7 @@ spec:
   - name: s2i
     taskRef:
       name: s2i
+      kind: ClusterTask
     runAfter:
       - fetch-source-repository
     workspaces:
