@@ -1,0 +1,14 @@
+applicationName: mega-backend
+
+workspace:
+  size: 1Gi
+
+pipelineRun:
+  create: true
+  sourceRepo: https://github.com/gattma/mega.git
+  sourceRevision: 2e643ddee0e9c711a387e6640c38e4cbf6bed595
+  shortSourceRevision: 2e643dd
+  dockerfile: ./src/main/docker/Dockerfile.jvm
+  imageRegistry: image-registry.openshift-image-registry.svc.cluster.local:5000
+  imageRepository: # default = Release.Namespace
+  contextdir: mega-zep-backend
