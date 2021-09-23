@@ -1,0 +1,56 @@
+{{- if .Values.postgres.deploy }}
+apiVersion: postgres-operator.crunchydata.com/v1beta1
+kind: PostgresCluster
+metadata:
+  name: {{ include "gp-bke-deploy-db.fullname" . }}
+  labels:
+    {{- include "gp-bke-deploy-db.labels" . | nindent 4 }}
+spec:
+  image: {{ .Values.postgres.image }}
+  postgresVersion: {{ .Values.postgres.postgresVersion }}
+  openshift: true
+  instances:
+    - name: instance1
+      resources:
+        requests:
+          cpu: {{ .Values.postgres.resources.requests.cpu  }}
+          memory: {{ .Values.postgres.resources.requests.memory }}
+        limits:
+          cpu: {{ .Values.postgres.resources.limits.cpu }}
+          memory: {{ .Values.postgres.resources.limits.memory }}
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.postgres.storage }}          
+  {{- if .Values.postgres.user }}
+  users:
+    - name: {{ .Values.postgres.user }}
+      {{- with .Values.postgres.databases }}
+      databases:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- end }}
+  backups:
+    pgbackrest:
+      image: {{ .Values.postgres.backup.image }}           
+      repoHost:
+        dedicated: {}
+        resources:
+          requests:
+            cpu: {{ .Values.postgres.backup.resources.requests.cpu  }}
+            memory: {{ .Values.postgres.backup.resources.requests.memory }}
+          limits:
+            cpu: {{ .Values.postgres.backup.resources.limits.cpu }}
+            memory: {{ .Values.postgres.backup.resources.limits.memory }} 
+      repos:
+      - name: repo1
+        volume:
+          volumeClaimSpec:
+            accessModes:
+            - "ReadWriteOnce"
+            resources:
+              requests:
+                storage: {{ .Values.postgres.backup.storage }}
+{{- end }}                
