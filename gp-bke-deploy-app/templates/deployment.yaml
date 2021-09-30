@@ -31,9 +31,7 @@ spec:
           image: "{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
+            {{- toYaml .Values.ports | nindent 12 }}
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
