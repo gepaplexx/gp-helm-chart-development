@@ -1,0 +1,15 @@
+{{ if and (eq .Values.argocd.project.alreadyExisting false) (ne .Values.argocd.project.name "") }}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .Values.argocd.project.name }}
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: '*'
+      server: '*'
+  sourceRepos:
+    - '*'
+{{ end }}

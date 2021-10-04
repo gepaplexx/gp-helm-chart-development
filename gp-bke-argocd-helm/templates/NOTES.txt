@@ -1,0 +1,4 @@
+ArgoCD:
+  Url : https://{{ .Values.argocd.instanceName }}-server-{{ .Release.Namespace }}.apps.[ClusterName].[BaseDomain]/
+  User: admin
+  Password: Look at secret: {{ .Values.argocd.instanceName }}-cluster
