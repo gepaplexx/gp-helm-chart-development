@@ -1,7 +1,18 @@
-# Default values for gp-bke-deploy-db.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# GP-BKE-DEPLOY-DB
 
+This Helm-Chart deploys an Instance of the selected Database (Variable create = true). At the moment only Postgres is supported.
+
+## Usage
+
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
+
+```oc new-project example-dev```
+
+```helm install example-db gp-helm-charts/gp-bke-deploy-db -f example-db-values.yaml -n example-dev```
+
+## values.yaml
+
+```yaml
 # metadata.name: [RELEASE-NAME]-[nameOverride]
 # metadata.label.app.kubernetes.io/name: [nameOverride]
 nameOverride: "mega-zep-db"
@@ -38,3 +49,8 @@ postgres:
   # Create a database at startup, only considered in combination with a user
   databases: {}
   # - "dummy"
+```
+
+## Example values.yml
+
+https://raw.githubusercontent.com/gepaplexx/gp-bke/develop/example-values/mega-zep-db-values.yaml

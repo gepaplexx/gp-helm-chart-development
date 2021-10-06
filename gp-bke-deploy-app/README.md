@@ -1,6 +1,18 @@
-# Default values for gp-bke-deploy-app.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+## GP-BKE-DEPLOY-APP
+
+This Helm-Chart generates a Deployment with the configured Image (Variable 'image.name'). In addition, a route and a service can be generated automatically.
+
+# Usage
+
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
+
+```oc new-project example-dev```
+
+```helm install example-app gp-helm-charts/gp-bke-deploy-app -f example-app-values.yaml -n example-dev```
+
+## values.yaml
+
+```yaml
 replicaCount: 1
 
 # metadata.name: [RELEASE-NAME]-[nameOverride]
@@ -88,3 +100,8 @@ secret:
   enabled: false
   name: ""
   data: ""
+```
+
+## Example values.yml
+
+https://raw.githubusercontent.com/gepaplexx/gp-bke/develop/example-values/mega-zep-backend-values.yaml

@@ -1,9 +1,20 @@
-# Default values for gp-bke-deploy-db.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# GP-BKE-MVN-TEKTON
 
+This Helm-Chart deploys a Tekton Pipeline. This Pipeline needs as Input the Git-Repo of your Maven-Application (Variable 'sourceRepo') and the path to a Dockerfile (Variable 'dockerfile'). With this information, a container image is built and pushed into the specified registry (Variable imageRegistry). The final image name is composed as follows: ```[imageRegistry]/[imageRepository]/[applicationName]:[sourceRevision]```
+
+## Usage
+
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
+
+```oc new-project example-cicd```
+
+```helm install -f example-build-values.yaml example-mvn-build gp-helm-charts/gp-bke-mvn-tekton -n example-cicd```
+
+## values.yaml
+
+```yaml
 # Defines the name of the image, e.g. Imagename: [REGISTRY]/[REPOSITORY]/[applicationName]:[TAG]
-applicationName: 
+applicationName: ""
 
 pipeline:
   mvn:
@@ -31,3 +42,8 @@ pipelineRun:
   imageRegistry: image-registry.openshift-image-registry.svc.cluster.local:5000
   # The Repositry into wich the final image gets pushed, e.g. [REGISTRY]/[imageRepository]/[APPLICATIONNAME]:[TAG]
   imageRepository: # default = Release.Namespace
+```
+
+## Example values.yml
+
+https://raw.githubusercontent.com/gepaplexx/gp-bke/develop/example-values/mega-zep-backend-build-values.yaml 

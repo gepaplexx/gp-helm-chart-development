@@ -1,7 +1,18 @@
-# Default values for gp-bke-deploy-db.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# GP-BKE-S2I-Tekton
 
+This Helm-Chart deploys a Tekton Pipeline. This Pipeline needs as Input the Git-Repo of your Application (Variable 'sourceRepo') and a Builderimage (Variable 'builderImage'). With this information, a container image is built and pushed into the specified registry (Variable imageRegistry). The final image name is composed as follows: ```[imageRegistry]/[imageRepository]/[applicationName]:[sourceRevision]```
+
+## Usage
+
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
+
+```oc new-project example-cicd```
+
+```helm install example-s2i-build gp-helm-charts/gp-bke-s2i-tekton -f example-s2i-tekton-values.yaml -n example-cicd```
+
+## values.yaml
+
+```yaml
 # Defines the name of the image, e.g. Imagename: [REGISTRY]/[REPOSITORY]/[applicationName]:[TAG]
 applicationName: 
 
@@ -25,3 +36,7 @@ pipelineRun:
   imageRepository: # default = Release.Namespace
   # The s2i builder image wich should be used to build the image
   builderImage: # image-registry.openshift-image-registry.svc:5000/mega-test-gattma/s2i-angular@sha256:210f4f235770b559f63fdcae02425ac95a55ca4660cb0c19dbdf1aded6c48495
+```
+## Example values.yaml
+
+https://raw.githubusercontent.com/gepaplexx/gp-bke/develop/example-values/mega-zep-frontend-build-values.yaml 

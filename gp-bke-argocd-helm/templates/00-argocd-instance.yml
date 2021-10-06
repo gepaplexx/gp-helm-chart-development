@@ -1,4 +1,4 @@
-{{ if and (ne .Values.argocd.instanceName "") (eq .Values.argocd.alreadyExisting false) }}
+{{ if and (ne .Values.argocd.instanceName "") (eq .Values.argocd.instanceAlreadyExisting false) }}
 apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
