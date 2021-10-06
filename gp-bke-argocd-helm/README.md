@@ -6,10 +6,8 @@ To make things easier, you can use the 'gp-bke-deploy-app'-Chart as dependency (
 
 ## Usage
 
-```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
-
-```oc new-project example-cicd```
-
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```  
+```oc new-project example-cicd```  
 ```helm install example-argocd gp-helm-charts/gp-bke-argocd-helm -f example-argocd-values.yaml -n example-cicd```
 
 ## values.yaml

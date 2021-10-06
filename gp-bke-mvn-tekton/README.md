@@ -4,10 +4,8 @@ This Helm-Chart deploys a Tekton Pipeline. This Pipeline needs as Input the Git-
 
 ## Usage
 
-```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
-
-```oc new-project example-cicd```
-
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```  
+```oc new-project example-cicd```  
 ```helm install -f example-build-values.yaml example-mvn-build gp-helm-charts/gp-bke-mvn-tekton -n example-cicd```
 
 ## values.yaml

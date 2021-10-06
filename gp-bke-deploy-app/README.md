@@ -4,10 +4,8 @@ This Helm-Chart generates a Deployment with the configured Image (Variable 'imag
 
 # Usage
 
-```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
-
-```oc new-project example-dev```
-
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```  
+```oc new-project example-dev```  
 ```helm install example-app gp-helm-charts/gp-bke-deploy-app -f example-app-values.yaml -n example-dev```
 
 ## values.yaml

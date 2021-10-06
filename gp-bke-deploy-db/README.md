@@ -4,10 +4,8 @@ This Helm-Chart deploys an Instance of the selected Database (Variable create = 
 
 ## Usage
 
-```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```
-
-```oc new-project example-dev```
-
+```helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/```  
+```oc new-project example-dev```  
 ```helm install example-db gp-helm-charts/gp-bke-deploy-db -f example-db-values.yaml -n example-dev```
 
 ## values.yaml
