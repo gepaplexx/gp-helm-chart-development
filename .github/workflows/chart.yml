@@ -15,9 +15,9 @@ jobs:
     - name: Publish Helm charts
       uses: stefanprodan/helm-gh-pages@master
       with:
-        token: ${{ secrets.GP_HELM_REPO }}
+        token: ${{ secrets.PAT }}
         charts_dir: .
-        charts_url: https://gepaplexx.github.io/gp-helm-charts/
+        charts_url: https://docs.gepaplexx.com/gp-helm-charts/
         owner: gepaplexx
         repository: gp-helm-charts
         branch: main
