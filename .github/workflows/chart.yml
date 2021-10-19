@@ -12,6 +12,7 @@ jobs:
   publish-chart:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: Publish Helm charts
       uses: stefanprodan/helm-gh-pages@master
       with:
