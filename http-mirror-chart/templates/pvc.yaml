@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: 24Gi
-  storageClassName: rook-ceph-fs
+  storageClassName: {{ .Values.storageClassName }}
