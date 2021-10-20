@@ -51,6 +51,17 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+mirror:
+  maxCacheSize: 20g
+  inactiveTime: 90d
+  sites:
+    - source: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/
+      path: /
+      cacheValid: 90d
+    - source: https://mirror.openshift.com/icons/
+      path: /icons
+      cacheValid: 90d
+
 nodeSelector: {}
 
 tolerations: []
