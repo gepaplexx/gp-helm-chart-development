@@ -34,7 +34,7 @@ ingress:
   enabled: true
   className: ""
   annotations: 
-    cert-manager.io/cluster-issuer: letsencrypt-staging
+    cert-manager.io/cluster-issuer: letsencrypt
   hosts:
     - host: openshift.infra.gepaplexx.com
       paths:
@@ -43,6 +43,7 @@ ingress:
   tls:
     - hosts:
       - openshift.infra.gepaplexx.com
+      secretName: openshift-mirror
 
 storageClassName: longhorn
 
