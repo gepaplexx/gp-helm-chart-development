@@ -13,8 +13,8 @@ spec:
       value: {{ .Values.sourceRepo }}
     - name: source-revision
       value: {{ .Values.sourceRevision }}
-    - name: short-source-revision
-      value: "{{ .Values.shortSourceRevision }}"
+    - name: version
+      value: "{{ .Values.version }}"
     - name: dockerfile
       value: {{ .Values.dockerfile | default "./src/main/docker/Dockerfile.jvm" | quote }}
     - name: image-registry
