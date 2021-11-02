@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-push-{{ .Values.applicationName }}-pipeline
+  name: build-and-push-{{ .Values.applicationName | default .Release.Name }}-pipeline
 spec:
   description: |
     This pipeline will clone a given repository revision, build a Quarkus application,
@@ -10,7 +10,7 @@ spec:
   - name: application
     type: string
     description: 'name of the application'
-    default: {{ .Values.applicationName }}
+    default: {{ .Values.applicationName | default .Release.Name }}
   - name: source-repo-url
     type: string
     description: 'git repository URL to clone from'
