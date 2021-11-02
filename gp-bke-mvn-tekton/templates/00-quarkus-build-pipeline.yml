@@ -33,7 +33,7 @@ spec:
   - name: dockerfile
     type: string
     description: 'dockerfile wich will be used to build the image'
-    default: {{ .Values.dockerfile }}
+    default: {{ .Values.dockerfile | default './src/main/docker/Dockerfile.jvm' }}
   - name: contextdir
     type: string
     description: 'path to a subproject inside the repo'
