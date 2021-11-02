@@ -18,9 +18,9 @@ workspace:
 createInitialRun: true
 # The Git-Repo of your application 
 sourceRepo: "" # e.g. https://github.com/gepaplexx/gp-test-services.git
-# The Revision which should used to build an image, e.g. [REGISTRY]/[REPOSITORY]/[APPLICATIONNAME]:[sourceRevision]
+
 # git revision to checkout (branch, tag, sha, ref…)
-sourceRevision: "" # e.g. 0d41126cfd0af6471e8d09e7af92aecd0a3a84a6
+sourceRevision: "main" # e.g. 0d41126cfd0af6471e8d09e7af92aecd0a3a84a6 or main
 
 # version of the final image, e.g. [REGISTRY]/[REPOSITORY]/[APPLICATIONNAME]:[version]
 version: "1.0.0"
