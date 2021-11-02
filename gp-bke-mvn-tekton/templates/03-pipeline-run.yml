@@ -1,4 +1,4 @@
-{{- if .Values.pipelineRun.create -}}
+{{- if .Values.createInitialRun -}}
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
@@ -10,19 +10,19 @@ spec:
     - name: application
       value: {{ .Values.applicationName }}
     - name: source-repo-url
-      value: {{ .Values.pipelineRun.sourceRepo }}
+      value: {{ .Values.sourceRepo }}
     - name: source-revision
-      value: {{ .Values.pipelineRun.sourceRevision }}
+      value: {{ .Values.sourceRevision }}
     - name: short-source-revision
-      value: "{{ .Values.pipelineRun.shortSourceRevision }}"
+      value: "{{ .Values.shortSourceRevision }}"
     - name: dockerfile
-      value: {{ .Values.pipelineRun.dockerfile | default "./src/main/docker/Dockerfile.jvm" | quote }}
+      value: {{ .Values.dockerfile | default "./src/main/docker/Dockerfile.jvm" | quote }}
     - name: image-registry
-      value: {{ .Values.pipelineRun.imageRegistry }}
+      value: {{ .Values.imageRegistry }}
     - name: image-repository
-      value: {{ .Values.pipelineRun.imageRepository | default .Release.Namespace | quote }}
+      value: {{ .Values.imageRepository | default .Release.Namespace | quote }}
     - name: contextdir
-      value: {{ .Values.pipelineRun.contextdir }}
+      value: {{ .Values.contextdir }}
   workspaces:
   - name: source
     persistentvolumeclaim:

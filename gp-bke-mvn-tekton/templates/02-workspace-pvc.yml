@@ -8,5 +8,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.workspace.size }}
-#  storageClassName: ${STORAGE_CLASS}
   volumeMode: Filesystem
