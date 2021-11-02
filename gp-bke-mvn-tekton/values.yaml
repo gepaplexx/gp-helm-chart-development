@@ -23,7 +23,7 @@ sourceRepo: "" # e.g. https://github.com/gepaplexx/gp-test-services.git
 sourceRevision: "" # e.g. 0d41126cfd0af6471e8d09e7af92aecd0a3a84a6
 
 # version of the final image, e.g. [REGISTRY]/[REPOSITORY]/[APPLICATIONNAME]:[version]
-version: ""
+version: "1.0.0"
 
 # Use contextdir if your application is not in the root directory of the specified repository
 contextdir: "" # e.g. serviceA

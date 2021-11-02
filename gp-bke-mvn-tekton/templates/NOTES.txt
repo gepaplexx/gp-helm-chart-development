@@ -1,1 +1,1 @@
-Final image name: {{ .Values.pipelineRun.imageRegistry }}/{{ .Release.Namespace }}/{{ .Values.applicationName }}:{{ .Values.pipelineRun.sourceRevision }}
+Final image name: {{ .Values.imageRegistry }}/{{ .Release.Namespace }}/{{ .Values.applicationName }}:{{ .Values.version }}
