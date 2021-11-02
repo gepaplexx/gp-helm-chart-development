@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 # Defines the name of the image, e.g. Imagename: [REGISTRY]/[REPOSITORY]/[applicationName]:[TAG]
-applicationName: 
+applicationName: # default Release.Name
 
 pipeline:
   mvn:

@@ -2,7 +2,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: PipelineRun
 metadata:
-  name: {{ .Values.applicationName }}-pipeline-run-{{ .Release.Revision }}
+  name: {{ .Values.applicationName | default .Release.Name }}-pipeline-run-{{ .Release.Revision }}
 spec:
   pipelineRef:
     name: build-and-push-{{ .Values.applicationName }}-pipeline
