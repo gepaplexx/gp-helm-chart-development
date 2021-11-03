@@ -59,8 +59,11 @@ mirror:
   maxCacheSize: 20g
   inactiveTime: 90d
   sites:
-    - source: https://mirror.openshift.com/
+    - source: https://mirror.openshift.com/pub/openshift-v4/
       path: /
+      cacheValid: 90d
+    - source: https://mirror.openshift.com/icons/
+      path: /icons
       cacheValid: 90d
 
 nodeSelector: {}
