@@ -18,18 +18,12 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Generate the secret var name
-        run: |
-          HELM_REPO_URL_VAR=$(echo ${GITHUB_REF##*/} | tr . _) 
-          echo "HELM_REPO_URL=${HELM_REPO_URL_VAR}_HELM_REPO_URL" >> $GITHUB_ENV
-          echo "HELM_REPO_TOKEN=${HELM_REPO_URL_VAR}_HELM_REPO_TOKEN" >> $GITHUB_ENV
-
-      - name: Publish Quotas and NW-Isolation Chart
+      - name: Publish Pull-Through-Cache Chart
         uses: stefanprodan/helm-gh-pages@master
         with: 
-          token: ${{ secrets[env.HELM_REPO_TOKEN] }}
-          charts_dir: ./
-          charts_url: ${{ secrets[env.HELM_REPO_URL] }}
+          token: ${{ secrets.PAT }}
+          charts_dir: .
+          charts_url: https://docs.gepaplexx.com/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts
           branch: main
