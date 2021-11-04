@@ -12,7 +12,7 @@ name: Helm Release
 jobs:
   release-helm-charts:
     name: "Release Helm Charts"
-    runs-on: [self-hosted, Linux, x64, environment-central]
+    runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, '[helm release]')"
     steps:
       - name: Checkout Repo
