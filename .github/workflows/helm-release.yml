@@ -11,7 +11,7 @@ name: Helm Release
 
 jobs:
   release-helm-charts:
-    name: "Release Helm Charts"
+    name: "Release Helm Chart"
     runs-on: ubuntu-latest
     if: "contains(github.event.head_commit.message, '[helm release]')"
     steps:
