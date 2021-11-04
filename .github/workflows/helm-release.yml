@@ -1,0 +1,36 @@
+---
+name: Helm Release
+
+'on':
+  workflow_dispatch:
+  push:
+    branches: 
+      - 'develop'
+    tags-ignore:
+      - '**'
+
+jobs:
+  release-helm-charts:
+    name: "Release Helm Charts"
+    runs-on: [self-hosted, Linux, x64, environment-central]
+    if: "contains(github.event.head_commit.message, '[helm release]')"
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Generate the secret var name
+        run: |
+          HELM_REPO_URL_VAR=$(echo ${GITHUB_REF##*/} | tr . _) 
+          echo "HELM_REPO_URL=${HELM_REPO_URL_VAR}_HELM_REPO_URL" >> $GITHUB_ENV
+          echo "HELM_REPO_TOKEN=${HELM_REPO_URL_VAR}_HELM_REPO_TOKEN" >> $GITHUB_ENV
+
+      - name: Publish Quotas and NW-Isolation Chart
+        uses: stefanprodan/helm-gh-pages@master
+        with: 
+          token: ${{ secrets[env.HELM_REPO_TOKEN] }}
+          charts_dir: ./
+          charts_url: ${{ secrets[env.HELM_REPO_URL] }}
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+...
