@@ -1,0 +1,20 @@
+pvc:
+  name: image-registry-mirror-storage-ceph
+  storage: 10Gi
+  storageClass: longhorn
+
+config:
+  name: registry-mirror
+
+registry:
+  name: gp-registry-cache
+  image: registry:2.7
+
+svc:
+  name: gp-registry-cache
+
+ingress:
+  name: gp-registry-cache
+
+machineconfig:
+  name: 02-worker-registry-mirror

@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.ingress.name }}
+spec:
+  ingressClassName: public
+  rules:
+  - host: registry.infra.gepaplexx.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ .Values.svc.name }}
+            port:
+              number: 5000
+        path: /
+        pathType: ImplementationSpecific
