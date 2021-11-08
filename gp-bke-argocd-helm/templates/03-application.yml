@@ -4,7 +4,7 @@ metadata:
   name: {{ required "A value for 'argocd.application.name' is required." .Values.argocd.application.name }}
 spec:
   destination:
-    namespace: {{ required "A value for 'argocd.application.destination.namespace is required." .Values.argocd.application.destination.namespace }}
+    namespace: {{ default .Release.Namespace .Values.argocd.application.destination.namespace }}
     server: 'https://kubernetes.default.svc'
   project: {{ default "default" .Values.argocd.project.name }}
   source:
