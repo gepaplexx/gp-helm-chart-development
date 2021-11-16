@@ -15,6 +15,7 @@ argocd:
   application:
     # Name of the ArgoCD Application
     name: ""
+    createNamespace: true
     destination:
       # The namespace in which the application is deployed
       namespace: ""
