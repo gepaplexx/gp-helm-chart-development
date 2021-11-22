@@ -1,0 +1,31 @@
+# Default values for gp-bke-argocd-helm.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+argocd:
+  application:
+    # Name of the ArgoCD Application
+    name: 
+    source:
+      # Relative path of the Helm-Chart in your Repo to deploy the Application
+      chartPath: "."
+      # Git Repo in which your application is located
+      appRepoURL: ""
+      # The branch to be used
+      appRevision: "main"
+      # Name + Relative URL of the values.yaml to be used
+      valuesYaml: "values.yaml"
+
+    destination:
+      # The namespace in which the application is deployed, default is Release.Namespace
+      namespace: ""
+      createNamespace: true
+
+    syncPolicy:
+      prune: true
+      selfHeal: true
+
+  project:
+    # true = create new/override existing project, false = use existing project, fail if there is no project found
+    create: false
+    name: "default"
