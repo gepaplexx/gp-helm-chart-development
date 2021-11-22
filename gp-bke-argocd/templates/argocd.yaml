@@ -2,6 +2,5 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ArgoCD
 metadata:
-  name: {{ required "A value for 'argocd.name' is required." .Values.argocd.name }}
-spec: {}
+  name: {{ default .Release.Name .Values.argocd.name }}
 {{ end }}

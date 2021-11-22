@@ -1,6 +1,6 @@
 argocd:
   enableVault: false
-  name: 
+  name: ""
   image: quay.io/pbmoses/pmo-argovault
   version: v1.2
   
