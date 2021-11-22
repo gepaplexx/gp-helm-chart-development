@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ required "A value for 'argocd.application.name' is required." .Values.argocd.application.name }}
+  name: {{ default .Release.Name .Values.argocd.application.name }}
 spec:
   destination:
     namespace: {{ default .Release.Namespace .Values.argocd.application.destination.namespace }}
@@ -14,6 +14,19 @@ spec:
     helm:
       valueFiles:
       - {{ .Values.argocd.application.source.valuesYaml }}
+{{ if (eq .Values.argocd.plugins.vault.enable true) }}
+    plugin:
+      name: argocd-vault-plugin
+      env:
+        - name: AVP_K8S_ROLE
+          value: {{ .Values.argocd.plugins.vault.k8Role }}
+        - name: AVP_TYPE
+          value: vault
+        - name: AVP_VAULT_ADDR
+          value: {{ .Values.argocd.plugins.vault.url }}
+        - name: AVP_AUTH_TYPE
+          value: k8s
+{{ end }}          
   syncPolicy:
     automated:
       prune: {{ .Values.argocd.application.syncPolicy.prune }}

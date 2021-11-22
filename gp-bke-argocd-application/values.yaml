@@ -29,3 +29,9 @@ argocd:
     # true = create new/override existing project, false = use existing project, fail if there is no project found
     create: false
     name: "default"
+
+  plugins:
+    vault:
+      enable: false
+      k8sRole: "default"
+      url: 'http://vault.vault.svc.cluster.local:8200'
