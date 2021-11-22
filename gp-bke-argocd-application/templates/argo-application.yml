@@ -11,9 +11,6 @@ spec:
     path: {{ .Values.argocd.application.source.chartPath }}
     repoURL: {{ .Values.argocd.application.source.appRepoURL }}
     targetRevision: {{ .Values.argocd.application.source.appRevision }}
-    helm:
-      valueFiles:
-      - {{ .Values.argocd.application.source.valuesYaml }}
 {{ if (eq .Values.argocd.plugins.vault.enable true) }}
     plugin:
       name: argocd-vault-plugin
