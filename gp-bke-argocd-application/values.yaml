@@ -33,5 +33,5 @@ argocd:
   plugins:
     vault:
       enable: false
-      k8sRole: "default"
+      k8Role: "default"
       url: 'http://vault.vault.svc.cluster.local:8200'
