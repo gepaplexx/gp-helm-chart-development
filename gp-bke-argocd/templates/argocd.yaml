@@ -1,0 +1,7 @@
+{{ if (eq .Values.argocd.enableVault false) }}
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: {{ required "A value for 'argocd.name' is required." .Values.argocd.name }}
+spec: {}
+{{ end }}

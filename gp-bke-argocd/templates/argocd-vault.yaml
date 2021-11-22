@@ -1,0 +1,99 @@
+{{ if (eq .Values.argocd.enableVault true) }}
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  name: {{ required "A value for 'argocd.name' is required." .Values.argocd.name }}
+spec:
+  server:
+    autoscale:
+      enabled: false
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.server.resources.limits.cpu }}
+        memory: {{ .Values.argocd.server.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.server.resources.requests.cpu }}
+        memory: {{ .Values.argocd.server.resources.requests.memory }}
+    route:
+      enabled: true
+    service:
+      type: ''
+  grafana:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  prometheus:
+    enabled: false
+    ingress:
+      enabled: false
+    route:
+      enabled: false
+  initialSSHKnownHosts: {}
+  rbac: {}
+  repo:
+    image: {{ .Values.argocd.image }}
+    version: {{ .Values.argocd.version }}
+    serviceaccount: {{ .Values.argocd.repo.serviceaccount }}
+    mountsatoken: true
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.repo.resources.limits.cpu }}
+        memory: {{ .Values.argocd.repo.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.repo.resources.requests.cpu }}
+        memory: {{ .Values.argocd.repo.resources.requests.memory }}
+  dex:
+    openShiftOAuth: {{ .Values.argocd.dex.openShiftOAuth }}
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.dex.resources.limits.cpu }}
+        memory: {{ .Values.argocd.dex.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.dex.resources.requests.cpu }}
+        memory: {{ .Values.argocd.dex.resources.requests.memory }}
+  version: {{ .Values.argocd.version }}
+  ha:
+    enabled: false
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.ha.resources.limits.cpu }}
+        memory: {{ .Values.argocd.ha.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.ha.resources.requests.cpu }}
+        memory: {{ .Values.argocd.ha.resources.requests.memory }}
+  tls:
+    ca: {}
+  image: {{ .Values.argocd.image }}
+  redis:
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.redis.resources.limits.cpu }}
+        memory: {{ .Values.argocd.redis.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.redis.resources.requests.cpu }}
+        memory: {{ .Values.argocd.redis.resources.requests.memory }}    
+  configManagementPlugins: |-
+    - name: argocd-vault-plugin
+      init:
+        command: [sh, -c]
+        args: ["helm dependency build"]
+      generate:
+        command: ["sh", "-c"]
+        args: ["helm template $ARGOCD_APP_NAME . > all.yaml && argocd-vault-plugin generate all.yaml"]
+  controller:
+    processors: {}
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.controller.resources.limits.cpu }}
+        memory: {{ .Values.argocd.controller.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.controller.resources.requests.cpu }}
+        memory: {{ .Values.argocd.controller.resources.requests.memory }}
+{{ end }}        
