@@ -26,8 +26,8 @@ spec:
   workspaces:
   - name: source
     persistentvolumeclaim:
-      claimName: source-pvc 
+      claimName: source-pvc-{{ .Release.Name }}
   - name: maven-settings
     configMap: 
-       name: maven
+       name: maven-{{ .Release.Name }}
 {{- end }}
