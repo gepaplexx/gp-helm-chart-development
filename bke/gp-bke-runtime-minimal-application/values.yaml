@@ -49,11 +49,7 @@ readinessProbe:
   path: "" # default is /
 
 # Define environment variables for the pod
-env:
-  - name: hello
-    value: world
-  - name: stage
-    value: dev
+env: {}
 
 resources:
   limits:
