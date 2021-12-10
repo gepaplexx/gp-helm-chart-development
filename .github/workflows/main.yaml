@@ -17,7 +17,7 @@ jobs:
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT }}
-          charts_dir: .
+          charts_dir: ./bke
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts
