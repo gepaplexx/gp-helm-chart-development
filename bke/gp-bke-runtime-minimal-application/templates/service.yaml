@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: svc-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
+  labels:
+    {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port | default (8080) }}
+      targetPort: {{ .Values.service.targetPort | default (8080) }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "gp-bke-runtime-minimal-application.selectorLabels" . | nindent 4 }}
