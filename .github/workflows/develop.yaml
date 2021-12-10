@@ -8,17 +8,12 @@ name: Lint Helm Chart
       - '**'
 
 # TODO: github action für helm linting herausfinden!
-#jobs:
-#  release:
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v2
-#      - name: Publish Helm charts
-#        uses: stefanprodan/helm-gh-pages@master
-#        with:
-#          token: ${{ secrets.PAT }}
-#          charts_dir: .
-#          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-#          owner: gepaplexx
-#          repository: gp-helm-charts
-#          branch: main
+jobs:
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Lint Helm
+        uses: WyriHaximus/github-action-helm3@v2
+        with:
+          exec: helm lint ./bke/*/.
