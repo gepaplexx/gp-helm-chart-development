@@ -49,7 +49,11 @@ readinessProbe:
   path: "" # default is /
 
 # Define environment variables for the pod
-env: {}
+env:
+  HELLO: world
+  STAGE: test
+  BLUBB: true
+  TMP: false
 
 resources:
   limits:
