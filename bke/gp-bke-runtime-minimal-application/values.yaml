@@ -50,10 +50,10 @@ readinessProbe:
 
 # Define environment variables for the pod
 env:
-  - HELLO: world
-  - STAGE: test
-  - BLUBB: true
-  - TMP: false
+  - name: hello
+    value: world
+  - name: stage
+    value: dev
 
 resources:
   limits:
