@@ -1,0 +1,24 @@
+---
+name: Build and push Helm charts
+
+'on':
+  push:
+    branches:
+      - 'main'
+    tags-ignore:
+      - '**'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Publish Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: .
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
