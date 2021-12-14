@@ -34,10 +34,10 @@ service:
 
 route:
   # Deploy a route for this deployment?
-  enabled: true
+  enabled: false
   wildcardPolicy: None
   tls:
-    enabled: true
+    enabled: false
     termination: edge
 
 livenessProbe:
@@ -50,6 +50,8 @@ readinessProbe:
 
 # Define environment variables for the pod
 env: {}
+  # - name: YOUR_ENV_NAME
+  #   value: YOUR_ENV_VALUE
 
 resources:
   limits:
