@@ -16,4 +16,7 @@ jobs:
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm lint ./bke/*/.
+          exec: |
+          helm lint \
+              ./bke/*/. \
+              ./infra/*/.
