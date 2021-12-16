@@ -16,16 +16,28 @@ jobs:
       - name: Lint Helm
         uses: WyriHaximus/github-action-helm3@v2
         with:
-          exec: helm lint ./bke/*/.
+          exec: |
+          helm lint \
+            ./bke-runtime/*/. \
+            ./infra/*/.
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Publish Helm charts
+      - name: Publish bke-runtime Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT }}
-          charts_dir: ./bke
+          charts_dir: ./bke-runtime
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish infra Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./infra
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts
