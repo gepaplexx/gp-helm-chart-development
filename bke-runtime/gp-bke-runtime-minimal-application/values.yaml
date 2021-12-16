@@ -37,7 +37,7 @@ route:
   enabled: false
   wildcardPolicy: None
   tls:
-    enabled: false
+    enabled: true
     termination: edge
 
 livenessProbe:
