@@ -18,4 +18,5 @@ jobs:
           exec: |
             helm lint \
               ./bke-runtime/*/. \
-              ./infra/*/.
+              ./infra/*/. \
+              ./bke-gp-old/*/.
