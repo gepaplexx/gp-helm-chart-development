@@ -1,0 +1,35 @@
+# Default values for gp-bke-deploy-db.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Defines the name of the image, e.g. Imagename: [REGISTRY]/[REPOSITORY]/[applicationName]:[TAG]
+applicationName: # default Release.Name
+
+pipeline:
+  mvn:
+    # This image which is used to build the maven project
+    image: maven:3.6.3-adoptopenjdk-11
+
+workspace:
+  # The size of the persistent volume used for this build
+  size: 1Gi
+
+# Create a initial PipelineRun-Resource
+createInitialRun: true
+# The Git-Repo of your application 
+sourceRepo: "" # e.g. https://github.com/gepaplexx/gp-test-services.git
+
+# git revision to checkout (branch, tag, sha, ref…)
+sourceRevision: "main" # e.g. 0d41126cfd0af6471e8d09e7af92aecd0a3a84a6 or main
+
+# version of the final image, e.g. [REGISTRY]/[REPOSITORY]/[APPLICATIONNAME]:[version]
+version: "1.0.0"
+
+# Use contextdir if your application is not in the root directory of the specified repository
+contextdir: "" # e.g. serviceA
+# The Dockerfile wich should be used to build the image
+dockerfile: # default = ./src/main/docker/Dockerfile.jvm
+# Into this registry the final image is pushed, e.g. [imageRegistry]/[REPOSITORY]/[APPLICATIONNAME]:[TAG]
+imageRegistry: image-registry.openshift-image-registry.svc.cluster.local:5000
+# The Repositry into wich the final image gets pushed, e.g. [REGISTRY]/[imageRepository]/[APPLICATIONNAME]:[TAG]
+imageRepository: # default = Release.Namespace

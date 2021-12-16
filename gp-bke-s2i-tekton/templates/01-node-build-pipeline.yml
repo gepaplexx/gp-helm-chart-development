@@ -1,0 +1,73 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: s2i-{{ .Values.applicationName }}-pipeline
+spec:
+  description: |
+    This pipeline will clone a given repository revision, build a Docker Image with s2i and 
+    pushing the final image into the Openshift internal registry
+  params:
+  - name: application
+    type: string
+    description: Name for the application 
+  - name: source-repo-url
+    type: string
+    description: The git repository URL to clone from.
+  - name: source-revision
+    type: string
+    description: The git revision to clone.
+  - name: image-registry
+    type: string
+    description: Image registry
+  - name: image-repository
+    type: string
+    description: Image repository within image-registry the image will be pushed to
+  - name: builder-image
+    type: string
+    description: The Builder Image to use
+  - name: context-dir
+    type: string
+    description: Source path from where s2i command need to be run (default '.')
+    default: '.'
+
+  workspaces:
+  - name: s2i-{{ .Values.applicationName }}-source
+
+  tasks:
+  - name: fetch-source-repository
+    taskRef:
+      name: git-clone
+      kind: ClusterTask
+    workspaces:
+    - name: output
+      workspace: s2i-{{ .Values.applicationName }}-source
+    params:
+    - name: url
+      value: $(params.source-repo-url)
+    - name: revision
+      value: $(params.source-revision)
+    - name: subdirectory
+      value: $(params.source-revision)
+    - name: deleteExisting
+      value: "true"
+
+  - name: s2i
+    taskRef:
+      name: s2i
+      kind: ClusterTask
+    runAfter:
+      - fetch-source-repository
+    workspaces:
+      - name: source
+        workspace: s2i-{{ .Values.applicationName }}-source
+    params:
+      - name: BUILDER_IMAGE
+        value: $(params.builder-image)
+      - name: TLSVERIFY
+        value: "false"
+      - name: LOGLEVEL
+        value: "10"
+      - name: IMAGE_NAME
+        value: $(params.image-registry)/$(params.image-repository)/$(params.application):$(params.source-revision)
+      - name: PATH_CONTEXT
+        value: $(params.source-revision)/$(params.context-dir)

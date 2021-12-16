@@ -1,0 +1,37 @@
+# Default values for gp-bke-deploy-db.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# metadata.name: [RELEASE-NAME]-[nameOverride]
+# metadata.label.app.kubernetes.io/name: [nameOverride]
+nameOverride: "mega-zep-db"
+
+# metadata.name: [fullnameOverride]
+# metadata.label.app.kubernetes.io/name: gp-bke-deploy-app
+fullnameOverride: "mega-zep-db"
+
+postgres:
+  deploy: true
+  image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres-ha:centos8-13.4-0
+  postgresVersion: 13
+  storage: 1Gi
+  resources:
+    requests:
+      cpu: 200m
+      memory: 200Mi
+    limits:
+      cpu: 750m
+      memory: 800Mi
+  backup:
+    image: registry.developers.crunchydata.com/crunchydata/crunchy-pgbackrest:centos8-2.33-2
+    storage: 1Gi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 100Mi
+      limits:
+        cpu: 500m
+        memory: 500Mi
+  user: "mega"
+  databases: # only considered in combination with a user
+  - "mega"

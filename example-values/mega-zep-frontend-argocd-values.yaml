@@ -1,0 +1,18 @@
+argocd:
+  alreadyExisting: true
+  instanceName: argocd-mega-gattma
+  project:
+    alreadyExisting: true
+    name: "mega-gattma"
+  application:
+    name: "mega-fronted-gattma"
+    destination:
+      namespace: "gattma-mega-test"
+    source:
+      chartPath: "k8s/mega-frontend-subchart"
+      appRepoURL: "https://github.com/gattma/mega.git"
+      appRevision: "develop"
+      valuesYaml: "values-test.yaml"
+    syncPolicy:
+      prune: true
+      selfHeal: true

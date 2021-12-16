@@ -1,0 +1,13 @@
+applicationName: mega-frontend
+
+workspace:
+  size: 1Gi
+
+pipelineRun:
+  create: true
+  sourceRepo: https://github.com/gattma/mega.git # eg.: https://github.com/gattma/gp-management.git
+  sourceRevision: 7f6fe8b4827e0dba54dfec1a239912147fe5b699 # eg.: 957ff8da4ce01a0908e26d67c806392b1e484c37
+  imageRegistry: image-registry.openshift-image-registry.svc.cluster.local:5000
+  imageRepository: # default = Release.Namespace
+  builderImage: image-registry.openshift-image-registry.svc:5000/openshift/s2i-angular
+  contextDir: mega-zep-frontend/src/main/angular/frontend # eg.: frontend/management-ui

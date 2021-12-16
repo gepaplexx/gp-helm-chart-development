@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ default .Release.Name .Values.argocd.application.name }}
+spec:
+  destination:
+    namespace: {{ default .Release.Namespace .Values.argocd.application.destination.namespace }}
+    server: 'https://kubernetes.default.svc'
+  project: {{ default "default" .Values.argocd.project.name }}
+  source:
+    path: {{ .Values.argocd.application.source.chartPath }}
+    repoURL: {{ .Values.argocd.application.source.appRepoURL }}
+    targetRevision: {{ .Values.argocd.application.source.appRevision }}
+{{ if (eq .Values.argocd.plugins.vault.enable true) }}
+    plugin:
+      name: argocd-vault-plugin
+      env:
+        - name: AVP_K8S_ROLE
+          value: {{ .Values.argocd.plugins.vault.k8Role }}
+        - name: AVP_TYPE
+          value: vault
+        - name: AVP_VAULT_ADDR
+          value: {{ .Values.argocd.plugins.vault.url }}
+        - name: AVP_AUTH_TYPE
+          value: k8s
+{{ end }}          
+  syncPolicy:
+    automated:
+      prune: {{ .Values.argocd.application.syncPolicy.prune }}
+      selfHeal: {{ .Values.argocd.application.syncPolicy.selfHeal }}
+    syncOptions:
+      - CreateNamespace={{ .Values.argocd.application.destination.createNamespace }}
