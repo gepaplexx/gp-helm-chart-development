@@ -7,7 +7,6 @@ name: Lint Helm Chart
     tags-ignore:
       - '**'
 
-# TODO: github action für helm linting herausfinden!
 jobs:
   lint-helm:
     runs-on: ubuntu-latest
@@ -18,5 +17,5 @@ jobs:
         with:
           exec: |
             helm lint \
-                ./bke/*/. \
-                ./infra/*/.
+              ./bke-runtime/*/. \
+              ./infra/*/.
