@@ -23,6 +23,8 @@ jobs:
               ./bke-gp-old/*/.
   release:
     runs-on: ubuntu-latest
+    needs:
+      - lint-helm
     steps:
       - uses: actions/checkout@v2
       - name: Publish bke-runtime Helm charts
