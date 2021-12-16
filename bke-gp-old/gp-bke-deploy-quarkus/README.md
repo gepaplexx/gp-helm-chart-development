@@ -56,7 +56,7 @@ Below is a table of each value used to configure this chart.
 | `deploy.replicas` | Number of pod replicas to deploy | `1` | - |
 | `deploy.resources` | Freeform `resources` stanza | - | More information: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ |
 | `deploy.serviceType` | Type of service to create | `ClusterIP` | More information: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types |
-| `deploy.ports` | Freeform service `ports` stanza. | See [values.yaml](./values.yaml) | More information: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service |
+| `deploy.ports` | Freeform service `ports` stanza. | See [values.yaml](values.yaml) | More information: https://kubernetes.io/docs/concepts/services-networking/service/#defining-a-service |
 | `deploy.route.enabled` | Determines if a Route should be created | `true` | Allows clients outside of OpenShift to access your application |
 | `deploy.route.targetPort` | The port that the Route should target traffic to | `http` | - |
 | `deploy.route.tls.enabled` | Determines if the Route should be TLS-encrypted | `true` | More information: https://docs.openshift.com/container-platform/4.6/networking/routes/secured-routes.html |
@@ -66,8 +66,8 @@ Below is a table of each value used to configure this chart.
 | `deploy.route.tls.caCertificate` | Provides the cert authority certificate contents | - | - |
 | `deploy.route.tls.certificate` | Provides certificate contents | - | - |
 | `deploy.route.tls.destinationCACertificate` | Provides the destination CA Certificate for reencrypt routes | - | - |
-| `deploy.livenessProbe` | Freeform `livenessProbe` stanza. | See [values.yaml](./values.yaml) | More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health |
-| `deploy.readinessProbe` | Freeform `readinessProbe` stanza. | See [values.yaml](./values.yaml) | More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health |
+| `deploy.livenessProbe` | Freeform `livenessProbe` stanza. | See [values.yaml](values.yaml) | More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health |
+| `deploy.readinessProbe` | Freeform `readinessProbe` stanza. | See [values.yaml](values.yaml) | More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health |
 | `deploy.env` | Freeform `env` stanza | - | More information: https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/ |
 | `deploy.envFrom` | Freeform `envFrom` stanza | - | More information: https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#configure-all-key-value-pairs-in-a-configmap-as-container-environment-variables |
 | `deploy.applicationProperties.enabled` | Determines if application properties should be externalized in a ConfigMap | `false` | - |
