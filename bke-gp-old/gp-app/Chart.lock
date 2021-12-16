@@ -1,6 +1,0 @@
-dependencies:
-- name: gp-java-s2i
-  repository: https://gepaplexx.github.io/gp-helm-charts/
-  version: 0.1.0
-digest: sha256:f01aa5d1cd2e0cb2346958ad1842f0472b791b39873f7f6eb2f5b5102e29efc5
-generated: "2021-07-13T10:39:41.8893+02:00"
