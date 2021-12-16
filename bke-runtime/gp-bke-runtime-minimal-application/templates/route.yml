@@ -2,7 +2,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: route-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
+  name: {{ include "gp-bke-runtime-minimal-application.route.name" . }}
   labels:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:
