@@ -71,7 +71,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if contains $name .Release.Name -}}
 {{- "route-" .Release.Name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "route-%s-%s" .Release.Name $name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
+{{- printf "route-%s-%s-%s" .Release.Name $name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
