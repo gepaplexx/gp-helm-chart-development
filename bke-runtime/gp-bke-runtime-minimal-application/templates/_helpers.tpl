@@ -56,19 +56,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- "route-" .Release.Name | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- printf "route-%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
-{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{- define "gp-bke-runtime-minimal-application.route.host" -}}
-{{- if .Values.fullnameOverride -}}
-{{- "route-" .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
-{{- else -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- if contains $name .Release.Name -}}
 {{- "route-" .Release.Name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- printf "route-%s-%s-%s" .Release.Name $name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
