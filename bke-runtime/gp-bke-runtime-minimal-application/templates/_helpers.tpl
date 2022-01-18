@@ -75,3 +75,15 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "gp-bke-runtime-minimal-application.route.hostname" -}}
+{{- if .Values.route.basename -}}
+{{- if .Values.route.hostname -}}
+{{- printf "%s.%s.%s" .Values.route.hostname .Release.Namespace .Values.route.basename -}}
+{{- else -}}
+{{- printf "%s.%s.%s" .Release.Name .Release.Namespace .Values.route.basename -}}
+{{- end -}}
+{{- else -}}
+{{- printf "" -}}
+{{- end -}}
+{{- end -}}
