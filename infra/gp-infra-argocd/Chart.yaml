@@ -23,5 +23,5 @@ version: 1.0.0
 appVersion: 1.0.0
 
 dependencies:
-  - name: gp-bke-argocd
+  - name: "gp-bke-argocd"
     repository: "https://gepaplexx.github.io/gp-helm-charts/"
