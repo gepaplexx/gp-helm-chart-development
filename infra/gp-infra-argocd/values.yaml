@@ -1,5 +1,6 @@
 argocd:
-  enableVault: true
-  name: "gp-infra"
-  repo:
-    serviceaccount: argo-vault-sa
+  argocd:
+    enableVault: true
+    name: "gp-infra"
+    repo:
+      serviceaccount: argo-vault-sa
