@@ -690,7 +690,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: "psp:rook"
+  name: "psp-rook"
 rules:
   - apiGroups:
       - policy
@@ -708,7 +708,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: "psp:rook"
+  name: "psp-rook"
 subjects:
   - kind: ServiceAccount
     name: rook-ceph-system
@@ -722,7 +722,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp:rook
+  name: psp-rook
 subjects:
   - kind: ServiceAccount
     name: default
@@ -736,7 +736,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp:rook
+  name: psp-rook
 subjects:
   - kind: ServiceAccount
     name: rook-ceph-osd
@@ -750,7 +750,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp:rook
+  name: psp-rook
 subjects:
   - kind: ServiceAccount
     name: rook-ceph-mgr
@@ -764,7 +764,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: psp:rook
+  name: psp-rook
 subjects:
   - kind: ServiceAccount
     name: rook-ceph-cmd-reporter
@@ -901,7 +901,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: "psp:rook"
+  name: "psp-rook"
 subjects:
   - kind: ServiceAccount
     name: rook-csi-cephfs-plugin-sa
@@ -914,7 +914,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: "psp:rook"
+  name: "psp-rook"
 subjects:
   - kind: ServiceAccount
     name: rook-csi-cephfs-provisioner-sa
@@ -1096,7 +1096,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: "psp:rook"
+  name: "psp-rook"
 subjects:
   - kind: ServiceAccount
     name: rook-csi-rbd-plugin-sa
@@ -1109,7 +1109,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: "psp:rook"
+  name: "psp-rook"
 subjects:
   - kind: ServiceAccount
     name: rook-csi-rbd-provisioner-sa
