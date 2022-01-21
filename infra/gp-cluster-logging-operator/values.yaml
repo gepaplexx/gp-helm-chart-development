@@ -1,0 +1,7 @@
+clusterlogging:
+  subscription:
+    channel: "5.0"
+
+elasticsearch:
+  subscription:
+    channel: "5.0"

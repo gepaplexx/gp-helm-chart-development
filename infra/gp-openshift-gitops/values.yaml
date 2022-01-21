@@ -1,0 +1,4 @@
+gitops:
+  channel: stable
+  installPlanApproval: Automatic
+  disableDefaultInstance: true

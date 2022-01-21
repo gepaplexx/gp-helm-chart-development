@@ -1,0 +1,28 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Values.clusterAdminSAName | default "gp-admin-sa" }}-binding
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.clusterAdminSAName | default "gp-admin-sa" }}
+    namespace: {{ .Values.configNamespaceName | default "gp-cluster-config" }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+...
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: gepaplexx-admin
+subjects:
+  - kind: Group
+    apiGroup: rbac.authorization.k8s.io
+    name: Gepaplexx
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+...

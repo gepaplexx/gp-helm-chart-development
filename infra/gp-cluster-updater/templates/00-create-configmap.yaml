@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-update-config
+  namespace: {{ .Release.Namespace }}
+data:
+  delay: "{{ .Values.updater.delay }}"
+  cleanup_delay: "{{ .Values.cleanup.delay }}"

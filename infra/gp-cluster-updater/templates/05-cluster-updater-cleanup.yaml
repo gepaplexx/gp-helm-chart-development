@@ -1,0 +1,64 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cluster-updater-cleanup
+spec:
+  schedule: {{ .Values.cleanup.schedule }}
+  startingDeadlineSeconds: 60
+  successfulJobsHistoryLimit: {{ .Values.cleanup.successfulJobsHistoryLimit }}
+  concurrencyPolicy: "Allow"
+  suspend: {{ .Values.cleanup.suspend }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: gp-cluster-updater
+          containers:
+          - name: cluster-updater-cleanup
+            image: quay.io/appuio/oc:v4.6
+            resources:
+              limits:
+                memory: {{ .Values.cleanup.resources.limits.memory }}
+                cpu: {{ .Values.cleanup.resources.limits.cpu }}
+              requests:
+                memory: {{ .Values.cleanup.resources.requests.memory }}
+                cpu: {{ .Values.cleanup.resources.requests.cpu }}
+            env:
+            - name: DELAY_IN_DAYS
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-update-config
+                  key: cleanup_delay    
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                now=$(date +%s)
+                echo "Starte update job cleanup"
+
+                cronjobs=$(kubectl get cronjob -o=jsonpath='{range .items[?(@.metadata.annotations.gepaplexx\.com/update=="autoremove")]}{.metadata.name}{"\t"}{.metadata.creationTimestamp}{"\n"}{end}')
+
+                echo "Gefundene Update Cronjobs:"
+                echo "$cronjobs"
+
+                while IFS= read -r line; do
+                    jobname=$(echo "$line" | cut -f1)
+                    timestamp=$(echo "$line" | cut -f2)
+
+                    # skip empty lines
+                    if [ "$jobname" = "" ]; then
+                        continue
+                    fi
+
+                    timestamp_seconds=$(date -d "$timestamp" +%s)
+                    jobage_seconds=$(( now - timestamp_seconds ))
+                    jobage_days=$(( jobage_seconds / (60 * 60 * 24) ))
+
+                    if [ "$jobage_days" -gt "$DELAY_IN_DAYS" ]; then
+                        echo "Lösche $jobname mit Alter von $jobage_days Tagen"
+                        kubectl delete cronjob "$jobname"
+                    fi
+
+                done <<< "$cronjobs"
+
+                echo "Fertig"
+          restartPolicy: Never

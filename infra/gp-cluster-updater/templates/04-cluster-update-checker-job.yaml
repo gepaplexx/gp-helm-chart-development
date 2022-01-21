@@ -1,0 +1,121 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: cluster-update-checker
+spec:
+  schedule: {{ .Values.checker.schedule }}
+  startingDeadlineSeconds: 60
+  successfulJobsHistoryLimit: {{ .Values.checker.successfulJobsHistoryLimit }}
+  concurrencyPolicy: "Allow"
+  suspend: {{ .Values.checker.suspend }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: gp-cluster-updater
+          containers:
+          - name: cluster-update-checker
+            image: quay.io/appuio/oc:v4.6
+            resources:
+              limits:
+                memory: {{ .Values.checker.resources.limits.memory }}
+                cpu: {{ .Values.checker.resources.limits.cpu }}
+              requests:
+                memory: {{ .Values.checker.resources.requests.memory }}
+                cpu: {{ .Values.checker.resources.requests.cpu }}
+            env:
+            - name: SLACK_TARGET_CHANNEL
+              valueFrom:
+                secretKeyRef:
+                  name: cluster-update-secret
+                  key: slackTargetChannel
+            - name: DELAY_IN_DAYS
+              valueFrom:
+                configMapKeyRef:
+                  name: cluster-update-config
+                  key: delay    
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                currentChannel=$(oc get clusterversion -o jsonpath="{.items[0].spec.channel}") 
+                newestChannel=$(oc get clusterversion -o=jsonpath="{.items[0].status.desired.channels}" | jq '.[] | select(test("stable"))' | sort -Vr | head -1 | cut -d '"' -f 2)
+
+                echo "Current Channel is $currentChannel"
+                echo "Newest Channel is  $newestChannel"
+
+                if [[ $currentChannel != $newestChannel ]];
+                then
+                  echo "Newer Channel is available, patching the clusterversion from $currentChannel to $newestChannel ..."
+                  oc patch clusterversion version --type json -p '[{"op": "add", "path": "/spec/channel", "value": '"$newestChannel"'}]'
+                fi;
+                              
+                CURRENT_VERSION=$(oc adm upgrade | sed -n -e 's/Cluster version is //p');
+                echo "AKTUELLE VERSION ist $CURRENT_VERSION";
+                UPDATES=$(oc get clusterversion -o jsonpath='{.items[].status.availableUpdates}{"\n"}');
+                VERSIONS=$(oc get clusterversion -o jsonpath='{.items[].status.availableUpdates[*].version}{"\n"}');
+                echo "VERFUEGBARE VERSIONEN sind $VERSIONS";
+                NEW_VERSION=$(echo $VERSIONS | tr " " "\n" | sort -Vr | head -1);
+                echo "AUSGEWAEHLTE VERSION ist $NEW_VERSION";
+
+                echo "pruefe ob bereits ein job fuer dieses update angelegt ist..."
+                jobs=$(oc get cronjobs -n {{ .Release.Namespace }} -o name)
+                createNewCronJob=true
+                for job in $jobs
+                do
+                  echo $job;
+                  if [[ "$job" == *$NEW_VERSION ]]
+                  then
+                    echo "Job bereits angelegt..."
+                    createNewCronJob=false
+                  fi
+                done
+
+                if [[ $UPDATES != "<nil>" && ! -z $CURRENT_VERSION && $createNewCronJob == "true" ]];                 
+                then
+                  echo "Job fuer neues Update anlegen, berechne Zeitpunkt...";  
+                
+                  # wait DELAY_IN_DAYS
+                  dateparam="+$DELAY_IN_DAYS days"
+                  plannedUpdateDay=$(date -d "$dateparam")
+                  plannedDayOfWeek=($plannedUpdateDay +%u)
+                  echo "Update geplant am: $plannedUpdateDay"
+                  echo "Geplanter Wochentag: $plannedDayOfWeek"
+                  [[ "$plannedDayOfWeek" == Sat ]] && plannedUpdateDay=$(date -d "+$(expr $DELAY_IN_DAYS + 2) days")
+                  [[ "$plannedDayOfWeek" == Sun ]] && plannedUpdateDay=$(date -d "+$(expr $DELAY_IN_DAYS + 1) days")
+                  echo "Vorlaeufiger Updatetag: $plannedUpdateDay, pruefe ob an diesem Tag bereits ein Update geplant ist..."
+                                  
+                  PLANNED_DAY=$(date -d "$plannedUpdateDay" +"%d")
+                  PLANNED_MONTH=$(date -d "$plannedUpdateDay" +%m)
+                  PLANNED_YEAR=$(date -d "$plannedUpdateDay" +%Y)
+
+                  # get last scheduled update (LSU)
+                  LSU="$(oc get cronjobs -o jsonpath='{.items[-1:].spec.schedule}')"
+                  LSU_ARR=($(echo $LSU | tr " " "\n"))      
+                  LSU_DAY="${LSU_ARR[2]}"
+                  LSU_MONTH="${LSU_ARR[3]}"
+
+                  if [[ $PLANNED_DAY -le $LSU_DAY && $PLANNED_MONTH -le $LSU_MONTH ]]
+                  then
+                    echo "Update an diesem Tag bereits geplant, verschiebe aktuelles Update auf naechsten tag"
+                    plannedUpdateDay=$(date --date "${PLANNED_YEAR}-${LSU_MONTH}-${LSU_DAY} + 1 day")
+                    PLANNED_DAY=$(date -d "$plannedUpdateDay" +"%d")
+                    PLANNED_MONTH=$(date -d "$plannedUpdateDay" +%m)
+                  fi;
+
+                  UPDATER_SCHEDULE="0 {{ .Values.checker.updateTime }} ${PLANNED_DAY} ${PLANNED_MONTH} *"
+
+                  echo "erzeuge neuen Updatejob..."
+                  echo "Schedule=$UPDATER_SCHEDULE"
+                  updateDate=$(date -d "$plannedUpdateDay" +"%d.%m.%y")
+                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Neues Update am Cluster {{ .Values.clustername }} verfügbar. Update von Version '"$CURRENT_VERSION"' auf neue Version '"$NEW_VERSION"'. Update wird am '"$updateDate"' um {{ .Values.checker.updateTime }}:00 Uhr UTC durchgeführt. Übersicht: https://console-openshift-console.{{ .Values.domain }}/settings/cluster"}' $SLACK_TARGET_CHANNEL;
+                  helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/
+                  helm upgrade --install gp-updater-cronjob-$NEW_VERSION gp-helm-charts/gp-updater-cronjob-chart \
+                    -n {{ .Release.Namespace }} \
+                    --set schedule="$UPDATER_SCHEDULE" \
+                    --set updateToVersion=$NEW_VERSION \
+                    --set jobname=cluster-update-updater-$NEW_VERSION \
+                    --set domain={{ .Values.domain }} \
+                    --set clustername={{ .Values.clustername }}
+                  echo "Finished!"
+                fi;
+          restartPolicy: Never

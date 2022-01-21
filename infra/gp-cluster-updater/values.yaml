@@ -1,0 +1,44 @@
+clustername: Play
+domain: apps.play.ocp.gp.local
+
+checker:
+  schedule: '"0 16 * * 1-4"'
+  successfulJobsHistoryLimit: 2
+  suspend: false
+  updateTime: "05"
+  resources:
+    limits:
+      memory: "100Mi"
+      cpu: "30m"
+    requests:
+      memory: "100Mi"
+      cpu: "10m"
+
+updater:
+  schedule: '"0 5 * * 2-5"'
+  successfulJobsHistoryLimit: 2
+  suspend: true
+  delay: 1
+  resources:
+    limits:
+      memory: "500Mi"
+      cpu: "100m"
+    requests:
+      memory: "100Mi"
+      cpu: "10m"
+
+cleanup:
+  schedule: '"0 16 * * 1-4"'
+  successfulJobsHistoryLimit: 2
+  suspend: false
+  delay: 270
+  resources:
+    limits:
+      memory: "500Mi"
+      cpu: "100m"
+    requests:
+      memory: "100Mi"
+      cpu: "10m"
+
+slack:
+  channel: ""

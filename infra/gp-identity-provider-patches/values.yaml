@@ -1,0 +1,15 @@
+google:
+  enable: true
+  k8secretName: google-oauth-secret
+  clientId: 
+  restrDomain: 
+
+git:
+  enable: true
+  k8secretName: github-oauth-secret
+  clientId: 
+  restrOrgs: 
+
+htpasswd:
+  enable: false
+  k8secretName: htpass-secret

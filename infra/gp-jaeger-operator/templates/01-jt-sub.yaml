@@ -1,0 +1,11 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: {{ .Values.jaeger.subscription.name }}
+  namespace: openshift-operators
+spec:
+  channel: "{{ .Values.jaeger.subscription.channel }}"
+  installPlanApproval: {{ .Values.jaeger.subscription.installPlanApproval }}
+  name: jaeger-product
+  source: redhat-operators
+  sourceNamespace: openshift-marketplace 

@@ -1,0 +1,45 @@
+{{ if or .Values.git.enable .Values.google.enable .Values.htpasswd.enable }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-identity-prov
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      patchTemplate: |
+        spec:
+          identityProviders:
+{{ if .Values.git.enable }}
+            - name: Gepaplexx
+              mappingMethod: claim
+              type: GitHub
+              github:
+                clientID: {{ .Values.git.clientId }}
+                clientSecret:
+                  name: {{ .Values.git.k8secretName }}
+                organizations: [{{ .Values.git.restrOrgs }}]
+{{ end }} {{ if .Values.google.enable }}
+            - name: Gepardec
+              mappingMethod: claim
+              type: Google
+              google:
+                clientID: {{ .Values.google.clientId }}
+                clientSecret:
+                  name: {{ .Values.google.k8secretName }}
+                hostedDomain: {{ .Values.google.restrDomain }}
+{{ end }} {{ if .Values.htpasswd.enable }}
+            - name: HTPasswd
+              mappingMethod: claim
+              type: HTPasswd
+              htpasswd:
+                fileData:
+                  name: {{ .Values.htpasswd.k8secretName }}
+{{ end }}
+      patchType: application/merge-patch+json
+      id: patch-identity-prov
+{{ end }}

@@ -1,0 +1,74 @@
+cephcluster:
+  name: rook-ceph
+  cephVersion:
+    image: ceph/ceph:v15.2.11 # ceph/ceph:v14.2
+  skipUpgradeChecks: false
+  continueUpgradeAfterChecksEvenIfNotHealthy: false
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+  dashboard:
+    enabled: true
+    ssl: true
+  monitoring:
+    enabled: false
+  storage:
+    useAllNodes: true
+    useAllDevices: true
+
+# BLOCK STORE
+cephblockpool:
+  name: replicapool
+  replicas: 3
+
+storageclassBlock:
+  name: rook-ceph-block
+  reclaimPolicy: Retain
+  volumeBindingMode: Immediate
+  default: true
+  provisioner:
+    # RBD image format. Defaults to "2".
+    imageFormat: 2
+    # RBD image features. Available for imageFormat: "2". CSI RBD currently supports only `layering` feature.
+    imageFeatures: layering
+
+# FILESYSTEM
+cephfilesystem:
+  enabled: true
+  name: cephfs
+  data:
+    replicas: 3
+  metadata:
+    replicas: 3
+    server:
+      count: 1
+      activeStandby: true
+
+storageclassFs:
+  name: rook-ceph-fs
+  reclaimPolicy: Delete
+
+# OBJECTSTORE
+cephobjectstore:
+  enabled: false
+  name: ceph-objectstore
+  metadata:
+    replicas: 3
+  data:
+    erasureCoded:
+      dataChunks: 2
+      codingChunks: 1
+  gateway:
+    sslCertificateRef:
+    port: 80
+    # securePort: 443
+    instances: 1
+  healthCheck:
+    bucket:
+      disabled: false
+      interval: 60s
+
+storageclassOs:
+  name: rook-ceph-bucket
+  reclaimPolicy: Delete
+  region: eu-central-1
