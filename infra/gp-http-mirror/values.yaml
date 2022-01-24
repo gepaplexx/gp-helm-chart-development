@@ -49,10 +49,10 @@ storageClassName: longhorn
 
 resources:
   limits:
-    cpu: 200m
+    cpu: 50m
     memory: 256Mi
   requests:
-    cpu: 100m
+    cpu: 10m
     memory: 128Mi
 
 mirror:

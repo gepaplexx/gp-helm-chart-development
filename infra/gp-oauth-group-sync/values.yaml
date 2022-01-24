@@ -9,10 +9,10 @@ replicas: 1
 
 resources:
   limits:
-    cpu: 10m
+    cpu: 25m
     memory: 256Mi
   requests:
-    cpu: 5m
+    cpu: 10m
     memory: 128Mi
 
   
