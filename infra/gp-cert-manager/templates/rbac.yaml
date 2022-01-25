@@ -3,7 +3,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: {{ template "cert-manager.fullname" . }}:leaderelection
+  name: {{ template "cert-manager.fullname" . }}-leaderelection
   namespace: {{ .Values.global.leaderElection.namespace }}
   labels:
     app: {{ include "cert-manager.name" . }}
@@ -37,7 +37,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ include "cert-manager.fullname" . }}:leaderelection
+  name: {{ include "cert-manager.fullname" . }}-leaderelection
   namespace: {{ .Values.global.leaderElection.namespace }}
   labels:
     app: {{ include "cert-manager.name" . }}
@@ -49,7 +49,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ template "cert-manager.fullname" . }}:leaderelection
+  name: {{ template "cert-manager.fullname" . }}-leaderelection
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
@@ -468,7 +468,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ template "cert-manager.fullname" . }}-controller-approve:cert-manager-io
+  name: {{ template "cert-manager.fullname" . }}-controller-approve-cert-manager-io
   labels:
     app: {{ include "cert-manager.name" . }}
     app.kubernetes.io/name: {{ include "cert-manager.name" . }}
@@ -487,7 +487,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ template "cert-manager.fullname" . }}-controller-approve:cert-manager-io
+  name: {{ template "cert-manager.fullname" . }}-controller-approve-cert-manager-io
   labels:
     app: {{ include "cert-manager.name" . }}
     app.kubernetes.io/name: {{ include "cert-manager.name" . }}
@@ -498,7 +498,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "cert-manager.fullname" . }}-controller-approve:cert-manager-io
+  name: {{ template "cert-manager.fullname" . }}-controller-approve-cert-manager-io
 subjects:
   - name: {{ template "cert-manager.serviceAccountName" . }}
     namespace: {{ .Release.Namespace | quote }}
