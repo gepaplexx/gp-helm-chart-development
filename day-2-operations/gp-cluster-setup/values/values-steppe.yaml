@@ -13,6 +13,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-resource-locker
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -50,6 +51,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-identity-provider
+      targetRevision: "*"
       helm:
         parameters: []
     syncPolicy:
@@ -67,6 +69,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-oauth-group-sync
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -83,6 +86,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-config
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -98,6 +102,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-updater
+      targetRevision: "*"
       helm:
         parameters:
         - name: "slack.channel"
@@ -117,6 +122,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-velero
+      targetRevision: "*"
       helm:
         parameters:
           - name: configuration.backupStorageLocation.bucket
@@ -140,6 +146,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-storage-ceph-operator
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -155,6 +162,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-storage-cephcluster
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -170,6 +178,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-operator
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -186,6 +195,7 @@ applications:
     source:
       repoURL: https://github.com/gepaplexx/bundle-openshift
       chart: gp-cluster-logging-instance
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -201,6 +211,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-monitoring
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -216,6 +227,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-tekton-operator
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -231,6 +243,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-ocp-internal-registry
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -245,6 +258,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-pull-through-cache
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -260,6 +274,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cert-manager
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -275,6 +290,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-certificates-patches
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
@@ -290,6 +306,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-issuer
+      targetRevision: "*"
       helm:
         parameters:
         - name: "solvers.dnsZones[0]"
