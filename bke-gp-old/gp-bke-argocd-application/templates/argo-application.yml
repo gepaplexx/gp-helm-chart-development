@@ -8,7 +8,7 @@ spec:
     server: 'https://kubernetes.default.svc'
   project: {{ default "default" .Values.argocd.project.name }}
   source:
-{{ toYaml .source | indent 4 }}
+{{ toYaml .Values.argocd.application.source | indent 4 }}
   syncPolicy:
     automated:
       prune: {{ .Values.argocd.application.syncPolicy.prune }}
