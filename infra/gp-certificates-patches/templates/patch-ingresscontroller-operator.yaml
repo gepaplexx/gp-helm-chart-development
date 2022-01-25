@@ -1,0 +1,19 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-default-ingresscontroller
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: operator.openshift.io/v1
+        kind: IngressController
+        name: default
+        namespace: openshift-ingress-operator
+      patchTemplate: |
+        spec:
+          defaultCertificate:
+            name: default-tls
+      patchType: application/merge
+      id: patch-default-ingrescontroller

@@ -35,6 +35,10 @@ service:
 route:
   # Deploy a route for this deployment?
   enabled: false
+  # whether you want to explicitely set a hostname. if true, requires route.basename
+  hostnameOverride: false
+  # route.hostname if not defined and route.hostnameOverride .Release.Name will be applied
+  # route.basename: apps.play.geplexx.com
   wildcardPolicy: None
   tls:
     enabled: true
@@ -55,8 +59,8 @@ env: {}
 
 resources:
   limits:
-    cpu: 750m
-    memory: 800Mi
+    cpu: 500m
+    memory: 500Mi
   requests:
     cpu: 250m
-    memory: 400Mi
+    memory: 250Mi

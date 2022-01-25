@@ -19,20 +19,37 @@ jobs:
             helm lint \
               ./bke-runtime/*/. \
               ./infra/*/. \
-              ./bke-gp-old/*/.
+              ./bke-gp-old/*/. \
+              ./day-2-operations/*/.
 
-    notify:
-      name: Slack Notifications
-      runs-on: ubuntu-latest
-      if: ${{ failure() }}
-      needs:
-        - lint-helm
-      steps:
-        - name: Notify Slack channel on failure
-          uses: rtCamp/action-slack-notify@v2
-          env:
-            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-            SLACK_ICON: https://github.com/fhochleitner/logos/raw/master/helm.png
-            SLACK_USERNAME: ${{ github.repository }}
-            SLACK_COLOR: '#ff0033'
-            SLACK_FOOTER: ''
+  pull-request:
+    name: Pull Request
+    runs-on: ubuntu-latest
+    needs:
+      - lint-helm
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: main
+          token: ${{ secrets.PAT }}
+
+  notify:
+    name: Slack Notifications
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs:
+      - lint-helm
+      - pull-request
+    steps:
+      - name: Notify Slack channel on failure
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_ICON: https://github.com/fhochleitner/logos/raw/master/helm.png
+          SLACK_USERNAME: ${{ github.repository }}
+          SLACK_COLOR: '#ff0033'
+          SLACK_FOOTER: ''

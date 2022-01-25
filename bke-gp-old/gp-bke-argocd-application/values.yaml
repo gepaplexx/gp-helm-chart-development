@@ -6,15 +6,7 @@ argocd:
   application:
     # Name of the ArgoCD Application
     name: 
-    source:
-      # Relative path of the Helm-Chart in your Repo to deploy the Application
-      chartPath: "."
-      # Git Repo in which your application is located
-      appRepoURL: ""
-      # The branch to be used
-      appRevision: "main"
-      # Name + Relative URL of the values.yaml to be used
-      valuesYaml: "values.yaml"
+    source: {}
 
     destination:
       # The namespace in which the application is deployed, default is Release.Namespace

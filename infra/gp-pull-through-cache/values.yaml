@@ -1,0 +1,5 @@
+cache:
+  url: "https://registry.infra.gepaplexx.com"
+
+machineconfig:
+  name: 02-worker-registry-mirror

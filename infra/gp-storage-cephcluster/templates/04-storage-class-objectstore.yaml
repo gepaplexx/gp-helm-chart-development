@@ -1,0 +1,32 @@
+{{- if .Values.cephobjectstore.enabled -}}
+apiVersion: ceph.rook.io/v1
+kind: CephObjectStore
+metadata:
+  name: {{ .Values.cephobjectstore.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  metadataPool:
+    failureDomain: host
+    replicated:
+      size: {{ .Values.cephobjectstore.metadata.replicas }}
+  dataPool:
+    failureDomain: host
+    {{- toYaml .Values.cephobjectstore.data | nindent 4 }}
+  preservePoolsOnDelete: true
+  gateway:
+    {{- toYaml .Values.cephobjectstore.gateway | nindent 4 }}
+  healthCheck:
+    {{- toYaml .Values.cephobjectstore.healthCheck | nindent 4 }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+   name: {{ .Values.storageclassOs.name }}
+# Change "rook-ceph" provisioner prefix to match the operator namespace if needed
+provisioner: {{ .Release.Namespace }}.ceph.rook.io/bucket
+reclaimPolicy: {{ .Values.storageclassOs.reclaimPolicy }}
+parameters:
+  objectStoreName: {{ .Values.cephobjectstore.name }}
+  objectStoreNamespace: {{ .Release.Namespace }}
+  region: {{ .Values.storageclassOs.region }}
+{{- end }}

@@ -49,3 +49,41 @@ Selector labels
 app.kubernetes.io/name: {{ include "gp-bke-runtime-minimal-application.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
+
+{{- define "gp-bke-runtime-minimal-application.route.name" -}}
+{{- if .Values.fullnameOverride -}}
+{{- "rt-" .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- "rt-" .Release.Name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "rt-%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "gp-bke-runtime-minimal-application.service.name" -}}
+{{- if .Values.fullnameOverride -}}
+{{- "svc-" .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- "svc-" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "svc-%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "gp-bke-runtime-minimal-application.route.hostname" -}}
+{{- if .Values.route.basename -}}
+{{- if .Values.route.hostname -}}
+{{- printf "%s.%s.%s" .Values.route.hostname .Release.Namespace .Values.route.basename -}}
+{{- else -}}
+{{- printf "%s.%s.%s" .Release.Name .Release.Namespace .Values.route.basename -}}
+{{- end -}}
+{{- else -}}
+{{- printf "" -}}
+{{- end -}}
+{{- end -}}

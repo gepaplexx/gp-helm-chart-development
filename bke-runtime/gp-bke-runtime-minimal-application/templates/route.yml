@@ -2,7 +2,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: route-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
+  name: {{ include "gp-bke-runtime-minimal-application.route.name" . }}
   labels:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:
@@ -12,6 +12,11 @@ spec:
     kind: Service
     name: svc-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
     weight: 100
+{{- if .Values.route.hostnameOverride }}
+{{- if .Values.route.basename }}
+  hostname: {{ include "gp-bke-runtime-minimal-application.route.hostname" . }}
+{{- end }}
+{{- end }}
   wildcardPolicy: {{ .Values.route.wildcardPolicy }}
 {{- if .Values.route.tls.enabled }}
   tls:

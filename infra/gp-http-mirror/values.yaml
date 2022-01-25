@@ -49,10 +49,10 @@ storageClassName: longhorn
 
 resources:
   limits:
-    cpu: 200m
+    cpu: 50m
     memory: 256Mi
   requests:
-    cpu: 100m
+    cpu: 10m
     memory: 128Mi
 
 mirror:
@@ -60,7 +60,7 @@ mirror:
   inactiveTime: 90d
   sites:
     - source: https://mirror.openshift.com/pub/openshift-v4/
-      path: /
+      path: /openshift
       cacheValid: 90d
     - source: https://mirror.openshift.com/icons/
       path: /icons

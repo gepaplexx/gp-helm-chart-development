@@ -1,0 +1,23 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-registry-operator
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: imageregistry.operator.openshift.io/v1
+        kind: Config
+        name: cluster
+      patchTemplate: |
+        spec:
+          managementState: Managed
+          defaultRoute: {{ .Values.registry.defaultRoute }}
+          replicas: {{ .Values.registry.replicas }}
+          storage: 
+            managementState: Managed
+            pvc:
+              claim: {{ .Values.pvc.name }}
+      patchType: merge
+      id: patch-registry-operator

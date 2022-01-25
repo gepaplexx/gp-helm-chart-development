@@ -1,0 +1,24 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: {{ .Values.cephcluster.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  cephVersion:
+    image: {{ .Values.cephcluster.cephVersion.image }}
+    allowUnsupported: false
+  dataDirHostPath: /var/lib/rook
+  skipUpgradeChecks: {{ .Values.cephcluster.skipUpgradeChecks }}
+  continueUpgradeAfterChecksEvenIfNotHealthy: {{ .Values.cephcluster.continueUpgradeAfterChecksEvenIfNotHealthy }}
+  mon:
+    count: {{ .Values.cephcluster.mon.count }}
+    allowMultiplePerNode: {{ .Values.cephcluster.mon.allowMultiplePerNode }}
+  dashboard:
+    enabled: {{ .Values.cephcluster.dashboard.enabled }}
+    ssl: {{ .Values.cephcluster.dashboard.ssl }}
+  monitoring:
+    enabled: {{ .Values.cephcluster.monitoring.enabled }}
+    rulesNamespace: {{ .Release.Namespace }}
+  storage:
+    useAllNodes: {{ .Values.cephcluster.storage.useAllNodes }}
+    useAllDevices: {{ .Values.cephcluster.storage.useAllDevices }}
