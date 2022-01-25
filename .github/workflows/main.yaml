@@ -20,7 +20,8 @@ jobs:
             helm lint \
               ./bke-runtime/*/. \
               ./infra/*/. \
-              ./bke-gp-old/*/.
+              ./bke-gp-old/*/. \
+              ./day-2-operations/*.
   release:
     runs-on: ubuntu-latest
     needs:

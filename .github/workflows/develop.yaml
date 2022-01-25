@@ -19,7 +19,8 @@ jobs:
             helm lint \
               ./bke-runtime/*/. \
               ./infra/*/. \
-              ./bke-gp-old/*/.
+              ./bke-gp-old/*/. \
+              ./day-2-operations/*/.
 
   pull-request:
     name: Pull Request
