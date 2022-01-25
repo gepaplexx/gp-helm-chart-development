@@ -145,7 +145,7 @@ applications:
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-storage-ceph-operator
+      chart: gp-rook-ceph-operator
       targetRevision: "*"
     syncPolicy:
       automated:
