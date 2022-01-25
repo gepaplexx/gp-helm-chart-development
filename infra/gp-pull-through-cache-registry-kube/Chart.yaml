@@ -1,5 +1,5 @@
 apiVersion: v2
-name: gp-gp-pull-through-cache-registry
+name: gp-pull-through-cache-registry
 description: A Helm chart for Kubernetes
 
 # A chart can be either an 'application' or a 'library' chart.
