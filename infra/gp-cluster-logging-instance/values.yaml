@@ -1,0 +1,29 @@
+clusterlogging:
+  managementState: "Managed"
+
+elasticsearch:
+  retentionPolicy: 
+    application:
+      maxAge: 30d
+    infra:
+      maxAge: 30d
+    audit:
+      maxAge: 2d
+  resources:
+    limits:
+      memory: "12Gi"
+      cpu: "3"
+    requests:
+      cpu: "1"
+      memory: "4Gi"
+  nodeCount: 3       
+  storage:
+    storageClassName: rook-ceph-fs
+    size: 50G
+  redundancyPolicy: "SingleRedundancy"
+
+kibana:
+  replicas: 1
+
+curator:
+  schedule: "30 * * * *"

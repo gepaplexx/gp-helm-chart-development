@@ -1,0 +1,18 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: {{ .Values.machineconfig.name }}
+  labels:
+    machineconfiguration.openshift.io/role: worker
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: >-
+              data:,unqualified-search-registries%20%3D%20%5B%22docker.io%22%5D%0A%0A%5B%5Bregistry%5D%5D%0Alocation%20%3D%20%22docker.io%22%0A%0A%5B%5Bregistry.mirror%5D%5D%0Alocation%20%3D%20%22{{ .Values.cache.url }}%22%0Ainsecure%20%3D%20true
+          mode: 420
+          overwrite: true
+          path: /var/roothome/.config/containers/registries.conf
