@@ -6,7 +6,7 @@ applications:
 ################## RESOURCE LOCKER OPERATOR ###################
   resourceLocker:
     name: resource-locker-operator
-    enabled: true
+    enabled: false
     destination:
       namespace: openshift-operators
       create: false
@@ -22,7 +22,7 @@ applications:
 ################## SEALED SECRETS OPERATOR ####################
   sealedSecretsOperator:
     name: sealed-secrets-operator
-    enabled: true
+    enabled: false
     destination:
       namespace: openshift-gitops
       create: false
@@ -60,7 +60,7 @@ applications:
 ####################### CLUSTER-CONFIG ########################
   clusterConfig:
     name: cluster-config
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
@@ -76,7 +76,7 @@ applications:
 ####################### CLUSTER-UPDATER #######################
   clusterUpdater:
     name: cluster-updater
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
@@ -92,7 +92,7 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: true
+    enabled: false
     destination:
       namespace: velero
       create: true

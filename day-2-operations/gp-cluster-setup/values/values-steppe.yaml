@@ -98,6 +98,10 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-updater
+      helm:
+        parameters:
+        - name: "slack.channel"
+          value: "" #TODO
     syncPolicy:
       automated:
         prune: true
