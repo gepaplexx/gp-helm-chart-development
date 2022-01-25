@@ -9,6 +9,11 @@ data:
     server {
       listen 8080;
 
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+      }
+
       {{ range .Values.mirror.sites }}
       location {{ .path }} {
         proxy_pass        {{ .source }};
