@@ -193,7 +193,7 @@ applications:
       create: true
     argoProject: gepaplexx
     source:
-      repoURL: https://github.com/gepaplexx/bundle-openshift
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-instance
       targetRevision: "*"
     syncPolicy:
@@ -210,7 +210,7 @@ applications:
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-cluster-monitoring
+      chart: gp-cluster-monitoring-config
       targetRevision: "*"
     syncPolicy:
       automated:
