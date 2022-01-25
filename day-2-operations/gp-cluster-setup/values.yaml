@@ -11,9 +11,8 @@ applications:
       namespace: openshift-operators
       create: false
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-resource-locker
     syncPolicy:
       automated:
         prune: true
@@ -46,28 +45,44 @@ applications:
     name: identity-provider
     enabled: false
     destination:
-      namespace: gp-infrastructure
+      namespace: example
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-identity-provider
+      helm:
+        parameters: []
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
+
+###################### OAUTH GROUP SYNC  ######################
+  oauthGroupSync:
+    name: oauth-group-sync
+    enabled: false
+    destination:
+      namespace: example
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-oauth-group-sync
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
 
 ####################### CLUSTER-CONFIG ########################
   clusterConfig:
     name: cluster-config
     enabled: false
     destination:
-      namespace: gp-infrastructure
+      namespace: example
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-config
     syncPolicy:
       automated:
         prune: true
@@ -78,12 +93,15 @@ applications:
     name: cluster-updater
     enabled: false
     destination:
-      namespace: gp-infrastructure
+      namespace: example
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-updater
+      helm:
+        parameters:
+        - name: "slack.channel"
+          value: "" #TODO
     syncPolicy:
       automated:
         prune: true
@@ -97,33 +115,46 @@ applications:
       namespace: velero
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-velero
       helm:
         parameters:
           - name: configuration.backupStorageLocation.bucket
-            value: "" # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
+            value: steppe.gepaplexx.com # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
           - name: configuration.backupStorageLocation.config.region
             value: minio # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
           - name: configuration.backupStorageLocation.config.s3Url
-            value: "" # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
+            value: http://10.20.26.100:9000 # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
 
-########################## ROOK/CEPH ##########################
-  rookCeph:
-    name: rook-ceph
+########################## ROOK/CEPH OPERATOR ##########################
+  rookCephOperator:
+    name: rook-ceph-operator
     enabled: false
     destination:
       namespace: rook-ceph
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-storage-ceph-operator
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+########################## ROOK/CEPH INSTANCE ##########################
+  rookCephInstance:
+    name: rook-ceph-instance
+    enabled: false
+    destination:
+      namespace: rook-ceph
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-storage-cephcluster
     syncPolicy:
       automated:
         prune: true
@@ -137,9 +168,8 @@ applications:
       namespace: openshif-logging
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-logging-operator
     syncPolicy:
       automated:
         prune: true
@@ -147,15 +177,15 @@ applications:
 
 ####################### CLUSTER-LOGGING #######################
   clusterLogging:
-    name: cluster-logging
+    name: cluster-logging-instance
     enabled: false
     destination:
       namespace: openshift-logging
       create: true
+    argoProject: gepaplexx
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: https://github.com/gepaplexx/bundle-openshift
+      chart: gp-cluster-logging-instance
     syncPolicy:
       automated:
         prune: true
@@ -169,13 +199,102 @@ applications:
       namespace: openshift-monitoring
       create: true
     source:
-      repoURL: ""
-      path: ""
-      targetRevision: ""
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-monitoring
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
 
-# TODO certificates/*, registries/*, secret-store/*???,
-# TODO Operators: jaeger, oauth-group-sync, pipelines, postgres
+##################### OPENSHIFT PIPELINES OPERATOR ######################
+  openshiftPipelinesOperator:
+    name: openshift-pipelines-operator
+    enabled: false
+    destination:
+      namespace: openshift-gitops
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-tekton-operator
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### OPENSHIFT IMAGE REGISTRY ######################
+  internalRegistry:
+    name: openshift-registry
+    enabled: false
+    destination:
+      namespace: openshift-image-registry
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-ocp-internal-registry
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### IMAGE REGISTRY CACHE ######################
+  internalRegistryMirror:
+    name: openshift-registry-mirror
+    enabled: false
+    destination:
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-pull-through-cache
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### CERT-MANAGER ######################
+  certManager:
+    name: cert-manager
+    enabled: false
+    destination:
+      namespace: example
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cert-manager
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### CERTIFICATES-PATCHES ######################
+  certificatesPatches:
+    name: certificate-patches
+    enabled: false
+    destination:
+      namespace: example
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-certificates-patches
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### CLUSTER-ISSUER ######################
+  clusterIssuer:
+    name: cluster-issuer
+    enabled: false
+    destination:
+      namespace: example
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-issuer
+      helm:
+        parameters: []
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+# Future-TODO: secret-store/HashiCorp-Valult, tekton instanz (openshift pipeline)
