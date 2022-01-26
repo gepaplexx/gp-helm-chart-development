@@ -173,7 +173,7 @@ applications:
     name: cluster-logging-operator
     enabled: true
     destination:
-      namespace: openshif-logging
+      namespace: openshift-logging
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
