@@ -19,5 +19,5 @@ spec:
             managementState: Managed
             pvc:
               claim: {{ .Values.pvc.name }}
-      patchType: merge
+      patchType: application/merge-patch+json
       id: patch-registry-operator
