@@ -115,7 +115,7 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: true
+    enabled: false
     destination:
       namespace: velero
       create: true
