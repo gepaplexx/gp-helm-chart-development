@@ -2,7 +2,7 @@ global:
   nameOverride:
 
 image:
-  name: ghcr.io/gepaplexx/gp-oauth-group-sync-operator
+  name: ghcr.io/gepaplexx/oauth-group-sync-operator
   tag: latest
 
 replicas: 1
