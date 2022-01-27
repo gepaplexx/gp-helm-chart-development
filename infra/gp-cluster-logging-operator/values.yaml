@@ -1,7 +1,7 @@
 clusterlogging:
   subscription:
-    channel: "5.0"
+    channel: "stable"
 
 elasticsearch:
   subscription:
-    channel: "5.0"
+    channel: "stable"
