@@ -11,9 +11,11 @@ applications:
       namespace: openshift-operators
       create: false
     source:
-      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-resource-locker
-      targetRevision: "*"
+      chart: resource-locker-operator
+      repoURL: https://redhat-cop.github.io/resource-locker-operator
+      targetRevision: 1.*
+      helm:
+        parameters: []
     syncPolicy:
       automated:
         prune: true

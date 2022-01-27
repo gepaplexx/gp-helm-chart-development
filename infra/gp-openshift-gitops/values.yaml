@@ -2,3 +2,12 @@ gitops:
   channel: stable
   installPlanApproval: Automatic
   disableDefaultInstance: false
+
+rbac:
+  serviceAccount:
+    name: openshift-gitops-argocd-application-controller
+    namespace: openshift-gitops
+
+  role:
+    kind: ClusterRole
+    name: cluster-admin
