@@ -15,5 +15,5 @@ spec:
         spec:
           defaultCertificate:
             name: default-tls
-      patchType: application/merge
+      patchType: application/merge-patch+json
       id: patch-default-ingrescontroller

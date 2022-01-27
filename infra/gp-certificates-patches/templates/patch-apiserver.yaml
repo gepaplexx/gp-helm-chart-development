@@ -18,5 +18,5 @@ spec:
                   - {{ .Values.apiserver.customApiUrl }}
                 servingCertificate:
                   name: api-tls
-      patchType: application/merge
+      patchType: application/merge-patch+json
       id: patch-apiserver
