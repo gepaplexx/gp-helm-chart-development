@@ -14,8 +14,6 @@ applications:
       chart: resource-locker-operator
       repoURL: https://redhat-cop.github.io/resource-locker-operator
       targetRevision: 1.*
-      helm:
-        parameters: []
     syncPolicy:
       automated:
         prune: true
