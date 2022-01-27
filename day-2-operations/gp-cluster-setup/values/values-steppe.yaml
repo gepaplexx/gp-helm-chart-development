@@ -97,7 +97,7 @@ applications:
 ####################### CLUSTER-UPDATER #######################
   clusterUpdater:
     name: cluster-updater
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
