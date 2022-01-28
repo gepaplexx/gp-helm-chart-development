@@ -267,7 +267,7 @@ applications:
 ##################### CERT-MANAGER ######################
   certManager:
     name: cert-manager
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
