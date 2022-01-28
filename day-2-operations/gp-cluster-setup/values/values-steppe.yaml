@@ -283,7 +283,7 @@ applications:
 ##################### CERTIFICATES-PATCHES ######################
   certificatesPatches:
     name: certificate-patches
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
