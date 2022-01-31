@@ -14,27 +14,29 @@ spec:
       patchTemplate: |
         spec:
           identityProviders:
-{{ if .Values.git.enable }}
+{{- if .Values.git.enable }}
             - name: Gepaplexx
               mappingMethod: claim
               type: GitHub
               github:
-                clientID: {{ .Values.git.clientId }}
+                clientID: {{`{{ (index . 0).data.clientId | b64dec }}`}}
+                organizations: {{`{{ (index . 0).data.restrOrgs | b64dec }}`}}
                 clientSecret:
                   name: {{ .Values.git.k8secretName }}
-                organizations:
-                  {{- range .Values.git.restrOrgs }}
-                  - {{ . | quote }}
-                  {{- end }}
 {{ end }} {{ if .Values.google.enable }}
             - name: Gepardec
               mappingMethod: claim
               type: Google
               google:
-                clientID: {{ .Values.google.clientId }}
+                {{- if not .Values.git.enable }}
+                clientID: {{`{{ (index . 0).data.clientId | b64dec }}`}}
+                hostedDomain: {{`{{ (index . 0).data.restrDomain | b64dec }}`}}
+                {{- else }}
+                clientID: {{`{{ (index . 1).data.clientId | b64dec }}`}}
+                hostedDomain: {{`{{ (index . 1).data.restrDomain | b64dec }}`}}
+                {{- end }}
                 clientSecret:
                   name: {{ .Values.google.k8secretName }}
-                hostedDomain: {{ .Values.google.restrDomain }}
 {{ end }} {{ if .Values.htpasswd.enable }}
             - name: HTPasswd
               mappingMethod: claim
@@ -45,4 +47,16 @@ spec:
 {{ end }}
       patchType: application/merge-patch+json
       id: patch-identity-prov
+      sourceObjectRefs:
+  {{- if .Values.git.enable }}
+      - apiVersion: v1
+        kind: Secret
+        name: {{ .Values.git.k8secretName }}
+        namespace: openshift-config
+  {{- end }} {{ if .Values.google.enable }}
+      - apiVersion: v1
+        kind: Secret
+        name: {{ .Values.google.k8secretName }}
+        namespace: openshift-config
+  {{ end }}
 {{ end }}
