@@ -13,7 +13,7 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-resource-locker
-      targetRevision: *
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
