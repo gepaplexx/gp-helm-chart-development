@@ -8,12 +8,12 @@ applications:
     name: resource-locker-operator
     enabled: true
     destination:
-      namespace: openshift-operators
-      create: false
+      namespace: gp-infrastructure
+      create: true
     source:
-      chart: resource-locker-operator
-      repoURL: https://redhat-cop.github.io/resource-locker-operator
-      targetRevision: 1.*
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-resource-locker
+      targetRevision: *
     syncPolicy:
       automated:
         prune: true
@@ -24,7 +24,7 @@ applications:
     name: sealed-secrets-operator
     enabled: true
     destination:
-      namespace: openshift-gitops
+      namespace: gp-infrastructure
       create: false
     source:
       chart: sealed-secrets
