@@ -1,7 +1,3 @@
 rl:
-  operator:
-    channel: alpha
-    installPlanApproval: Automatic
-    namespace: openshift-operators
   rbac:
-    namespace: openshift-gitops
+    namespace: gp-infrastructure
