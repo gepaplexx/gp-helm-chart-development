@@ -8,8 +8,8 @@ applications:
     name: resource-locker-operator
     enabled: true
     destination:
-      namespace: openshift-operators
-      create: false
+      namespace: gp-infrastructure
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-resource-locker
@@ -24,7 +24,7 @@ applications:
     name: sealed-secrets-operator
     enabled: true
     destination:
-      namespace: openshift-gitops
+      namespace: gp-infrastructure
       create: false
     source:
       chart: sealed-secrets
@@ -44,7 +44,7 @@ applications:
 ###################### IDENTITY PROVIDER ######################
   identityProvider:
     name: identity-provider
-    enabled: false
+    enabled: true
     destination:
       namespace: gp-infrastructure
       create: true
@@ -53,7 +53,19 @@ applications:
       chart: gp-identity-provider
       targetRevision: "*"
       helm:
-        parameters: []
+        parameters:
+        - name: "google.clientSecret"
+          value: "AgC1Y2PqWE3gASQP1J9wkk8PMPECj82iwaD/GrttpMikBBkEQd/xkPXv/X6z/Fj5H3mb8In7EVDIn0Qnd1XghSGAeTsraIsyT5bifZREZ76K5JYbWr1KpIKEM/G9FbER4obc44i9R8GePqmxdEkl/e5Q4t7FL4tinK0Sg6WLIEYsvcnyjvAD/CYnVE5RiGMjKN0HeXH51nCNEruC/wyjtENCBERrczcMVRhlJ78yQ2XsGvVfGej9UbWw2j0f90mJw9bP7y87Fhd5NEue6i1poL8MRz05jQcvMd97c8AHdnTBPpELA4xnJCxNZku2mVvrroyIwHM9KumILBs+z/xNmpD0T8bnWC+CZIdNHYDMaxjQT3+tnvP3xBW33OBKjn484+eOXZe+VX3TnPoQ6dnqQ6rPuM8XUwzyv99jMbwOZHAavpWWXl+FU7tnjDrG0/6SH8hFwLHmnLry120vmWB7HkQXnwjUZaAB/LAbAC3FAGXotN4C8U2sGGgttIoY1P3Ky4IOXveahX+n9E8PEPGfd7N8RlUGagsjXFFTivCS9+m6ZjLpKM9A4A/82Gy5FPSPqV4z6EDUpUtqN4odqe8Aenm/hbHX/fYmbhvY5eTI1707gq+Ona9SEWELOEifpRo1ypTiicaRknPCES4RFgz8xtb0ERJwfePozdKOwjlhVRIKt2a8B25F/Cxhzv7ad9CGYCajaibrUB5e57rCih/HetLfkb671BIrLAsD7ez3mqRdFx1qJw=="
+        - name: "google.clientId"
+          value: "AgA893nXk5lyaoB2QiXH0phGVH2KRn0SPQUHd9d8G5WuneXiJeEwOqUYJHWxAh1N6t8TupiiZg8c3ps5sLrWFuyp+4tKBMdic832QmcpZTzoCd8dBYrI217l6yxZGviZYdtGBSMo0wicbWKHjBV6KpNtsmtmyit+ch091m6AAS5zFyMmv5PaK8k/Q0lbvpj/BUQuNDUdwQkJada3ktpxY7zh0gDgMs50q9uCmydeYU2YK84/P87I9qdLSohq5O34R32ihYxvvxe0S3zSk5BY9ueK07miEOZS9BAU7XEnFsC+FcARJ64meFi35WTBm098Ujxj4Voo1CVLjrgo0YMvYDBpqMtQP9ErB2GkUm2QinGhebWodqT8LQX+shv+eqCpltglqFQ3XR5Z9i3mauz+O00aQLIctI7ruvCpbhyK5HYmuNgmQhPM54JncEgeWElTQyz+oa8L8UjmKHfwrwaOca1EakgudycY26vjqFVaEAGkKWqkzBs41SJjzuju5funU+HRUIPeLRy05cgAF9vW732EfYcqXZRsIrRs76xTHfEjtfM+M+IVG1Y8ew5Tn8E26cG1+YiKLC1zrnD5JTGSqezgSCjtKV+cuhwI/jisPEv0wtePCrBg5aHIqPEmGznAqRYDsPL9TsHfrqAREyLGaX6JwjSx585HOIriB1Kxq3d8QvKGJbT3J37zu+ZFRJHWBAccqjgjO8Mkve318oyhkUIlS2PPMfELFeh/CkXI24td0BF9Y6/sDmFCGx3yrLVhuTssQXRs0AQljYyfbKEOpFoY475LKHC3Cnc="
+        - name: "google.restrDomain"
+          value: "AgBp7hCU2/qfYVDA4qR8t6lp+3CjPZ4cSVFSMgk++hS//n86/tYo5wE+vIvkRFRbIQi9P0EnM4TVNDTYOsyKsV7csIYqRyBqT2bSzYfcSgbqbHUTgITci5mJGkuBf+eLT85M9MCJbe04KPDyM7mg4RcwWU1IcbwTaFo4uZsXS5bPRrbkp/OaorGA5hcEQxos9cl4SMGwNHDhPKLanjgjEm2GZeJK6prFn37AqSFqN5W9ISBWL8e9MMMCt1Dkz3tjMzpJXRSisjnhvKoEmLB3WrpXdmWv1kIGo1QKgz6hxB2g5jpKy1zk/TcEXY9FTMCr1ousN1Is63WVGl/xxRUc3zbUw2L7fBtAfR05Q7axgAY/B+d8C7iGL55gmkwFFJhfuchwuGO6osnbbg09TkGU3LKMOsvuv7FYmpGoF5nkhjULaV5f8h2ai35AOta3VP6pwd+4h4jSe1xTPhF7/1LpAqdSEY+CsswDXPi75T8mOEu9m0jTnOYRHmXBJZer7XdVKiTGPz7RaO+oY+amNToCtlkmTqKLtztHAlExAZr1ajj7QQeHa3sVxOo++AhghyY7kvuD21ZHipRddgVDGlxLcBtDOHjHnfIFtWXMOfhJrY5rjV9luy0NLz4h2g7VwbWiuV4hrKOvX6uNu/P9Jh9z28INwT7aS04nJteBiv6jwsYGvzZd6nkkp8FIL1XgGv1Gq3zy4jXiW6nLXaolWpRiEe0bIIjMzukuZcE="
+        - name: "git.clientSecret"
+          value: "AgCj1Lt6ewzur0awxA5vtPtlgQnFYZWG4p+6Z/aN4dDyZvN1sifmzQhHmJfH8QyOLKUq8fmKw6wKCYnS6OUEtDzSDZTUrdPGqVI+b6fHHIUvoOmY0PgqYkcrT92aCarUj++eAuiOUi7EFSAalI/k/GeMNOGYoJevDICpSiMHjmf1b1VhKKI/batCx1yCDW+H42t6AnK2Bq0xN8s6NKLVHAoHykEdupjVi1VYIMTcWye9poIOxOpTrezx9VLb9Fr5n3Zxfu4QEjQEzHsCeEQw7wCRcjIZNDauk+AzzNDfB63LpzkX1Hwe/7IIlNqamJW0VmQQ8KtQedsuM4fwFpGy1jSAb4g3vqta7pwGyyEkjhLuqqqQdTVX85lf11VWsGlAXc2bi+Um5hElme3fLr/b5XULz2Bg4/xRuGlO6rX8H3ANmEfMwssSA9EL/tLCM63vMBbUFTZ3ERS/NzSX7o1kkkDMFVul1sIP/lsxnIxbmITYOZ61mBAqz73+QnbkyR8iGEINPGjcLlfkiJU0visRV9aAWMKaR1ET1jGIV+1niO/0P5bxUNcmDym+WhJNuN1VZzuJGvydNCXOdusqhoyS069SvQ9eg+rbBk7g2g1hpyvATvdqAlYjfUUkQX66TC4utufHNgHT6kbwJWbpYdI4J0KNJlVFBjG5yJHvLk8hwn5RPBRgUkWBOyygpsu9sc6dd4z2rRnrtZHwZOEAqG7g0IsGNkHBjmbT+UioUl1VptiKAXwOe+U="
+        - name: "git.clientId"
+          value: "AgB62mxNOGLo/83pQK0gS0fD7fy8pNA3Qkx6deK/3G2fQaTuRgX6s3Gi5WOAcTVdx6lze5aK8qmTkc5P+MxbqFPY4I79hW+QWMzLdL2bK9A4sSK1+upl3Dpt/6F/xR73GFU2Fn5Li5jPvDvmjUK5BCuAFgo1/3dkBtK9JqcT67KNmlCTG6qqd34GHXlnqpX1OXhp79OlDkRouLobdXbqdg0mZpbdDgpMd6bDD2KcIzh/HGfyQR4KHFS2GalxhY9F9H8zIearFPY6MgyiI+z8XtgCEAHhq0b9U9QPQUXj7rVBVvzZ7KUZa3tu+9+yVz3ohBOCFGo0vuA/x3966qJb+P6439bQ2ct7/EC5MJ+2LU+f0oHm5uH3l8T2Mg8+h/1vVharS+SJ+Fw586T2ZlA0EpUud19g3XVWRf4iD3km2XDpWkom3iJF17RikRwNYGxumGVzWhydunZ14rNrOdCt42/KirhnDHOzG3lg6orV3AvvUcQ3oDhUQWf+uBGmlU9HzIrdIJrMbjRF4K6xqF7vc+9P5W7G8i8MLgC5M37nWfwNKLMj56Gv7cIj3MpuzBMI/nkIT2hdej831V62sUlowSpiWL7zFTbLJzs85O52hGZ0lD9eeY0OtscCFRzAjJmCctb7R/DEX0n9mIvPSxV78vwrPxPCxhCRZzKqLUQK+dKWsYQLY2vbr/6tfoClXPhIAgLwgGEjiPdxvteMcSMKXOhlLQOrlA=="
+        - name: "git.restrOrgs"
+          value: "AgAC0Jsq2eG90HXMa+TQt/o2MjCzuJG05FJ1+p83Lw4sTQ9b+URIMdZQqm0ntGqJgmHY9Q1S82LaZvPGcVagjlLj+9BlUkDbS1Uvj5/QafJtJcfCaH7FHK8cKeuM4avwbYY37PVKewOZgfTiN97qlHfmLiLb+K16M9gyUUTbvWX0h6RhbU0dHZBBynC8aCDtZRQiIvfljURwULVSkpVwlsYa1ImnuTZlZcfTIxGsSQX4O1wBdP6WNu8UHnagcaLpMJ6Kpjz0PX+nR7iYytM0GYmAV7xYNKYGh2e2dU+VJzsrgOaJ27IEKWMMRt6XyBvYgR005FwH0f7Zt+iv5/hHKwB7aJwcxH9jcpQtL0GK6NJl+HfyqSc1fD1nqNuEMi1tDmjzf2WzCVoRj9RtzUDV7IaRrfc4XszRBVDTUQfhECStMIEf/CflAJS1XGS9QFxkRQkWTGb7LAsvl8CT/dR/38mXbPeSN6CpKDl7u1OAVJf7kNPspM7vodqS92YBJipYf+Vc1PiuPIINRZx1j+9XsVX9MEGorxctcZAv7yu70LcLKaHB8GXQbafaFzG7Qof3G5nAiB1w90HqlDWcBtna67RGIgyfm0Nfmrq2VHkL6yHEf3oDW/vNag0Bg90xh/XiQ2YtbncM3L+JTTAq6o3tU/bO/iFWpziKX5Ii4oFWgCkd1+tvd4xy2e6b3/hJEyzPajRQHiWTkA5Q3pjgjbGEgobNw9hOew=="
     syncPolicy:
       automated:
         prune: true
@@ -106,7 +118,7 @@ applications:
       helm:
         parameters:
         - name: "slack.channel"
-          value: "" #TODO
+          value: "aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxRk0zQUNES04vQjAxUTI0NkI1TksvMUFIaHlIUlVsOVlVS2c2WHp5UGh2Z3dDCg=="
     syncPolicy:
       automated:
         prune: true
@@ -126,11 +138,11 @@ applications:
       helm:
         parameters:
           - name: configuration.backupStorageLocation.bucket
-            value: steppe.gepaplexx.com
+            value: prod.gepaplexx.com # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
           - name: configuration.backupStorageLocation.config.region
-            value: minio
+            value: minio # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
           - name: configuration.backupStorageLocation.config.s3Url
-            value: http://10.20.26.100:9000
+            value: http://10.20.26.100:9000 # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
     syncPolicy:
       automated:
         prune: true
@@ -267,7 +279,7 @@ applications:
 ##################### CERT-MANAGER ######################
   certManager:
     name: cert-manager
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
@@ -283,7 +295,7 @@ applications:
 ##################### CERTIFICATES-PATCHES ######################
   certificatesPatches:
     name: certificate-patches
-    enabled: true
+    enabled: false
     destination:
       namespace: gp-infrastructure
       create: true
@@ -310,17 +322,17 @@ applications:
       helm:
         parameters:
         - name: "solvers.dnsZones[0]"
-          value: "prod.gepaplexx.com"
+          value: "steppe.gepaplexx.com"
         - name: "solvers.accessKeyId"
           value: "" #TODO
         - name: "solvers.secretAccessKey"
           value: "" #TODO
         - name: "certificates.defaultIngress"
-          value: "*.apps.prod.example.com"
+          value: "apps.steppe.example.com"
         - name: "certificates.console"
-          value: "prod.gepaplexx.com"
+          value: "steppe.gepaplexx.com"
         - name: "certificates.api"
-          value: "api.prod.gepaplexx.com"
+          value: "api.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
