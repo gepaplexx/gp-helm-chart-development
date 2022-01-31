@@ -20,7 +20,8 @@ jobs:
               ./bke-runtime/*/. \
               ./infra/*/. \
               ./bke-gp-old/*/. \
-              ./day-2-operations/*/.
+              ./day-2-operations/*/. \
+              ./gp-workload/*/.
 
   pull-request:
     name: Pull Request
