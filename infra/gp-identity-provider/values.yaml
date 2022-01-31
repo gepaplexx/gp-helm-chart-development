@@ -13,6 +13,6 @@ git:
   clientSecret: {}
 
 htpasswd:
-  enable: true
+  enable: false
   k8secretName: {}
   data: {}

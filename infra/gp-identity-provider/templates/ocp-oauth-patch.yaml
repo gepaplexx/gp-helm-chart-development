@@ -26,7 +26,6 @@ spec:
                   {{- range .Values.git.restrOrgs }}
                   - {{ . | quote }}
                   {{- end }}
-
 {{ end }} {{ if .Values.google.enable }}
             - name: Gepardec
               mappingMethod: claim
