@@ -250,7 +250,7 @@ applications:
     name: openshift-registry
     enabled: true
     destination:
-      namespace: openshift-image-registry
+      namespace: gp-infrastructure
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -266,6 +266,7 @@ applications:
     name: openshift-registry-mirror
     enabled: true
     destination:
+      namespace: gp-infrastructure
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
