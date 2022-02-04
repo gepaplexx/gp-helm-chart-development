@@ -11,6 +11,8 @@ spec:
         value: comes-from-sensor-trigger
       - name: revision
         value: comes-from-sensor-trigger
+      - name: reponame
+        value: come-from-sensor-trigger
   volumeClaimTemplates:
     - metadata:
         name: workspace
@@ -88,7 +90,7 @@ spec:
         image: alpine/git
         name: git
         command: [ sh, -c ]
-        args: [ "cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd  {{ workflow.parameters.reponame }} && git checkout  {{inputs.parameters.branch}}" ]
+        args: [ "cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd  {{ workflow.parameters.reponame }} && git checkout  {{ inputs.parameters.branch }}" ]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
