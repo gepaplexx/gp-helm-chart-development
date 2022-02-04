@@ -102,7 +102,7 @@ spec:
         image: alpine/git
         name: git
         command: [ sh, -c ]
-        args: [ "cd /mnt/out/ {{ workflow.parameters.reponame }} && git rev-parse --short HEAD > ../git-commit" ]
+        args: [ "cd /mnt/out/{{ workflow.parameters.reponame }} && git rev-parse --short HEAD > ../git-commit" ]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
@@ -175,6 +175,15 @@ spec:
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
+          - name: sshkey
+            mountPath: /root/.ssh/
         envFrom:
           - secretRef:
               name: "{{ workflow.parameters.reponame }}-infra"
+      volumes:
+      - name: sshkey
+        secret:
+          secretName: "{{ workflow.parameters.reponame }}-infra"
+          items:
+          - key: id_rsa
+            path: id_rsa
