@@ -21,7 +21,8 @@ jobs:
               ./infra/*/. \
               ./bke-gp-old/*/. \
               ./day-2-operations/*/. \
-              ./gp-workload/*/.
+              ./gp-workload/*/. \
+              ./workflows/*/.
 
   pull-request:
     name: Pull Request

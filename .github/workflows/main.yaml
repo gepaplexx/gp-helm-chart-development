@@ -22,7 +22,8 @@ jobs:
               ./infra/*/. \
               ./bke-gp-old/*/. \
               ./day-2-operations/*/. \
-              ./gp-workload/*/.
+              ./gp-workload/*/. \
+              ./workflows/*/.
   release:
     runs-on: ubuntu-latest
     needs:
@@ -52,6 +53,15 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           charts_dir: ./gp-workload
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish argo workflow and event charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./workflows
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts
