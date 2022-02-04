@@ -162,21 +162,21 @@ spec:
         args:
           - |
             cd /mnt/out \
-            && echo "token: $token" \
-            && echo "repository: $repository" \
+            && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
             && git clone $cloneurl || true \
             && cd {{ workflow.parameters.reponame }}-ci \
             && sed -i "s/tag: \w\{7\}/tag: {{ inputs.parameters.tag }}/g" values.yaml \
             && git config --global user.name "argo-ci" \
             && git config --global user.email "argo-ci@gepardec.com" \
             && git add . \
-            && git commit -m "updated image version to tag {{ inputs.parameters.tag }}" \
+            && git commit -m "updated image version to tag {{ inputs.parameters.tag }}" || true \
             && git push
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
           - name: sshkey
-            mountPath: /root/.ssh/
+            mountPath: /root/.ssh/id_rsa
+            subPath: id_rsa
         envFrom:
           - secretRef:
               name: "{{ workflow.parameters.reponame }}-infra"
@@ -187,3 +187,4 @@ spec:
           items:
           - key: id_rsa
             path: id_rsa
+            mode: 0600
