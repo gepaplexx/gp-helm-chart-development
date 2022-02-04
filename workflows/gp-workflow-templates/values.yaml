@@ -1,0 +1,6 @@
+webhook:
+  secret: jkejhdenjdsvboewezuiu43regh
+
+storage:
+  requests:
+    size: 500M

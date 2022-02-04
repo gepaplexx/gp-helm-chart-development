@@ -1,0 +1,5 @@
+serviceaccount:
+  workflow:
+    name: operate-workflow-sa
+  application:
+    name: create-argo-application-sa

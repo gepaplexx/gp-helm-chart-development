@@ -1,0 +1,178 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: bewerberservice-cicd-workflow
+spec:
+  serviceAccountName: builder
+  entrypoint: cicd
+  arguments:
+    parameters:
+      - name: repo
+        value: comes-from-sensor-trigger
+      - name: revision
+        value: comes-from-sensor-trigger
+  volumeClaimTemplates:
+    - metadata:
+        name: workspace
+      spec:
+        resources:
+          requests:
+            storage: 500M
+        accessModes: [ "ReadWriteOnce" ]
+  templates:
+    - name: cicd
+      steps:
+        - - name: parse-information
+            template: parse-information
+        - - name: checkout
+            template: checkout
+            arguments:
+              parameters:
+                - name: branch
+                  value: "{{`{{ steps.parse-information.outputs.parameters.branch }}`}}"
+        - - name: extract-tag
+            template: extract-tag
+        - - name: build-jar
+            template: build-jar
+        - - name: image-build-push
+            template: image-build-push
+            arguments:
+              parameters:
+                - name: tag
+                  value: "{{`{{ steps.extract-tag.outputs.parameters.image-tag }}`}}"
+                - name: namespace
+                  value: "{{`{{ steps.parse-information.outputs.parameters.namespace }}`}}"
+        - - name: deploy-new-version
+            template: deploy-new-version
+            arguments:
+              parameters:
+                - name: tag
+                  value: "{{`{{ steps.extract-tag.outputs.parameters.image-tag }}`}}"
+    - name: parse-information
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: busybox
+        name: busybox
+        command: [ sh, -c ]
+        args: [ "cd /mnt/out/ && touch branch && echo  {{`{{ workflow.parameters.revision }}`}} | cut -d '/' -f3- | cat > branch" ] #
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+          - name: podinfo
+            mountPath: /etc/podinfo/
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "namespace"
+                fieldRef:
+                  fieldPath: metadata.namespace
+      outputs:
+        parameters:
+          - name: branch
+            valueFrom:
+              path: /mnt/out/branch
+          - name: namespace
+            valueFrom:
+              path: /etc/podinfo/namespace
+    - name: checkout
+      inputs:
+        parameters:
+          - name: branch
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        name: git
+        command: [ sh, -c ]
+        args: [ "cd /mnt/out/ && git clone {{`{{ workflow.parameters.repo }}`}} && cd  {{`{{ workflow.parameters.reponame }}`}} && git checkout  {{`{{inputs.parameters.branch}}`}}" ]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+    - name: extract-tag
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        name: git
+        command: [ sh, -c ]
+        args: [ "cd /mnt/out/ {{`{{ workflow.parameters.reponame }}`}} && git rev-parse --short HEAD > ../git-commit" ]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+      outputs:
+        parameters:
+          - name: image-tag
+            valueFrom:
+              path: /mnt/out/git-commit
+    - name: build-jar
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: "maven:3.8.4-jdk-11"
+        command: [ sh, -c ]
+        args: [ "cd /mnt/out/weckdengeparden/ && mvn clean package" ]
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+    - name: image-build-push
+      inputs:
+        parameters:
+          - name: tag
+          - name: namespace
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: gcr.io/kaniko-project/executor:latest
+        args:
+          - --dockerfile=Containerfile
+          - --context=/mnt/out/{{`{{ workflow.parameters.reponame }}`}}
+          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/{{`{{ inputs.parameters.namespace }}`}}/{{`{{ workflow.parameters.reponame }}`}}:{{`{{ inputs.parameters.tag }}`}}
+          - --skip-tls-verify
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+          - name: dockerconfig
+            mountPath: /kaniko/.docker
+      volumes:
+        - name: dockerconfig
+          secret:
+            secretName: builder-dockerconfig
+            items:
+              - key: .dockerconfigjson
+                path: config.json
+    - name: deploy-new-version
+      inputs:
+        parameters:
+          - name: tag
+      metadata:
+        labels:
+          app: argo
+      container:
+        image: alpine/git
+        command: [ sh, -c ]
+        args:
+          - |
+            cd /mnt/out \
+            && echo "token: $token" \
+            && echo "repository: $repository" \
+            && git clone $cloneurl || true \
+            && cd {{`{{ workflow.parameters.reponame }}`}}-ci \
+            && sed -i "s/tag: \w\{7\}/tag: {{`{{ inputs.parameters.tag }}`}}/g" values.yaml \
+            && git config --global user.name "argo-ci" \
+            && git config --global user.email "argo-ci@gepardec.com" \
+            && git add . \
+            && git commit -m "updated image version to tag {{`{{ inputs.parameters.tag }}`}}" \
+            && git push
+        volumeMounts:
+          - name: workspace
+            mountPath: /mnt/out/
+        envFrom:
+          - secretRef:
+              name: "{{`{{ workflow.parameters.reponame }}`}}-infra"
