@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: bewerberservice-cicd-workflow
+  name: cicd-workflow
 spec:
   serviceAccountName: builder
   entrypoint: cicd
@@ -29,7 +29,7 @@ spec:
             arguments:
               parameters:
                 - name: branch
-                  value: "{{`{{ steps.parse-information.outputs.parameters.branch }}`}}"
+                  value: "{{ steps.parse-information.outputs.parameters.branch }}"
         - - name: extract-tag
             template: extract-tag
         - - name: build-jar
@@ -39,15 +39,15 @@ spec:
             arguments:
               parameters:
                 - name: tag
-                  value: "{{`{{ steps.extract-tag.outputs.parameters.image-tag }}`}}"
+                  value: "{{ steps.extract-tag.outputs.parameters.image-tag }}"
                 - name: namespace
-                  value: "{{`{{ steps.parse-information.outputs.parameters.namespace }}`}}"
+                  value: "{{ steps.parse-information.outputs.parameters.namespace }}"
         - - name: deploy-new-version
             template: deploy-new-version
             arguments:
               parameters:
                 - name: tag
-                  value: "{{`{{ steps.extract-tag.outputs.parameters.image-tag }}`}}"
+                  value: "{{ steps.extract-tag.outputs.parameters.image-tag }}"
     - name: parse-information
       metadata:
         labels:
@@ -56,7 +56,7 @@ spec:
         image: busybox
         name: busybox
         command: [ sh, -c ]
-        args: [ "cd /mnt/out/ && touch branch && echo  {{`{{ workflow.parameters.revision }}`}} | cut -d '/' -f3- | cat > branch" ] #
+        args: [ "cd /mnt/out/ && touch branch && echo  {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat > branch" ] #
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
@@ -88,7 +88,7 @@ spec:
         image: alpine/git
         name: git
         command: [ sh, -c ]
-        args: [ "cd /mnt/out/ && git clone {{`{{ workflow.parameters.repo }}`}} && cd  {{`{{ workflow.parameters.reponame }}`}} && git checkout  {{`{{inputs.parameters.branch}}`}}" ]
+        args: [ "cd /mnt/out/ && git clone {{ workflow.parameters.repo }} && cd  {{ workflow.parameters.reponame }} && git checkout  {{inputs.parameters.branch}}" ]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
@@ -100,7 +100,7 @@ spec:
         image: alpine/git
         name: git
         command: [ sh, -c ]
-        args: [ "cd /mnt/out/ {{`{{ workflow.parameters.reponame }}`}} && git rev-parse --short HEAD > ../git-commit" ]
+        args: [ "cd /mnt/out/ {{ workflow.parameters.reponame }} && git rev-parse --short HEAD > ../git-commit" ]
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
@@ -132,8 +132,8 @@ spec:
         image: gcr.io/kaniko-project/executor:latest
         args:
           - --dockerfile=Containerfile
-          - --context=/mnt/out/{{`{{ workflow.parameters.reponame }}`}}
-          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/{{`{{ inputs.parameters.namespace }}`}}/{{`{{ workflow.parameters.reponame }}`}}:{{`{{ inputs.parameters.tag }}`}}
+          - --context=/mnt/out/{{ workflow.parameters.reponame }}
+          - --destination=image-registry.openshift-image-registry.svc.cluster.local:5000/{{ inputs.parameters.namespace }}/{{ workflow.parameters.reponame }}:{{ inputs.parameters.tag }}
           - --skip-tls-verify
         volumeMounts:
           - name: workspace
@@ -163,16 +163,16 @@ spec:
             && echo "token: $token" \
             && echo "repository: $repository" \
             && git clone $cloneurl || true \
-            && cd {{`{{ workflow.parameters.reponame }}`}}-ci \
-            && sed -i "s/tag: \w\{7\}/tag: {{`{{ inputs.parameters.tag }}`}}/g" values.yaml \
+            && cd {{ workflow.parameters.reponame }}-ci \
+            && sed -i "s/tag: \w\{7\}/tag: {{ inputs.parameters.tag }}/g" values.yaml \
             && git config --global user.name "argo-ci" \
             && git config --global user.email "argo-ci@gepardec.com" \
             && git add . \
-            && git commit -m "updated image version to tag {{`{{ inputs.parameters.tag }}`}}" \
+            && git commit -m "updated image version to tag {{ inputs.parameters.tag }}" \
             && git push
         volumeMounts:
           - name: workspace
             mountPath: /mnt/out/
         envFrom:
           - secretRef:
-              name: "{{`{{ workflow.parameters.reponame }}`}}-infra"
+              name: "{{ workflow.parameters.reponame }}-infra"

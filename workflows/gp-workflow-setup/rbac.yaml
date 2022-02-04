@@ -35,7 +35,7 @@ roleRef:
   name: operate-workflow-role
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.serviceaccount.workflow.name }}
+    name: operate-workflow-sa
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -47,8 +47,8 @@ roleRef:
   name: create-argo-application-role
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.serviceaccount.application.name }}
-    namespace: {{ .Release.Name }}
+    name: create-argo-application-sa
+    namespace: gepardec-ci
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
