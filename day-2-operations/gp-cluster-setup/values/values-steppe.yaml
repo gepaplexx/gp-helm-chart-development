@@ -297,7 +297,7 @@ applications:
     enabled: true
     argoProject: gepaplexx
     destination:
-      namespace: gp-infrastructure
+      namespace: cert-manager
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -335,7 +335,7 @@ applications:
     enabled: true
     argoProject: gepaplexx
     destination:
-      namespace: gp-infrastructure
+      namespace: cert-manager
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
