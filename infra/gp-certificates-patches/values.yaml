@@ -1,2 +1,2 @@
 apiserver:
-  customApiUrl: "example.com"
+  customApiUrl: "api.example.com"

@@ -7,6 +7,7 @@ applications:
   resourceLocker:
     name: resource-locker-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -23,6 +24,7 @@ applications:
   sealedSecretsOperator:
     name: sealed-secrets-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: false
@@ -45,6 +47,7 @@ applications:
   identityProvider:
     name: identity-provider
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -75,6 +78,7 @@ applications:
   oauthGroupSync:
     name: oauth-group-sync
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -92,6 +96,7 @@ applications:
   clusterConfig:
     name: cluster-config
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -108,6 +113,7 @@ applications:
   clusterUpdater:
     name: cluster-updater
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -127,7 +133,8 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: velero
       create: true
@@ -138,11 +145,11 @@ applications:
       helm:
         parameters:
           - name: configuration.backupStorageLocation.bucket
-            value: prod.gepaplexx.com # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
+            value: prod.gepaplexx.com
           - name: configuration.backupStorageLocation.config.region
-            value: minio # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
+            value: minio
           - name: configuration.backupStorageLocation.config.s3Url
-            value: http://10.20.26.100:9000 # TODO via ansible vault? => via ResourceLockerPatch und Werte in Secrets (siehen Identity Provider)
+            value: http://10.20.26.100:9000
     syncPolicy:
       automated:
         prune: true
@@ -152,6 +159,7 @@ applications:
   rookCephOperator:
     name: rook-ceph-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: rook-ceph
       create: true
@@ -168,6 +176,7 @@ applications:
   rookCephInstance:
     name: rook-ceph-instance
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: rook-ceph
       create: false
@@ -184,6 +193,7 @@ applications:
   clusterLoggingOperator:
     name: cluster-logging-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-logging
       create: true
@@ -217,6 +227,7 @@ applications:
   clusterMonitoring:
     name: cluster-monitoring
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
       create: true
@@ -233,6 +244,7 @@ applications:
   openshiftPipelinesOperator:
     name: openshift-pipelines-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-gitops
       create: true
@@ -249,6 +261,7 @@ applications:
   internalRegistry:
     name: openshift-registry
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -265,6 +278,7 @@ applications:
   internalRegistryMirror:
     name: openshift-registry-mirror
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -280,7 +294,8 @@ applications:
 ##################### CERT-MANAGER ######################
   certManager:
     name: cert-manager
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -296,7 +311,8 @@ applications:
 ##################### CERTIFICATES-PATCHES ######################
   certificatesPatches:
     name: certificate-patches
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -304,6 +320,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-certificates-patches
       targetRevision: "*"
+      helm:
+        parameters:
+        - name: "apiserver.customApiUrl"
+          value: "api.prod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
@@ -312,7 +332,8 @@ applications:
 ##################### CLUSTER-ISSUER ######################
   clusterIssuer:
     name: cluster-issuer
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -323,17 +344,17 @@ applications:
       helm:
         parameters:
         - name: "solvers.dnsZones[0]"
-          value: "steppe.gepaplexx.com"
+          value: "prod.gepaplexx.com"
         - name: "solvers.accessKeyId"
-          value: "" #TODO
+          value: "AKIATM2YI3GTVBQVQYW5"
         - name: "solvers.secretAccessKey"
-          value: "" #TODO
+          value: "AgCGcm606uiFkwck3tFD8DFxN/z3bQnOWuto0t2L4sOMXwbs9wuIu67Xj8GIT3bPk9w7csfbtMi5Dwe+FZKPAq3IHJbwAVvtYWHdL8M2Xj8Zq4v04BucsqOf3Yp733D0Zby1gxM4dKcjXP31ihoQb9sZrVfUz2EL/X6Y40zyBEkk6Lv/zx+RoXCx4hPW2pcL99Z5dz8NnyM9qK04NFLuk8SSUc5HAkXcMO18KZtBvhKoZeiwldRC2DvkkyIjWDdkBfr6hmj+B6N6tAJUc/nzA2wRerDdNzHkVqfVAA7fKUHZrBwWBo7Aqn7bawS2hp6F9ZjU46WsbuGZohVdBv/+iVyF1pVOtYiPmFHpnvR/LRZI1CiCA5nwYQFYCoFki5lmowwEdQA1dHtzghYFyHSKfZv3Pz3qwfhXc3/TAOlSmSCim7AlA+2nVoMgmggLdJYglOcXHMTaqwi22TkjhUK7SAXGFyZlbceqjsUa3AInooIWwLxxn8zYjZSC3dW3i3vZotlRKZ1Z01wNiGbzUZ3Ws7sswcNPiMjp2fluCBolrp+/F1cdVhYu2a59THAP6KRSgTG/SYadHxoVPr+2UoOboLtSNJCXgOTFJaaEuZf7tg2Wqd+P7HlRyYhf+E7A9Ql9tzfrgs/7xQx08cxh6a16epkGvG7tWnflupK/ljXTPAdjiKk0ZBsIV3yWSC15Di8JvXdZcQ/AiBZJ2uhbsuNpZXFKJ0zt8PyMjfN/rg6CNcb3F4rSOXUSX8wz"
         - name: "certificates.defaultIngress"
-          value: "apps.steppe.example.com"
+          value: "apps.prod.example.com"
         - name: "certificates.console"
-          value: "steppe.gepaplexx.com"
+          value: "prod.gepaplexx.com"
         - name: "certificates.api"
-          value: "api.gepaplexx.com"
+          value: "api.sprod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
