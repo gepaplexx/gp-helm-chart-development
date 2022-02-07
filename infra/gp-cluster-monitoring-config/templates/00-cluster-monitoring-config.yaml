@@ -7,5 +7,9 @@ data:
   config.yaml: |
     enableUserWorkload: {{ .Values.clusterMonitoring.enableUserWorkload }}
     {{- if .Values.clusterMonitoring.config }}
+    {{- if .Values.infranodes.enabled }}
+    {{- toYaml .Values.clusterMonitoring.infraconfig | nindent 4 }}
+    {{- else }}
     {{- toYaml .Values.clusterMonitoring.config | nindent 4 }}
+    {{- end }}
     {{- end }}

@@ -6,5 +6,9 @@ metadata:
 data:
   config.yaml: |
     {{- if .Values.userWorkloadMonitoring.config }}
+    {{- if .Values.infranodes.enabled }}
+    {{- toYaml .Values.userWorkloadMonitoring.infraconfig | nindent 4 }}
+    {{- else }}
     {{- toYaml .Values.userWorkloadMonitoring.config | nindent 4 }}
+    {{- end }}
     {{- end }}
