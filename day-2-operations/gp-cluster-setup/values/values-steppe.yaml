@@ -144,12 +144,14 @@ applications:
       targetRevision: "*"
       helm:
         parameters:
-          - name: configuration.backupStorageLocation.bucket
-            value: steppe.gepaplexx.com
-          - name: configuration.backupStorageLocation.config.region
-            value: minio
-          - name: configuration.backupStorageLocation.config.s3Url
-            value: http://10.20.26.100:9000
+          - name: "configuration.backupStorageLocation.bucket"
+            value: "steppe.gepaplexx.com"
+          - name: "configuration.backupStorageLocation.config.region"
+            value: "minio"
+          - name: "configuration.backupStorageLocation.config.s3Url"
+            value: "http://10.20.26.100:9000"
+          - name: "credentials.sealedSecretContent"
+            value: "AgAVR2B0TqjVX4Wlzb5in2MN3C7cYzO9QXRSdbQHc9wEUaofaqQ6KZQojVyw918/pyrVT7jeCE0+kTq0wiI1/OmHKJwF+u9QxDoJewKSLZiqbxQ0Xj3d7wYsQHRymO99H8Xdjj2mapxIQiyPQ1y0Ma2W84gNDX6UyFduHZwaU2+cYzXaMWeD23xiiIlMtE1M7rPnIpIs6JCfXCwKIgn6oZukzzaRn+C/oDRDnuuUpXTcy7WZPXVru/T7AV4bNArWCdEZd3WpvKjAR35J5w8WhMSZy7LEIEaLMZiSg3ZvWM5k974mq2MZfqLZZIEYH0L8kNrSF5zTLxZB03FxtDkFTlHGr7BX+wMGll6+enDCp/PncxPLoqj5WzgvDE+V7W96r/5ErBUJhvhfyvWR71sJX24PhVVHrqLkWiWiBuRlPL7bLVbxf9rrGNv089oAfX85zLn8rziiv8AJLXip15ddmF1EmV8ifgwcZ4L2gqq/ZHyLttHc5s4igpWTNC6EfxtvVxtu+dfl+3dx1dDXZ9cxi+DmvABsUSweK9HM2cHoQB/FDrlXM1jlA06Vd57W0piEooIl+QZJTF5p7XOZZEr8inzDvP82+1J+N4WJ2pg4e7FUDLzReRZj/zNHkBiKL63MA/7hqLUofUAlnNNjNeueF9Y+mqrwtqtIIrxKdW8uMpqRyAhaMfJbVz6fSPqrqj4yAI5BEXi5knFgfCY1ZBIlnMyDXeIHm+V6OJ2FSQk/LOi1ex5pG+WXGXNOqU/Y8JNGeAgg/9GZSoz9EalWOl0QNlTw+Hswjw54w+t9Mrubn3SsFAzjeOz/WJ/vVs1teW2KnpWAufq/MfolQW6Dl4dS"
     syncPolicy:
       automated:
         prune: true
