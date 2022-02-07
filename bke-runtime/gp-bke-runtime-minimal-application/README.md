@@ -8,6 +8,14 @@ This Helm-Chart generates a Deployment with the configured Image (Variable 'imag
 ```oc new-project example-dev```  
 ```helm install example-app gp-helm-charts/gp-bke-deploy-app -f example-app-values.yaml -n example-dev```
 
+## Alternative Usage
+
+### Set values on Command Line
+```helm install nginx-bke-test gepaplexx/gp-bke-runtime-minimal-application -n example-dev --set image.name=bitnami/nginx --set image.tag=latest --set route.enabled=true```
+
+### Use local (this) chart directory
+```helm install nginx-bke-test . -n example-dev --set image.name=bitnami/nginx --set image.tag=latest --set route.enabled=true```
+
 ## values.yaml
 
 ```yaml

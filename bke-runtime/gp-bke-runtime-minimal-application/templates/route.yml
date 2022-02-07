@@ -10,7 +10,7 @@ spec:
     targetPort: http
   to:
     kind: Service
-    name: svc-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
+    name: {{ include "gp-bke-runtime-minimal-application.service.name" . }}
     weight: 100
 {{- if .Values.route.hostnameOverride }}
 {{- if .Values.route.basename }}
