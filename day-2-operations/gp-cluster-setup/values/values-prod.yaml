@@ -347,6 +347,8 @@ applications:
           value: "prod.gepaplexx.com"
         - name: "solvers.accessKeyId"
           value: "AKIATM2YI3GTVBQVQYW5"
+        - name: "solvers.secretName"
+          value: "prod-route53-credentials-secret"
         - name: "solvers.secretAccessKey"
           value: "AgCGcm606uiFkwck3tFD8DFxN/z3bQnOWuto0t2L4sOMXwbs9wuIu67Xj8GIT3bPk9w7csfbtMi5Dwe+FZKPAq3IHJbwAVvtYWHdL8M2Xj8Zq4v04BucsqOf3Yp733D0Zby1gxM4dKcjXP31ihoQb9sZrVfUz2EL/X6Y40zyBEkk6Lv/zx+RoXCx4hPW2pcL99Z5dz8NnyM9qK04NFLuk8SSUc5HAkXcMO18KZtBvhKoZeiwldRC2DvkkyIjWDdkBfr6hmj+B6N6tAJUc/nzA2wRerDdNzHkVqfVAA7fKUHZrBwWBo7Aqn7bawS2hp6F9ZjU46WsbuGZohVdBv/+iVyF1pVOtYiPmFHpnvR/LRZI1CiCA5nwYQFYCoFki5lmowwEdQA1dHtzghYFyHSKfZv3Pz3qwfhXc3/TAOlSmSCim7AlA+2nVoMgmggLdJYglOcXHMTaqwi22TkjhUK7SAXGFyZlbceqjsUa3AInooIWwLxxn8zYjZSC3dW3i3vZotlRKZ1Z01wNiGbzUZ3Ws7sswcNPiMjp2fluCBolrp+/F1cdVhYu2a59THAP6KRSgTG/SYadHxoVPr+2UoOboLtSNJCXgOTFJaaEuZf7tg2Wqd+P7HlRyYhf+E7A9Ql9tzfrgs/7xQx08cxh6a16epkGvG7tWnflupK/ljXTPAdjiKk0ZBsIV3yWSC15Di8JvXdZcQ/AiBZJ2uhbsuNpZXFKJ0zt8PyMjfN/rg6CNcb3F4rSOXUSX8wz"
         - name: "certificates.defaultIngress"
