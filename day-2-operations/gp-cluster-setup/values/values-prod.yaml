@@ -354,7 +354,7 @@ applications:
         - name: "certificates.console"
           value: "prod.gepaplexx.com"
         - name: "certificates.api"
-          value: "api.sprod.gepaplexx.com"
+          value: "api.prod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
