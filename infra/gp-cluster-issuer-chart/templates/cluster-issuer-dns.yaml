@@ -22,5 +22,5 @@ spec:
           region: {{ .Values.solvers.region }}
           accessKeyID: {{ .Values.solvers.accessKeyId }}
           secretAccessKeySecretRef:
-            name: prod-route53-credentials-secret
+            name: {{ .Values.solvers.secretName }}
             key: secret-access-key
