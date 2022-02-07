@@ -2,6 +2,8 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: {{ default .Release.Name .Values.argocd.application.name }}
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     namespace: {{ default .Release.Namespace .Values.argocd.application.destination.namespace }}
