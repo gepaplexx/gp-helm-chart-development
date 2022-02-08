@@ -16,6 +16,9 @@ This Helm-Chart generates a Deployment with the configured Image (Variable 'imag
 ### Use local (this) chart directory
 ```helm install nginx-bke-test . -n example-dev --set image.name=bitnami/nginx --set image.tag=latest --set route.enabled=true```
 
+### Use a different name for the application an for the chart
+```helm install nginx-bke-test . -n example-dev --set image.name=bitnami/nginx --set image.tag=latest --set route.enabled=true --set nameOverride=proxy```
+
 ## values.yaml
 
 ```yaml
