@@ -15,7 +15,7 @@ spec:
           customization:
             customLogoFile:
               key: console-custom-logo.png
-              name: console-custom-logo
+              name: custom-logo
           customProductName: {{ .Values.productName }}
       patchType: application/merge-patch+json
       id: patch-console
