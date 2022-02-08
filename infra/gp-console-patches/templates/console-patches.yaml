@@ -18,4 +18,4 @@ spec:
               name: console-custom-logo
           customProductName: {{ .Values.productName }}
       patchType: application/merge-patch+json
-      id: patch-apiserver
+      id: patch-console

@@ -28,4 +28,4 @@ spec:
             servingCertKeyPairSecret:
               name: console-tls
       patchType: application/merge-patch+json
-      id: patch-apiserver
+      id: patch-ingress
