@@ -374,7 +374,7 @@ applications:
 
 ##################### CONSOLE-PATCHES ######################
   consolePatches:
-    name: cluster-issuer
+    name: console-patches
     enabled: true
     argoProject: gepaplexx
     destination:
