@@ -15,3 +15,6 @@ limitRange:
   defaultRequest:
     cpu: 25m
     memory: 250Mi
+
+alertmanager:
+  config:
