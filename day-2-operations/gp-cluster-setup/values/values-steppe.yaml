@@ -375,7 +375,7 @@ applications:
 ##################### CONSOLE-PATCHES ######################
   consolePatches:
     name: console-patches
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
