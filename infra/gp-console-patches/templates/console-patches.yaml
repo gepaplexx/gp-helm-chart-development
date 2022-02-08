@@ -1,0 +1,28 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-console
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: operator.openshift.io/v1
+        kind: Console
+        name: cluster
+      patchTemplate: |
+        spec:
+          customization:
+            customLogoFile:
+              key: console-custom-logo.png
+              name: console-custom-logo
+          customProductName: {{ .Values.productName }}
+          route:
+            {{- if .Values.route.nameOverride }}
+            hostname: {{ .Values.route.hostname }}
+            secret:
+              name: console-tls
+            {{- end }}
+
+      patchType: application/merge-patch+json
+      id: patch-apiserver

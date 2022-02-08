@@ -372,4 +372,27 @@ applications:
         prune: true
         selfHeal: true
 
+##################### CONSOLE-PATCHES ######################
+  consolePatches:
+    name: cluster-issuer
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gp-infrastructure
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-console-patches
+      targetRevision: "*"
+      helm:
+        parameters:
+        - name: "route.nameOverride"
+          value: "true"
+        - name: "route.hostname"
+          value: "steppe.gepaplexx.com"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
 # Future-TODO: secret-store/HashiCorp-Valult, tekton instanz (openshift pipeline)
