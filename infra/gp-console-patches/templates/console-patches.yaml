@@ -17,12 +17,5 @@ spec:
               key: console-custom-logo.png
               name: console-custom-logo
           customProductName: {{ .Values.productName }}
-          route:
-            {{- if .Values.route.nameOverride }}
-            hostname: {{ .Values.route.hostname }}
-            secret:
-              name: console-tls
-            {{- end }}
-
       patchType: application/merge-patch+json
       id: patch-apiserver
