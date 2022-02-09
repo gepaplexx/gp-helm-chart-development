@@ -325,7 +325,7 @@ applications:
 ##################### CERTIFICATES-PATCHES ######################
   certificatesPatches:
     name: certificate-patches
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
@@ -366,11 +366,34 @@ applications:
         - name: "solvers.secretAccessKey"
           value: "AgCSCLDYlk51nfrv0gWu9lhnDCytfZvQpkgbdo85S2PNtxAbiKLKcsuN2BBtPbcTIKcLOZyQpOMOsAafcou/d2pQqqPTfk7+OOM0mTCeevbfzVncFqg6lSUEDGIXhsP1BuxgF1DXClv9MZqlzzbymMHbUUeS1AvBB5nNCHXM7UZVmydIwrctFGL3YAOWHPu5cOZYlq3wR0wRmpKL07y3dZF7OBBYemr44O2pzV+MbbZP56kPHwRmOMunBfG3unJQlrkictSaKLsqGM//aRFSJyXs3jMlHOUIyc7yVR7sziYW3/ZLnRAjGv4kmXRA0Cn2xzeQuUpUGpRAu3WXCzFXRFWFf7f2ZrQvDGO7GpQxSJOrIvOIbOsexKP/Fw2/+gT+GpGaW1c04VHgzmzYqDcvx/XqDVD5lme+IfgigmZuD4AXydR1VrasXLxfKHgYIEHmSvU0zZL5nNZAFucf4D6Hu8wty86NLz/48aMFV2/KtAwvPYGq/T0m/0O1ZmDQMTag5L+02gYnH8NyCKJLI8efam9y6DkHvLUPx3QcNodxqzpI5WIe5nMbpO5GAjSuTMEcWaaMIeVaCLJE28t3rlFBrsY9uOH4gx04PGigMNT+E2q26d965t24F5hZYx+p/IVD1rDx+Kyuo8+BUi3zLmD0OM8Q4pazsgUFOVYkqOQpnMd7mjmjsEwWtFI3jcKD71veYyrGnxYWSJ7GEYjqI0keIFg43DYUv5OgCpGv/BrGAUGNA4ebxvyPGw0e"
         - name: "certificates.defaultIngress"
-          value: "*.apps.prod.example.com"
+          value: "*.apps.prod.gepaplexx.com"
         - name: "certificates.console"
           value: "prod.gepaplexx.com"
         - name: "certificates.api"
           value: "api.prod.gepaplexx.com"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### CONSOLE-PATCHES ######################
+  consolePatches:
+    name: console-patches
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gp-infrastructure
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-console-patches
+      targetRevision: "*"
+#      helm:
+#        parameters:
+#        - name: "route.nameOverride"
+#          value: "true"
+#        - name: "route.hostname"
+#          value: "steppe.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
