@@ -12,11 +12,6 @@ spec:
     kind: Service
     name: {{ include "gp-bke-runtime-minimal-application.service.name" . }}
     weight: 100
-{{- if .Values.route.hostnameOverride }}
-{{- if .Values.route.basename }}
-  hostname: {{ include "gp-bke-runtime-minimal-application.route.hostname" . }}
-{{- end }}
-{{- end }}
   wildcardPolicy: {{ .Values.route.wildcardPolicy }}
 {{- if .Values.route.tls.enabled }}
   tls:
