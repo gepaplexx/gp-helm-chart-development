@@ -18,3 +18,7 @@ limitRange:
 
 alertmanager:
   config:
+
+argocd:
+  name: openshift-gitops
+  namespace: openshift-gitops

@@ -1,0 +1,24 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-argocd-route
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+  - targetObjectRef:
+      apiVersion: argoproj.io/v1alpha1
+      kind: argocd
+      name: {{ .Values.argocd.name }}
+      namespace: {{ .Values.argocd.namespace }}
+    patchTemplate: |
+      spec:
+        server:
+          insecure: true
+          route:
+            enabled: true
+            tls:
+              insecureEdgeTerminationPolicy: "Redirect"
+              termination: "edge"
+    patchType: application/merge-patch+json
+    id: patch-argocd-route
