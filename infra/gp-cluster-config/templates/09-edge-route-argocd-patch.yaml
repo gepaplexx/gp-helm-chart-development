@@ -8,7 +8,7 @@ spec:
   patches:
   - targetObjectRef:
       apiVersion: argoproj.io/v1alpha1
-      kind: argocd
+      kind: ArgoCD
       name: {{ .Values.argocd.name }}
       namespace: {{ .Values.argocd.namespace }}
     patchTemplate: |
