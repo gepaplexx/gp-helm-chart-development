@@ -227,7 +227,7 @@ applications:
       helm:
         parameters:
         - name: "infranodes.enabled"
-          value: "false"
+          value: "true"
     syncPolicy:
       automated:
         prune: true
@@ -248,7 +248,7 @@ applications:
       helm:
         parameters:
         - name: "infranodes.enabled"
-          value: "false"
+          value: "true"
     syncPolicy:
       automated:
         prune: true
