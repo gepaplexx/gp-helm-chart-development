@@ -23,10 +23,11 @@ spec:
     useAllNodes: {{ .Values.cephcluster.storage.useAllNodes }}
     useAllDevices: {{ .Values.cephcluster.storage.useAllDevices }}
   placement:
-    tolerations:
-      - effect: NoSchedule
-        key: infra
-        value: reserved
-      - effect: NoExecute
-        key: infra
-        value: reserved
+    all:
+      tolerations:
+        - effect: NoSchedule
+          key: infra
+          value: reserved
+        - effect: NoExecute
+          key: infra
+          value: reserved
