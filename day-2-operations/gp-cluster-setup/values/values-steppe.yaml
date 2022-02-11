@@ -388,12 +388,12 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-console-patches
       targetRevision: "*"
-#      helm:
-#        parameters:
-#        - name: "route.nameOverride"
-#          value: "true"
-#        - name: "route.hostname"
-#          value: "steppe.gepaplexx.com"
+      helm:
+        parameters:
+        - name: "route.nameOverride"
+          value: "true"
+        - name: "route.hostname"
+          value: "steppe.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true

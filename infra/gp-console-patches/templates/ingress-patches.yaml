@@ -16,15 +16,15 @@ spec:
           - name: console
             namespace: openshift-console
             {{- if .Values.route.nameOverride }}
-            hostname: {{ .Values.route.hostname }}
+            hostname: console.{{ .Values.route.hostname }}
             {{- end }}
             servingCertKeyPairSecret:
               name: console-tls
           - name: downloads
             namespace: openshift-console
-{{/*            {{- if .Values.route.nameOverride }}*/}}
-{{/*            hostname: downloads.{{ .Values.route.hostname }}*/}}
-{{/*            {{- end }}*/}}
+            {{- if .Values.route.nameOverride }}
+            hostname: downloads.{{ .Values.route.hostname }}
+            {{- end }}
             servingCertKeyPairSecret:
               name: console-tls
       patchType: application/merge-patch+json
