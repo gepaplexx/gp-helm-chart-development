@@ -368,7 +368,7 @@ applications:
         - name: "certificates.defaultIngress"
           value: "*.apps.prod.gepaplexx.com"
         - name: "certificates.console"
-          value: "prod.gepaplexx.com"
+          value: "console.prod.gepaplexx.com"
         - name: "certificates.api"
           value: "api.prod.gepaplexx.com"
     syncPolicy:
@@ -388,12 +388,12 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-console-patches
       targetRevision: "*"
-#      helm:
-#        parameters:
-#        - name: "route.nameOverride"
-#          value: "true"
-#        - name: "route.hostname"
-#          value: "steppe.gepaplexx.com"
+      helm:
+        parameters:
+        - name: "route.nameOverride"
+          value: "true"
+        - name: "route.hostname"
+          value: "prod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
