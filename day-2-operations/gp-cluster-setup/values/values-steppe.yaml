@@ -230,7 +230,7 @@ applications:
         parameters:
         - name: "infranodes.enabled"
           value: "true"
-        - name: "elasticsearch.nodeCount"d
+        - name: "elasticsearch.nodeCount"
           value: "2"
     syncPolicy:
       automated:
