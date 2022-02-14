@@ -28,7 +28,7 @@ spec:
         repo:
           resources:
             limits:
-              cpu: 0.5
+              cpu: 500m
     patchType: application/merge-patch+json
     id: patch-argocd-infranodes
 {{- end }}
