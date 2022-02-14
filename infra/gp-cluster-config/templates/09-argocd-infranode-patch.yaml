@@ -17,6 +17,18 @@ spec:
         nodePlacement:
           nodeSelector:
             node-role.kubernetes.io/infra: ""
+        applicationSet:
+          resources:
+            limits:
+              cpu: 1
+        controller:
+          resources:
+            limits:
+              cpu: 1
+        repo:
+          resources:
+            limits:
+              cpu: 0.5
     patchType: application/merge-patch+json
     id: patch-argocd-infranodes
 {{- end }}
