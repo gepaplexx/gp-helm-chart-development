@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: svc-{{ include "gp-bke-runtime-minimal-application.fullname" . }}
+  name: {{ include "gp-bke-runtime-minimal-application.service.name" . }}
   labels:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:
