@@ -43,15 +43,15 @@ spec:
     kibana:
       replicas: {{ .Values.kibana.replicas }}
       {{- if .Values.infranodes.enabled }}
-        nodeSelector:
-          node-role.kubernetes.io/infra: ''
-        tolerations:
-          - effect: NoSchedule
-            key: infra
-            value: reserved
-          - effect: NoExecute
-            key: infra
-            value: reserved
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      tolerations:
+        - effect: NoSchedule
+          key: infra
+          value: reserved
+        - effect: NoExecute
+          key: infra
+          value: reserved
       {{- end }}
   curation:
     type: "curator"  
