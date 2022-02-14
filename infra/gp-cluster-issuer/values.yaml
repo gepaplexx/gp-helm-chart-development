@@ -1,0 +1,19 @@
+# production / staging
+issuer:
+  #acmeServer: https://acme-staging-v02.api.letsencrypt.org/directory 
+  acmeServer: https://acme-v02.api.letsencrypt.org/directory
+  acmeEmail: noreply@gepaplexx.com
+
+solvers:
+  dnsZones:
+    - example.com
+  region: eu-central-1
+  accessKeyId: XXYYXX
+  secretAccessKey: ZZXXYY
+  secretName: prod-route53-credentials-secret
+
+certificates:
+  defaultIngress: "*.example.com"
+  console: console.example.com
+  api: api.example.com
+  

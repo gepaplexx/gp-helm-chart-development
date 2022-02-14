@@ -7,9 +7,10 @@ applications:
   resourceLocker:
     name: resource-locker-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
-      namespace: openshift-operators
-      create: false
+      namespace: gp-infrastructure
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-resource-locker
@@ -23,8 +24,9 @@ applications:
   sealedSecretsOperator:
     name: sealed-secrets-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
-      namespace: openshift-gitops
+      namespace: gp-infrastructure
       create: false
     source:
       chart: sealed-secrets
@@ -44,7 +46,8 @@ applications:
 ###################### IDENTITY PROVIDER ######################
   identityProvider:
     name: identity-provider
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -53,7 +56,19 @@ applications:
       chart: gp-identity-provider
       targetRevision: "*"
       helm:
-        parameters: []
+        parameters:
+        - name: "google.clientSecret"
+          value: "AgBmfZpbfdNP9NJwAOaNcWND1FDRQYxS5h+bdUVZ4RUQTewqiTVKrEY/z9CZd324IfHZwhsPWyLpKaeJDIATG/OwnSl+1dKfy+4mTMsnG8gdgRhbOD+TL0aJ8bHDeDdTXn+v9F0m0B5n0kS4OnIi9O9AFYS4CVtnxj60ong4oHugmQSw0HBPxrvAywLtMrpyoZW53/nxfhRBGGE3gNdXGeH4j+IXzI+/joOUw2bOOFeDh8TGK1patkpX2oYO7K/DI3gYWBYj/R4H6frPt7DG6GxLmkEvtLfKYZTY4/dRzVxHzVwDsojFB1ZIoNxdX/S8fSHRAuc4R3Y/QXsV6QUHm1B1sp+a1VC2RLjAtHXeeBwYOgLi+mUcV7Y4MidS43m+UMrhedWfN0a6OLkDrQ+SilA7iFgLDhlAzKO7CWtP9pbk2AouVmx0gT+fIZX3xJp5CRKEDY4q5SFIxaK7ynfVXdxuVthiRVQN8rZ0mCLBH3GLtQs/vVlUDZRQ1+0GGOD3BS7bzyneHStCpxMvn3d36pZRU30UtULdKczHOAPp/cFjrLv1SEQX1pbPt8lgShnypEuChSaZzbQ5Fzdst7PFMlSrRD+6+Vdet/qPVyXfF5ZK/QZqvX11yDsUXtmkWjmwsaMpsB3AwmdIE7RtFGQuLCn5Cc3JQptqjkGL8f1qlftgRNcR/LGYt8Q6CCSXQdXgHCEopZnxalfOQcah8VCsRE3VFUHpHLmQFsmi5dLkW+K000JoxQ=="
+        - name: "google.clientId"
+          value: "AgCfiYeLi/1R/27oLVqiaEuRbh1Gd+YVRswbV2a37k+YIlUgaVSfxJvMCWJpA4xBOnsyXeUMXw+YHb3IOPCNEHxU3nDBYGxu8CTIvtM7/O4xw9PSn2re+sOrWPWYpsezIdw2nIBjSTFFwQcDwIhr427FImq7M+qTDNTMcvYem/C+KzkUWWhGr8KY4KO7yv7dwFGNTAuF9Qcdf0T0RCjFAOfWxExKLXXOXc6OTnhNTiUCUXGPSHAyxhKo4TEj7dOIh6Uq4J3GQlutxhiXeAcAasaCyMKgDRMzUc26JGNRA8gUxixFfKDBuXlcD2TTzox+Is3ai49D7g69q0JfURlBEUOBAecpwrfKx5fg8kBy+3NagjUGNDEeVuPycc/E9vw/AUSNCVDJGPADv10a7rN9mMD8JX6uh7NuIbCyJqedJWKDOZ7qynjC7KQqHHzXyZz9NkO9nWnDu5VwdnziftW7xjEtzR3OF3k8+B5v8D1KDnHXZt93N+uNkcCPvvkeCHqRemoEkOgejNJz8V4JDrJH27diiVVqZsMnv0B6IgRP+ocp/9rVpzgq9MXFIsPsUY60gfRkULbPQHk1fVrfqujUIdNZYnA0tTfY2DsGS90AjrVsnPms6hETdiQ8BZpkr46qwXM7nzdAlb5BKrf4J6F7DknzvKWDr2BqXOweYbqeUlpaLb7zBnzuKuzxQSroN9+2onOq5k+XhgWVciBR0ZVSHIxpPvXIWo8SLVMWco0URB2KBIeCsI1Zz7u1zaKtvPjU2p/gG9NRB8jJz25yatA2HGSckAkaqq8nBnA="
+        - name: "google.restrDomain"
+          value: "AgBRqnwzLaiwKaIbnVrfv2RxYKWsf2wQLFDWrwK+vD+v1zAzfOmPNjoavIyq0qJbndqHbWlnbB5h1sko1VdIs/xeWBzKwKaEVNDFkRZ3GC5zNdTRD1mJtzYzGbrFfG0X7FdW6+CtTbbv1s+qn3thCqIAX7+PBPoZ5Okf+QctuPaXyAfXDetcXUMLssPBD7jd/sUR3yeX3ipDzNT8rPOcq92oac9kMiWfnKLOm5To+PkAlMO2vMUygNK4vOB3vdWgFmXOdn2wskdDSqaaoGzU2dljLc8YMceh28LL5HpfE+1BKudOGgwYmZcjPp+cP6hARopIvkHI61votzEiCJIAFdHrF7tex1PLUa++oYTNh6i5zXQPdXDS/jteSq5CM1XzrdXzs54hsm0b4KbS1zDaZe6qUgT5Rk3jaYMaYJdgymciXnBkYGLiMd3nylW9T4wk/1kSEl7b1ZMBiYYcNEo9Az5hDNYKUBcDf/AUXnMEFeE8OC8yXCZUShB4JJAM/54CQq/IuX1X4XdTRdYa/1oQOQ7/AaivLGWK94a1vMqBVviFsm/xzjrNthtJbpyjT8UGn+8qivxnWqJCyxX4hvuaKb6PArFIb8vW82tHimga+9NG6bIhsVXBn1P7VGw8sZ6f7Fw4xyroJXfcKKdOAwIV6Q5wgdlL2a/nvzxte0/pYYvNOyueeR0IIdvEqjkva6HniPCDcLZpgp3ALFDWnWxN"
+        - name: "git.clientSecret"
+          value: "AgAmVIBzBHBU9qlm8QqNY5BKJSpkmELYOeaiVucq681tY3l9UEIbU3ooOiVEToWD+G9hWABoswnVbPx8VlOABZaMh/5zQVcKnMjDcyKcvBXPMECbkToWou0EjsyQ8lPjkG7yd4ryJzzHRRXhh1QslWkHJbXcz+ZO5cs4jrwlnwlxN+Qd8Aa2V6vFwsK+9u7weggzF65JlcJ5JbjFbYOZ5sURANl/PdaJXoUmUbi2iNyAAgJ2evKUTPzSDrJZc2i/WG2FOIybki5jeSG9w0Gz4aBm3c6PhGHVyR5VYrJd1DEKKAFbIOBdnqmvj4hsgRWNccevVzF146C4xklKw3BU6aDnTz50FDE3OosLhSIibDdJTO4Bs0W3rbQ6Xe4FlJayJ2qyQlSkT2eEtPLD6nw6SxOWpih1s0oU619Sixc4E9TbWQreT3b1LIPfPWSFo4gcB202yA1C/oXnvNMvwi/Vk1WL+BqN0y8Pvo7mY2vOt/KNkCh88NRuzf1IrkTlidWjyH7JMATUDwaJg8oh6dqbY7osTT2xzpW9IYdu7/N+L+1bTJACEyr0vokrCm1sut0SoUJtWgopbvA92op8qIp2AG7jHh1AvCrx2l8z2oFjBloQCyGcjGkc3rYBVHQPJPrWQgMWsJv4V4LCRRZpz0kcEpDEbFJcZlhqNjqDM23bWlMposwEiVQPcotbGNUALrKljgf3ViOROMxdlUR/uMN069cq69wpiHEBzD1xCHGHcYEgShzQxp54n+Rmtg=="
+        - name: "git.clientId"
+          value: "AgBamr7KmsPNAfIjOoAEqmtjWIv6uXjUjjzoDDJILXnFTiDD2EW77nWDJJRZQ6wBD4CDrat3WPtZ2KakqAt/EFJa/NMGH722LsBHaIaRMzHAYJ7hw8pFTnk+xeIg2Vh3qydkSw19r6L/03ZOMP1szzXf/LxbzmYVL0dYDVl4DFVrPnxkufn02CL+2vgIX3DOKO0MhlRcBFM5vZ0I54HeHDyyTqCstR3AMGPia6uSQofxvajN4Rzsa1rVrqCqmQsNG7CE6BX0wmPj/+2dt3jXpPoqeDrLL6YROXCjImTCSQGupMY6M0TFP0VMqzG00WxitOU4Ya/b5smuxBkMYX6hv2TCfdukk7oNMG0D+v+79aB6Cqqr97tTYGgk8U4Jw6QiNcLbIad0GDv8Mf7zcqKP8OG8O0SZtHnO13+h/eyFRPV7k35o2d4ueq168v1mrLHM41R9uvFoVwY+n904EHbpswZrGx/Qxb/4mlwcQj+pN8bJ8a4TJ3M16d1GgG+QGpDLOBzTZutKjAn+dA/R8MR0YPjgoqyvoQy4FjVdcfRcjRf6aXfVvesPMSJr6OMlecP1zb5lk2pyJzLLwUKMSUJLYoWOgiO3CYNSb6YAsC2p96bdki35JjO/6024MSu+cDCA9gcqA/oy7qc1kPyM4bZO2zMD+eZPzu9mzIwlnVnXEiZPsbgYdHgV24ivNA60YggLzLFH+JPzGkmKXCK8vZ+NqxC/37YThg=="
+        - name: "git.restrOrgs"
+          value: "AgAr+56NE0QzTvcWa/tOLwXxHB7NXuHYoYux/BN7UVBHdB8FEazenBlOYTg/U8uOOI1FH7VTTB98Jh+cpWTtufk8BYGgmIcf92LNxzZgV6dZ9oRL8tDBwrqhCF2wc07hN6sjZ3QKQxxABx4ww4+On64MCHb29K5NAimbpuyIS8sTqyRzTWnIVdZkxyLVCeL9e/lU9CjbbV+GepB6kZhg8V9/6gW4LtlDwAR3bdp8BaAFtgGh2Qc3kcTZKgMKNDdlYEdqSB1MP21gvUGtIVxt2CgnbMbAGdSSjho6k8/EXLN5skqzqwSBnuxDUiLLSfqhIn42QRrdvUTQQ5LIJ65/ySHTaRTpHB5tR4CYJLQCcX3Bb5NBMVpBKGXL5QzuGpBIxQjCeezueoF4XFlkjEJ7COeU1oAgvndEA+OJlGeKFrqz8rX6Hhge/iNbQgBfNc3HBFaP8wTMaALrLcZd0LQO50IWutOBFZtWElHTUwQM6G5tbMrPFFFqbS6AVnybJ4FMSZ/KfOy32r5Vxhk4rDQffqevucu9s8C3YtSvgYlBLh9Db+Lif5HtfwOxevIoDrbmrHsPmNLhEkOOnKuViqVl9W3zlpOHSQtvwjeEzwr5Q0TwEeGpao+sjAMbeKMIjw5zJW6w5NCigdpK8Fiwb30cEFUk1IHjtaLIlEfjYD3N5twZiFKguy7RM0aegq9eVfWk1KQ1k80wnoHsKlfBTa3SC7Wxj0Vs8Q=="
     syncPolicy:
       automated:
         prune: true
@@ -63,6 +78,7 @@ applications:
   oauthGroupSync:
     name: oauth-group-sync
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -80,6 +96,7 @@ applications:
   clusterConfig:
     name: cluster-config
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -87,6 +104,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-config
       targetRevision: "*"
+      helm:
+        parameters:
+          - name: "alertmanager.config"
+            value: "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"
     syncPolicy:
       automated:
         prune: true
@@ -96,6 +117,7 @@ applications:
   clusterUpdater:
     name: cluster-updater
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -106,7 +128,7 @@ applications:
       helm:
         parameters:
         - name: "slack.channel"
-          value: "" #TODO
+          value: "aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxRk0zQUNES04vQjAxUTI0NkI1TksvMUFIaHlIUlVsOVlVS2c2WHp5UGh2Z3dDCg=="
     syncPolicy:
       automated:
         prune: true
@@ -115,7 +137,8 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: velero
       create: true
@@ -126,11 +149,13 @@ applications:
       helm:
         parameters:
           - name: configuration.backupStorageLocation.bucket
-            value: steppe.gepaplexx.com
+            value: prod.gepaplexx.com
           - name: configuration.backupStorageLocation.config.region
             value: minio
           - name: configuration.backupStorageLocation.config.s3Url
             value: http://10.20.26.100:9000
+          - name: "credentials.sealedSecretContent"
+            value: "AgCi/Y11BlqQepCwTtXJQ93v/OxjusZUv1APF9TaB9M2pKMHwVcQCq0gNBSGEzSnlBFvp8oy76YZEnzNAdSh37MoeHiHCl90ab9k+t0r5O4JWgYFwC2UWoJAwI+l4avnBJuYkKeTgnO+KAr/vUrfdOxZUhUQyEoZ2Ox3XSRPddkCobPItRwDcFdgMjgR7qfXU9o4tfh49C7h1ntxcSqUnojzAgRLYgyKZullBPzl3mu+jVNmQoh29oRhMLzxEpwhnyhDqSnnyy5XyULsD/hrtgBVN4wZy69BWp8v5f838zdJWax8St3/VvbnFbPstjlDtqax2vy2I/iFCME1IacngPNHc94S4hTtYGYUwSJ7NWhI4hyPXzbtsop8e6UHoc+Qd8ckxmRfCUgTkjdhRYf8rts3fQjOAJVjnNUBXe5K0XGAHAy1GnTKT2JsUo6oEGCiyoNQvu6d6ytHZmM1wZovK530Ydwp6dTqHkpLEYHHa8TJMt5+yUbo3P6/DHDFa1oBekxFFwY1ijUm0L7OfLWUI1IHLjLfNYJ+Rxtikjh4g+iInzohnWbAkGBRzhzEiYbXfVt98ZSYAUvJrqHk1lvBDwN7fnHKbpXmHHzE47RIctCtLCCISkjf9MCM9B31fN84DZmKVrYpu0SEmupcM69iXJlwdgpQMPpv0kl9PzLfgZbzYQWftuQdEkdlKHr/6F2QB9ndbBd8PtaAVyjS/kwplDyOOMfbwHWkS7pAfi4aVcty6p6rPJZZ2Oxkj6dalSNQmzbXfmv+OLBap4/MKEbT4qHcI80w26/bXq0zkKvOnu+xS5xkzlzioFeHzgaFS4rldLU69LfnXXYQUppwR8PNpQ=="
     syncPolicy:
       automated:
         prune: true
@@ -140,6 +165,7 @@ applications:
   rookCephOperator:
     name: rook-ceph-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: rook-ceph
       create: true
@@ -156,6 +182,7 @@ applications:
   rookCephInstance:
     name: rook-ceph-instance
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: rook-ceph
       create: false
@@ -172,6 +199,7 @@ applications:
   clusterLoggingOperator:
     name: cluster-logging-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-logging
       create: true
@@ -196,6 +224,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-instance
       targetRevision: "*"
+      helm:
+        parameters:
+        - name: "infranodes.enabled"
+          value: "false"
     syncPolicy:
       automated:
         prune: true
@@ -205,6 +237,7 @@ applications:
   clusterMonitoring:
     name: cluster-monitoring
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
       create: true
@@ -212,6 +245,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-monitoring-config
       targetRevision: "*"
+      helm:
+        parameters:
+        - name: "infranodes.enabled"
+          value: "false"
     syncPolicy:
       automated:
         prune: true
@@ -221,6 +258,7 @@ applications:
   openshiftPipelinesOperator:
     name: openshift-pipelines-operator
     enabled: true
+    argoProject: gepaplexx
     destination:
       namespace: openshift-gitops
       create: true
@@ -237,8 +275,9 @@ applications:
   internalRegistry:
     name: openshift-registry
     enabled: true
+    argoProject: gepaplexx
     destination:
-      namespace: openshift-image-registry
+      namespace: gp-infrastructure
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -253,7 +292,9 @@ applications:
   internalRegistryMirror:
     name: openshift-registry-mirror
     enabled: true
+    argoProject: gepaplexx
     destination:
+      namespace: gp-infrastructure
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -268,8 +309,9 @@ applications:
   certManager:
     name: cert-manager
     enabled: true
+    argoProject: gepaplexx
     destination:
-      namespace: gp-infrastructure
+      namespace: cert-manager
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -283,7 +325,8 @@ applications:
 ##################### CERTIFICATES-PATCHES ######################
   certificatesPatches:
     name: certificate-patches
-    enabled: true
+    enabled: false
+    argoProject: gepaplexx
     destination:
       namespace: gp-infrastructure
       create: true
@@ -291,6 +334,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-certificates-patches
       targetRevision: "*"
+      helm:
+        parameters:
+        - name: "apiserver.customApiUrl"
+          value: "api.prod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
@@ -299,9 +346,10 @@ applications:
 ##################### CLUSTER-ISSUER ######################
   clusterIssuer:
     name: cluster-issuer
-    enabled: false
+    enabled: true
+    argoProject: gepaplexx
     destination:
-      namespace: gp-infrastructure
+      namespace: cert-manager
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -312,15 +360,40 @@ applications:
         - name: "solvers.dnsZones[0]"
           value: "prod.gepaplexx.com"
         - name: "solvers.accessKeyId"
-          value: "" #TODO
+          value: "AKIATM2YI3GTVBQVQYW5"
+        - name: "solvers.secretName"
+          value: "prod-route53-credentials-secret"
         - name: "solvers.secretAccessKey"
-          value: "" #TODO
+          value: "AgCSCLDYlk51nfrv0gWu9lhnDCytfZvQpkgbdo85S2PNtxAbiKLKcsuN2BBtPbcTIKcLOZyQpOMOsAafcou/d2pQqqPTfk7+OOM0mTCeevbfzVncFqg6lSUEDGIXhsP1BuxgF1DXClv9MZqlzzbymMHbUUeS1AvBB5nNCHXM7UZVmydIwrctFGL3YAOWHPu5cOZYlq3wR0wRmpKL07y3dZF7OBBYemr44O2pzV+MbbZP56kPHwRmOMunBfG3unJQlrkictSaKLsqGM//aRFSJyXs3jMlHOUIyc7yVR7sziYW3/ZLnRAjGv4kmXRA0Cn2xzeQuUpUGpRAu3WXCzFXRFWFf7f2ZrQvDGO7GpQxSJOrIvOIbOsexKP/Fw2/+gT+GpGaW1c04VHgzmzYqDcvx/XqDVD5lme+IfgigmZuD4AXydR1VrasXLxfKHgYIEHmSvU0zZL5nNZAFucf4D6Hu8wty86NLz/48aMFV2/KtAwvPYGq/T0m/0O1ZmDQMTag5L+02gYnH8NyCKJLI8efam9y6DkHvLUPx3QcNodxqzpI5WIe5nMbpO5GAjSuTMEcWaaMIeVaCLJE28t3rlFBrsY9uOH4gx04PGigMNT+E2q26d965t24F5hZYx+p/IVD1rDx+Kyuo8+BUi3zLmD0OM8Q4pazsgUFOVYkqOQpnMd7mjmjsEwWtFI3jcKD71veYyrGnxYWSJ7GEYjqI0keIFg43DYUv5OgCpGv/BrGAUGNA4ebxvyPGw0e"
         - name: "certificates.defaultIngress"
-          value: "*.apps.prod.example.com"
+          value: "*.apps.prod.gepaplexx.com"
         - name: "certificates.console"
-          value: "prod.gepaplexx.com"
+          value: "console.prod.gepaplexx.com"
         - name: "certificates.api"
           value: "api.prod.gepaplexx.com"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### CONSOLE-PATCHES ######################
+  consolePatches:
+    name: console-patches
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gp-infrastructure
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-console-patches
+      targetRevision: "*"
+      helm:
+        parameters:
+        - name: "route.nameOverride"
+          value: "true"
+        - name: "route.hostname"
+          value: "prod.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true

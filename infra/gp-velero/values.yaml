@@ -134,7 +134,7 @@ kubectl:
   labels: {}
 
 # This job upgrades the CRDs.
-upgradeCRDs: true
+upgradeCRDs: false
 
 # This job is meant primarily for cleaning up CRDs on CI systems.
 # Using this on production systems, especially those that have multiple releases of Velero, will be destructive.

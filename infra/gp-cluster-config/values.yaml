@@ -2,16 +2,23 @@ clusterAdminSAName: gp-admin-sa
 
 resourceQuota:
   requests:
-    cpu: 3
-    memory: 2Gi
-  limits:
-    cpu: 6
+    cpu: 5
     memory: 5Gi
+  limits:
+    cpu: 7
+    memory: 15Gi
 
 limitRange:
   default:
-    cpu: 50m
+    cpu: 100m
     memory: 500Mi
   defaultRequest:
     cpu: 25m
     memory: 250Mi
+
+alertmanager:
+  config:
+
+argocd:
+  name: openshift-gitops
+  namespace: openshift-gitops

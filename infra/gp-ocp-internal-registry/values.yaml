@@ -7,3 +7,6 @@ pvc:
 registry:
   defaultRoute: true
   replicas: 3
+
+infranodes:
+  enabled: false

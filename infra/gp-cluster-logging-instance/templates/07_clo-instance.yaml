@@ -27,10 +27,32 @@ spec:
         storageClassName: {{ .Values.elasticsearch.storage.storageClassName }}
         size: {{ .Values.elasticsearch.storage.size }}
       redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      tolerations:
+        - effect: NoSchedule
+          key: infra
+          value: reserved
+        - effect: NoExecute
+          key: infra
+          value: reserved
+      {{- end}}
   visualization:
     type: "kibana"
     kibana:
       replicas: {{ .Values.kibana.replicas }}
+      {{- if .Values.infranodes.enabled }}
+        nodeSelector:
+          node-role.kubernetes.io/infra: ''
+        tolerations:
+          - effect: NoSchedule
+            key: infra
+            value: reserved
+          - effect: NoExecute
+            key: infra
+            value: reserved
+      {{- end }}
   curation:
     type: "curator"  
     curator:
