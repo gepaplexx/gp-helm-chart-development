@@ -14,7 +14,9 @@ spec:
       namespace: {{ .Values.argocd.namespace }}
     patchTemplate: |
       spec:
-        runOnInfra: true
+        nodePlacement:
+          nodeSelector:
+            node-role.kubernetes.io/infra: ""
     patchType: application/merge-patch+json
     id: patch-argocd-infranodes
 {{- end }}
