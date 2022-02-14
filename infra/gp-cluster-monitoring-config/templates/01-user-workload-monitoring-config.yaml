@@ -5,10 +5,8 @@ metadata:
   namespace: openshift-user-workload-monitoring
 data:
   config.yaml: |
-    {{- if .Values.userWorkloadMonitoring.config }}
     {{- if .Values.infranodes.enabled }}
-    {{- toYaml .Values.userWorkloadMonitoring.infraconfig | nindent 4 }}
+    {{- .Files.Get "files/infraconfig.yaml"| nindent 4 }}
     {{- else }}
-    {{- toYaml .Values.userWorkloadMonitoring.config | nindent 4 }}
-    {{- end }}
+    {{- .Files.Get "files/config.yaml" | nindent 4 }}
     {{- end }}
