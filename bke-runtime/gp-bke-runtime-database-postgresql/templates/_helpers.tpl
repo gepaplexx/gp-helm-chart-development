@@ -13,6 +13,22 @@ Expand the name of the chart.
 {{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "db.image" -}}
+{{- $registryName := .Values.db.image.registry -}}
+{{- $repositoryName := .Values.db.image.repository -}}
+{{- $tag := .Values.db.image.tag | toString -}}
+{{- if .global }}
+    {{- if .global.imageRegistry }}
+     {{- $registryName = .global.imageRegistry -}}
+    {{- end -}}
+{{- end -}}
+{{- if $registryName }}
+{{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+{{- else -}}
+{{- printf "%s:%s" $repositoryName $tag -}}
+{{- end -}}
+{{- end -}}
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).

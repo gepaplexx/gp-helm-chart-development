@@ -97,35 +97,6 @@ diagnosticMode:
 ## @section PostgreSQL common parameters
 ##
 
-## Bitnami PostgreSQL image version
-## ref: https://hub.docker.com/r/bitnami/postgresql/tags/
-## @param image.registry PostgreSQL image registry
-## @param image.repository PostgreSQL image repository
-## @param image.tag PostgreSQL image tag (immutable tags are recommended)
-## @param image.pullPolicy PostgreSQL image pull policy
-## @param image.pullSecrets Specify image pull secrets
-## @param image.debug Specify if debug values should be set
-##
-image:
-  registry: docker.io
-  repository: bitnami/postgresql
-  tag: 14.1.0-debian-10-r80
-  ## Specify a imagePullPolicy
-  ## Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
-  ## ref: https://kubernetes.io/docs/user-guide/images/#pre-pulling-images
-  ##
-  pullPolicy: IfNotPresent
-  ## Optionally specify an array of imagePullSecrets.
-  ## Secrets must be manually created in the namespace.
-  ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-  ## Example:
-  ## pullSecrets:
-  ##   - myRegistryKeySecretName
-  ##
-  pullSecrets: []
-  ## Set to true if you would like to see extra information on logs
-  ##
-  debug: false
 ## Authentication parameters
 ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#setting-the-root-password-on-first-run
 ## ref: https://github.com/bitnami/bitnami-docker-postgresql/blob/master/README.md#creating-a-database-on-first-run
