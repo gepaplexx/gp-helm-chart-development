@@ -43,4 +43,6 @@ parameters:
   csi.storage.k8s.io/node-stage-secret-namespace: {{ .Release.Namespace }}
 
 reclaimPolicy: {{ .Values.storageclassFs.reclaimPolicy }}
+mountOptions:
+  - discard
 {{- end }}

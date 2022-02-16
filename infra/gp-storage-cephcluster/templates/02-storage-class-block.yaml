@@ -75,3 +75,5 @@ parameters:
 allowVolumeExpansion: true
 reclaimPolicy: {{ .Values.storageclassBlock.reclaimPolicy }}
 volumeBindingMode: {{ .Values.storageclassBlock.volumeBindingMode }}
+mountOptions:
+  - discard
