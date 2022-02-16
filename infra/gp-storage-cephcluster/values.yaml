@@ -1,7 +1,7 @@
 cephcluster:
   name: rook-ceph
   cephVersion:
-    image: ceph/ceph:v16.2.5 # ceph/ceph:v14.2
+    image: ceph/ceph:v15.2.11 # ceph/ceph:v14.2
   skipUpgradeChecks: false
   continueUpgradeAfterChecksEvenIfNotHealthy: false
   mon:

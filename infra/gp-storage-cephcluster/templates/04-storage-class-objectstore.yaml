@@ -29,6 +29,6 @@ parameters:
   objectStoreName: {{ .Values.cephobjectstore.name }}
   objectStoreNamespace: {{ .Release.Namespace }}
   region: {{ .Values.storageclassOs.region }}
-mountOptions:
-  - discard
+#mountOptions:
+#  - discard
 {{- end }}
