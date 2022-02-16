@@ -1,5 +1,24 @@
+testen: "testwert"
+
 db:
   nameOverride: ""
+
+  auth:
+    username: "appuser"
+
+  primary:
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+
+    resources:
+      requests:
+        memory: "128Mi"
+
+    ## Nur voruebergehend wegen PVC Problem. Es wird nicht persistiert!
+    persistence:
+      enabled: false
 
 ## @section Global parameters
 ## Please, note that this will override the parameters, including dependencies, configured to use the global value

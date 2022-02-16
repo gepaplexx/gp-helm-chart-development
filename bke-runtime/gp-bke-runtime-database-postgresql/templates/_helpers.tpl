@@ -5,6 +5,14 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "db.primary.fullname" -}}
+{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{- define "db.secretName" -}}
+{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
