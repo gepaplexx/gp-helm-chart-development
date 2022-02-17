@@ -13,6 +13,14 @@ Expand the name of the chart.
 {{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "db.database" -}}
+{{- if include "postgresql.database" . }}{{ include "postgresql.database" . }}{{- else }}postgres{{- end }}
+{{- end }}
+
+{{- define "db.jdbcurl" -}}
+{{- printf "jdbc:postgresql://%s:%s/%s" ( include "db.primary.fullname" . ) ( include "postgresql.service.port" . ) (include "db.database" .) }}
+{{- end }}
+
 {{- define "db.image" -}}
 {{- $registryName := .Values.db.image.registry -}}
 {{- $repositoryName := .Values.db.image.repository -}}
