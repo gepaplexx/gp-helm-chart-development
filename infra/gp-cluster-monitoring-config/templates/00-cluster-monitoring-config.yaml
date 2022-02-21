@@ -6,8 +6,4 @@ metadata:
 data:
   config.yaml: |
     enableUserWorkload: {{ .Values.clusterMonitoring.enableUserWorkload }}
-    {{- if .Values.infranodes.enabled }}
-    {{- .Files.Get "files/infraconfig.yaml"| nindent 4 }}
-    {{- else }}
     {{- .Files.Get "files/config.yaml"| nindent 4 }}
-    {{- end }}

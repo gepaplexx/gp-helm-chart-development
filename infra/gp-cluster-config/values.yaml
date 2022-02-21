@@ -22,5 +22,3 @@ alertmanager:
 argocd:
   name: openshift-gitops
   namespace: openshift-gitops
-  infranodes:
-    enabled: false

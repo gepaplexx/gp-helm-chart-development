@@ -1,7 +1,5 @@
 clusterlogging:
   managementState: "Managed"
-infranodes:
-  enabled: false
 elasticsearch:
   retentionPolicy: 
     application:

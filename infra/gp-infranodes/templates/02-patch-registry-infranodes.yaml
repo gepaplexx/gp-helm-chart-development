@@ -1,0 +1,18 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-registry-infranodes
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: imageregistry.operator.openshift.io/v1
+        kind: Config
+        name: cluster
+      patchTemplate: |
+        spec:
+          nodeSelector:
+            node-role.kubernetes.io/infra: ""
+      patchType: application/merge-patch+json
+      id: patch-registry-infranodes

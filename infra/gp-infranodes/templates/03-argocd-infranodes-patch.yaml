@@ -1,4 +1,3 @@
-{{- if .Values.argocd.infranodes.enabled }}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
@@ -17,18 +16,5 @@ spec:
         nodePlacement:
           nodeSelector:
             node-role.kubernetes.io/infra: ""
-        applicationSet:
-          resources:
-            limits:
-              cpu: 1
-        controller:
-          resources:
-            limits:
-              cpu: 1
-        repo:
-          resources:
-            limits:
-              cpu: "500m"
     patchType: application/merge-patch+json
     id: patch-argocd-infranodes
-{{- end }}
