@@ -1,4 +1,3 @@
-{{- if .Values.argocd.infranodes.enabled }}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
@@ -16,15 +15,14 @@ spec:
           applicationSet:
             resources:
               limits:
-                cpu: 1
+                cpu: {{ .Values.argocd.applicationSet.limits.cpu }}
           controller:
             resources:
               limits:
-                cpu: 1
+                cpu: {{ .Values.argocd.controller.limits.cpu }}
           repo:
             resources:
               limits:
-                cpu: "500m"
+                cpu: {{ .Values.argocd.repo.limits.cpu }}
       patchType: application/merge-patch+json
       id: patch-argocd-resources
-{{- end }}

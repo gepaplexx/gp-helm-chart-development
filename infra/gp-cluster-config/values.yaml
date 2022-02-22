@@ -22,3 +22,12 @@ alertmanager:
 argocd:
   name: openshift-gitops
   namespace: openshift-gitops
+  applicationSet:
+    limits:
+      cpu: "1"
+  controller:
+    limits:
+      cpu: "1"
+  repo:
+    limits:
+      cpu: "500m"
