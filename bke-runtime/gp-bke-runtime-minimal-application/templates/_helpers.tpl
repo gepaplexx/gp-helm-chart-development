@@ -52,11 +52,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 
 {{- define "gp-bke-runtime-minimal-application.route.name" -}}
 {{- if .Values.fullnameOverride -}}
-{{- "rt-" .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- printf "rt-%s" .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- "rt-" .Release.Name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
+{{- printf "rt-%s-%s" .Release.Name .Release.Namespace | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- printf "rt-%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

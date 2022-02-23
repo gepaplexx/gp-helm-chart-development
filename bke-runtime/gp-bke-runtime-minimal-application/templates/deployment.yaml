@@ -38,8 +38,25 @@ spec:
               path: {{ .Values.readinessProbe.path | default "/" }}
               port: http
           {{- end }}
-          {{- with .Values.env }}
           env:
+          {{- range $i, $e := .Values.database }}
+            - name: {{ $e | upper }}_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $e }}-db
+                  key: password
+            - name: {{ $e | upper }}_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $e }}-db-added
+                  key: username
+            - name: {{ $e | upper }}_DB_JDBCURL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $e }}-db-added
+                  key: jdbcurl
+          {{- end }}
+          {{- with .Values.env }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
           resources:
