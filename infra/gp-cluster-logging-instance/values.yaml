@@ -1,7 +1,5 @@
 clusterlogging:
   managementState: "Managed"
-infranodes:
-  enabled: false
 elasticsearch:
   retentionPolicy: 
     application:
@@ -13,7 +11,7 @@ elasticsearch:
   resources:
     limits:
       memory: "12Gi"
-      cpu: "3"
+      cpu: "2"
     requests:
       cpu: "1"
       memory: "4Gi"

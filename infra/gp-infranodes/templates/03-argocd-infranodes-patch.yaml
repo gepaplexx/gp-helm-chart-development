@@ -1,0 +1,20 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-argocd-infranodes
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+  - targetObjectRef:
+      apiVersion: argoproj.io/v1alpha1
+      kind: ArgoCD
+      name: {{ .Values.argocd.name }}
+      namespace: {{ .Values.argocd.namespace }}
+    patchTemplate: |
+      spec:
+        nodePlacement:
+          nodeSelector:
+            node-role.kubernetes.io/infra: ""
+    patchType: application/merge-patch+json
+    id: patch-argocd-infranodes

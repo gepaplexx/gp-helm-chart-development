@@ -23,7 +23,7 @@ cephblockpool:
 
 storageclassBlock:
   name: rook-ceph-block
-  reclaimPolicy: Retain
+  reclaimPolicy: Delete
   volumeBindingMode: Immediate
   default: true
   provisioner:

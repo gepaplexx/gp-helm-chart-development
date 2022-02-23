@@ -1,0 +1,7 @@
+# Default values for gp-infranodes.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+argocd:
+  name: openshift-gitops
+  namespace: openshift-gitops

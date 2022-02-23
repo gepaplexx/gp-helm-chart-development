@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gp-bke-runtime-minimal-application.fullname" . }}
+  name: {{ include "gp-bke-runtime-minimal-application.logical.name" . }}
   labels:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:

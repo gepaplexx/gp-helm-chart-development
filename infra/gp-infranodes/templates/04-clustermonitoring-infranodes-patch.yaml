@@ -1,0 +1,188 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-clustermonitoring-infranodes
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+  - targetObjectRef:
+      apiVersion: v1
+      kind: ConfigMap
+      name: user-workload-monitoring-config
+      namespace: openshift-user-workload-monitoring
+    patchTemplate: |
+      data:
+        config.yaml: |
+          alertmanagerMain:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          prometheusK8s:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          prometheusOperator:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          grafana:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          k8sPrometheusAdapter:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          kubeStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          telemeterClient:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          openshiftStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+    patchType: application/merge-patch+json
+    id: patch-clustermonitoring-userworkload-infranodes
+  - targetObjectRef:
+      apiVersion: v1
+      kind: ConfigMap
+      name: cluster-monitoring-config
+      namespace: openshift-monitoring
+    patchTemplate: |
+      data:
+        config.yaml: |
+          alertmanagerMain:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          prometheusK8s:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          prometheusOperator:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          grafana:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          k8sPrometheusAdapter:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          kubeStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          telemeterClient:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+          openshiftStateMetrics:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+            tolerations:
+              - key: infra
+                value: reserved
+                effect: NoSchedule
+              - key: infra
+                value: reserved
+                effect: NoExecute
+    patchType: application/merge-patch+json
+    id: patch-clustermonitoring-infranodes

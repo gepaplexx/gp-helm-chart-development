@@ -1,0 +1,23 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-clusterlogging-infranodes
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+  - targetObjectRef:
+      apiVersion: logging.openshift.io/v1
+      kind: ClusterLogging
+      name: instance
+      namespace: openshift-logging
+    patchTemplate: |
+      spec:
+        elasticsearch:
+          nodeSelector:
+            node-role.kubernetes.io/infra: ''
+        visualization:
+          nodeSelector:
+            node-role.kubernetes.io/infra: ''
+    patchType: application/merge-patch+json
+    id: patch-clusterlogging-infranodes

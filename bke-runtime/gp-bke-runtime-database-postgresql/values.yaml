@@ -1,5 +1,3 @@
-testen: "testwert"
-
 db:
   nameOverride: ""
 
@@ -17,8 +15,8 @@ db:
         memory: "128Mi"
 
     ## Nur voruebergehend wegen PVC Problem. Es wird nicht persistiert!
-    persistence:
-      enabled: false
+    ## persistence:
+    ##   enabled: false
 
 ## @section Global parameters
 ## Please, note that this will override the parameters, including dependencies, configured to use the global value

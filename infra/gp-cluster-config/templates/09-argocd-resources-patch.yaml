@@ -1,0 +1,28 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-argocd-resources
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: argoproj.io/v1alpha1
+        kind: ArgoCD
+        name: {{ .Values.argocd.name }}
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+          applicationSet:
+            resources:
+              limits:
+                cpu: {{ .Values.argocd.applicationSet.limits.cpu }}
+          controller:
+            resources:
+              limits:
+                cpu: {{ .Values.argocd.controller.limits.cpu }}
+          repo:
+            resources:
+              limits:
+                cpu: {{ .Values.argocd.repo.limits.cpu }}
+      patchType: application/merge-patch+json
+      id: patch-argocd-resources

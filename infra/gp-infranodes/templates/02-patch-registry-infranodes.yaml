@@ -1,7 +1,7 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
-  name: patch-registry-operator
+  name: patch-registry-infranodes
 spec:
   serviceAccountRef:
     name: resource-locker-sa
@@ -12,12 +12,7 @@ spec:
         name: cluster
       patchTemplate: |
         spec:
-          managementState: Managed
-          defaultRoute: {{ .Values.registry.defaultRoute }}
-          replicas: {{ .Values.registry.replicas }}
-          storage: 
-            managementState: Managed
-            pvc:
-              claim: {{ .Values.pvc.name }}
+          nodeSelector:
+            node-role.kubernetes.io/infra: ""
       patchType: application/merge-patch+json
-      id: patch-registry-operator
+      id: patch-registry-infranodes
