@@ -1,5 +1,4 @@
 db:
-  nameOverride: ""
 
   auth:
     username: "appuser"

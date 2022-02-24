@@ -6,11 +6,19 @@ Expand the name of the chart.
 {{- end }}
 
 {{- define "db.primary.fullname" -}}
+{{- if .Values.db.fullnameOverride }}
+{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
 {{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 
 {{- define "db.secretName" -}}
+{{- if .Values.db.fullnameOverride }}
+{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
 {{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
 {{- end }}
 
 {{- define "db.database" -}}
