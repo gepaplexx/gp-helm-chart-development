@@ -231,7 +231,7 @@ applications:
 #        - name: "infranodes.enabled"
 #          value: "true"
         - name: "elasticsearch.nodeCount"
-          value: "2"
+          value: "3"
     syncPolicy:
       automated:
         prune: true
@@ -240,7 +240,7 @@ applications:
 ##################### CLUSTER-MONITORING ######################
   clusterMonitoring:
     name: cluster-monitoring
-    enabled: true
+    enabled: false            # An dieser Stelle nur aktivieren, wenn es ein Cluster ohne Infranodes ist!
     argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
@@ -249,10 +249,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-monitoring-config
       targetRevision: "*"
-      helm:
-        parameters:
-#        - name: "infranodes.enabled"
-#          value: "true"
     syncPolicy:
       automated:
         prune: true
@@ -287,10 +283,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-ocp-internal-registry
       targetRevision: "*"
-#      helm:
-#        parameters:
-#        - name: "infranodes.enabled"
-#          value: "true"
     syncPolicy:
       automated:
         prune: true

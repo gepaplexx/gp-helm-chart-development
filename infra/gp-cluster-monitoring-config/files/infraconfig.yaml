@@ -1,0 +1,24 @@
+alertmanagerMain:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+prometheusK8s:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+prometheusOperator:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+grafana:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+k8sPrometheusAdapter:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+kubeStateMetrics:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+telemeterClient:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
+openshiftStateMetrics:
+  nodeSelector:
+    node-role.kubernetes.io/infra: ""
