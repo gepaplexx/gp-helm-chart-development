@@ -23,10 +23,6 @@ spec:
           memory: {{ .Values.elasticsearch.resources.requests.memory }}
           cpu: {{ .Values.elasticsearch.resources.requests.cpu }}
       nodeCount: {{ .Values.elasticsearch.nodeCount }}
-      {{- if .Values.infranodes.enabled }}
-      nodeSelector:
-        node-role.kubernetes.io/infra: ''
-      {{- end }}
       storage:
         storageClassName: {{ .Values.elasticsearch.storage.storageClassName }}
         size: {{ .Values.elasticsearch.storage.size }}
@@ -42,10 +38,6 @@ spec:
           requests:
             memory: {{ .Values.fluentd.resources.requests.memory }}
             cpu: {{ .Values.fluentd.resources.requests.cpu }}
-      {{- if .Values.infranodes.enabled }}
-      nodeSelector:
-        node-role.kubernetes.io/infra: ''
-      {{- end }}
   visualization:
     type: "kibana"
     kibana:
@@ -56,8 +48,4 @@ spec:
         requests:
           memory: {{ .Values.kibana.resources.requests.memory }}
           cpu: {{ .Values.kibana.resources.requests.cpu }}
-      {{- if .Values.infranodes.enabled }}
-      nodeSelector:
-        node-role.kubernetes.io/infra: ''
-      {{- end }}
       replicas: {{ .Values.kibana.replicas }}
