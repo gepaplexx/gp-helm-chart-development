@@ -5,3 +5,8 @@
 argocd:
   name: openshift-gitops
   namespace: openshift-gitops
+
+ceph:
+  cluster:
+    name: rook-ceph
+    namespace: rook-ceph

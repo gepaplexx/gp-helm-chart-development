@@ -1,0 +1,24 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-cephcluster
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+  - targetObjectRef:
+      apiVersion: v1
+      kind: Namespace
+      name: velero
+    patchTemplate: |
+      spec:
+        placement:
+          mon:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ''
+          mgr:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ''
+    id: patch-cephcluster
