@@ -48,12 +48,12 @@ spec:
             - name: {{ $e | upper }}_DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e }}-db-added
+                  name: {{ $e }}-db-connect
                   key: username
             - name: {{ $e | upper }}_DB_JDBCURL
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e }}-db-added
+                  name: {{ $e }}-db-connect
                   key: jdbcurl
           {{- end }}
           {{- with .Values.env }}
