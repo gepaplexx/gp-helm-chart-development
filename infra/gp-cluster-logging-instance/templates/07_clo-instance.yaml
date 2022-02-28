@@ -23,15 +23,41 @@ spec:
           memory: {{ .Values.elasticsearch.resources.requests.memory }}
           cpu: {{ .Values.elasticsearch.resources.requests.cpu }}
       nodeCount: {{ .Values.elasticsearch.nodeCount }}
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      {{- end }}
       storage:
         storageClassName: {{ .Values.elasticsearch.storage.storageClassName }}
         size: {{ .Values.elasticsearch.storage.size }}
       redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
-  curation:
-    type: "curator"  
-    curator:
-      schedule: {{ .Values.curator.schedule }}
   collection:
     logs:
       type: "fluentd"
-      fluentd: {}
+      fluentd:
+        resources:
+          limits:
+            memory: {{ .Values.fluentd.resources.limits.memory }}
+            cpu: {{ .Values.fluentd.resources.limits.cpu }}
+          requests:
+            memory: {{ .Values.fluentd.resources.requests.memory }}
+            cpu: {{ .Values.fluentd.resources.requests.cpu }}
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      {{- end }}
+  visualization:
+    type: "kibana"
+    kibana:
+      resources:
+        limits:
+          memory: {{ .Values.kibana.resources.limits.memory }}
+          cpu: {{ .Values.kibana.resources.limits.cpu }}
+        requests:
+          memory: {{ .Values.kibana.resources.requests.memory }}
+          cpu: {{ .Values.kibana.resources.requests.cpu }}
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      {{- end }}
+      replicas: {{ .Values.kibana.replicas }}
