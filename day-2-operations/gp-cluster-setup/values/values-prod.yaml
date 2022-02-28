@@ -240,7 +240,7 @@ applications:
 ##################### CLUSTER-MONITORING ######################
   clusterMonitoring:
     name: cluster-monitoring
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
