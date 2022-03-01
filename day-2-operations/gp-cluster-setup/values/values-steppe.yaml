@@ -139,7 +139,7 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: velero
@@ -231,7 +231,7 @@ applications:
 #        - name: "infranodes.enabled"
 #          value: "true"
         - name: "elasticsearch.nodeCount"
-          value: "2"
+          value: "3"
     syncPolicy:
       automated:
         prune: true
@@ -240,7 +240,7 @@ applications:
 ##################### CLUSTER-MONITORING ######################
   clusterMonitoring:
     name: cluster-monitoring
-    enabled: true
+    enabled: false            # An dieser Stelle nur aktivieren, wenn es ein Cluster ohne Infranodes ist!
     argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
@@ -249,10 +249,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-monitoring-config
       targetRevision: "*"
-      helm:
-        parameters:
-#        - name: "infranodes.enabled"
-#          value: "true"
     syncPolicy:
       automated:
         prune: true
@@ -287,10 +283,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-ocp-internal-registry
       targetRevision: "*"
-#      helm:
-#        parameters:
-#        - name: "infranodes.enabled"
-#          value: "true"
     syncPolicy:
       automated:
         prune: true
@@ -374,7 +366,7 @@ applications:
         - name: "solvers.secretAccessKey"
           value: "AgBFajr6bpaYUyG1OL/f6oDciKT2cFy2QO4al7fuwxO9eImowCtpj8xSI/u62Tliy5y+thr5Jl9gIenI/hlZxWivQ8Oxr8sNa/bdsxD1MT0I6yoIM4VMjCgWfWtr5Sveesz9ZAK78rtJDJgJ2toS3jZajg+Uwe4XioXrfxAomZAxT7BGGJoBMOxC//wJAmeFUKlk4o3VqOrws88g0NwI6iZT3Wln48Gqi9WbOyZQ7m7nIhknalau+GZDktoQDLU5ZtarnvPUT9kV19WQ0HZaUjg0NbXmjkpSeyBr9wcWsUqLh8h1VltPSBuLYLwAtnfFHnv7mvxxuTUSOPBxJvx5Bo5+REI85SJJu5u8SO4oe6gs+mFiWKBvSYzjO52ym+wcyxXP3STC4bHvfeZ6Wd61ADzKSH7xt8DWOgxx6DcYMNZMc3e1OqvL3mDTCaGYtjVIGDV24/2WfH4K0i4cQq6Yz+lPAmAySJQlx2VZ/CFXucwsb7bVJF/6vc7OX+NOwda3b8h0ifTgQhtiDm2IJ6YhuAzNBI+rZwB8kgo/MvO1+pydwHX9x7JpLb30lVSsMQakFwWP4I0MAR241RTCXNn3K0+XNI3eXwGyXxKxmDWVOWReQ7vTbQEkwck4/2C4YyzIp6vkrI86yX+h38sjls4GM+cyjqeMgSCXRSNL3jbm1e7MARlT6GQ9loVRsq2cGSWkR2F19L6IW9evs+whfbWF+vmgYwE/Rjma4nRx8JX4fWX1UugGaQHuRuqt"
         - name: "certificates.defaultIngress"
-          value: "*.apps.steppe.gepaplexx.com"
+          value: "*.steppe.gepaplexx.com"
         - name: "certificates.console"
           value: "console.steppe.gepaplexx.com"
         - name: "certificates.api"

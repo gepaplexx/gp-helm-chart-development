@@ -1,3 +1,5 @@
+infranodes:
+  enabled: false
 clusterlogging:
   managementState: "Managed"
 elasticsearch:
@@ -18,11 +20,22 @@ elasticsearch:
   nodeCount: 3       
   storage:
     storageClassName: rook-ceph-fs
-    size: 50G
+    size: 150G
   redundancyPolicy: "SingleRedundancy"
-
+fluentd:
+  resources:
+    limits:
+      memory: " 736Mi"
+      cpu: "250m"
+    requests:
+      cpu: "150m"
+      memory: "768Mi"
 kibana:
   replicas: 1
-
-curator:
-  schedule: "30 * * * *"
+  resources:
+    limits:
+      memory: " 736Mi"
+      cpu: "250m"
+    requests:
+      cpu: "150m"
+      memory: "768Mi"
