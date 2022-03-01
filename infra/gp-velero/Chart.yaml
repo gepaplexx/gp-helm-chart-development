@@ -4,6 +4,7 @@ description: A Helm chart for velero
 home: https://github.com/vmware-tanzu/velero
 icon: https://cdn-images-1.medium.com/max/1600/1*-9mb3AKnKdcL_QD3CMnthQ.png
 version: 2.23.3
+name: gp-velero
 dependencies:
 - name: velero
   version: 1.7.1
