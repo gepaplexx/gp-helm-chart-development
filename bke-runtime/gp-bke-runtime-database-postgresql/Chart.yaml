@@ -9,6 +9,3 @@ dependencies:
   alias: db
   version: 11.0.3
   repository: https://charts.bitnami.com/bitnami
-- name: common
-  repository: https://charts.bitnami.com/bitnami
-  version: 1.x.x

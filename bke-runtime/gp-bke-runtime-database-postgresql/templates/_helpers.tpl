@@ -78,9 +78,10 @@ Create the name of the service account to use
 {{- end -}}
 
 {{- define "db.jdbcurl" -}}
-{{- printf "jdbc:postgresql://%s:%s/%s" ( include "db.primary.fullname" . ) ( include "postgresql.service.port" . ) (include "db.database" .) }}
+{{- printf "jdbc:postgresql://%s:%s/%s" ( include "db.primary.fullname" . ) ( include "db.service.port" . ) (include "db.database" .) }}
 {{- end }}
 
+{{/* TODO fix missing values */}}
 {{- define "db.image" -}}
 {{- $registryName := .Values.db.image.registry -}}
 {{- $repositoryName := .Values.db.image.repository -}}
@@ -108,7 +109,7 @@ Create the name of the service account to use
 {{/*
 Return PostgreSQL service port
 */}}
-{{- define "postgresql.service.port" -}}
+{{- define "db.service.port" -}}
 {{- if .Values.global.postgresql.service.ports.postgresql }}
     {{- .Values.global.postgresql.service.ports.postgresql -}}
 {{- else -}}
