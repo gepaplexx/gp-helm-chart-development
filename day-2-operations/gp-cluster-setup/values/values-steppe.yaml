@@ -283,6 +283,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-ocp-internal-registry
       targetRevision: "*"
+      helm:
+        parameters:
+        - name: "pvc.storage"
+          value: "250Gi"
     syncPolicy:
       automated:
         prune: true
