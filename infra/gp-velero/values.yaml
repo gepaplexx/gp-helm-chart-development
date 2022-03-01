@@ -5,8 +5,8 @@
 # Details of the container image to use in the Velero deployment & daemonset (if
 # enabling restic). Required.
 image:
-  repository: ghcr.io/mahaupt/velero
-  tag: latest
+  repository: velero/velero
+  tag: v1.7.1
   # Digest value example: sha256:d238835e151cec91c6a811fe3a89a66d3231d9f64d09e5f3c49552672d271f38.
   # If used, it will take precedence over the image.tag.
   # digest:
@@ -39,10 +39,10 @@ podLabels: {}
 # https://velero.io/docs/v1.6/customize-installation/#customize-resource-requests-and-limits
 resources:
   requests:
-    cpu: 100m
+    cpu: 500m
     memory: 512Mi
   limits:
-    cpu: 250m
+    cpu: 1000m
     memory: 1Gi
 
 # Configure the dnsPolicy of the Velero deployment
@@ -52,18 +52,11 @@ dnsPolicy: ClusterFirst
 # Init containers to add to the Velero deployment's pod spec. At least one plugin provider image is required.
 initContainers:
   - name: velero-plugin-for-aws
-    image: velero/velero-plugin-for-aws:v1.2.0
+    image: velero/velero-plugin-for-aws:v1.3.0
     imagePullPolicy: IfNotPresent
     volumeMounts:
       - mountPath: /target
         name: plugins
-  # enabling this will result in empty volume restores
-  # - name: velero-plugin-for-openshift
-  #   image: quay.io/ocpmigrate/velero-plugin
-  #   imagePullPolicy: IfNotPresent
-  #   volumeMounts:
-  #     - mountPath: /target
-  #       name: plugins
 
 # SecurityContext to use for the Velero deployment. Optional.
 # Set fsGroup for `AWS IAM Roles for Service Accounts`
@@ -134,7 +127,7 @@ kubectl:
   labels: {}
 
 # This job upgrades the CRDs.
-upgradeCRDs: false
+upgradeCRDs: true
 
 # This job is meant primarily for cleaning up CRDs on CI systems.
 # Using this on production systems, especially those that have multiple releases of Velero, will be destructive.
@@ -163,9 +156,9 @@ configuration:
     # `configuration.provider` will be used instead.
     provider: aws
     # bucket is the name of the bucket to store backups in. Required.
-    bucket: 
+    bucket: "{{ velero_s3_bucket }}"
     # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
-    caCert: 
+    caCert:
     # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
     prefix:
     # default indicates this location is the default backup storage location. Optional.
@@ -173,11 +166,11 @@ configuration:
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
     config:
-      region: minio
+      s3Url: "{{ velero_s3_url }}"
+      region: "{{ velero_s3_region }}"
       s3ForcePathStyle: true
     #  region:
     #  s3ForcePathStyle:
-    #  s3Url:
     #  kmsKeyId:
     #  resourceGroup:
     #  The ID of the subscription containing the storage account, if different from the cluster’s subscription. (Azure only)
@@ -274,8 +267,7 @@ credentials:
   # Whether a secret should be used as the source of IAM account
   # credentials. Set to false if, for example, using kube2iam or
   # kiam to provide IAM credentials for the Velero pod.
-  useSecret: false
-  useSealedSecret: true
+  useSecret: true
   # Name of the secret to create if `useSecret` is true and `existingSecret` is empty
   name:
   # Name of a pre-existing secret (if any) in the Velero namespace
@@ -290,9 +282,10 @@ credentials:
   # [GCP] https://github.com/vmware-tanzu/velero-plugin-for-gcp/blob/main/README.md
   # [Azure] https://github.com/vmware-tanzu/velero-plugin-for-microsoft-azure/blob/main/README.md
   secretContents:
-
-  sealedSecretContent: AgB3hYb9Gvr/ym+aHbYMElVFyb+kRSvzK/NaDErAe3Q9PdW5SMzDF6isJE73pTKr6+ZCNJJWFGGXIKNC587iy8UJ/mCSCunziPoGAEurn4MicFhTz7+PlntbOF/g61xvo62h0UgqtU8MF41i1rT4o4aSBTJjXq6LV96pvNwlDN4D2Ywt3hL9+nIBiHsY/XKfIrcfWayPaL62VwEHHU9R6ggm63sVlIcglhognbT04XBAlcx2oCuzvCNgbN4bis2Mhrp3jQs0BaJBjaMNo5qdYW05S4zsq7kuQG3VaxWYniFdqiopyK0hueyzMadQF5SFYXWPHSAnWIhHon7A8ICzLHwamZS1uyBsUr1jNIL8jWJpHDhXUP4wi0xqj3tWe3MxbuZoVrH1PFqEy9oX+KUMHokLqAM7e9VzruofI0/OX2NZBa5zZX3/pq6K7i1M+BOykJnS4oSLKj+Rn+44VyxrdxLGya4KamG2Q80412aR8/mhdEhuxzweQjIOAH2c46FiHk97aQkwWH8cVikaeHAV3KRRTnnxFG910AYcJ3WDTpipZPi8ny3FdkgpFZk4BXZKXYG/Bnj0wcVlO3ReHuZlnwIIPAVrTj7qtE7EA0UYLgqB+3Aap1FG/XG0Gnym4IStoU6ZAArmNy5VHTtAJ17i68BktyN/Qezd2daPaSAFlxV/doYFP9iwvNM6+oDqpUdFpY8uC5XbN5Z7eLObMBcU9xSQdGSxWVG2itWrR+OJFPEzOCynPB8tuHpFoMbqecgrgPzA9UToaeghAkdoFTOp9jSCr5KEyHBQFvr+7jvAf4u5JDcrb3nAfnPdBjqDTtImfI8=
-
+    cloud: |
+      [default]
+      aws_access_key_id={{ velero_s3_access_key }}
+      aws_secret_access_key={{ velero_s3_secret_key }}
   # additional key/value pairs to be used as environment variables such as "DIGITALOCEAN_TOKEN: <your-key>". Values will be stored in the secret.
   extraEnvVars: {}
   # Name of a pre-existing secret (if any) in the Velero namespace
@@ -377,12 +370,12 @@ restic:
 #       - foo
 schedules:
   backup:
-    disabled: false
+    disabled: {{ velero_backupschedule_enabled==false }}
     schedule: "15 */6 * * *"
-    useOwnerReferencesInBackup: true
+    useOwnerReferencesInBackup: false
     template:
       ttl: "336h" # 14d
-  
+
 # Velero ConfigMaps.
 # Eg:
 # configMaps:
