@@ -139,7 +139,7 @@ applications:
 ########################### VELERO ############################
   velero:
     name: velero
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: velero
