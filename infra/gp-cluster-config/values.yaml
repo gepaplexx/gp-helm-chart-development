@@ -10,11 +10,11 @@ resourceQuota:
 
 limitRange:
   default:
-    cpu: 100m
-    memory: 500Mi
+    cpu: 300m
+    memory: 2Gi
   defaultRequest:
     cpu: 25m
-    memory: 250Mi
+    memory: 128Mi
 
 alertmanager:
   config:
