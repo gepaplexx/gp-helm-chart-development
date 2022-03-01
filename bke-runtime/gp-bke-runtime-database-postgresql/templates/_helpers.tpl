@@ -5,46 +5,6 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{- define "db.primary.fullname" -}}
-{{- if .Values.db.fullnameOverride }}
-{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-
-{{- define "db.secretName" -}}
-{{- if .Values.db.fullnameOverride }}
-{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
-
-{{- define "db.database" -}}
-{{- if include "postgresql.database" . }}{{ include "postgresql.database" . }}{{- else }}postgres{{- end }}
-{{- end }}
-
-{{- define "db.jdbcurl" -}}
-{{- printf "jdbc:postgresql://%s:%s/%s" ( include "db.primary.fullname" . ) ( include "postgresql.service.port" . ) (include "db.database" .) }}
-{{- end }}
-
-{{- define "db.image" -}}
-{{- $registryName := .Values.db.image.registry -}}
-{{- $repositoryName := .Values.db.image.repository -}}
-{{- $tag := .Values.db.image.tag | toString -}}
-{{- if .global }}
-    {{- if .global.imageRegistry }}
-     {{- $registryName = .global.imageRegistry -}}
-    {{- end -}}
-{{- end -}}
-{{- if $registryName }}
-{{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
-{{- else -}}
-{{- printf "%s:%s" $repositoryName $tag -}}
-{{- end -}}
-{{- end -}}
-
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
@@ -100,3 +60,58 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "db.secretName" -}}
+{{- if .Values.db.fullnameOverride }}
+{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{- define "db.database" -}}
+{{- if .Values.global.postgresql.auth.database }}
+    {{- .Values.global.postgresql.auth.database -}}
+{{- else if .Values.db.auth.database -}}
+    {{- .Values.db.auth.database -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "db.jdbcurl" -}}
+{{- printf "jdbc:postgresql://%s:%s/%s" ( include "db.primary.fullname" . ) ( include "postgresql.service.port" . ) (include "db.database" .) }}
+{{- end }}
+
+{{- define "db.image" -}}
+{{- $registryName := .Values.db.image.registry -}}
+{{- $repositoryName := .Values.db.image.repository -}}
+{{- $tag := .Values.db.image.tag | toString -}}
+{{- if .global }}
+    {{- if .global.imageRegistry }}
+     {{- $registryName = .global.imageRegistry -}}
+    {{- end -}}
+{{- end -}}
+{{- if $registryName }}
+{{- printf "%s/%s:%s" $registryName $repositoryName $tag -}}
+{{- else -}}
+{{- printf "%s:%s" $repositoryName $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "db.primary.fullname" -}}
+{{- if .Values.db.fullnameOverride }}
+{{- .Values.db.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name "db" | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+
+{{/*
+Return PostgreSQL service port
+*/}}
+{{- define "postgresql.service.port" -}}
+{{- if .Values.global.postgresql.service.ports.postgresql }}
+    {{- .Values.global.postgresql.service.ports.postgresql -}}
+{{- else -}}
+    {{- .Values.db.primary.service.ports.postgresql -}}
+{{- end -}}
+{{- end -}}
