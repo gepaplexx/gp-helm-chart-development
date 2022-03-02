@@ -5,8 +5,12 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "gp-bke-runtime-database-postgresql.database" -}}
+{{- if include "postgresql.database" .Subcharts.db }}{{ include "postgresql.database" .Subcharts.db }}{{- else }}postgres{{- end }}
+{{- end }}
+
 {{- define "gp-bke-runtime-database-postgresql.jdbcurl" -}}
-{{- printf "jdbc:postgresql://%s:%s/%s" ( include "postgresql.primary.fullname" .Subcharts.db ) ( include "postgresql.service.port" .Subcharts.db ) (include "postgresql.database" .Subcharts.db) }}
+{{- printf "jdbc:postgresql://%s:%s/%s" ( include "postgresql.primary.fullname" .Subcharts.db ) ( include "postgresql.service.port" .Subcharts.db ) (include "gp-bke-runtime-database-postgresql.database" .) }}
 {{- end }}
 
 {{/*
