@@ -7,6 +7,7 @@ name: Lint Helm Chart on Branch
       - '!develop'
     tags-ignore:
       - '**'
+  workflow_dispatch:
 
 jobs:
   lint-helm:
