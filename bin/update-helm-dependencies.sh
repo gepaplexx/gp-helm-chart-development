@@ -6,7 +6,7 @@ DIR=$(dirname $0)
 HOME=${DIR-.}/..
 
 DO_CLEAN=false
-DO_BUILD=true
+DO_UPDATE=true
 EXECUTE=true
 
 #####################################################################
@@ -18,13 +18,13 @@ usage: $PRG [-hE]
 
 Options:
     E: Don't execute, only log commands. Dry run.
-    b: Build subcharts. Default for build is $DO_BUILD
-    B: Don't build subcharts.
+    u: Update subcharts. Default for build is $DO_UPDATE
+    U: Don't update subcharts.
     c: Clean (remove) Chart.lock and charts directory. Default is $DO_CLEAN
     h: This help
 
 Function:
-    Builds dependencies for Helm-Charts in $HOME and subdirectories
+    Updates dependencies for Helm-Charts in $HOME and subdirectories
 
 EOF
 }
@@ -47,21 +47,21 @@ do_clean(){
 }
 
 #####################################################################
-##                              do_build
+##                              do_update
 #####################################################################
-do_build(){
-  echo helm dependency build $chart
-  execute && helm dependency build $chart
+do_update(){
+  echo helm dependency update $chart
+  execute && helm dependency update $chart
 }
 
 ######################   handle options ###################
 
-while getopts "hEbBc" option
+while getopts "hEuUc" option
 do
     case $option in
       E) EXECUTE=false;;
-      b) DO_BUILD=true;;
-      B) DO_BUILD=false;;
+      u) DO_UPDATE=true;;
+      U) DO_UPDATE=false;;
       c) DO_CLEAN=true;;
       *)
         print_usage
@@ -80,8 +80,8 @@ for f in $(find $HOME -name Chart.yaml); do
     if [ $DO_CLEAN = true ]; then
       do_clean
     fi
-    if [ $DO_BUILD = true ]; then
-      do_build
+    if [ $DO_UPDATE = true ]; then
+      do_update
     fi
   fi
 done
