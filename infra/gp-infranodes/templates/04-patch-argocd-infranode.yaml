@@ -4,7 +4,8 @@ metadata:
   name: patch-argocd-infranodes
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: {{ .Values.resourceLocker.serviceAccount }}
+    namespace: {{ .Values.resourceLocker.namespace }}
   patches:
   - targetObjectRef:
       apiVersion: argoproj.io/v1alpha1

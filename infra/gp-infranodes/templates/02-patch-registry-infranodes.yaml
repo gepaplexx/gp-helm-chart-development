@@ -2,9 +2,10 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
   name: patch-registry-infranodes
+  namespace: {{ .Values.resourceLocker.namespace }}
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: {{ .Values.resourceLocker.serviceAccount }}
   patches:
     - targetObjectRef:
         apiVersion: imageregistry.operator.openshift.io/v1
