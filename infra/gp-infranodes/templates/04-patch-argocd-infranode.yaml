@@ -2,10 +2,10 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
   name: patch-argocd-infranodes
+  namespace: {{ .Values.resourceLocker.namespace }}
 spec:
   serviceAccountRef:
     name: {{ .Values.resourceLocker.serviceAccount }}
-    namespace: {{ .Values.resourceLocker.namespace }}
   patches:
   - targetObjectRef:
       apiVersion: argoproj.io/v1alpha1

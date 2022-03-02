@@ -13,4 +13,4 @@ ceph:
 
 resourceLocker:
   namespace: gp-infrastructure
-  serviceaccount: resource-locker-sa
+  serviceAccount: resource-locker-sa
