@@ -11,17 +11,25 @@ jobs:
   lint-helm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - name: Lint Helm
-        uses: WyriHaximus/github-action-helm3@v2
+      - name: Checkout
+        uses: actions/checkout@v2
         with:
-          exec: |
-            helm lint \
-              ./bke-runtime/*/. \
-              ./infra/*/. \
-              ./bke-gp-old/*/. \
-              ./day-2-operations/*/. \
-              ./gp-workload/*/.
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.7.2
+
+      - name: Lint Helm
+        run: |
+          helm lint \
+             ./bke-runtime/*/. \
+             ./infra/*/. \
+             ./bke-gp-old/*/. \
+             ./day-2-operations/*/. \
+             ./gp-workload/*/.
+
 
   pull-request:
     name: Pull Request
