@@ -2,11 +2,12 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
   name: patch-namespaces-nodeselector-annotation
+  namespace: {{ .Values.resourceLocker.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: {{ .Values.resourceLocker.serviceAccount }}
   patches:
   - targetObjectRef:
       apiVersion: v1

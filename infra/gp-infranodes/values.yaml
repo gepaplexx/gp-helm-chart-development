@@ -10,3 +10,7 @@ ceph:
   cluster:
     name: rook-ceph
     namespace: rook-ceph
+
+resourceLocker:
+  namespace: gp-infrastructure
+  serviceaccount: resource-locker-sa
