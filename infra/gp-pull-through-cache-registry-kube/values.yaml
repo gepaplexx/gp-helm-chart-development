@@ -1,6 +1,6 @@
 pvc:
   name: image-registry-mirror-storage-ceph
-  storage: 50Gi
+  storage: 100Gi
   storageClass: longhorn
 
 config:
