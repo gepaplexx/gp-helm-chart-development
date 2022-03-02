@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Subchart dependencies
         run: |
-          bin/build-helm-dependencies.sh
+          bin/update-helm-dependencies.sh
 
       - name: Lint Helm
         run: |
