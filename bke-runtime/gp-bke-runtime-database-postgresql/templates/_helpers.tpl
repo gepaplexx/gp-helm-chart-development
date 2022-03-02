@@ -5,7 +5,7 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{- define "db.jdbcurl" -}}
+{{- define "gp-bke-runtime-database-postgresql.jdbcurl" -}}
 {{- printf "jdbc:postgresql://%s:%s/%s" ( include "postgresql.primary.fullname" .Subcharts.db ) ( include "postgresql.service.port" .Subcharts.db ) (include "postgresql.database" .Subcharts.db) }}
 {{- end }}
 
