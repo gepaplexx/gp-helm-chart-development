@@ -1,0 +1,41 @@
+---
+name: Lint Helm Chart
+'on':
+  push:
+    branches:
+      - '!main'
+      - '!develop'
+    tags-ignore:
+      - '**'
+
+jobs:
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+
+      - name: Lint Helm
+        id: lint
+        uses: HexF/chart-testing-action@v3.0.0
+        with:
+          command: lint
+          config: lint_config.yaml
+          image: quay.io/helmpack/chart-testing:v3.5.0
+
+
+  notify:
+    name: Slack Notifications
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs:
+      - lint-helm
+    steps:
+      - name: Notify Slack channel on failure
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_ICON: https://github.com/fhochleitner/logos/raw/master/helm.png
+          SLACK_USERNAME: ${{ github.repository }}
+          SLACK_COLOR: '#ff0033'
+          SLACK_FOOTER: ''
