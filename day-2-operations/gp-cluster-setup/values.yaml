@@ -219,8 +219,7 @@ applications:
   clusterMonitoring:
     name: cluster-monitoring
     enabled: false            # An dieser Stelle nur aktivieren, wenn es ein Cluster ohne Infranodes ist!
-        argoProject: gepaplexx
-
+    argoProject: gepaplexx
     destination:
       namespace: openshift-monitoring
       create: true
