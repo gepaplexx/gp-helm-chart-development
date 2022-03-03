@@ -1,8 +1,12 @@
+## Values for the bitnami/postgresql should be below 'db:'.
+## See https://github.com/bitnami/charts/tree/master/bitnami/postgresql for documentation
 db:
   auth:
+    ## Define a user for the application and don't use the default admin user
     username: "appuser"
 
   primary:
+    ## Disable security context is needed to run on OpenShift
     containerSecurityContext:
       enabled: false
     podSecurityContext:
