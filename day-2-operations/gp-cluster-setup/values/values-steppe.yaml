@@ -228,8 +228,6 @@ applications:
       targetRevision: "*"
       helm:
         parameters:
-#        - name: "infranodes.enabled"
-#          value: "true"
         - name: "elasticsearch.nodeCount"
           value: "3"
     syncPolicy:
@@ -257,7 +255,7 @@ applications:
 ##################### OPENSHIFT PIPELINES OPERATOR ######################
   openshiftPipelinesOperator:
     name: openshift-pipelines-operator
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-gitops
@@ -402,5 +400,3 @@ applications:
       automated:
         prune: true
         selfHeal: true
-
-# Future-TODO: secret-store/HashiCorp-Valult, tekton instanz (openshift pipeline)
