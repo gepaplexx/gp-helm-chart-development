@@ -24,7 +24,7 @@ spec:
 {{/*    esRollover:*/}}
 {{/*      schedule: "{{ .Values.elasticsearch.rollover.schedule }}"*/}}
 {{/*    {{- end }}*/}}
-{{/*    {{- if .Values.elasticsearch.options.serverUrl }}*/}}
+    {{- if .Values.elasticsearch.options.serverUrl }}
     options:
       serverUrl: {{ .Values.elasticsearch.options.serverUrl }}
     {{- end}}
