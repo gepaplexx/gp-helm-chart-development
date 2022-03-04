@@ -397,3 +397,24 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+##################### JAEGER-INSTANZ ######################
+  consolePatches:
+    name: jaeger-instance
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-gitops
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-jaeger-instance
+      targetRevision: "*"
+      helm:
+        parameters:
+          - name: "elasticsearch.options.serverurl"
+            value: "elasticsearch.openshift-logging.svc.cluster.local:9200"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true

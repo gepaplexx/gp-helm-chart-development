@@ -1,5 +1,17 @@
-jaeger:
-  subscription:
-    name: jaeger-operator
-    channel: "stable"
-    installPlanApproval: Automatic
+namespace: ""
+strategy: "production"
+
+storage:
+  type: "elasticsearch"
+
+elasticsearch:
+  rollover:
+    schedule: "*/30 * * * *"
+  indexCleaner:
+    schedule: "55 23 * * *"
+    enabled: true
+    numberOfDays: 7
+  nodeCount: 3
+  redundancyPolicy: "SingleRedundancy"
+  options:
+    serverUrl: ""

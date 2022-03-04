@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gp-jaeger-operator
-description: A Helm chart for Kubernetes
+name: gp-jaeger-instance
+description: A Helm chart for installing a Jaeger instance in an OpenShift 4+ Cluster
 
 # A chart can be either an 'application' or a 'library' chart.
 #

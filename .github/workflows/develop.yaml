@@ -32,7 +32,8 @@ jobs:
              ./infra/*/. \
              ./bke-gp-old/*/. \
              ./day-2-operations/*/. \
-             ./gp-workload/*/.
+             ./gp-workload/*/. \
+             ./gp-apps/*/.
 
 
   pull-request:

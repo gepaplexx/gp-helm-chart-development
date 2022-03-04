@@ -1,11 +1,30 @@
-apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
+apiVersion: jaegertracing.io/v1
+kind: Jaeger
 metadata:
-  name: {{ .Values.jaeger.subscription.name }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Values.namespace | default .Release.Namespace }}
 spec:
-  channel: "{{ .Values.jaeger.subscription.channel }}"
-  installPlanApproval: {{ .Values.jaeger.subscription.installPlanApproval }}
-  name: jaeger-product
-  source: redhat-operators
-  sourceNamespace: openshift-marketplace 
+  strategy: {{ .Values.strategy }}
+  ingress:
+    security: oauth-proxy
+  storage:
+    type: {{ .Values.storage.type }}
+    {{- if eq .Values.storage.type "elasticsearch" }}
+    elasticsearch:
+      nodeCount: {{ .Values.elasticsearch.nodeCount }}
+      redundancyPolicy: {{ .Values.elasticsearch.nodeCount }}
+    {{- if .Values.elasticsearch.indexCleaner.enabled }}
+    {{- if .Values.elasticsearch.indexCleaner.enabled }}
+    esIndexCleaner:
+      enabled:  {{ .Values.elasticsearch.indexCleaner.enabled }}
+      numberOfDays: {{ .Values.elasticsearch.indexCleaner.numberOfDays }}
+      schedule: "{{ .Values.elasticsearch.indexCleaner.schedule }}"
+    {{- end }}
+    {{- end }}
+    esRollover:
+      schedule: "{{ .Values.elasticsearch.rollover.schedule }}"
+    {{- end }}
+    {{- if .Values.elasticsearch.options.serverUrl }}
+    options:
+      serverUrl: {{ .Values.elasticsearch.options.serverUrl }}
+    {{- end}}
