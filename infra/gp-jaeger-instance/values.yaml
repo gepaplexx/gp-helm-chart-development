@@ -15,3 +15,11 @@ elasticsearch:
   redundancyPolicy: "SingleRedundancy"
   options:
     serverUrl: ""
+collector:
+  requests:
+    memory: "500Mi"
+    cpu: "150m"
+  limits:
+    memory: "2Gi"
+    cpu: "500m"
+  replicas: 2

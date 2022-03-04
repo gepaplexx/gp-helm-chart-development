@@ -413,7 +413,7 @@ applications:
       helm:
         parameters:
           - name: "elasticsearch.options.serverurl"
-            value: "elasticsearch.openshift-logging.svc.cluster.local:9200"
+            value: "http://elasticsearch.openshift-logging.svc.cluster.local:9200"
     syncPolicy:
       automated:
         prune: true
