@@ -12,7 +12,7 @@ spec:
     {{- if eq .Values.storage.type "elasticsearch" }}
     elasticsearch:
       nodeCount: {{ .Values.elasticsearch.nodeCount }}
-      redundancyPolicy: {{ .Values.elasticsearch.nodeCount }}
+      redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
     {{- if .Values.elasticsearch.indexCleaner.enabled }}
     {{- if .Values.elasticsearch.indexCleaner.enabled }}
     esIndexCleaner:
