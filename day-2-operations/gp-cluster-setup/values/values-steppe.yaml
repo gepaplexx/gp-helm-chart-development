@@ -400,3 +400,20 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+##################### JAEGER-OPERATOR ######################
+  consolePatches:
+    name: jaeger-operator
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-operators
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-jaeger-operator
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true

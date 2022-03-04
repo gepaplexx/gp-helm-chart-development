@@ -381,4 +381,19 @@ applications:
         prune: true
         selfHeal: true
 
-# Future-TODO: secret-store/HashiCorp-Valult, tekton instanz (openshift pipeline)
+##################### JAEGER-OPERATOR ######################
+  consolePatches:
+    name: jaeger-operator
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-operators
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-jaeger-operator
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
