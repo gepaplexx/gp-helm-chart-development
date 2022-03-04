@@ -22,7 +22,7 @@ spec:
     metadata:
       labels:
         app: ots
-        {{- include "gp-one-time-secret.labels" . | nindent 6 }}
+        {{- include "gp-one-time-secret.labels" . | nindent 8 }}
     spec:
       containers:
       - image: ghcr.io/fhochleitner/ots:1.3
