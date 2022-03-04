@@ -402,7 +402,7 @@ applications:
         selfHeal: true
 
 ##################### JAEGER-OPERATOR ######################
-  consolePatches:
+  jaegerOperator:
     name: jaeger-operator
     enabled: true
     argoProject: gepaplexx
@@ -413,6 +413,27 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-jaeger-operator
       targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### JAEGER-INSTANZ ######################
+  jaegerInstance:
+    name: jaeger-instance
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-gitops
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-jaeger-instance
+      targetRevision: "*"
+      helm:
+        parameters:
+          - name: "elasticsearch.options.serverurl"
+            value: "elasticsearch.openshift-logging.svc.cluster.local:9200"
     syncPolicy:
       automated:
         prune: true

@@ -382,7 +382,7 @@ applications:
         selfHeal: true
 
 ##################### JAEGER-OPERATOR ######################
-  consolePatches:
+  jaegerOperator:
     name: jaeger-operator
     enabled: false
     argoProject: gepaplexx
@@ -399,7 +399,7 @@ applications:
         selfHeal: true
 
 ##################### JAEGER-INSTANZ ######################
-  consolePatches:
+  jaegerInstance:
     name: jaeger-instance
     enabled: false
     argoProject: gepaplexx
