@@ -421,7 +421,7 @@ applications:
 ##################### JAEGER-INSTANZ ######################
   jaegerInstance:
     name: jaeger-instance
-    enabled: false
+    enabled: true
     argoProject: gepaplexx
     destination:
       namespace: openshift-tracing
@@ -430,10 +430,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-jaeger-instance
       targetRevision: "*"
-      helm:
-        parameters:
-          - name: ""
-            value:
     syncPolicy:
       automated:
         prune: false
