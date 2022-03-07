@@ -29,7 +29,7 @@ spec:
       serverUrl: {{ .Values.elasticsearch.options.serverUrl }}
     {{- end}}
   collector:
-    ressources:
+    resources:
       requests:
         memory: {{ .Values.collector.requests.memory }}
         cpus: {{ .Values.collector.requests.cpu }}
