@@ -381,39 +381,37 @@ applications:
         prune: true
         selfHeal: true
 
-##################### JAEGER-OPERATOR ######################
-  jaegerOperator:
-    name: jaeger-operator
+##################### JAEGER ######################
+# either jaeger or service-mesh should be used. not both
+  jaeger:
+    name: jaeger
     enabled: false
     argoProject: gepaplexx
     destination:
-      namespace: openshift-operators
-      create: false
+      namespace: openshift-tracing
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-jaeger-operator
+      chart: gp-jaeger
       targetRevision: "*"
     syncPolicy:
       automated:
-        prune: true
+        prune: false
         selfHeal: true
 
-##################### JAEGER-INSTANZ ######################
-  jaegerInstance:
-    name: jaeger-instance
+##################### SERVICE-MESH ######################
+# either jaeger or service-mesh should be used. not both
+  service-mesh:
+    name: service-mesh
     enabled: false
     argoProject: gepaplexx
     destination:
-      namespace: openshift-gitops
-      create: false
+      namespace: istio-system
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-jaeger-instance
+      chart: gp-servicemesh
       targetRevision: "*"
-      helm:
-        parameters:
-          - name: "elasticsearch.options.serverurl"
-            value: "http://elasticsearch.openshift-logging.svc.cluster.local:9200"
     syncPolicy:
       automated:
         prune: true

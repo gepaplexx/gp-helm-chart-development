@@ -1,0 +1,50 @@
+namespace: ""
+strategy: "production"
+storage:
+  type: "elasticsearch"
+runOnInfra: true
+elasticsearch:
+# see https://github.com/jaegertracing/jaeger-operator/issues/330
+#  useExisting: false
+#  options:
+#    serverurls:
+#      - "https://elasticsearch.openshift-logging.svc:9200"
+  options:
+    indexprefix: production
+  rollover:
+    schedule: "*/30 * * * *"
+  indexCleaner:
+    schedule: "55 23 * * *"
+    enabled: true
+    numberOfDays: 7
+  # only required when "elasticsearch.useExisting" is set to false
+  nodeCount: 3
+  redundancyPolicy: "SingleRedundancy"
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "1Gi"
+    limits:
+      cpu: "800m"
+      memory: "4Gi"
+  storage:
+    size: "30Gi"
+
+collector:
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "50m"
+    limits:
+      memory: "256Mi"
+      cpu: "250m"
+    replicas: 2
+query:
+  replicas: 2
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "500Mi"
+    limits:
+      cpu: "300m"
+      memory: "1Gi"

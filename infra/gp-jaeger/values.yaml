@@ -1,0 +1,6 @@
+gp-jaeger-operator:
+  enabled: true
+gp-clusterlogging-operator:
+  enabled: false
+jaeger: {}
+

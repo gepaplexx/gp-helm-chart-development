@@ -1,6 +1,0 @@
-chart-dirs:
-  - workflows
-  - infra
-  - bke-runtime
-  - day-2-operations
-  - gp-workload

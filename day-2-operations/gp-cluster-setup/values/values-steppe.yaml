@@ -401,36 +401,38 @@ applications:
         prune: true
         selfHeal: true
 
-##################### JAEGER-OPERATOR ######################
-  jaegerOperator:
-    name: jaeger-operator
-    enabled: true
-    argoProject: gepaplexx
-    destination:
-      namespace: openshift-operators
-      create: false
-    source:
-      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-jaeger-operator
-      targetRevision: "*"
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-
-##################### JAEGER-INSTANZ ######################
-  jaegerInstance:
-    name: jaeger-instance
-    enabled: true
+##################### JAEGER ######################
+# either jaeger or service-mesh should be used. not both
+  jaeger:
+    name: jaeger
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-tracing
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-jaeger-instance
+      chart: gp-jaeger
       targetRevision: "*"
     syncPolicy:
       automated:
         prune: false
+        selfHeal: true
+
+##################### SERVICE-MESH ######################
+# either jaeger or service-mesh should be used. not both
+  service-mesh:
+    name: service-mesh
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: istio-system
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-servicemesh
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
         selfHeal: true
