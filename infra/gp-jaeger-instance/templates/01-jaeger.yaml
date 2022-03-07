@@ -9,22 +9,22 @@ spec:
     security: oauth-proxy
   storage:
     type: {{ .Values.storage.type }}
-{{/*    {{- if eq .Values.storage.type "elasticsearch" }}*/}}
-{{/*    elasticsearch:*/}}
-{{/*      nodeCount: {{ .Values.elasticsearch.nodeCount }}*/}}
-{{/*      redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}*/}}
-{{/*    {{- if .Values.elasticsearch.indexCleaner.enabled }}*/}}
-{{/*    {{- if .Values.elasticsearch.indexCleaner.enabled }}*/}}
-{{/*    esIndexCleaner:*/}}
-{{/*      enabled:  {{ .Values.elasticsearch.indexCleaner.enabled }}*/}}
-{{/*      numberOfDays: {{ .Values.elasticsearch.indexCleaner.numberOfDays }}*/}}
-{{/*      schedule: "{{ .Values.elasticsearch.indexCleaner.schedule }}"*/}}
-{{/*    {{- end }}*/}}
-{{/*    {{- end }}*/}}
-{{/*    esRollover:*/}}
-{{/*      schedule: "{{ .Values.elasticsearch.rollover.schedule }}"*/}}
-{{/*    {{- end }}*/}}
-    {{- if .Values.elasticsearch.options.serverUrl }}
+    {{- if eq .Values.storage.type "elasticsearch" }}
+    {{- if not .Values.elasticsearch.useExisting  }}
+    elasticsearch:
+      nodeCount: {{ .Values.elasticsearch.nodeCount }}
+      redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
+    {{- end }}
+    {{- if .Values.elasticsearch.indexCleaner.enabled }}
+    esIndexCleaner:
+      enabled:  {{ .Values.elasticsearch.indexCleaner.enabled }}
+      numberOfDays: {{ .Values.elasticsearch.indexCleaner.numberOfDays }}
+      schedule: "{{ .Values.elasticsearch.indexCleaner.schedule }}"
+    {{- end }}
+    esRollover:
+      schedule: "{{ .Values.elasticsearch.rollover.schedule }}"
+    {{- end }}
+    {{- if .Values.elasticsearch.useExisting }}
     options:
       serverUrl: {{ .Values.elasticsearch.options.serverUrl }}
     {{- end}}

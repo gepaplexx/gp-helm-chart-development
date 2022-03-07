@@ -5,6 +5,7 @@ storage:
   type: "elasticsearch"
 
 elasticsearch:
+  useExisting: true
   rollover:
     schedule: "*/30 * * * *"
   indexCleaner:
