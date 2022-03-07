@@ -5,4 +5,4 @@ gp-jaeger-operator:
 gp-kiali-operator:
   enabled: true               # only required for service mesh so default installation
 gp-servicemesh-operator:
-  enabled: true
+  enabled: false

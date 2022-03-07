@@ -41,4 +41,5 @@ dependencies:
 - name: gp-servicemesh-operator
   alias: servicemesh-operator
   version: "*"
+  repository: https://gepaplexx.github.io/gp-helm-charts
   condition: gp-servicemesh-operator.enabled
