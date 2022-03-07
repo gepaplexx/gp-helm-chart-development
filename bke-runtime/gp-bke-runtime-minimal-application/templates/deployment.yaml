@@ -40,20 +40,24 @@ spec:
           {{- end }}
           env:
           {{- range $i, $e := .Values.database }}
-            - name: {{ $e | upper }}_DB_PASSWORD
+            - name: {{ $e.name | upper }}_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e }}-db
+                  name: {{ $e.name }}-db
+                  {{- if eq $e.type "mysql" }}
+                  key: mysql-password
+                  {{- else }}
                   key: password
-            - name: {{ $e | upper }}_DB_USERNAME
+                  {{- end }}
+            - name: {{ $e.name | upper }}_DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e }}-db-connect
+                  name: {{ $e.name }}-db-connect
                   key: username
-            - name: {{ $e | upper }}_DB_JDBCURL
+            - name: {{ $e.name | upper }}_DB_JDBCURL
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e }}-db-connect
+                  name: {{ $e.name }}-db-connect
                   key: jdbcurl
           {{- end }}
           {{- with .Values.env }}
