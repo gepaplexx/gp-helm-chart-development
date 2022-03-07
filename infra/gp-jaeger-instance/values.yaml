@@ -6,16 +6,23 @@ storage:
 
 elasticsearch:
   useExisting: true
+  options:
+    serverurls:
+      - "https://elasticsearch.openshift-logging.svc:9200"
+    indexprefix: example
+    username: test
+    password: test
   rollover:
     schedule: "*/30 * * * *"
   indexCleaner:
     schedule: "55 23 * * *"
     enabled: true
     numberOfDays: 7
+
+  # only required when "elasticsearch.useExisting" is set to false
   nodeCount: 3
   redundancyPolicy: "SingleRedundancy"
-  options:
-    serverUrl: ""
+
 collector:
   requests:
     memory: "500Mi"

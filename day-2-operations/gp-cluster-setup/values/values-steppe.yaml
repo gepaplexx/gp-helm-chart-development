@@ -432,8 +432,8 @@ applications:
       targetRevision: "*"
       helm:
         parameters:
-          - name: "elasticsearch.options.serverurl"
-            value: "http://elasticsearch.openshift-logging.svc.cluster.local:9200"
+          - name: "elasticsearch.options.serverUrl"
+            value: "http://elasticsearch.openshift-logging.svc:9200"
     syncPolicy:
       automated:
         prune: false

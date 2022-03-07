@@ -10,8 +10,8 @@ spec:
   storage:
     type: {{ .Values.storage.type }}
     {{- if eq .Values.storage.type "elasticsearch" }}
-    {{- if not .Values.elasticsearch.useExisting  }}
     elasticsearch:
+    {{- if not .Values.elasticsearch.useExisting }}
       nodeCount: {{ .Values.elasticsearch.nodeCount }}
       redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
     {{- end }}
@@ -24,16 +24,32 @@ spec:
     esRollover:
       schedule: "{{ .Values.elasticsearch.rollover.schedule }}"
     {{- end }}
-    {{- if .Values.elasticsearch.useExisting }}
     options:
-      serverUrl: {{ .Values.elasticsearch.options.serverUrl }}
-    {{- end}}
+      es:
+    {{- if .Values.elasticsearch.useExisting }}
+        server-urls:
+        {{- range .Values.elasticsearch.options.serverurls }}
+        - {{ . }}
+        {{- end }}
+    {{- end }}
+        index-prefix: "{{ .Values.elasticsearch.options.indexprefix}}"
+        tls.enabled: "true"
+        tls.ca: /tls/admin-ca
+        tls.cert: /tls/admin-cert
+        tls.key: /tls/admin-key
   collector:
     resources:
       requests:
-        memory: {{ .Values.collector.requests.memory }}
-        cpus: {{ .Values.collector.requests.cpu }}
+        memory: "{{ .Values.collector.requests.memory }}"
+        cpu: "{{ .Values.collector.requests.cpu }}"
       limits:
-        cpu: {{ .Values.collector.limits.memory }}
-        memory: {{ .Values.collector.limits.cpu }}
+        memory: "{{ .Values.collector.limits.memory }}"
+        cpu: "{{ .Values.collector.limits.cpu }}"
     replicas: {{ .Values.collector.replicas }}
+  volumeMounts:
+    - name: es-tls
+      mountPath: /tls
+  volumes:
+    - name: es-tls
+      secret:
+        secretName: elasticsearch
