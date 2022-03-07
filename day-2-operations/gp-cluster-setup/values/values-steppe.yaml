@@ -421,7 +421,7 @@ applications:
 ##################### JAEGER-INSTANZ ######################
   jaegerInstance:
     name: jaeger-instance
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-gitops
@@ -436,5 +436,5 @@ applications:
             value: "http://elasticsearch.openshift-logging.svc.cluster.local:9200"
     syncPolicy:
       automated:
-        prune: true
+        prune: false
         selfHeal: true
