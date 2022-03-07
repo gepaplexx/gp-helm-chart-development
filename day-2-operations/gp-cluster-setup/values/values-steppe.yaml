@@ -424,16 +424,16 @@ applications:
     enabled: false
     argoProject: gepaplexx
     destination:
-      namespace: openshift-gitops
-      create: false
+      namespace: openshift-tracing
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-jaeger-instance
       targetRevision: "*"
       helm:
         parameters:
-          - name: "elasticsearch.options.serverUrl"
-            value: "http://elasticsearch.openshift-logging.svc:9200"
+          - name: ""
+            value:
     syncPolicy:
       automated:
         prune: false

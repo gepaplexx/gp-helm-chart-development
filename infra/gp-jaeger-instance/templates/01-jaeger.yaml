@@ -11,10 +11,17 @@ spec:
     type: {{ .Values.storage.type }}
     {{- if eq .Values.storage.type "elasticsearch" }}
     elasticsearch:
-    {{- if not .Values.elasticsearch.useExisting }}
       nodeCount: {{ .Values.elasticsearch.nodeCount }}
       redundancyPolicy: {{ .Values.elasticsearch.redundancyPolicy }}
-    {{- end }}
+      resources:
+        requests:
+          cpu: {{ .Values.elasticsearch.resources.requests.cpu }}
+          memory: {{ .Values.elasticsearch.resources.requests.memory }}
+        limits:
+          cpu: {{ .Values.elasticsearch.resources.limits.cpu }}
+          memory: {{ .Values.elasticsearch.resources.limits.memory }}
+      storage:
+        size: {{ .Values.elasticsearch.storage.size }}
     {{- if .Values.elasticsearch.indexCleaner.enabled }}
     esIndexCleaner:
       enabled:  {{ .Values.elasticsearch.indexCleaner.enabled }}
@@ -26,30 +33,31 @@ spec:
     {{- end }}
     options:
       es:
-    {{- if .Values.elasticsearch.useExisting }}
-        server-urls:
-        {{- range .Values.elasticsearch.options.serverurls }}
-        - {{ . }}
-        {{- end }}
-    {{- end }}
         index-prefix: "{{ .Values.elasticsearch.options.indexprefix}}"
-        tls.enabled: "true"
-        tls.ca: /tls/admin-ca
-        tls.cert: /tls/admin-cert
-        tls.key: /tls/admin-key
   collector:
     resources:
       requests:
-        memory: "{{ .Values.collector.requests.memory }}"
-        cpu: "{{ .Values.collector.requests.cpu }}"
+        memory: "{{ .Values.collector.resources.requests.memory }}"
+        cpu: "{{ .Values.collector.resources.requests.cpu }}"
       limits:
-        memory: "{{ .Values.collector.limits.memory }}"
-        cpu: "{{ .Values.collector.limits.cpu }}"
+        memory: "{{ .Values.collector.resources.limits.memory }}"
+        cpu: "{{ .Values.collector.resources.limits.cpu }}"
     replicas: {{ .Values.collector.replicas }}
-  volumeMounts:
-    - name: es-tls
-      mountPath: /tls
-  volumes:
-    - name: es-tls
-      secret:
-        secretName: elasticsearch
+  query:
+    replicas: {{ .Values.query.replicas }}
+    resources:
+      requests:
+        memory: "{{ .Values.query.resources.requests.memory }}"
+        cpu: "{{ .Values.query.resources.requests.cpu }}"
+      limits:
+        memory: "{{ .Values.query.resources.limits.memory }}"
+        cpu: "{{ .Values.query.resources.limits.cpu }}"
+  {{- if .Values.runOnInfra }}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: node-role.kubernetes.io/infra
+                operator: Exists
+  {{- end }}
