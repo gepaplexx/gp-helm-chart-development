@@ -3,12 +3,3 @@ servicemesh:
     name: servicemesh-operator
     channel: "stable"
     installPlanApproval: Automatic
-
-gp-clusterlogging-operator:
-  enabled: false              # should be installed via day-2-operations
-gp-jaeger-operator:
-  enabled: true               # either service-mesh or jaeger should be deployed
-gp-kiali-operator:
-  enabled: true               # only required for service mesh so default installation
-gp-servicemesh-operator:
-  enabled: true

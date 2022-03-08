@@ -405,7 +405,7 @@ applications:
 # either jaeger or service-mesh should be used. not both
   jaeger-operator:
     name: jaeger-operator
-    enabled: false
+    enabled: true
     argoProject: gepaplexx
     destination:
       namespace: openshift-operators
@@ -413,6 +413,24 @@ applications:
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-jaeger-operator
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### KIALI-OPERATOR ######################
+# Required for ServiceMesh
+  kiali-operator:
+    name: kiali-operator
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-operators
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-kiali-operator
       targetRevision: "*"
     syncPolicy:
       automated:
