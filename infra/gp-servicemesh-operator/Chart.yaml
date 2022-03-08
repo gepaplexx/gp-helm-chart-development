@@ -22,3 +22,19 @@ version: 0.1.0
 # follow Semantic Versioning. They should reflect the version the application is using.
 # It is recommended to use it with quotes.
 appVersion: "1.16.0"
+depenencies:
+- name: gp-cluster-logging-operator
+  alias: clusterlogging-operator
+  repository: https://gepaplexx.github.io/gp-helm-charts
+  version: "*"
+  condition: gp-clusterlogging-operator.enabled
+- name: gp-jaeger-operator
+  alias: jaeger-operator
+  repository: https://gepaplexx.github.io/gp-helm-charts
+  version: "*"
+  condition: gp-jaeger-operator.enabled
+- name: gp-kiali-operator
+  alias: kiali-operator
+  repository: https://gepaplexx.github.io/gp-helm-charts
+  version: "*"
+  condition: gp-kiali-operator.enabled

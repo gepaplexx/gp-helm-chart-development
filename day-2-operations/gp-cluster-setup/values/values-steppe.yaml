@@ -401,28 +401,64 @@ applications:
         prune: true
         selfHeal: true
 
-##################### JAEGER ######################
+##################### JAEGER-OPERATOR ######################
 # either jaeger or service-mesh should be used. not both
-  jaeger:
-    name: jaeger
+  jaeger-operator:
+    name: jaeger-operator
     enabled: false
     argoProject: gepaplexx
     destination:
-      namespace: openshift-tracing
-      create: true
+      namespace: openshift-operators
+      create: false
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-jaeger
+      chart: gp-jaeger-operator
       targetRevision: "*"
     syncPolicy:
       automated:
-        prune: false
+        prune: true
         selfHeal: true
 
 ##################### SERVICE-MESH ######################
 # either jaeger or service-mesh should be used. not both
-  service-mesh:
-    name: service-mesh
+  jaeger-instance:
+    name: jaeger-instance
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: gp-obversability
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-jaeger-instance
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### SERVICE-MESH OPERATOR ######################
+# either jaeger or service-mesh should be used. not both
+  service-mesh-operator:
+    name: service-mesh-operator
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-operator
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-servicemesh-operator
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### SERVICE-MESH INSTANCE ######################
+# either jaeger or service-mesh should be used. not both
+  service-mesh-instance:
+    name: service-mesh-instance
     enabled: true
     argoProject: gepaplexx
     destination:
@@ -430,9 +466,9 @@ applications:
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-servicemesh
+      chart: gp-servicemesh-instance
       targetRevision: "*"
     syncPolicy:
       automated:
-        prune: false
-        selfHeal: false
+        prune: true
+        selfHeal: true
