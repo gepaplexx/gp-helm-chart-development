@@ -11,6 +11,11 @@ nameOverride: ""
 # metadata.label.app.kubernetes.io/name: gp-bke-runtime-minimal-application
 fullnameOverride: ""
 
+## List of database connections used in the application
+# database:
+#   - name: "myappdb"
+#     type: mysql
+
 image:
   # The name of the image to be used, e.g. image-registry.openshift-image-registry.svc.cluster.local:5000/example-project/example-backend
   name: 
