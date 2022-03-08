@@ -39,25 +39,25 @@ spec:
               port: http
           {{- end }}
           env:
-          {{- range $i, $e := .Values.database }}
-            - name: {{ $e.name | upper }}_DB_PASSWORD
+          {{- range .Values.database }}
+            - name: {{ .name | upper }}_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e.name }}-db
-                  {{- if eq $e.type "mysql" }}
+                  name: {{ .name }}-db
+                  {{- if eq .type "mysql" }}
                   key: mysql-password
                   {{- else }}
                   key: password
                   {{- end }}
-            - name: {{ $e.name | upper }}_DB_USERNAME
+            - name: {{ .name | upper }}_DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e.name }}-db-connect
+                  name: {{ .name }}-db-connect
                   key: username
-            - name: {{ $e.name | upper }}_DB_JDBCURL
+            - name: {{ .name | upper }}_DB_JDBCURL
               valueFrom:
                 secretKeyRef:
-                  name: {{ $e.name }}-db-connect
+                  name: {{ .name }}-db-connect
                   key: jdbcurl
           {{- end }}
           {{- with .Values.env }}
