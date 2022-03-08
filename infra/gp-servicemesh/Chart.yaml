@@ -43,7 +43,7 @@ dependencies:
   version: "*"
   repository: https://gepaplexx.github.io/gp-helm-charts
   condition: gp-servicemesh-operator.enabled
-- name: gp-servicemesh-instance
-  alias: servicemesh-instance
-  version: "*"
-  repository: https://gepaplexx.github.io/gp-helm-charts
+#- name: gp-servicemesh-instance
+#  alias: servicemesh-instance
+#  version: "*"
+#  repository: https://gepaplexx.github.io/gp-helm-charts
