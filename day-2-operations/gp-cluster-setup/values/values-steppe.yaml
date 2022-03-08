@@ -423,7 +423,7 @@ applications:
 # either jaeger or service-mesh should be used. not both
   service-mesh:
     name: service-mesh
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: istio-system
