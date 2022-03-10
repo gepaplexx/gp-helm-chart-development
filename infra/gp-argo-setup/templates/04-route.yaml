@@ -1,0 +1,19 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: argo-workflows
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.workflows.route.hostname }}
+  host: {{ .Values.workflows.route.hostname }}
+  {{- end }}
+  port:
+    targetPort: web
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: Passthrough
+  to:
+    kind: Service
+    name: argo-server
+    weight: 100
+  wildcardPolicy: None
