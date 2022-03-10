@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+  name: template-kubernetes-operations
+spec:
+  serviceAccountName: builder
+  templates:
+  - container:
+      args:
+      - echo 'extracting namespace'
+      command:
+      - sh
+      - -c
+      image: busybox
+      name: busybox
+      volumeMounts:
+      - mountPath: /etc/podinfo/
+        name: podinfo
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-kubernetes-operations
+        template: extract-namespace
+    name: extract-namespace
+    outputs:
+      parameters:
+      - name: namespace
+        valueFrom:
+          path: /etc/podinfo/namespace
+    volumes:
+    - downwardAPI:
+        items:
+        - fieldRef:
+            fieldPath: metadata.namespace
+          path: namespace
+      name: podinfo

@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: template-maven-builds
+spec:
+  serviceAccountName: builder
+  templates:
+  - container:
+      args:
+      - cd /mnt/out/{{ inputs.parameters.working-directory }}/ && mvn {{ inputs.parameters.mvn-action
+        }}
+      command:
+      - sh
+      - -c
+      image: '{{ inputs.parameters.mvn-image }}'
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    inputs:
+      parameters:
+      - name: mvn-image
+      - name: mvn-action
+      - name: working-directory
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-maven-builds
+        template: mvn-action
+    name: mvn

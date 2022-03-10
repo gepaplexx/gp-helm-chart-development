@@ -409,3 +409,11 @@ spec:
       securityContext:
         runAsNonRoot: true
       serviceAccountName: argo-events-sa
+---
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: default
+spec:
+  nats:
+    native: {}
