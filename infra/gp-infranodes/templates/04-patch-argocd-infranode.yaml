@@ -19,3 +19,13 @@ spec:
             node-role.kubernetes.io/infra: ""
     patchType: application/merge-patch+json
     id: patch-argocd-infranodes
+  - targetObjectRef:
+      apiVersion: pipelines.openshift.io/v1alpha1
+      kind: GitopsService
+      name: cluster
+      namespace: {{ .Values.argocd.namespace }}
+    patchTemplate: |
+      spec:
+        runOnInfra: true
+    patchType: application/merge-patch+json
+    id: patch-argocd-gitopsservice
