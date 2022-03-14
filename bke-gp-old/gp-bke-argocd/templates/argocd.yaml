@@ -1,6 +1,0 @@
-{{ if (eq .Values.argocd.enableVault false) }}
-apiVersion: argoproj.io/v1alpha1
-kind: ArgoCD
-metadata:
-  name: {{ default .Release.Name .Values.argocd.name }}
-{{ end }}
