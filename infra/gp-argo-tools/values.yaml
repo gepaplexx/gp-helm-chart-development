@@ -1,7 +1,7 @@
 ####################
 ## ARGO WORFKLOWS ##
 ####################
-argo-workflows:
+argo_workflows:
   fullnameOverride: argo-workflows
   enabled: true
 # Serverconfiguration
@@ -77,7 +77,7 @@ argo-workflows:
 ####################
 ##  ARGO  EVENTS  ##
 ####################
-argo-events:
+argo_events:
   enabled: true
   fullnameOverride: argo-events
   singleNamespace: false
@@ -101,7 +101,7 @@ argo-events:
 ##  ARGO ROLLOUT  ##
 ####################
 
-argo-rollouts:
+argo_rollouts:
   enabled: false                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
 # Controllerconfiguration:

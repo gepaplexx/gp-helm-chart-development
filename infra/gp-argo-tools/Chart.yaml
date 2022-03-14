@@ -24,15 +24,17 @@ version: 0.1.0
 appVersion: "1.16.0"
 dependencies:
 - name: argo-workflows
+  alias: argo_workflows
   repository: "https://charts.bitnami.com/bitnami"
   version: 1.0.2
   condition: argo-workflows.enabled
 - name: gp-argo-events
-  alias: argo-events
+  alias: argo_events
   repository: "https://gepaplexx.github.io/gp-helm-charts/"
   version: 1.12.0
   condition: argo-events.enabled
 - name: argo-rollouts
+  alias: argo_rollouts
   repository: "https://argoproj.github.io/argo-helm"
   version: 2.10.0
-  condition: argo-rollouts.enabled
+  condition: argo_rollouts.enabled
