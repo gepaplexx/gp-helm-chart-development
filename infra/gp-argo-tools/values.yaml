@@ -17,9 +17,8 @@ argo-workflows:
       enabled: false
     containerSecurityContext:
       enabled: false
-      runAsNonRoot: true
     auth:
-      mode: server
+      mode: client
       sso:
         enabled: false      # TODO: Umstellen auf SSO in Zukunft!
 #        issuer:
@@ -44,14 +43,13 @@ argo-workflows:
       enabled: false
     containerSecurityContext:
       enabled: false
-      runAsNonRoot: true
+
 # Executorconfiguration
   executor:
     podSecurityContext:
       enabled: false
     containerSecurityContext:
       enabled: false
-      runAsNonRoot: true
 # Ingressconfiguration
   ingress:
     enabled: true
@@ -68,6 +66,13 @@ argo-workflows:
   postgresql:
     auth:
       database: argo_workflows
+      username: postgres
+      password: ""
+    primary:
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
 
 ####################
 ##  ARGO  EVENTS  ##
@@ -97,7 +102,7 @@ argo-events:
 ####################
 
 argo-rollouts:
-  enabled: true
+  enabled: false                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
 # Controllerconfiguration:
   controller:
