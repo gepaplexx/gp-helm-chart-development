@@ -11,4 +11,5 @@ spec:
     termination: edge
   to:
     name: github-eventsource-svc
+    kind: Service
 ---

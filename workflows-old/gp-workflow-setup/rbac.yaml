@@ -48,7 +48,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: create-argo-application-sa
-    namespace: gepardec-ci
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -84,5 +84,5 @@ roleRef:
   name: workflow-role
 subjects:
   - kind: ServiceAccount
-    name: default
+    name: {{ .Values.argo-workflows.workflows.serviceAccount.name }}
 ---

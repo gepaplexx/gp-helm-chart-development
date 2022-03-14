@@ -1,5 +1,0 @@
-TODO:
-KEYCLOAK Integration
-DEX deaktivieren
-ArgoCD & Argo-Workflows mit Keykloak integrieren
-https://docs.openshift.com/container-platform/4.9/cicd/gitops/configuring-sso-for-argo-cd-using-keycloak.html
