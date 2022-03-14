@@ -32,7 +32,6 @@ jobs:
           helm lint \
              ./bke-runtime/*/. \
              ./infra/*/. \
-             ./bke-gp-old/*/. \
              ./day-2-operations/*/. \
              ./gp-workload/*/. \
              ./gp-apps/*/.
