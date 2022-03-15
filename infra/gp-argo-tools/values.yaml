@@ -32,6 +32,7 @@ argo_workflows:
 #        scopes:
 # Controllerconfiguration
   controller:
+    containerRuntimeExecutor: emissary
     resources:
       limits:
         cpu: 500m
