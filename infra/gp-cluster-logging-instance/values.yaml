@@ -34,7 +34,7 @@ kibana:
   replicas: 1
   resources:
     limits:
-      memory: " 736Mi"
+      memory: " 1Gi"
       cpu: "250m"
     requests:
       cpu: "150m"
