@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"ClusterWorkflowTemplate","metadata":{"annotations":{},"name":"update-version-in-git"},"spec":{"templates":[{"container":{"args":["cd /mnt/out \\\n\u0026\u0026 ssh-keyscan -t rsa github.com \u003e\u003e ~/.ssh/known_hosts \\\n\u0026\u0026 git clone $cloneurl || true \\\n\u0026\u0026 cd {{ workflow.parameters.reponame }}-ci \\\n\u0026\u0026 sed -i \"s/tag: \\w\\{7\\}/tag: {{ workflow.parameters.tag }}/g\" values.yaml \\\n\u0026\u0026 git config --global user.name \"argo-ci\" \\\n\u0026\u0026 git config --global user.email \"argo-ci@gepardec.com\" \\\n\u0026\u0026 git add . \\\n\u0026\u0026 git commit -m \"updated image version to tag {{ workflow.parameters.tag }}\" || true \\\n\u0026\u0026 git push\n"],"command":["sh","-c"],"envFrom":[{"secretRef":{"name":"{{ workflow.parameters.reponame }}-infra"}}],"image":"alpine/git","volumeMounts":[{"mountPath":"/mnt/out/","name":"workspace"},{"mountPath":"/root/.ssh/id_rsa","name":"sshkey","subPath":"id_rsa"}]},"metadata":{"labels":{"app":"argo"}},"name":"update-version-in-git","volumes":[{"name":"sshkey","secret":{"items":[{"key":"id_rsa","mode":384,"path":"id_rsa"}],"secretName":"{{ workflow.parameters.reponame }}-infra"}}]}]}}
+  creationTimestamp: "2022-02-10T14:37:12Z"
+  generation: 2
+  name: update-version-in-git
+  resourceVersion: "593033577"
+  uid: 1f5613be-3827-47f4-ac3f-f2f4e95c4504
+spec:
+  templates:
+  - container:
+      args:
+      - |
+        cd /mnt/out \
+        && ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts \
+        && git clone $cloneurl || true \
+        && cd {{ workflow.parameters.reponame }}-ci \
+        && sed -i "s/tag: \w\{7\}/tag: {{ workflow.parameters.tag }}/g" values.yaml \
+        && git config --global user.name "argo-ci" \
+        && git config --global user.email "argo-ci@gepardec.com" \
+        && git add . \
+        && git commit -m "updated image version to tag {{ workflow.parameters.tag }}" || true \
+        && git push
+      command:
+      - sh
+      - -c
+      envFrom:
+      - secretRef:
+          name: '{{ workflow.parameters.reponame }}-infra'
+      image: alpine/git
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+      - mountPath: /root/.ssh/id_rsa
+        name: sshkey
+        subPath: id_rsa
+    metadata:
+      labels:
+        app: argo
+    name: update-version-in-git
+    volumes:
+    - name: sshkey
+      secret:
+        items:
+        - key: id_rsa
+          mode: 384
+          path: id_rsa
+        secretName: '{{ workflow.parameters.reponame }}-infra'

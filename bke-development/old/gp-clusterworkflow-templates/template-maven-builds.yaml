@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"ClusterWorkflowTemplate","metadata":{"annotations":{},"name":"template-maven-builds"},"spec":{"serviceAccountName":"builder","templates":[{"container":{"args":["cd /mnt/out/{{ inputs.parameters.working-directory }}/ \u0026\u0026 mvn {{ inputs.parameters.mvn-action }}"],"command":["sh","-c"],"image":"{{ inputs.parameters.mvn-image }}","volumeMounts":[{"mountPath":"/mnt/out/","name":"workspace"}]},"inputs":{"parameters":[{"name":"mvn-image"},{"name":"mvn-action"},{"name":"working-directory"}]},"metadata":{"labels":{"app":"argo","clusterWorkflowTemplate":"template-maven-builds","template":"mvn-action"}},"name":"mvn"}]}}
+  creationTimestamp: "2022-02-15T09:06:51Z"
+  generation: 4
+  name: template-maven-builds
+  resourceVersion: "603040741"
+  uid: b220c551-b417-43de-a892-6f761b35cfcd
+spec:
+  serviceAccountName: builder
+  templates:
+  - container:
+      args:
+      - cd /mnt/out/{{ inputs.parameters.working-directory }}/ && mvn {{ inputs.parameters.mvn-action
+        }}
+      command:
+      - sh
+      - -c
+      image: '{{ inputs.parameters.mvn-image }}'
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    inputs:
+      parameters:
+      - name: mvn-image
+      - name: mvn-action
+      - name: working-directory
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-maven-builds
+        template: mvn-action
+    name: mvn

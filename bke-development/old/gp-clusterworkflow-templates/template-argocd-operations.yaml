@@ -1,0 +1,68 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"ClusterWorkflowTemplate","metadata":{"annotations":{},"name":"template-argocd-operations"},"spec":{"serviceAccountName":"builder","templates":[{"container":{"args":["cd /mnt/out \\\n\u0026\u0026\n\u0026\u0026 git clone $cloneurl || true \\\n\u0026\u0026 cd {{ workflow.parameters.reponame }}-ci \\\n\u0026\u0026 sed -i \"s/tag: \\w\\{7\\}/tag: {{ inputs.parameters.tag }}/g\" values.yaml \\\n\u0026\u0026 git add . \\\n\u0026\u0026 git commit -m \"updated image version to tag {{ inputs.parameters.tag }}\" || true \\\n\u0026\u0026 git push\n"],"command":["sh","-c"],"envFrom":[{"secretRef":{"name":"{{ inputs.parameters.reponame }}-infra"}}],"image":"alpine/git","initContainer":[{"args":["ssh-keyscan -t rsa github.com \u003e\u003e ~/.ssh/known_hosts \u0026\u0026 \\\ngit config --global user.name \"argo-ci\"  \u0026\u0026 \\\ngit config --global user.email \"argo-ci@gepardec.com\"\n"],"command":["sh","-c"],"image":"alpine/git","mirrorVolumeMounts":true,"name":"add-github-sshkey"}],"volumeMounts":[{"mountPath":"/mnt/out/","name":"workspace"},{"mountPath":"/root/.ssh/id_rsa","name":"sshkey","subPath":"id_rsa"}]},"inputs":{"parameters":[{"name":"tag"},{"name":"reponame"}]},"metadata":{"labels":{"app":"argo","clusterWorkflowTemplate":"tempalte-argocd-operations","template":"update-argocd-application"}},"name":"update-argocd-application","volumes":[{"name":"sshkey","secret":{"items":[{"key":"id_rsa","mode":384,"path":"id_rsa"}],"secretName":"{{ inputs.parameters.reponame }}-infra"}}]}]}}
+  creationTimestamp: "2022-02-15T12:31:33Z"
+  generation: 1
+  name: template-argocd-operations
+  resourceVersion: "603333211"
+  uid: 1f4f8b4f-70de-4b5c-8d70-69719c1f632d
+spec:
+  serviceAccountName: builder
+  templates:
+  - container:
+      args:
+      - |
+        cd /mnt/out \
+        &&
+        && git clone $cloneurl || true \
+        && cd {{ workflow.parameters.reponame }}-ci \
+        && sed -i "s/tag: \w\{7\}/tag: {{ inputs.parameters.tag }}/g" values.yaml \
+        && git add . \
+        && git commit -m "updated image version to tag {{ inputs.parameters.tag }}" || true \
+        && git push
+      command:
+      - sh
+      - -c
+      envFrom:
+      - secretRef:
+          name: '{{ inputs.parameters.reponame }}-infra'
+      image: alpine/git
+      initContainer:
+      - args:
+        - |
+          ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts && \
+          git config --global user.name "argo-ci"  && \
+          git config --global user.email "argo-ci@gepardec.com"
+        command:
+        - sh
+        - -c
+        image: alpine/git
+        mirrorVolumeMounts: true
+        name: add-github-sshkey
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+      - mountPath: /root/.ssh/id_rsa
+        name: sshkey
+        subPath: id_rsa
+    inputs:
+      parameters:
+      - name: tag
+      - name: reponame
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: tempalte-argocd-operations
+        template: update-argocd-application
+    name: update-argocd-application
+    volumes:
+    - name: sshkey
+      secret:
+        items:
+        - key: id_rsa
+          mode: 384
+          path: id_rsa
+        secretName: '{{ inputs.parameters.reponame }}-infra'
