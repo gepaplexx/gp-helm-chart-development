@@ -31,7 +31,6 @@ jobs:
           helm lint \
              ./bke-runtime/*/. \
              ./infra/*/. \
-             ./bke-gp-old/*/. \
              ./day-2-operations/*/. \
              ./gp-workload/*/. \
              ./gp-apps/*/.
@@ -65,15 +64,6 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           charts_dir: ./gp-workload
-          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-          owner: gepaplexx
-          repository: gp-helm-charts
-          branch: main
-      - name: Publish old-gp-bke Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./bke-gp-old
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts

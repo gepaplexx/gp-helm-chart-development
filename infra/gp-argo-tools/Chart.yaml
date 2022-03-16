@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gp-app
-description: BKE-App Helm Chart
+name: gp-argo-setup
+description: A Helm chart for deploying argo infrastructure including workflow, events, rollout and an argocd instance
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,16 +15,26 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.2
+version: 0.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 1.0.0
-
-#dependencies:
-#- name: gp-bke-s2i
-#  version: "0.1.0"
-#  repository: "https://gepaplexx.github.io/gp-helm-charts/"
-#  condition: gps2i.enabled
-#  alias: gps2i
+# It is recommended to use it with quotes.
+appVersion: "1.16.0"
+dependencies:
+- name: argo-workflows
+  alias: argo_workflows
+  repository: "https://charts.bitnami.com/bitnami"
+  version: 1.0.2
+  condition: argo-workflows.enabled
+- name: gp-argo-events
+  alias: argo_events
+  repository: "https://gepaplexx.github.io/gp-helm-charts/"
+  version: 1.12.0
+  condition: argo-events.enabled
+- name: argo-rollouts
+  alias: argo_rollouts
+  repository: "https://argoproj.github.io/argo-helm"
+  version: 2.10.0
+  condition: argo_rollouts.enabled

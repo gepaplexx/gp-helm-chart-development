@@ -1,5 +1,0 @@
-
-{{- if .Release.IsInstall }}
-Your image is building...
-The final image name is: <REGISTRY>/{{ .Release.Namespace }}/{{ include "s2i.imageName" . }}
-{{- end }}

@@ -405,7 +405,7 @@ applications:
 # either jaeger or service-mesh should be used. not both
   jaeger-operator:
     name: jaeger-operator
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-operators
@@ -423,7 +423,7 @@ applications:
 # Required for ServiceMesh
   kiali-operator:
     name: kiali-operator
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-operators
@@ -459,7 +459,7 @@ applications:
 # either jaeger or service-mesh should be used. not both
   service-mesh-operator:
     name: service-mesh-operator
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: openshift-operator
@@ -477,7 +477,7 @@ applications:
 # either jaeger or service-mesh should be used. not both
   service-mesh-instance:
     name: service-mesh-instance
-    enabled: true
+    enabled: false
     argoProject: gepaplexx
     destination:
       namespace: istio-system

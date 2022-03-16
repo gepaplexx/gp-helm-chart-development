@@ -1,0 +1,99 @@
+{{- if .Values.argocd.enabled -}}
+apiVersion: argoproj.io/v1alpha1
+kind: ArgoCD
+metadata:
+  finalizers:
+    - argoproj.io/finalizer
+  name: {{ .Release.Name }}-argocd
+  namespace: {{  .Release.Namespace }}
+spec:
+  applicationSet:
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.applicationset.resources.limits.cpu }}
+        memory: {{ .Values.argocd.applicationset.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.applicationset.resources.requests.cpu }}
+        memory: {{ .Values.argocd.applicationset.resources.requests.memory }}
+  controller:
+    processors: {}
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.controller.resources.limits.cpu }}
+        memory: {{ .Values.argocd.controller.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.controller.resources.requests.cpu }}
+        memory: {{ .Values.argocd.controller.resources.requests.memory }}
+    sharding: {}
+  dex:
+    openShiftOAuth: true
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.dex.resources.limits.cpu }}
+        memory: {{ .Values.argocd.dex.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.dex.resources.requests.cpu }}
+        memory: {{ .Values.argocd.dex.resources.requests.memory }}
+  grafana:
+    enabled: false
+  ha:
+    enabled: false
+  initialSSHKnownHosts: {}
+  prometheus:
+    enabled: false
+  rbac:
+    policy: g, Gepaplexx, role:admin
+    scopes: '[groups]'
+  redis:
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.redis.resources.limits.cpu }}
+        memory: {{ .Values.argocd.redis.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.redis.resources.requests.cpu }}
+        memory: {{ .Values.argocd.redis.resources.requests.memory }}
+  repo:
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.repo.resources.limits.cpu }}
+        memory: {{ .Values.argocd.repo.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.repo.resources.requests.cpu }}
+        memory: {{ .Values.argocd.repo.resources.requests.memory }}
+  resourceExclusions: |
+    - apiGroups:
+      - tekton.dev
+      clusters:
+      - '*'
+      kinds:
+      - TaskRun
+      - PipelineRun
+  server:
+    {{- if .Values.argocd.route.hostname }}
+    host: {{ .Values.argocd.route.hostname }}
+    {{- end }}
+    autoscale:
+      enabled: false
+    grpc:
+      ingress:
+        enabled: false
+    ingress:
+      enabled: false
+    insecure: true
+    resources:
+      limits:
+        cpu: {{ .Values.argocd.server.resources.limits.cpu }}
+        memory: {{ .Values.argocd.server.resources.limits.memory }}
+      requests:
+        cpu: {{ .Values.argocd.server.resources.requests.cpu }}
+        memory: {{ .Values.argocd.server.resources.requests.memory }}
+    route:
+      enabled: true
+      tls:
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+    service:
+      type: ""
+  tls:
+    ca: {}
+{{- end -}}

@@ -1,1 +1,0 @@
-Final image name: {{ .Values.imageRegistry }}/{{ .Release.Namespace }}/{{ .Values.applicationName | default .Release.Name }}:{{ .Values.version }}
