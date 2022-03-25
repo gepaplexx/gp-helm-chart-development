@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gp-cluster-updater
-description: A Helm Chart to deploy a cron job which automatically updates the cluster.
+name: gp-cluster-update-checker
+description: A Helm Chart to deploy a cron job which automatically checks for new cluster updates.
 
 # A chart can be either an 'application' or a 'library' chart.
 #

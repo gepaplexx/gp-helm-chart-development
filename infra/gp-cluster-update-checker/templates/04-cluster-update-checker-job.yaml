@@ -107,14 +107,14 @@ spec:
                   echo "erzeuge neuen Updatejob..."
                   echo "Schedule=$UPDATER_SCHEDULE"
                   updateDate=$(date -d "$plannedUpdateDay" +"%d.%m.%y")
-                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Neues Update am Cluster {{ .Values.clustername }} verfügbar. Update von Version '"$CURRENT_VERSION"' auf neue Version '"$NEW_VERSION"'. Update wird am '"$updateDate"' um {{ .Values.checker.updateTime }}:00 Uhr UTC durchgeführt. Übersicht: https://console-openshift-console.{{ .Values.domain }}/settings/cluster"}' $SLACK_TARGET_CHANNEL;
+                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Neues Update am Cluster {{ .Values.clustername }} verfügbar. Update von Version '"$CURRENT_VERSION"' auf neue Version '"$NEW_VERSION"'. Update wird am '"$updateDate"' um {{ .Values.checker.updateTime }}:00 Uhr UTC durchgeführt. Übersicht: {{ .Values.consoleUrl }}/settings/cluster"}' $SLACK_TARGET_CHANNEL;
                   helm repo add gp-helm-charts https://gepaplexx.github.io/gp-helm-charts/
-                  helm upgrade --install gp-updater-cronjob-$NEW_VERSION gp-helm-charts/gp-updater-cronjob-chart \
+                  helm upgrade --install gp-updater-cronjob-$NEW_VERSION gp-helm-charts/gp-cluster-update-updater \
                     -n {{ .Release.Namespace }} \
                     --set schedule="$UPDATER_SCHEDULE" \
                     --set updateToVersion=$NEW_VERSION \
                     --set jobname=cluster-update-updater-$NEW_VERSION \
-                    --set domain={{ .Values.domain }} \
+                    --set consoleUrl={{ .Values.consoleUrl }} \
                     --set clustername={{ .Values.clustername }}
                   echo "Finished!"
                 fi;
