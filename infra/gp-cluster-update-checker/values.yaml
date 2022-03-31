@@ -8,7 +8,7 @@ checker:
   updateTime: "05"
   resources:
     limits:
-      memory: "100Mi"
+      memory: "500Mi"
       cpu: "30m"
     requests:
       memory: "100Mi"
