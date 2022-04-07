@@ -8,15 +8,30 @@ rules:
     verbs:
       - "*"
     resources:
-      - workflows
-      - workflowtemplates
-      - cronworkflows
+      - analysisruns
+      - analysistemplates
+      - applications
+      - applicationsets
+      - appprojects
+      - argocds
+      - clusteranalysistemplates
       - clusterworkflowtemplates
+      - cronworkflows
+      - eventbus
+      - eventsources
+      - experiments
+      - rollouts
+      - sensors
+      - workfloweventbindings
+      - workflows
+      - workflowtasksets
+      - workflowtemplates
+      - workflowtaskresults
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: create-argo-application-role
+  name: create-argo-application-namespace-role
 rules:
   - apiGroups:
       - argoproj.io
@@ -24,6 +39,59 @@ rules:
       - "*"
     resources:
       - applications
+  - apiGroups:
+      - '*'
+    resources:
+      - projects
+    verbs:
+      - '*'
+  - apiGroups:
+      - '*'
+    resources:
+      - namespaces
+    verbs:
+      - '*'
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    verbs:
+      - list
+      - get
+      - create
+      - delete
+    resources:
+      - rolebindings
+      - roles
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argocd-application-controller-role
+rules:
+  - apiGroups:
+      - "*"
+    verbs:
+      - get
+      - list
+      - create
+      - delete
+      - update
+      - patch
+    resources:
+      - "*"
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argocd-application-controller-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argocd-application-controller-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Release.Name }}-argocd-argocd-application-controller
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -37,15 +105,21 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: argo-workflows-controller
+    namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: argo-workflows-server
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: create-argo-application-binding
+  name: create-argo-application-namespace-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: create-argo-application-role
+  name: create-argo-application-namespace-role
 subjects:
   - kind: ServiceAccount
     name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
@@ -87,3 +161,28 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
 ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflow-anyuid-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:anyuid
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflow-self-provisioner-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: self-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    namespace: {{ .Release.Namespace }}
