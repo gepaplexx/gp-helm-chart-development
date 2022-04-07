@@ -4,6 +4,14 @@
 argo_workflows:
   fullnameOverride: argo-workflows
   enabled: true
+# Ingressconfiguration
+  ingress:
+    enabled: true
+    hostname: "" # TODO: anpassen auf "example.com"
+    ingressClassName: ""
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
 # Serverconfiguration
   server:
     resources:
@@ -51,14 +59,6 @@ argo_workflows:
       enabled: false
     containerSecurityContext:
       enabled: false
-# Ingressconfiguration
-  ingress:
-    enabled: true
-    hostname: "" # TODO: anpassen auf "example.com"
-    ingressClassName: "openshift-default"
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    tls: true
 # Workflowsconfiguration
   workflows:
     serviceAccount:
@@ -106,19 +106,6 @@ argo_rollouts:
   keepCRDs: false
   enabled: true                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
-# Controllerconfiguration:
-  controller:
-    containerSecurityContext:
-      runAsNonRoot: true
-    podSecurityContext:
-      runAsNonRoot: true
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
 # DashboardConfiguration
   dashboard:
     enabled: true
@@ -139,6 +126,20 @@ argo_rollouts:
       requests:
         cpu: 250m
         memory: 128Mi
+# Controllerconfiguration:
+  controller:
+    containerSecurityContext:
+      runAsNonRoot: true
+    podSecurityContext:
+      runAsNonRoot: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
 
 ####################
 ##    ARGO  CD    ##
