@@ -68,7 +68,7 @@ argo_workflows:
     auth:
       database: argo_workflows
       username: postgres
-      password: ""
+      password: "feEktP4VHJ"
     primary:
       podSecurityContext:
         enabled: false
@@ -103,7 +103,7 @@ argo_events:
 ####################
 
 argo_rollouts:
-  enabled: false                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
+  enabled: true                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
 # Controllerconfiguration:
   controller:
@@ -120,12 +120,14 @@ argo_rollouts:
         memory: 128Mi
 # DashboardConfiguration
   dashboard:
+    enabled: true
     ingress:
       enabled: true
       hosts:
       - "rollouts.steppe.gepaplexx.com"   # TODO: auf example.com ändern.
       tls:
-      - "rollouts.steppe.gepaplexx.com"
+      - hosts:
+        - "rollouts.steppe.gepaplexx.com"
       ingressClassName: "openshift-default"
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
@@ -155,10 +157,10 @@ argocd:
     resources:
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
       requests:
         cpu: 250m
-        memory: 128Mi
+        memory: 512Mi
   dex:
     resources:
       limits:
@@ -171,7 +173,7 @@ argocd:
     resources:
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 1Gi
       requests:
         cpu: 250m
         memory: 128Mi
@@ -193,6 +195,3 @@ argocd:
         memory: 128Mi
   route:
     hostname: argocd.steppe.gepaplexx.com
-
-eventbus:
-  replicas: 1
