@@ -116,6 +116,7 @@ argo_rollouts:
       tls:
       - hosts:
         - ""
+        secretName: ""
       ingressClassName: ""
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
