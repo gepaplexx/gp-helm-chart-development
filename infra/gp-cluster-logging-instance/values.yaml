@@ -29,7 +29,7 @@ fluentd:
       cpu: "250m"
     requests:
       cpu: "150m"
-      memory: "768Mi"
+      memory: "736Mi"
 kibana:
   replicas: 1
   resources:
