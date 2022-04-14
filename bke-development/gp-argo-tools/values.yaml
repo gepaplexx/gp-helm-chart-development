@@ -28,16 +28,7 @@ argo_workflows:
     auth:
       mode: client
       sso:
-        enabled: false      # TODO: Umstellen auf SSO in Zukunft!
-#        issuer:
-#        clientId:
-#          name:
-#          key:
-#        clientSecret:
-#          name:
-#          key:
-#        redirectUrl:
-#        scopes:
+        enabled: false
 # Controllerconfiguration
   controller:
     containerRuntimeExecutor: emissary
@@ -68,7 +59,7 @@ argo_workflows:
     auth:
       database: argo_workflows
       username: postgres
-      password: "AQAZTGatUA"
+      password: ""
     primary:
       podSecurityContext:
         enabled: false
