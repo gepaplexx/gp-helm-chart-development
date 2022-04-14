@@ -494,3 +494,62 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+##################### ARGO-ECOSYSTEM ######################
+  argo-ecosystem:
+    name: argo-ecosystem
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gp-argo-ecosystem
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-argo-tools
+      targetRevision: "*"
+      helm:
+        parameters:
+        - name: "argocd.route.hostname"
+          value: "argocd.steppe.gepaplexx.com"
+        - name: "argo_workflows.ingress.hostname"
+          value: "workflows.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.hosts[0]"
+          value: "rollouts.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].hosts[0]"
+          value: "rollouts.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].secretName"
+          value: "rollouts.steppe.gepaplexx.com-tls"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD ######################
+  gepaplexx-cicd:
+    name: gepaplexx-cicd
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cicd-instance
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-WORKFLOWS ######################
+  gepaplexx-workflows:
+    name: gepaplexx-workflows
+    enabled: true
+    argoProject: gepaplexx
+    destianation:
+      namespace: gp-argo-ecosystem
+      create: false
+    source:
+      repoURL: "git@github.com:gepaplexx/workflows.git"
+      targetRevision: "main"
+      path: "clusters/steppe/applications"
