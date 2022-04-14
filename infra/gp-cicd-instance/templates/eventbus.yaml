@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: {{ .Values.eventbus.name }}
+spec:
+  nats:
+    native:
+      {{- if .Values.eventbus.persistence.enabled }}
+      persistence:
+        storageClassName: {{ .Values.eventbus.persistence.storageClassName }}
+        accessMode: {{ .Values.eventbus.persistence.accessMode }}
+        volumeSize: {{ .Values.eventbus.persistence.size }}
+      {{- end }}

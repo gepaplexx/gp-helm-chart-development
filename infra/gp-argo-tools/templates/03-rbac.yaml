@@ -31,40 +31,6 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: create-argo-application-namespace-role
-rules:
-  - apiGroups:
-      - argoproj.io
-    verbs:
-      - "*"
-    resources:
-      - applications
-  - apiGroups:
-      - '*'
-    resources:
-      - projects
-    verbs:
-      - '*'
-  - apiGroups:
-      - '*'
-    resources:
-      - namespaces
-    verbs:
-      - '*'
-  - apiGroups:
-      - rbac.authorization.k8s.io
-    verbs:
-      - list
-      - get
-      - create
-      - delete
-    resources:
-      - rolebindings
-      - roles
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
   name: argocd-application-controller-role
 rules:
   - apiGroups:
@@ -78,7 +44,6 @@ rules:
       - patch
     resources:
       - "*"
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -115,74 +80,21 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: create-argo-application-namespace-binding
+  name: cluster-admin-argocd-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: create-argo-application-namespace-role
+  name: cluster-admin
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    name: {{ .Release.Name }}-argocd-argocd-application-controller
     namespace: {{ .Release.Namespace }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: workflow-role
-rules:
-  # pod get/watch is used to identify the container IDs of the current pod
-  # pod patch is used to annotate the step's outputs back to controller (e.g. artifact location)
-  - apiGroups:
-      - ""
-    resources:
-      - pods
-    verbs:
-      - get
-      - watch
-      - patch
-  # logs get/watch are used to get the pods logs for script outputs, and for log archival
-  - apiGroups:
-      - ""
-    resources:
-      - pods/log
-    verbs:
-      - get
-      - watch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: workflow-role-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: workflow-role
-subjects:
   - kind: ServiceAccount
-    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: workflow-anyuid-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: system:openshift:scc:anyuid
-subjects:
-  - kind: ServiceAccount
-    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    name: {{ .Release.Name }}-argocd-argocd-server
     namespace: {{ .Release.Namespace }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: workflow-self-provisioner-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: self-provisioner
-subjects:
   - kind: ServiceAccount
-    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    name: {{ .Release.Name }}-argocd-argocd-dex-server
+    namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: {{ .Release.Name }}-argocd-applicationset-controller
     namespace: {{ .Release.Namespace }}

@@ -7,8 +7,8 @@ argo_workflows:
 # Ingressconfiguration
   ingress:
     enabled: true
-    hostname: "" # TODO: anpassen auf "example.com"
-    ingressClassName: ""
+    hostname: "workflows.example.com" # TODO: anpassen auf "example.com"
+    ingressClassName: "openshift-default"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
     tls: true
@@ -68,7 +68,7 @@ argo_workflows:
     auth:
       database: argo_workflows
       username: postgres
-      password: ""
+      password: "AQAZTGatUA"
     primary:
       podSecurityContext:
         enabled: false
@@ -106,27 +106,6 @@ argo_rollouts:
   keepCRDs: false
   enabled: true                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
-# DashboardConfiguration
-  dashboard:
-    enabled: true
-    ingress:
-      enabled: true
-      hosts:
-      - ""   # TODO: auf example.com ändern.
-      tls:
-      - hosts:
-        - ""
-        secretName: ""
-      ingressClassName: ""
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
 # Controllerconfiguration:
   controller:
     containerSecurityContext:
@@ -140,7 +119,27 @@ argo_rollouts:
       requests:
         cpu: 250m
         memory: 128Mi
-
+# DashboardConfiguration
+  dashboard:
+    enabled: true
+    ingress:
+      enabled: true
+      hosts:
+      - "rollouts.example.com"   # TODO: auf example.com ändern.
+      tls:
+      - hosts:
+        - "rollouts.example.com"
+        secretName: "rollouts.example.com-tls"
+      ingressClassName: "openshift-default"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
 
 ####################
 ##    ARGO  CD    ##
@@ -148,12 +147,14 @@ argo_rollouts:
 
 argocd:
   enabled: true
+  image: ghcr.io/gepaplexx/argocd
+  version: main-87c3388
   route:
-    hostname:
+    hostname: "argocd.example.com"
   applicationset:
     resources:
       limits:
-        cpu: "2"
+        cpu: "1"
         memory: 1Gi
       requests:
         cpu: 250m
@@ -161,7 +162,7 @@ argocd:
   controller:
     resources:
       limits:
-        cpu: 500m
+        cpu: "1"
         memory: 2Gi
       requests:
         cpu: 250m
@@ -183,6 +184,8 @@ argocd:
         cpu: 250m
         memory: 128Mi
   repo:
+    image: ghcr.io/gepaplexx/argocd
+    version: main-87c3388
     resources:
       limits:
         cpu: 500m
