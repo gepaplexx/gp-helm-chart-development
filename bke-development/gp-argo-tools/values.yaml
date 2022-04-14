@@ -142,6 +142,10 @@ argocd:
   version: main-87c3388
   route:
     hostname: "argocd.example.com"
+  workflowrepository:
+    add: false
+    username: "gepaplexx-argo"
+    sshPrivateKey: ""
   applicationset:
     resources:
       limits:

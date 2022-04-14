@@ -7,6 +7,16 @@ metadata:
   name: {{ .Release.Name }}-argocd
   namespace: {{  .Release.Namespace }}
 spec:
+  {{- if .Values.argocd.addWorkflowrepository -}}
+  initialRepositories: |
+  - url: git@github.com/gepaplexx/workflows
+    usernameSecret:
+      name: workflow-repository
+      key: username
+    sshPrivateKeySecret:
+      name: workflow-repository
+      key: sshPrivateKey
+  {{- end -}}
   applicationSet:
     resources:
       limits:
