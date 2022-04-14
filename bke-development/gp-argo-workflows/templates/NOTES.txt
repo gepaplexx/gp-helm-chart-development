@@ -1,4 +1,0 @@
-TEMPLATES=$(kubectl get clusterworkflowtemplate -A --no-headers | cut -d " " -f1)
-for TEMP in $TEMPLATES; do
-    kubectl get clusterworkflowtemplate $TEMP -n gepardec-ci > old/$TEMP.yaml
-done
