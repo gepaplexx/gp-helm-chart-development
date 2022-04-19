@@ -9,7 +9,7 @@ spec:
   source:
     path: kustomisations/bkes/bke-app-example
     repoURL: https://github.com/gepaplexx/gp-helm-chart-development.git
-    targetRevision: debug-argo
+    targetRevision: GPX-258-normierung-der-bk-es-mit-kustomize-evaluieren
   project: default
   syncPolicy:
     automated:

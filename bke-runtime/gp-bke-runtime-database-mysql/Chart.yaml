@@ -2,7 +2,7 @@ apiVersion: v2
 name: gp-bke-runtime-database-mysql
 description: A Helm chart to provide a MySQL databse
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: "0.0.1"
 dependencies:
 - name: mysql

@@ -11,3 +11,13 @@ db:
       enabled: false
     podSecurityContext:
       enabled: false
+
+    ## MySQL doesn't start with less than 400Mi memory.
+    resources:
+      limits:
+        memory: 1500Mi
+      requests:
+        memory: 700Mi
+
+    startupProbe:
+      initialDelaySeconds: 180
