@@ -495,13 +495,13 @@ applications:
         prune: true
         selfHeal: true
 
-##################### ARGO-ECOSYSTEM ######################
-  argo-ecosystem:
-    name: argo-ecosystem
+##################### GEPAPLEXX-CICD-TOOLS ######################
+  gepaplexx-cicd-tools:
+    name: gepaplexx-cicd-tools
     enabled: true
     argoProject: gepaplexx
     destination:
-      namespace: gp-argo-ecosystem
+      namespace: gepaplexx-cicd-tools
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
@@ -519,6 +519,7 @@ applications:
           value: "rollouts.steppe.gepaplexx.com"
         - name: "argo_rollouts.dashboard.ingress.tls[0].secretName"
           value: "rollouts.steppe.gepaplexx.com-tls"
+        # Access to gepaplexx/gepaplexx-cicd repository!
         - name: "argocd.workflowrepository.username"
           value: "AgAzf6hb+sR9nE/XU+s/RBB7G1L+1Fk5vwjZkyTFAQlDUCU9nKeqKl/N293p9moE35YtfjraDbN9FCxpChabJWkxvosTO1e4EUV972aPma272iR85z9K/Iy4/fSsI8z7hvNLMdqOqNh91dMBoUabsDKIT3RhJNYjIwU1sEy8x07jiuxrjpc5VqNVULfjdphnPyeZeOj04fnz5Y9KOfWngJL+4fgF5IVoP1Dc7MVExAB7LmAABmt60bpbm1BnMmL+pAqQGbfEgeAutAJ7WA0FwV6EoeuHx+vOUfzxf1C6nllMmAq/MriBk3LQUinv/moKD/rr0fzX3efDeaW+yyQqoQJQN9iSG0ppOGkMBzkJ8M0S+R7p/eVZ0bjEC07QWGkNOaCOP4MIt7mk1NwsBWbv0HEuuEDKLmXdOVjdldCx36nMGXyBFviofzxMoJ6oXNfGpHJFFc0y6O8WvNHVVCwxxjbdp0w8UaQvxa7Mf/XnXYh8jXRJaGK4pfuKTlYoQ3Rajg2kdwdoTJ00ZSbfFBoyQ4Nbf44Zi1zAlvm3/u8u2/XHtaqVrTxyQ0PhNYRKNpqh4B1ZRUqszi/Xj8+8XZvSwPN4xFunt41TKNnfWrynCwpfXxoph8zjaTYVNE2zmRBTjGPOVGmF8e+OszvvkG4hMS5weYlTyXC7HxBoIhepzM00Pxf64iTd1jF5I5eiqYIUdcVw+jW+KFKrpRVZxgRwYZjKDg=="
         - name: "argocd.workflowrepository.sshPrivateKey"
@@ -530,32 +531,32 @@ applications:
         prune: true
         selfHeal: true
 
-##################### GEPAPLEXX-CICD ######################
-  gepaplexx-cicd:
-    name: gepaplexx-cicd
+##################### GEPAPLEXX-CICD-EVENTBUS ######################
+  gepaplexx-cicd-eventbus:
+    name: gepaplexx-cicd-eventbus
     enabled: true
     argoProject: gepaplexx
     destination:
-      namespace: gepaplexx-cicd
+      namespace: gepaplexx-cicd-eventbus
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-cicd-instance
+      chart: gepaplexx-cicd-eventbus
       targetRevision: "*"
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
 
-##################### GEPAPLEXX-WORKFLOWS ######################
-  gepaplexx-workflows:
-    name: gepaplexx-workflows
+##################### GEPAPLEXX-CICD ######################
+  gepaplexx-cicd:
+    name: gepaplexx-cicd
     enabled: true
     argoProject: gepaplexx
     destianation:
-      namespace: gp-argo-ecosystem
+      namespace: openshift-gitops
       create: false
     source:
-      repoURL: "git@github.com:gepaplexx/workflows.git"
+      repoURL: "git@github.com:gepaplexx/gepaplexx-cicd.git"
       targetRevision: "main"
       path: "clusters/steppe/applications"

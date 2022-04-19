@@ -7,7 +7,7 @@ argo_workflows:
 # Ingressconfiguration
   ingress:
     enabled: true
-    hostname: "workflows.example.com" # TODO: anpassen auf "example.com"
+    hostname: "workflows.example.com"
     ingressClassName: "openshift-default"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
@@ -95,7 +95,7 @@ argo_events:
 
 argo_rollouts:
   keepCRDs: false
-  enabled: true                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
+  enabled: true
   fullnameOverride: argo-rollouts
 # Controllerconfiguration:
   controller:
@@ -116,7 +116,7 @@ argo_rollouts:
     ingress:
       enabled: true
       hosts:
-      - "rollouts.example.com"   # TODO: auf example.com ändern.
+      - "rollouts.example.com"
       tls:
       - hosts:
         - "rollouts.example.com"
@@ -147,7 +147,7 @@ argocd:
     username: "" # must be supplied via value in argocd application
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
-    url: "git@github.com/gepaplexx/workflows"
+    url: "git@github.com/gepaplexx/gepaplexx-cicd"
   applicationset:
     resources:
       limits:
