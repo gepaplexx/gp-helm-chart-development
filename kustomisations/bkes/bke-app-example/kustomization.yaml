@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+- ../bke-db-mysql
+
+
+helmCharts:
+- name: gp-bke-runtime-minimal-application
+  version: 0.0.14
+  repo: https://gepaplexx.github.io/gp-helm-charts/
+  includeCRDs: false
+  releaseName: mytestapp
+  valuesInline:
+    image:
+      name: ghcr.io/erhardsiegl/db-test-app-jvm
+      tag: mysql-1.1
+    route:
+      enabled: true
+    database:
+      - name: postgrestestapp
+
+
+patches:
+- target:
+    labelSelector: app.kubernetes.io/name=db
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
+- target:
+    name: postgrestestapp-db-connect
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
