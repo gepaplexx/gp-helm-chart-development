@@ -1,7 +1,3 @@
-project:
-  create: true
-  name: gepaplexx
-
 applications:
 ################## RESOURCE LOCKER OPERATOR ###################
   resourceLocker:
