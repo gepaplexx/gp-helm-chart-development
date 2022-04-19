@@ -15,7 +15,7 @@ checker:
       cpu: "10m"
 
 updater:
-  schedule: '"0 5 * * 2-5"'
+  schedule: '"0 3 * * 2-5"'
   successfulJobsHistoryLimit: 2
   suspend: true
   delay: 1
