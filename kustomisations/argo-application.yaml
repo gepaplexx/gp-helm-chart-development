@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: erhard-kustomize-application
+spec:
+  destination:
+    namespace: erhard-pg
+    server: https://kubernetes.default.svc
+  source:
+    path: kustomisations/bkes/bke-app-example
+    repoURL: https://github.com/gepaplexx/gp-helm-chart-development.git
+    targetRevision: debug-argo
+  project: default
+  syncPolicy:
+    automated:
+      prune: true
+      allowEmpty: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=false
