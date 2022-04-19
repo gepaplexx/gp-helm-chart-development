@@ -1,5 +1,5 @@
-clustername: Play
-domain: apps.play.ocp.gp.local
+clustername: ""
+consoleUrl: ""
 
 checker:
   schedule: '"0 16 * * 1-4"'
@@ -8,14 +8,14 @@ checker:
   updateTime: "05"
   resources:
     limits:
-      memory: "100Mi"
+      memory: "500Mi"
       cpu: "30m"
     requests:
       memory: "100Mi"
       cpu: "10m"
 
 updater:
-  schedule: '"0 5 * * 2-5"'
+  schedule: '"0 3 * * 2-5"'
   successfulJobsHistoryLimit: 2
   suspend: true
   delay: 1

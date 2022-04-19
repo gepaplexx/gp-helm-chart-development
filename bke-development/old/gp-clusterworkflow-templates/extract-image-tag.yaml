@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"ClusterWorkflowTemplate","metadata":{"annotations":{},"name":"extract-image-tag"},"spec":{"templates":[{"container":{"args":["cd /mnt/out/{{ workflow.parameters.reponame }} \\\n\u0026\u0026 git rev-parse --short HEAD \u003e ../git-commit\n"],"command":["sh","-c"],"image":"alpine/git","name":"git","volumeMounts":[{"mountPath":"/mnt/out/","name":"workspace"}]},"metadata":{"labels":{"app":"argo"}},"name":"extract-image-tag","outputs":{"parameters":[{"name":"image-tag","valueFrom":{"path":"/mnt/out/git-commit"}}]}}]}}
+  creationTimestamp: "2022-02-10T14:36:26Z"
+  generation: 2
+  name: extract-image-tag
+  resourceVersion: "592713237"
+  uid: 19ce7db2-693d-48bb-8cd2-aa528a1a35b6
+spec:
+  templates:
+  - container:
+      args:
+      - |
+        cd /mnt/out/{{ workflow.parameters.reponame }} \
+        && git rev-parse --short HEAD > ../git-commit
+      command:
+      - sh
+      - -c
+      image: alpine/git
+      name: git
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    metadata:
+      labels:
+        app: argo
+    name: extract-image-tag
+    outputs:
+      parameters:
+      - name: image-tag
+        valueFrom:
+          path: /mnt/out/git-commit

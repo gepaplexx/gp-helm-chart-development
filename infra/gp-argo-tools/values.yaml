@@ -4,6 +4,14 @@
 argo_workflows:
   fullnameOverride: argo-workflows
   enabled: true
+# Ingressconfiguration
+  ingress:
+    enabled: true
+    hostname: "" # TODO: anpassen auf "example.com"
+    ingressClassName: ""
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
 # Serverconfiguration
   server:
     resources:
@@ -51,14 +59,6 @@ argo_workflows:
       enabled: false
     containerSecurityContext:
       enabled: false
-# Ingressconfiguration
-  ingress:
-    enabled: true
-    hostname: "workflows.steppe.gepaplexx.com" # TODO: anpassen auf "example.com"
-    ingressClassName: "openshift-default"
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    tls: true
 # Workflowsconfiguration
   workflows:
     serviceAccount:
@@ -103,8 +103,30 @@ argo_events:
 ####################
 
 argo_rollouts:
-  enabled: false                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
+  keepCRDs: false
+  enabled: true                          # aktuelle Argo Rollouts Version 1.1.1 nicht mit Kubernetes 1.23+/Openshift 4.9 kompatibel
   fullnameOverride: argo-rollouts
+# DashboardConfiguration
+  dashboard:
+    enabled: true
+    ingress:
+      enabled: true
+      hosts:
+      - ""   # TODO: auf example.com ändern.
+      tls:
+      - hosts:
+        - ""
+        secretName: ""
+      ingressClassName: ""
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
 # Controllerconfiguration:
   controller:
     containerSecurityContext:
@@ -118,24 +140,7 @@ argo_rollouts:
       requests:
         cpu: 250m
         memory: 128Mi
-# DashboardConfiguration
-  dashboard:
-    ingress:
-      enabled: true
-      hosts:
-      - "rollouts.steppe.gepaplexx.com"   # TODO: auf example.com ändern.
-      tls:
-      - "rollouts.steppe.gepaplexx.com"
-      ingressClassName: "openshift-default"
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
+
 
 ####################
 ##    ARGO  CD    ##
@@ -143,6 +148,8 @@ argo_rollouts:
 
 argocd:
   enabled: true
+  route:
+    hostname:
   applicationset:
     resources:
       limits:
@@ -155,10 +162,10 @@ argocd:
     resources:
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 2Gi
       requests:
         cpu: 250m
-        memory: 128Mi
+        memory: 512Mi
   dex:
     resources:
       limits:
@@ -171,7 +178,7 @@ argocd:
     resources:
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 1Gi
       requests:
         cpu: 250m
         memory: 128Mi
@@ -191,8 +198,3 @@ argocd:
       requests:
         cpu: 250m
         memory: 128Mi
-  route:
-    hostname: argocd.steppe.gepaplexx.com
-
-eventbus:
-  replicas: 1

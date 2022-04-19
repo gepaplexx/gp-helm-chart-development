@@ -1,0 +1,41 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ .Values.jobname }}
+  annotations:
+    gepaplexx.com/update: autoremove
+spec:
+  schedule: {{ .Values.schedule }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+  successfulJobsHistoryLimit: {{ .Values.successfulJobsHistoryLimit }}
+  concurrencyPolicy: "Allow"
+  suspend: {{ .Values.suspend }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: gp-cluster-updater
+          containers:
+          - name: cluster-update-updater
+            image: quay.io/openshift/origin-cli
+            resources:
+              limits:
+                memory: {{ .Values.resources.limits.memory }}
+                cpu: {{ .Values.resources.limits.cpu }}
+              requests:
+                memory: {{ .Values.resources.requests.memory }}
+                cpu: {{ .Values.resources.requests.cpu }}            
+            env:
+            - name: SLACK_TARGET_CHANNEL
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.clusterUpdateSecreteName }}
+                  key: slackTargetChannel
+            command: ["/bin/bash", "-c"]
+            args:
+              - |
+                CURRENT_VERSION=$(oc adm upgrade | sed -n -e 's/Cluster version is //p');
+                curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Update am Cluster {{ .Values.clustername }} von Version '"$CURRENT_VERSION"' auf Version '"{{ .Values.updateToVersion }}"' wird JETZT gestartet! Status: {{ .Values.consoleUrl }}/settings/cluster"}' $SLACK_TARGET_CHANNEL;
+                echo starting update...;
+                oc adm upgrade --to={{ .Values.updateToVersion }};
+          restartPolicy: Never

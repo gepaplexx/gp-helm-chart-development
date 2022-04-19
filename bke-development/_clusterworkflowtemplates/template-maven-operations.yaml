@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: template-maven-operations
+spec:
+  serviceAccountName: operate-workflow-sa
+  templates:
+  - name: build
+    metadata:
+      labels:
+        app: argo
+        clusterworkflowtemplate: template-maven-operations
+        template: build
+    container:
+      name: maven
+      image: ghcr.io/gepaplexx-devops/git-workflows:latest
+      command:
+        - "/usr/bin/git-workflow.sh"
+      args:
+            - --clone
+            - --url
+            - '{{ workflow.parameters.repository }}'
+            - --branch
+            - '{{=sprig.join("/", sprig.regexSplit("/", workflow.parameters.revision, -1)[2:])}}'
+            - --name
+            - '{{ workflow.parameters.reponame }}'
+            - --extract
+      volumeMounts:
+        - name: workspace
+          mountPath: /mnt/out/
+        - name: pipeline-secrets
+          mountPath: /.ssh/known_hosts
+          subPath: known_hosts
+        - name: pipeline-secrets
+          mountPath: /.ssh/id_rsa
+          subPath: id_rsa
+    outputs:
+      parameters:
+      - name: commit-hash
+        valueFrom:
+          path: /mnt/out/commit_hash

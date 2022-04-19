@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"ClusterWorkflowTemplate","metadata":{"annotations":{},"name":"parse-branch-and-namespace"},"spec":{"templates":[{"container":{"args":["cd /mnt/out/ \\\n\u0026\u0026 touch branch \\\n\u0026\u0026 echo {{=sprig.lower(workflow.parameters.reponame) }} \\\n\u0026\u0026 echo {{ workflow.name }} \\\n\u0026\u0026 echo {{ workflow.namespace }} \\\n\u0026\u0026 echo {{=sprig.regexSplit(\"/\", workflow.parameters.revision, -1) }} \\\n\u0026\u0026 echo {{=sprig.regexSplit(\"/\", workflow.parameters.revision, -1)[2:] }} \\\n\u0026\u0026 echo {{=sprig.join(\"/\", sprig.regexSplit(\"/\", workflow.parameters.revision, -1)[2:]) }} \\\n\u0026\u0026 echo  {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat \u003e branch\n"],"command":["sh","-c"],"image":"busybox","name":"busybox","volumeMounts":[{"mountPath":"/mnt/out/","name":"workspace"},{"mountPath":"/etc/podinfo/","name":"podinfo"}]},"metadata":{"labels":{"app":"argo"}},"name":"parse-branch-and-namespace","outputs":{"parameters":[{"name":"branch","valueFrom":{"path":"/mnt/out/branch"}},{"name":"namespace","valueFrom":{"path":"/etc/podinfo/namespace"}}]},"volumes":[{"downwardAPI":{"items":[{"fieldRef":{"fieldPath":"metadata.namespace"},"path":"namespace"}]},"name":"podinfo"}]}]}}
+  creationTimestamp: "2022-02-10T14:37:11Z"
+  generation: 10
+  name: parse-branch-and-namespace
+  resourceVersion: "592628261"
+  uid: 5ed33e78-27ba-4542-83c2-f888b5220967
+spec:
+  templates:
+  - container:
+      args:
+      - |
+        cd /mnt/out/ \
+        && touch branch \
+        && echo {{=sprig.lower(workflow.parameters.reponame) }} \
+        && echo {{ workflow.name }} \
+        && echo {{ workflow.namespace }} \
+        && echo {{=sprig.regexSplit("/", workflow.parameters.revision, -1) }} \
+        && echo {{=sprig.regexSplit("/", workflow.parameters.revision, -1)[2:] }} \
+        && echo {{=sprig.join("/", sprig.regexSplit("/", workflow.parameters.revision, -1)[2:]) }} \
+        && echo  {{ workflow.parameters.revision }} | cut -d '/' -f3- | cat > branch
+      command:
+      - sh
+      - -c
+      image: busybox
+      name: busybox
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+      - mountPath: /etc/podinfo/
+        name: podinfo
+    metadata:
+      labels:
+        app: argo
+    name: parse-branch-and-namespace
+    outputs:
+      parameters:
+      - name: branch
+        valueFrom:
+          path: /mnt/out/branch
+      - name: namespace
+        valueFrom:
+          path: /etc/podinfo/namespace
+    volumes:
+    - downwardAPI:
+        items:
+        - fieldRef:
+            fieldPath: metadata.namespace
+          path: namespace
+      name: podinfo

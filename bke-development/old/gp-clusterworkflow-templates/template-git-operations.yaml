@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: template-git-operations
+spec:
+  serviceAccountName: operate-workflow-sa
+  templates:
+  - container:
+      args:
+      - cd /mnt/out/ && touch branch && echo  {{ inputs.parameters.revision }} | cut
+        -d '/' -f3- | cat > branch
+      command:
+      - sh
+      - -c
+      image: busybox
+      name: busybox
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    inputs:
+      parameters:
+      - name: revision
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-git-operations
+        template: parse-branch
+    name: parse-branch
+    outputs:
+      parameters:
+      - name: branch
+        valueFrom:
+          path: /mnt/out/branch
+  - container:
+      args:
+      - cd /mnt/out/ && git clone {{ inputs.parameters.repository }} && cd  {{ inputs.parameters.reponame
+        }} && git checkout {{ inputs.parameters.branch }}
+      command:
+      - sh
+      - -c
+      image: alpine/git
+      name: git
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    inputs:
+      parameters:
+      - name: branch
+      - name: repository
+      - name: reponame
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-git-operations
+        template: git-checkout
+    name: git-checkout
+  - container:
+      args:
+      - cd /mnt/out/{{ workflow.parameters.reponame }} && git rev-parse --short HEAD
+        > ../git-commit
+      command:
+      - sh
+      - -c
+      image: alpine/git
+      name: git
+      volumeMounts:
+      - mountPath: /mnt/out/
+        name: workspace
+    inputs:
+      parameters:
+      - name: reponame
+    metadata:
+      labels:
+        app: argo
+        clusterWorkflowTemplate: template-git-operations
+        template: extract-git-commit
+    name: extract-git-commit
+    outputs:
+      parameters:
+      - name: commit-hash
+        valueFrom:
+          path: /mnt/out/git-commit

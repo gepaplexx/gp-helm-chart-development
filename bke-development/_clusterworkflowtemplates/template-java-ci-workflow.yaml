@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ClusterWorkflowTemplate
+metadata:
+  name: template-pipeline-java-maven-main
+spec:
+  arguments:
+    parameters:
+    - name: repository
+      value: comes-from-caller
+    - name: revision
+      value: comes-from-caller
+    - name: reponame
+      value: comes-from-caller
+  podGC:
+    strategy: OnPodSuccess
+  ttlStrategy:
+    secondsAfterCompletion: 86400
+  serviceAccountName: operate-workflow-sa
+  templates:
+  - name: pipeline-deploy-prod
+    steps:
+    - - name: checkout
+        templateRef:
+          name: template-git-operations
+          template: checkout
+          clusterScope: true
+      - name: build
+        templateRef:
+          name: template-maven-operations
+          template: build
+          clusterScope: true

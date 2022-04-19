@@ -1,0 +1,11 @@
+apiVersion: v2
+name: gp-bke-runtime-tmpdebug
+description: A Helm chart to provide a MySQL databse
+type: application
+version: 0.1.1
+appVersion: "0.0.1"
+# dependencies:
+# - name: mysql
+#   alias: db
+#   version: 8.8.26
+#   repository: https://charts.bitnami.com/bitnami

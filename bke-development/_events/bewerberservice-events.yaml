@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: github-bewerberservice
+spec:
+  service:
+    ports:
+      - port: 12000
+        targetPort: 12000
+  github:
+    bewerberservice:
+      owner: "Gepaplexx-Demos"
+      repository: "weckdengeparden"
+      webhook:
+        endpoint: "/push"
+        port: "12000"
+        method: "POST"
+      events:
+        - "push"
+      webhookSecret:
+        name: workflow-weckdengeparden  #TODO anpassen bei Helm
+        key: webhook-secret
+      insecure: false
+      active: true
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    controller: eventsource-controller
+    eventsource-name: github-bewerberservice
+    owner-name: github
+  name: github-webhook
+spec:
+  host: github-webhook-gepardec-devops.apps.steppe.gepaplexx.com
+  tls:
+    termination: edge
+  to:
+    kind: "Service"
+    name: github-bewerberservice-eventsource-svc

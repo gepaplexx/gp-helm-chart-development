@@ -1,0 +1,47 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: bewerberservice-workflow-template
+spec:
+  volumeClaimTemplates:
+  - metadata:
+      name: workspace
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  volumes:
+  - name: pipeline-secrets
+    secret:
+      secretName: workflow-weckdengeparden
+  arguments:
+    parameters:
+    - name: repository
+      value: comes-from-caller
+    - name: revision
+      value: comes-from-caller
+    - name: reponame
+      value: comes-from-caller
+#  podGC:
+#    strategy: OnPodSuccess #TODO: ordentliches Setting finden.
+  ttlStrategy:
+    secondsAfterCompletion: 86400
+  serviceAccountName: operate-workflow-sa
+  templates:
+  - name: pipeline
+    steps:
+    - - name: build-bewerberservice
+        templateRef:
+          name: template-java-ci-workflow
+          template: pipeline-deploy-prod
+          clusterScope: true
+        arguments:
+          parameters:
+          - name: repository
+            value: '{{ workflow.parameters.repository }}'
+          - name: revision
+            value: '{{ workflow.parameters.revision }}'
+          - name: reponame
+            value: '{{ workflow.parameters.reponame }}'
