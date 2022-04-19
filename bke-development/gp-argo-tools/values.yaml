@@ -144,8 +144,10 @@ argocd:
     hostname: "argocd.example.com"
   workflowrepository:
     add: false
-    username: "gepardec-complete"
-    sshPrivateKey: ""
+    username: "" # must be supplied via value in argocd application
+    sshPrivateKey: "" # must be supplied via value in argocd application
+    secretName: "workflow-repository"
+    url: "git@github.com/gepaplexx/workflows"
   applicationset:
     resources:
       limits:

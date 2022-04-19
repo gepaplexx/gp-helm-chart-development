@@ -9,12 +9,13 @@ metadata:
 spec:
   {{- if .Values.argocd.addWorkflowrepository -}}
   initialRepositories: |
-  - url: git@github.com/gepaplexx/workflows
+  - url: {{ .Values.argocd.workflowrepository.url }}
+    type: git
     usernameSecret:
-      name: workflow-repository
+      name: {{ .Values.argocd.workflowrepository.secretName }}
       key: username
     sshPrivateKeySecret:
-      name: workflow-repository
+      name: {{ .Values.argocd.workflowrepository.secretName }}
       key: sshPrivateKey
   {{- end -}}
   applicationSet:
