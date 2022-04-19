@@ -144,7 +144,7 @@ argocd:
     hostname: "argocd.example.com"
   workflowrepository:
     add: false
-    username: "gepaplexx-argo"
+    username: "gepardec-complete"
     sshPrivateKey: ""
   applicationset:
     resources:
