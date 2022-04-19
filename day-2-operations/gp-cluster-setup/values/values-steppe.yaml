@@ -552,7 +552,7 @@ applications:
   gepaplexx-cicd:
     name: gepaplexx-cicd
     enabled: true
-    argoProject: gepaplexx
+    argoProject: gepaplexx-cicd
     destianation:
       namespace: openshift-gitops
       create: false
