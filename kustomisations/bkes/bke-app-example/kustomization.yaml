@@ -20,3 +20,15 @@ helmCharts:
     database:
       - name: postgrestestapp
 
+
+patches:
+- target:
+    labelSelector: app.kubernetes.io/name=db
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
+- target:
+    name: postgrestestapp-db-connect
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
