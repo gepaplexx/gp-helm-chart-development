@@ -501,7 +501,7 @@ applications:
       create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-argo-tools
+      chart: gp-cicd-tools
       targetRevision: "*"
       helm:
         parameters:
@@ -556,3 +556,7 @@ applications:
       repoURL: "git@github.com:gepaplexx/gepaplexx-cicd.git"
       targetRevision: "main"
       path: "clusters/steppe/applications"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
