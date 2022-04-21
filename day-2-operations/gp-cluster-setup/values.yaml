@@ -481,7 +481,7 @@ applications:
     source:
       repoURL: "git@github.com:gepaplexx/gepaplexx-cicd.git"
       targetRevision: "main"
-      path: "clusters/steppe/applications"
+      path: "clusters/${CLUSTERNAME}/applications"
     syncPolicy:
       automated:
         prune: true
