@@ -455,6 +455,25 @@ applications:
 
 ##################### GEPAPLEXX-CICD-EVENTBUS ######################
   gepaplexx-cicd-eventbus:
+    name: gp-cicd-argo-events
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-tools
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cicd-argo-events
+      targetRevision: "*"
+      helm:
+        skipCrds: true
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD-EVENTBUS ######################
+  gepaplexx-cicd-eventbus:
     name: gepaplexx-cicd-eventbus
     enabled: false
     argoProject: gepaplexx
