@@ -527,7 +527,7 @@ applications:
         prune: true
         selfHeal: true
 ##################### GEPAPLEXX-CICD-EVENTBUS ######################
-  gepaplexx-cicd-eventbus:
+  gepaplexx-cicd-argo-events:
     name: gp-cicd-argo-events
     enabled: true
     argoProject: gepaplexx
