@@ -30,7 +30,7 @@ jobs:
         run: |
           helm lint \
              ./bke-runtime/*/. \
-             ./bke-develoment/*/. \
+             ./bke-development/*/. \
              ./infra/*/. \
              ./day-2-operations/*/. \
              ./gp-workload/*/. \
