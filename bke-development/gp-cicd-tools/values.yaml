@@ -1,0 +1,200 @@
+####################
+## ARGO WORFKLOWS ##
+####################
+argo_workflows:
+  fullnameOverride: argo-workflows
+  enabled: true
+# Ingressconfiguration
+  ingress:
+    enabled: true
+    hostname: "workflows.example.com"
+    ingressClassName: "openshift-default"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
+# Serverconfiguration
+  server:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+    auth:
+      mode: client
+      sso:
+        enabled: false
+# Controllerconfiguration
+  controller:
+    containerRuntimeExecutor: emissary
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+
+# Executorconfiguration
+  executor:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+# Workflowsconfiguration
+  workflows:
+    serviceAccount:
+      create: true
+      name: operate-workflow-sa
+  postgresql:
+    auth:
+      database: argo_workflows
+      username: postgres
+      password: ""
+    primary:
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
+
+####################
+##  ARGO  EVENTS  ##
+####################
+argo_events:
+  enabled: true
+  fullnameOverride: argo-events
+  singleNamespace: false
+  securityContext: null
+  eventbusController:
+    containerSecurityContext:
+      runAsNonRoot: true
+    securityContext:
+        runAsNonRoot: true
+  eventsourceController:
+    containerSecurityContext:
+      runAsNonRoot: true
+    securityContext:
+        runAsNonRoot: true
+  sensorController:
+    containerSecurityContext:
+      runAsNonRoot: true
+    securityContext:
+        runAsNonRoot: true
+####################
+##  ARGO ROLLOUT  ##
+####################
+
+argo_rollouts:
+  keepCRDs: false
+  enabled: true
+  fullnameOverride: argo-rollouts
+# Controllerconfiguration:
+  controller:
+    containerSecurityContext:
+      runAsNonRoot: true
+    podSecurityContext:
+      runAsNonRoot: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+# DashboardConfiguration
+  dashboard:
+    enabled: true
+    ingress:
+      enabled: true
+      hosts:
+      - "rollouts.example.com"
+      tls:
+      - hosts:
+        - "rollouts.example.com"
+        secretName: "rollouts.example.com-tls"
+      ingressClassName: "openshift-default"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
+####################
+##    ARGO  CD    ##
+####################
+
+argocd:
+  enabled: true
+  image: ghcr.io/gepaplexx/argocd
+  version: main-87c3388
+  route:
+    hostname: "argocd.example.com"
+  workflowrepository:
+    enabled: true
+    username: "" # must be supplied via value in argocd application
+    sshPrivateKey: "" # must be supplied via value in argocd application
+    secretName: "workflow-repository"
+    url: "git@github.com/gepaplexx/gepaplexx-cicd"
+  applicationset:
+    resources:
+      limits:
+        cpu: "1"
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  controller:
+    resources:
+      limits:
+        cpu: "1"
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  dex:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  redis:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  repo:
+    image: ghcr.io/gepaplexx/argocd
+    version: main-87c3388
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  server:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi

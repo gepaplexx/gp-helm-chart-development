@@ -1,7 +1,3 @@
-project:
-  create: true
-  name: gepaplexx
-
 applications:
 ################## RESOURCE LOCKER OPERATOR ###################
   resourceLocker:
@@ -490,6 +486,76 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-servicemesh-instance
       targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD-TOOLS ######################
+  gepaplexx-cicd-tools:
+    name: gepaplexx-cicd-tools
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-tools
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cicd-tools
+      targetRevision: "*"
+      helm:
+        parameters:
+        - name: "argocd.route.hostname"
+          value: "argocd.steppe.gepaplexx.com"
+        - name: "argo_workflows.ingress.hostname"
+          value: "workflows.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.hosts[0]"
+          value: "rollouts.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].hosts[0]"
+          value: "rollouts.steppe.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].secretName"
+          value: "rollouts.steppe.gepaplexx.com-tls"
+        # Access to gepaplexx/gepaplexx-cicd repository!
+        - name: "argocd.workflowrepository.username"
+          value: "AgAzf6hb+sR9nE/XU+s/RBB7G1L+1Fk5vwjZkyTFAQlDUCU9nKeqKl/N293p9moE35YtfjraDbN9FCxpChabJWkxvosTO1e4EUV972aPma272iR85z9K/Iy4/fSsI8z7hvNLMdqOqNh91dMBoUabsDKIT3RhJNYjIwU1sEy8x07jiuxrjpc5VqNVULfjdphnPyeZeOj04fnz5Y9KOfWngJL+4fgF5IVoP1Dc7MVExAB7LmAABmt60bpbm1BnMmL+pAqQGbfEgeAutAJ7WA0FwV6EoeuHx+vOUfzxf1C6nllMmAq/MriBk3LQUinv/moKD/rr0fzX3efDeaW+yyQqoQJQN9iSG0ppOGkMBzkJ8M0S+R7p/eVZ0bjEC07QWGkNOaCOP4MIt7mk1NwsBWbv0HEuuEDKLmXdOVjdldCx36nMGXyBFviofzxMoJ6oXNfGpHJFFc0y6O8WvNHVVCwxxjbdp0w8UaQvxa7Mf/XnXYh8jXRJaGK4pfuKTlYoQ3Rajg2kdwdoTJ00ZSbfFBoyQ4Nbf44Zi1zAlvm3/u8u2/XHtaqVrTxyQ0PhNYRKNpqh4B1ZRUqszi/Xj8+8XZvSwPN4xFunt41TKNnfWrynCwpfXxoph8zjaTYVNE2zmRBTjGPOVGmF8e+OszvvkG4hMS5weYlTyXC7HxBoIhepzM00Pxf64iTd1jF5I5eiqYIUdcVw+jW+KFKrpRVZxgRwYZjKDg=="
+        - name: "argocd.workflowrepository.sshPrivateKey"
+          value: "AgCFOvYdrdkAAfUFeW4yGmt4q521aRlZl8OGUkp5VfOsS2q2kfwEYPARSFB7UHrop75M3upgAn6bDa2uvlIbKydPN9ZiQeOnzJn8ouUx5nJqlJoPidJaM2+nY2LFbytTbClLbnL/S7Gq7fP6H5mMDQOZtWCFQz2BgkHiH+Wz9tz2P6fkspWroo0SDUCxCGoW7QrSoNsz0I7Fo2X9k8VatnuWAG6Kax4+n2oZBti1wu6Coe98ZuCKafv/Gc2CehUZnaSTxAEBuAsdr8f/23zLT4FLGEa0Tj4BhJTIyU3sgWCL+Gu/TbZ/0dPv+wzYunawDwwo+iGqz7eAit0Oo2J0nYLE5+gXB+wGZbsMYNOb1sNw9UH85dY5HDJerieVvStorIh5GVSEZ+FGhFHaDYyw4el56rb8rOVj4QVKFzE3KLuQ5xlCdFQkYMM1nayPsZGRhOCBN+fAzIRIn7+13Jo7gJH1Eis397eM/ozrfWRseJmdajfLttBvJG9nYq/WSTvbPj4gjaTNrK6HJv5QSkWmi8YUKE4lvPGXoh8t4ZfuLEvlP44efRSNZHeeVvt9iLRQuW6WD1QTwsfdjHQ2ZxeSwfyizHY1mSF3G6TzM49h087HuZnJRDAECIO5LRjs3E6imXSOi4r2xkjIsZB85qUe9GblstcymuoO/nm572rnfzpKzsOqzczA45UNfJwNWdp25dhkwnuY6/AmPdj+cHf/q1x0fWbsvqYf1gVaz/W6KTF5jeOaNP3G3j8teWKh9l+QFr0dOQ8rtYfL6V0rVG4LvmUJ0z/4S9JvfTuHogg7g5XaSJVrkavS1Mut2WKG9/ADpEosETIn6YaZ+8k6nZDH1BGWfM1ydcFet7lkqnYJSjAsle3FqNRMC2GZlQ6zW7rwimKHWfq/vxmKbO8UD3KrpB9AXqgp5boPFEqBwOnWbBBgD9x89CbxooKLv9pTSL8LlQu/IzHLThrsxp+SiSYyTbbjnNsVmUIZyizkynG1TsHgQTdKPuEcS84ulonIOSDc8RcWKGId5sdAnpxp/nlHrZGomdYaH1dHoaya8v8VIDdogmW+DjEKpHneoftGPFQ3KtxiDiCKTdYKJHeqZxozxLKHtd9vwryNFn/zQ0OefjI8dDHOn0jGLhl4K57dYYpewIorhYp/iB+cKZ4/g3I0V4i6wc8muaSFtJL2pAj8UwUSs57Zni+KuEcWHr0jRmQMiCl91GhyNuhsk5TVsoeg6JhTHPIEKjoY2gxshgsWNbF9Zr3D1ruUAF9WsG4GFIAAuRDGYPE4dh3oNrGcuYpXgmej7tGzhlDygAh5JHq9MTanVPe6GYMzzJGLqEVyEslpRVKBjp7vVdSok+FuQuwJEj6Z2KIRiEBapxQi6WWXhl2Tyfza+x1bpYEtDQcWK8/aSohIqa4vtEuW6DVMZ1kIMvDK+cPUCOyUZ/dch04MMK6ztn2AJYSWFmnczZJZp5RqzGSKcdy9w8nmUJX4o2ceUgG+ImHf7xAUrP2v4yzccJE6ONLv1vasiDyST7MsqpTrWNXDbEptTWH9oAZ4s/mRKp0LDc+hWvUTCdIOkFIFCyP+RxWO30r/SUgW8k8Lie1T5S2Z2RdavYZ/vL+a0D8IlPmQfL71KdQCRAxbXtFaGX5Ot6qZqaBhlQGmrDC+DV17EoXn706cIlpaWDTnAyZSUg1xmE1AbVWynwF9MtMuudPWS03Zitc="
+        - name: "argocd.workflowrepository.enabled"
+          value: "true"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD-EVENTBUS ######################
+  gepaplexx-cicd-eventbus:
+    name: gepaplexx-cicd-eventbus
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-eventbus
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gepaplexx-cicd-eventbus
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD ######################
+  gepaplexx-cicd:
+    name: gepaplexx-cicd
+    enabled: true
+    argoProject: gepaplexx-cicd
+    destianation:
+      namespace: openshift-gitops
+      create: false
+    source:
+      repoURL: "git@github.com:gepaplexx/gepaplexx-cicd.git"
+      targetRevision: "main"
+      path: "clusters/steppe/applications"
     syncPolicy:
       automated:
         prune: true
