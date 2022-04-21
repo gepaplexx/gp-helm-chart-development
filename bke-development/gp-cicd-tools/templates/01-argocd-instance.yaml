@@ -7,7 +7,7 @@ metadata:
   name: {{ .Release.Name }}-argocd
   namespace: {{  .Release.Namespace }}
 spec:
-  {{- if .Values.argocd.addWorkflowrepository.enabled -}}
+  {{- if .Values.argocd.workflowrepository.enabled -}}
   initialRepositories: |
   - url: {{ .Values.argocd.workflowrepository.url }}
     type: git
