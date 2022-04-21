@@ -35,6 +35,9 @@ Common labels
 */}}
 {{- define "gp-cicd-instance.labels" -}}
 helm.sh/chart: {{ include "gp-cicd-instance.chart" . }}
+app.kubernetes.io/name: {{ .Release.Name }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/managed-by: Helm
 {{ include "gp-cicd-instance.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
