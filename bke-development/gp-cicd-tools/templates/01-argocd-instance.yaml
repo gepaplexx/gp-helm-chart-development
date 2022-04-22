@@ -17,7 +17,7 @@ spec:
       sshPrivateKeySecret:
         name: {{ .Values.argocd.workflowrepository.secretName }}
         key: sshPrivateKey
-
+      insecure: true
   {{- end }}
   applicationSet:
     resources:
