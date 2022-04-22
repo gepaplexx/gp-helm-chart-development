@@ -36,4 +36,4 @@ argocd:
     username: "" # must be supplied via value in argocd application
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
-    url: "git@github.com/gepaplexx/gepaplexx-cicd.git"
+    url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
