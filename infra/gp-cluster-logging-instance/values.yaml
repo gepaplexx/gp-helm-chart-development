@@ -12,15 +12,15 @@ elasticsearch:
       maxAge: 2d
   resources:
     limits:
-      memory: "12Gi"
+      memory: "16Gi"
       cpu: "2"
     requests:
       cpu: "1"
-      memory: "4Gi"
+      memory: "16Gi"
   nodeCount: 3       
   storage:
-    storageClassName: rook-ceph-fs
-    size: 150G
+    storageClassName: rook-ceph-block
+    size: 100G
   redundancyPolicy: "SingleRedundancy"
 fluentd:
   resources:
@@ -38,4 +38,4 @@ kibana:
       cpu: "250m"
     requests:
       cpu: "150m"
-      memory: "768Mi"
+      memory: "1Gi"
