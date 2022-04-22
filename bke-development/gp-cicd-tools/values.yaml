@@ -10,7 +10,7 @@ argo_workflows:
     hostname: "workflows.example.com"
     ingressClassName: "openshift-default"
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/cluster-issuer: letsencryptkubernetes.pod_name=*-
     tls: true
 # Serverconfiguration
   server:
@@ -124,7 +124,7 @@ argocd:
     username: "" # must be supplied via value in argocd application
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
-    url: "git@github.com/gepaplexx/gepaplexx-cicd.git"
+    url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
   applicationset:
     resources:
       limits:
