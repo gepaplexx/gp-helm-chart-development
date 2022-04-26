@@ -10,7 +10,7 @@ argo_workflows:
     hostname: "workflows.example.com"
     ingressClassName: "openshift-default"
     annotations:
-      cert-manager.io/cluster-issuer: letsencryptkubernetes.pod_name=*-
+      cert-manager.io/cluster-issuer: letsencrypt
     tls: true
 # Serverconfiguration
   server:
