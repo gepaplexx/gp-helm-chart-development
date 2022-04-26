@@ -1,0 +1,10 @@
+serviceAccount:
+  name: operate-workflow-sa
+  automountServiceAccountToken: true
+eventbus:
+  name: default
+  persistence:
+    enabled: true
+    storageClassName: rook-ceph-block
+    accessMode: ReadWriteOnce
+    size: 5Gi

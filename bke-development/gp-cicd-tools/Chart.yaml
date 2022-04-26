@@ -1,6 +1,6 @@
 apiVersion: v2
-name: gp-cluster-config
-description: A gepaplexx Helm chart setup an Openshift-Cluster with gepaplexx specific configs
+name: gp-cicd-tools
+description: A Helm chart for deploying argo infrastructure including workflow, rollout and an argocd instance
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,9 +15,16 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.0.7
+version: 0.3.0
 
-# This is the version number of the application being deployed. This version number should be
-# incremented each time you make changes to the application. Versions are not expected to
-# follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 1.0.0
+dependencies:
+- name: argo-workflows
+  alias: argo_workflows
+  repository: "https://charts.bitnami.com/bitnami"
+  version: 1.1.6
+  condition: argo-workflows.enabled
+- name: argo-rollouts
+  alias: argo_rollouts
+  repository: "https://argoproj.github.io/argo-helm"
+  version: 2.12.0
+  condition: argo_rollouts.enabled

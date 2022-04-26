@@ -416,3 +416,92 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+##################### GEPAPLEXX-CICD-TOOLS ######################
+  gepaplexx-cicd-tools:
+    name: gepaplexx-cicd-tools
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-tools
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cicd-tools
+      targetRevision: "*"
+      helm:
+        parameters:
+        - name: "argocd.route.hostname"
+          value: "argocd.${CLUSTERNAME}.gepaplexx.com"
+        - name: "argo_workflows.ingress.hostname"
+          value: "workflows.${CLUSTERNAME}.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.hosts[0]"
+          value: "rollouts.${CLUSTERNAME}.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].hosts[0]"
+          value: "rollouts.${CLUSTERNAME}.gepaplexx.com"
+        - name: "argo_rollouts.dashboard.ingress.tls[0].secretName"
+          value: "rollouts.${CLUSTERNAME}.gepaplexx.com-tls"
+        # Access to gepaplexx/gepaplexx-cicd repository!
+        - name: "argocd.workflowrepository.username"
+          value: "REPLACE WITH KUBESEAL ENCRYPTED USERNAME"
+        - name: "argocd.workflowrepository.sshPrivateKey"
+          value: "REPLACE WITH KUBESEAL ENCRYPTED PRIVATE KEY"
+        - name: "argocd.workflowrepository.enabled"
+          value: "true"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD-EVENTBUS ######################
+  gepaplexx-cicd-argo-events:
+    name: gp-cicd-argo-events
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-tools
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cicd-argo-events
+      targetRevision: "*"
+      helm:
+        skipCrds: true
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD-EVENTBUS ######################
+  gepaplexx-cicd-eventbus:
+    name: gepaplexx-cicd-eventbus
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: gepaplexx-cicd-eventbus
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gepaplexx-cicd-eventbus
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+##################### GEPAPLEXX-CICD ######################
+  gepaplexx-cicd:
+    name: gepaplexx-cicd
+    enabled: false
+    argoProject: gepaplexx-cicd
+    destianation:
+      namespace: openshift-gitops
+      create: false
+    source:
+      repoURL: "git@github.com:gepaplexx/gepaplexx-cicd.git"
+      targetRevision: "main"
+      path: "clusters/${CLUSTERNAME}/applications"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
