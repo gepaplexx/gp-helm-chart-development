@@ -1,7 +1,17 @@
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
-  name: system-reserved-resources
+  name: worker-system-reserved-resources
+spec:
+  autoSizingReserved: true
+  machineConfigPoolSelector:
+    matchLabels:
+      pools.operator.machineconfiguration.openshift.io/master: ""
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: KubeletConfig
+metadata:
+  name: master-system-reserved-resources
 spec:
   autoSizingReserved: true
   machineConfigPoolSelector:
