@@ -1,5 +1,5 @@
 infranodes:
-  enabled: false
+  enabled: true
 clusterlogging:
   managementState: "Managed"
 elasticsearch:

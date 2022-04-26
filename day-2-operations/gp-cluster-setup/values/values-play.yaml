@@ -228,10 +228,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-instance
       targetRevision: "*"
-      helm:
-        parameters:
-        - name: "infranodes.enabled"
-          value: "false"
     syncPolicy:
       automated:
         prune: true
