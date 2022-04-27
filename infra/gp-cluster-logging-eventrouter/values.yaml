@@ -1,0 +1,18 @@
+image:
+  repository: registry.redhat.io/openshift-logging/eventrouter-rhel8
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+namespace: "openshift-logging"
+
+clusterRole:
+  name: "event-reader"
+
+resources:
+   limits:
+     cpu: 100m
+     memory: 128Mi
+   requests:
+     cpu: 100m
+     memory: 128Mi
