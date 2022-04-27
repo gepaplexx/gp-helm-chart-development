@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ .Release.Name }}
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.namespace }}
 roleRef:
   kind: ClusterRole
   name: {{ .Values.clusterRole.name }}
