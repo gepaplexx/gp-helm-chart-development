@@ -215,6 +215,23 @@ applications:
         prune: true
         selfHeal: true
 
+####################### CLUSTER-LOGGING-EVENTROUTER #######################
+  clusterLoggingEventrouter:
+    name: cluster-logging-eventrouter
+    enabled: true
+    destination:
+      namespace: openshift-logging
+      create: true
+    argoProject: gepaplexx
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-logging-eventrouter
+      targetRevision: "*"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
 ##################### CLUSTER-MONITORING ######################
   clusterMonitoring:
     name: cluster-monitoring
