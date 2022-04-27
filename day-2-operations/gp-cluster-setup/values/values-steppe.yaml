@@ -229,10 +229,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-instance
       targetRevision: "*"
-      helm:
-        parameters:
-        - name: "elasticsearch.nodeCount"
-          value: "3"
     syncPolicy:
       automated:
         prune: true
