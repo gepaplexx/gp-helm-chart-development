@@ -1,3 +1,4 @@
+#https://docs.openshift.com/container-platform/4.10/monitoring/configuring-the-monitoring-stack.html#configurable-monitoring-components_configuring-the-monitoring-stack
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,8 +6,27 @@ metadata:
   namespace: openshift-user-workload-monitoring
 data:
   config.yaml: |
-    {{- if .Values.infranodes.enabled }}
-    {{- .Files.Get "files/infraconfig.yaml"| nindent 4 }}
-    {{- else }}
-    {{- .Files.Get "files/config.yaml" | nindent 4 }}
-    {{- end }}
+    prometheus:
+      resources:
+        requests:
+          cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.cpu }}
+          memory: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.memory }}
+        limits:
+          cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.limits.cpu }}
+      {{ include "infranodes.enabled" . }}
+      volumeClaimTemplate:
+        spec:
+          storageClassName: {{ .Values.userWorkloadMonitoring.prometheus.storageClassName }}
+          resources:
+            requests:
+              storage: {{ .Values.userWorkloadMonitoring.prometheus.storageSize }}
+    prometheusOperator:
+      {{ include "infranodes.enabled" . }}
+    thanosRuler:
+      {{ include "infranodes.enabled" . }}
+      volumeClaimTemplate:
+        spec:
+          storageClassName: {{ .Values.userWorkloadMonitoring.thanosRuler.storageClassName }}
+          resources:
+            requests:
+              storage: {{ .Values.userWorkloadMonitoring.thanosRuler.storageSize }}
