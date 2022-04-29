@@ -2,8 +2,8 @@
 
 This Helm-Chart provisions a Postgresql database with help of [bitnami/postgresql](https://github.com/bitnami/charts/tree/master/bitnami/postgresql) chart. See there for detailed documentation.
 
-This BKE ist ment to be bundled together with an application-BKE. Then environment-variables 
-to connect with the database are injected into the application. Currently secrets are used 
+This BKE ist meant to be bundled together with an application-BKE. Then environment-variables 
+to connect with the database are injected into the application. Currently, secrets are used 
 to store the necessary information.
 
 

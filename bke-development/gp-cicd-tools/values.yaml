@@ -60,6 +60,7 @@ argo_workflows:
       database: argo_workflows
       username: postgres
       password: ""
+      existingSecrets: "argo-workflows-postgresql"
     primary:
       podSecurityContext:
         enabled: false
@@ -175,3 +176,12 @@ argocd:
       requests:
         cpu: 250m
         memory: 128Mi
+
+####################
+## SEALED SECRETS ##
+####################
+
+sealedSecrets:
+  postgresql:
+    password: ""
+    postgresPassword: ""
