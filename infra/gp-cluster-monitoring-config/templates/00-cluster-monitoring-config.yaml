@@ -8,9 +8,9 @@ data:
   config.yaml: |
     enableUserWorkload: {{ .Values.clusterMonitoring.enableUserWorkload }}
     prometheusOperator:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     prometheusK8s:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
       retention: {{ .Values.clusterMonitoring.prometheusK8s.retention }}
       resources:
         requests:
@@ -25,7 +25,7 @@ data:
             requests:
               storage: {{ .Values.clusterMonitoring.prometheusK8s.storageSize }}
     alertmanagerMain:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
       resources:
         requests:
           memory: {{ .Values.clusterMonitoring.alertmanagerMain.resources.requests.memory }}
@@ -36,15 +36,15 @@ data:
             requests:
               storage: {{ .Values.clusterMonitoring.alertmanagerMain.storageSize }}
     kubeStateMetrics:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     openshiftStateMetrics:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     grafana:
       enabled: false # https://docs.openshift.com/container-platform/4.10/monitoring/accessing-third-party-monitoring-uis-and-apis.html#accessing-third-party-monitoring-uis
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     telemeterClient:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     k8sPrometheusAdapter:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     thanosQuerier:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}

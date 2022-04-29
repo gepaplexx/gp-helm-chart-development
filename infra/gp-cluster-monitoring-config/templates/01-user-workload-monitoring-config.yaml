@@ -7,13 +7,14 @@ metadata:
 data:
   config.yaml: |
     prometheus:
+      retention: {{ .Values.userWorkloadMonitoring.prometheus.retention }}
       resources:
         requests:
           cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.cpu }}
           memory: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.memory }}
         limits:
           cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.limits.cpu }}
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
       volumeClaimTemplate:
         spec:
           storageClassName: {{ .Values.userWorkloadMonitoring.prometheus.storageClassName }}
@@ -21,9 +22,9 @@ data:
             requests:
               storage: {{ .Values.userWorkloadMonitoring.prometheus.storageSize }}
     prometheusOperator:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
     thanosRuler:
-      {{ include "infranodes.enabled" . }}
+      {{- include "infranodes.enabled" . | nindent 6 }}
       volumeClaimTemplate:
         spec:
           storageClassName: {{ .Values.userWorkloadMonitoring.thanosRuler.storageClassName }}
