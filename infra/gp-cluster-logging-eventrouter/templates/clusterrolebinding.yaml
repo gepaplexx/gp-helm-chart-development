@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ .Release.Name }}
-  namespace: {{ .Release.namespace }}
+  namespace: openshift-logging
 roleRef:
   kind: ClusterRole
   name: {{ .Values.clusterRole.name }}
