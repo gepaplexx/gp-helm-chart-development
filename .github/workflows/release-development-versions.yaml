@@ -51,8 +51,7 @@ jobs:
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
-          charts_dir: bke-runtime
-          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+          charts_dir: bke-runtime    
 
       - name: release infra develop-charts
         uses: helm/chart-releaser-action@v1.4.0
@@ -60,7 +59,6 @@ jobs:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
           charts_dir: infra
-          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release bke-development develop-charts
         uses: helm/chart-releaser-action@v1.4.0
@@ -68,7 +66,6 @@ jobs:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
           charts_dir: bke-development
-          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release workload develop-charts
         uses: helm/chart-releaser-action@v1.4.0
@@ -76,15 +73,13 @@ jobs:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
           charts_dir: gp-workload
-          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
-
+          
       - name: release app develop-charts
         uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
           charts_dir: gp-apps
-          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
 
   notify:
