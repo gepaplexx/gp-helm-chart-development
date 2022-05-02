@@ -62,6 +62,30 @@ env: {}
   # - name: YOUR_ENV_NAME
   #   value: YOUR_ENV_VALUE
 
+configmaps: {}
+#  - name: first-configmap
+#    items:
+#    - key: key1
+#      value: value 1
+#    - key: key2
+#      value: value2
+#  - name: second-configmap
+#    items:
+#    - key: key1
+#      value: value1
+
+secrets: {}
+#  - name: first-secret
+#    items:
+#    - key: key1
+#      value: value 1
+#    - key: key2
+#      value: value2
+#  - name: second-secret
+#    items:
+#    - key: key1
+#      value: value1
+
 resources:
   limits:
     cpu: 500m
