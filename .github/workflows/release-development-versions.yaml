@@ -51,41 +51,37 @@ jobs:
         with:
           version: v3.8.0
 
-      - name: release bke-runtime develop-charts
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{secrets.PAT }}"
+      - name: Publish bke-runtime Helm charts
+        uses: stefanprodan/helm-gh-pages@master
         with:
-          charts_dir: bke-runtime    
+          token: ${{ secrets.PAT }}
+          charts_dir: ./bke-runtime
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
 
-      - name: release infra develop-charts
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{secrets.PAT }}"
+      - name: Publish infra Helm charts
+        uses: stefanprodan/helm-gh-pages@master
         with:
-          charts_dir: infra
+          token: ${{ secrets.PAT }}
+          charts_dir: ./infra
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
 
-      - name: release bke-development develop-charts
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{secrets.PAT }}"
+      - name: Publish workload Helm charts
+        uses: stefanprodan/helm-gh-pages@master
         with:
-          charts_dir: bke-development
+          token: ${{ secrets.PAT }}
+          charts_dir: ./gp-workload
 
-      - name: release workload develop-charts
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{secrets.PAT }}"
+      - name: Publish gp-apps Helm charts
+        uses: stefanprodan/helm-gh-pages@master
         with:
-          charts_dir: gp-workload
-          
-      - name: release app develop-charts
-        uses: helm/chart-releaser-action@v1.4.0
-        env:
-          CR_TOKEN: "${{secrets.PAT }}"
-        with:
-          charts_dir: gp-apps
+          token: ${{ secrets.PAT }}
+          charts_dir: ./gp-apps
 
+      - name: Publish bke-develoment Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./bke-development
 
   notify:
     name: Slack Notifications
