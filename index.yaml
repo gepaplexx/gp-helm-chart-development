@@ -1,0 +1,57 @@
+apiVersion: v1
+entries:
+  gp-bke-runtime-database-mysql:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-05-02T09:26:33.568709895Z"
+    dependencies:
+    - alias: db
+      name: mysql
+      repository: https://charts.bitnami.com/bitnami
+      version: 8.8.26
+    description: A Helm chart to provide a MySQL databse
+    digest: 7c039e203808fb1e1d6ef96a33dd90832ffc7fbe6eb1a6fa03c5ad82242b3362
+    name: gp-bke-runtime-database-mysql
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-charts/gp-bke-runtime-database-mysql-0.1.1.tgz
+    version: 0.1.1
+  gp-bke-runtime-database-postgresql:
+  - apiVersion: v2
+    appVersion: 14.1.0
+    created: "2022-05-02T09:26:33.573107466Z"
+    dependencies:
+    - alias: db
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 11.0.3
+    description: A Helm chart to provide a PostgreSQL databse
+    digest: 676ca6868e7f271996e7f51928ac9b153588bc39fcafac54f2719b64dfce78bf
+    name: gp-bke-runtime-database-postgresql
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-charts/gp-bke-runtime-database-postgresql-0.1.0.tgz
+    version: 0.1.0
+  gp-bke-runtime-minimal-application:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-05-02T09:26:33.57348298Z"
+    description: A minimal Helm chart for deploying self-contained images to OpenShift
+    digest: a805dfe78ca21e661c0583af258d4a9483c82dc762377a7257885afd23b10665
+    name: gp-bke-runtime-minimal-application
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-charts/gp-bke-runtime-minimal-application-0.0.14.tgz
+    version: 0.0.14
+  gp-bke-runtime-tmpdebug:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-05-02T09:26:33.573713889Z"
+    description: A Helm chart to provide a MySQL databse
+    digest: 3dd7aede3569ee4662466f12576a0ecee48ea6b6b83efa489857919bd56a1053
+    name: gp-bke-runtime-tmpdebug
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-charts/gp-bke-runtime-tmpdebug-0.1.1.tgz
+    version: 0.1.1
+generated: "2022-05-02T09:26:33.564130416Z"
