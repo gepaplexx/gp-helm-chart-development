@@ -5,8 +5,14 @@ name: Release Development Version
   workflow_dispatch:
     inputs:
       dir:
-        description: list of directories that will be released to the chartmuseum
+        description: directory with helm charts to release
         type: Choice
+        options:
+        - bke-runtime
+        - bke-development
+        - infra
+        - gp-apps
+        - gp-workfload
 jobs:
   lint-helm:
     runs-on: ubuntu-latest
