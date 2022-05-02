@@ -1,9 +1,0 @@
-pvc:
-  name: gp-ocp-internal-registry-pvc
-  storage: 100Gi
-  volumeMode: Filesystem
-  storageClassName: rook-ceph-fs
-
-registry:
-  defaultRoute: true
-  replicas: 3

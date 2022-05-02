@@ -1,7 +1,0 @@
-clusterlogging:
-  subscription:
-    channel: "stable"
-
-elasticsearch:
-  subscription:
-    channel: "stable"
