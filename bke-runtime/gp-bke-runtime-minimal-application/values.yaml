@@ -59,11 +59,12 @@ readinessProbe:
 
 # Define environment variables for the pod
 env: {}
-  # - name: YOUR_ENV_NAME
-  #   value: YOUR_ENV_VALUE
+#   - name: YOUR_ENV_NAME
+#     value: YOUR_ENV_VALUE
 
 configmaps: {}
 #  - name: first-configmap
+#    mountPath: /etc/
 #    items:
 #    - key: key1
 #      value: value 1
@@ -76,6 +77,7 @@ configmaps: {}
 
 secrets: {}
 #  - name: first-secret
+#    mountPath: /etc/
 #    items:
 #    - key: key1
 #      value: value 1
