@@ -12,6 +12,9 @@ spec:
     kind: Service
     name: {{ include "gp-bke-runtime-minimal-application.service.name" . }}
     weight: 100
+    {{- if or (.Values.route.hostname) (.Values.route.basename)}}
+    hostname: {{ include "gp-bke-runtime-minimal-application.route.hostname" . }}
+    {{- end}}
   wildcardPolicy: {{ .Values.route.wildcardPolicy }}
 {{- if .Values.route.tls.enabled }}
   tls:

@@ -39,7 +39,11 @@ service:
 
 route:
   # Deploy a route for this deployment?
-  enabled: false
+  enabled: true
+  # hostname: "hostname"
+  # when "hostname" is set, the route will be created with the given hostname.
+  #basename: "example.com"
+  # when "basename" is set, the route will be created using the release name, 8 random characters and the routes basename
   wildcardPolicy: None
   tls:
     enabled: true
