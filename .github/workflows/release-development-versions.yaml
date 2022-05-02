@@ -3,7 +3,10 @@ name: Release Development Version
 
 'on':
   workflow_dispatch:
-
+    inputs:
+      dir:
+        description: list of directories that will be released to the chartmuseum
+        type: Choice
 jobs:
   lint-helm:
     runs-on: ubuntu-latest
@@ -25,12 +28,7 @@ jobs:
       - name: Lint Helm
         run: |
           helm lint \
-             ./bke-runtime/*/. \
-             ./bke-development/*/. \
-             ./infra/*/. \
-             ./day-2-operations/*/. \
-             ./gp-workload/*/. \
-             ./gp-apps/*/.
+             ./${{ github.event.inputs.dir }}/*/.
 
   release:
     runs-on: ubuntu-latest
@@ -51,37 +49,11 @@ jobs:
         with:
           version: v3.8.0
 
-      - name: Publish bke-runtime Helm charts
+      - name: Publish ${{ github.event.inputs.dir }} Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT }}
-          charts_dir: ./bke-runtime
-          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-
-      - name: Publish infra Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./infra
-          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-
-      - name: Publish workload Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./gp-workload
-
-      - name: Publish gp-apps Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./gp-apps
-
-      - name: Publish bke-develoment Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./bke-development
+          charts_dir: ./${{ github.event.inputs.dir }}
 
   notify:
     name: Slack Notifications
