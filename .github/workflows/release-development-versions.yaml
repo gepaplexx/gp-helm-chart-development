@@ -1,12 +1,8 @@
 ---
-name: Build and push Helm charts
+name: Release Development Version
 
 'on':
-  push:
-    branches:
-      - 'main'
-    tags-ignore:
-      - '**'
+  workflow_dispatch:
 
 jobs:
   lint-helm:
@@ -51,7 +47,7 @@ jobs:
           version: v3.8.0
 
       - name: release bke-runtime develop-charts
-        uses: helm/chart-release-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
@@ -59,7 +55,7 @@ jobs:
           charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release infra develop-charts
-        uses: helm/chart-release-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
@@ -67,7 +63,7 @@ jobs:
           charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release bke-development develop-charts
-        uses: helm/chart-release-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
@@ -75,7 +71,7 @@ jobs:
           charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release workload develop-charts
-        uses: helm/chart-release-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
@@ -83,7 +79,7 @@ jobs:
           charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
 
       - name: release app develop-charts
-        uses: helm/chart-release-action@v1.4.0
+        uses: helm/chart-releaser-action@v1.4.0
         env:
           CR_TOKEN: "${{secrets.PAT }}"
         with:
