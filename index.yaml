@@ -311,6 +311,17 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-ocp-internal-registry-1.0.0.tgz
     version: 1.0.0
+  gp-one-time-secret:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-05-02T09:26:42.895958993Z"
+    description: A Helm chart for Kubernetes
+    digest: 43ca29ee2d9fdcf124c7c7fc8382a777c7d00622f5415a1d2054f6cec389da04
+    name: gp-one-time-secret
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-one-time-secret-0.1.0.tgz
+    version: 0.1.0
   gp-openshift-gitops:
   - apiVersion: v2
     appVersion: 1.0.0
@@ -369,6 +380,17 @@ entries:
     type: application
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-rook-ceph-operator-0.1.0.tgz
+    version: 0.1.0
+  gp-secretmessage:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2022-05-02T09:26:42.896500699Z"
+    description: A Helm chart for Kubernetes
+    digest: 98898958ceed89be29a6cb5f0022af7c8021f1207dbba6e584edba9dfdfd885c
+    name: gp-secretmessage
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-secretmessage-0.1.0.tgz
     version: 0.1.0
   gp-servicemesh-instance:
   - apiVersion: v2
@@ -441,4 +463,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-05-02T09:26:40.818151929Z"
+generated: "2022-05-02T09:26:42.894340574Z"
