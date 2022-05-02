@@ -414,6 +414,17 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-tekton-operator-0.1.0.tgz
     version: 0.1.0
+  gp-tls-secret:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2022-05-02T09:26:40.819613439Z"
+    description: A Helm chart for Kubernetes
+    digest: 4a4139254e6950484e07e127b26436a4b58351ec35724feaad2bddd19d61d0d2
+    name: gp-tls-secret
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-tls-secret-1.0.0.tgz
+    version: 1.0.0
   gp-velero:
   - apiVersion: v2
     appVersion: 1.7.1
@@ -430,4 +441,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-05-02T09:26:38.41858302Z"
+generated: "2022-05-02T09:26:40.818151929Z"
