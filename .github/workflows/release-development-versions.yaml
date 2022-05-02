@@ -1,0 +1,108 @@
+---
+name: Build and push Helm charts
+
+'on':
+  push:
+    branches:
+      - 'main'
+    tags-ignore:
+      - '**'
+
+jobs:
+  lint-helm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.0
+
+      - name: Build Subchart dependencies
+        run: |
+          bin/update-helm-dependencies.sh
+
+      - name: Lint Helm
+        run: |
+          helm lint \
+             ./bke-runtime/*/. \
+             ./bke-development/*/. \
+             ./infra/*/. \
+             ./day-2-operations/*/. \
+             ./gp-workload/*/. \
+             ./gp-apps/*/.
+
+  release:
+    runs-on: ubuntu-latest
+    needs:
+      - lint-helm
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.0
+
+      - name: release bke-runtime develop-charts
+        uses: helm/chart-release-action@v1.4.0
+        env:
+          CR_TOKEN: "${{secrets.PAT }}"
+        with:
+          charts_dir: bke-runtime
+          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+
+      - name: release infra develop-charts
+        uses: helm/chart-release-action@v1.4.0
+        env:
+          CR_TOKEN: "${{secrets.PAT }}"
+        with:
+          charts_dir: infra
+          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+
+      - name: release bke-development develop-charts
+        uses: helm/chart-release-action@v1.4.0
+        env:
+          CR_TOKEN: "${{secrets.PAT }}"
+        with:
+          charts_dir: bke-development
+          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+
+      - name: release workload develop-charts
+        uses: helm/chart-release-action@v1.4.0
+        env:
+          CR_TOKEN: "${{secrets.PAT }}"
+        with:
+          charts_dir: gp-workload
+          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+
+      - name: release app develop-charts
+        uses: helm/chart-release-action@v1.4.0
+        env:
+          CR_TOKEN: "${{secrets.PAT }}"
+        with:
+          charts_dir: gp-apps
+          charts_repo_url: "http://docs.gepaplexx.com/gp-development-helm-charts/"
+
+
+  notify:
+    name: Slack Notifications
+    runs-on: ubuntu-latest
+    if: ${{ failure() }}
+    needs:
+      - release
+    steps:
+      - name: Notify Slack channel on failure
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_ICON: https://github.com/fhochleitner/logos/raw/master/helm.png
+          SLACK_USERNAME: ${{ github.repository }}
+          SLACK_COLOR: '#ff0033'
+          SLACK_FOOTER: ''
