@@ -38,18 +38,51 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dir: [bke-runtime, bke-development, infra, gp-workload, gp-apps]
     needs:
       - lint-helm
     steps:
       - uses: actions/checkout@v2
-      - name: Publish ${{matrix.dir }} Helm charts
+      - name: Publish bke-runtime Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
           token: ${{ secrets.PAT }}
-          charts_dir: ./${{ matrix.dir }}
+          charts_dir: ./bke-runtime
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish infra Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./infra
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish workload Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./gp-workload
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish gp-apps Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./gp-apps
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish bke-develoment Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./bke-development
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts
