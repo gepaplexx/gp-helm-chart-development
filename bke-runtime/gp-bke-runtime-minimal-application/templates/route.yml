@@ -7,7 +7,7 @@ metadata:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:
   {{- if or (.Values.route.hostname) (.Values.route.basename)}}
-  hostname: {{ include "gp-bke-runtime-minimal-application.route.hostname" . }}
+  host: {{ include "gp-bke-runtime-minimal-application.route.hostname" . }}
   {{- end}}
   port:
     targetPort: http
