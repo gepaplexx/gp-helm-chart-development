@@ -25,14 +25,14 @@ entries:
   gp-bke-runtime-database-mysql:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-05-02T13:59:44.314691961Z"
+    created: "2022-05-02T14:07:18.731086199Z"
     dependencies:
     - alias: db
       name: mysql
       repository: https://charts.bitnami.com/bitnami
       version: 8.8.26
     description: A Helm chart to provide a MySQL databse
-    digest: c697e96704d02283323868fa865096a4662827126dbe286d7d8c15d6cbcb62aa
+    digest: 8bce237e68bec213de5fc8767852f769723627efa2b005a76385dac20c7c682f
     name: gp-bke-runtime-database-mysql
     type: application
     urls:
@@ -41,20 +41,30 @@ entries:
   gp-bke-runtime-database-postgresql:
   - apiVersion: v2
     appVersion: 14.1.0
-    created: "2022-05-02T13:59:44.320430743Z"
+    created: "2022-05-02T14:07:18.735593572Z"
     dependencies:
     - alias: db
       name: postgresql
       repository: https://charts.bitnami.com/bitnami
       version: 11.0.3
     description: A Helm chart to provide a PostgreSQL databse
-    digest: 2c6977ccf401ffa39c8b391a817f505be7f47ce1c529caa736359ea84959a6a6
+    digest: 7d7a3741207ecb88dcc1e209825a7335c43669289054a6294b08ccf282dc54ca
     name: gp-bke-runtime-database-postgresql
     type: application
     urls:
     - https://gepaplexx.github.io/gp-helm-chart-development/gp-bke-runtime-database-postgresql-0.1.0.tgz
     version: 0.1.0
   gp-bke-runtime-minimal-application:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-05-02T14:07:18.735985169Z"
+    description: A minimal Helm chart for deploying self-contained images to OpenShift
+    digest: fe51ced26c20ec90be0f8c8371c4cdd40a7e6b8b8abebe938f74b59be9ada8be
+    name: gp-bke-runtime-minimal-application
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-bke-runtime-minimal-application-0.1.1.tgz
+    version: 0.1.1
   - apiVersion: v2
     appVersion: 0.0.1
     created: "2022-05-02T13:59:44.321124265Z"
@@ -88,9 +98,9 @@ entries:
   gp-bke-runtime-tmpdebug:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2022-05-02T13:59:44.321670183Z"
+    created: "2022-05-02T14:07:18.736431067Z"
     description: A Helm chart to provide a MySQL databse
-    digest: 864f23a7ed2956840b0a9490ed74613723f2e2204adc1bf40ae72dde15fbf5eb
+    digest: 1b809d30c3868892d00b8501a9182cff4c6770cdc776a52c70fbd956334f3397
     name: gp-bke-runtime-tmpdebug
     type: application
     urls:
@@ -533,4 +543,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-05-02T13:59:44.307642037Z"
+generated: "2022-05-02T14:07:18.727403621Z"
