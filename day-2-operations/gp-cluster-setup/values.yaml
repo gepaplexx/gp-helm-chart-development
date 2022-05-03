@@ -440,6 +440,10 @@ applications:
           value: "REPLACE WITH KUBESEAL ENCRYPTED PRIVATE KEY"
         - name: "argocd.workflowrepository.enabled"
           value: "true"
+        - name: "sealedSecrets.postgresql.password"
+          value: "REPLACE WITH KUBESEAL ENCRYPTED PASSWORD"
+        - name: "sealedSecrets.postgresql.postgresPassword"
+          value: "REPLACE WITH KUBESEAL ENCRYPTED PASSWORD"
     syncPolicy:
       automated:
         prune: true
