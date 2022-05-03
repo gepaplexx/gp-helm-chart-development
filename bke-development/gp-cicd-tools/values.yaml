@@ -60,7 +60,7 @@ argo_workflows:
       database: argo_workflows
       username: postgres
       password: ""
-      existingSecrets: "gepaplexx-cicd-tools-postgresql"
+      existingSecret: "gepaplexx-cicd-tools-postgresql"
     primary:
       podSecurityContext:
         enabled: false
