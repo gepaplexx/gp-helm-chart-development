@@ -60,12 +60,24 @@ argo_workflows:
       database: argo_workflows
       username: postgres
       password: ""
-      existingSecrets: "argo-workflows-postgresql"
+      existingSecrets: "gepaplexx-cicd-tools-postgresql"
     primary:
       podSecurityContext:
         enabled: false
       containerSecurityContext:
         enabled: false
+
+####################
+## SEALED SECRETS ##
+####################
+
+# Prevent helm-chart changes from generating a new postgresql password and therefore
+# pods being unable to connect to the database.
+
+sealedSecrets:
+  postgresql:
+    password: ""
+    postgresPassword: ""
 
 ####################
 ##  ARGO ROLLOUT  ##
@@ -177,11 +189,3 @@ argocd:
         cpu: 250m
         memory: 128Mi
 
-####################
-## SEALED SECRETS ##
-####################
-
-sealedSecrets:
-  postgresql:
-    password: ""
-    postgresPassword: ""
