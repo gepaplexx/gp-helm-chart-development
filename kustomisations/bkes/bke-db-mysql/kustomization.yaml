@@ -13,3 +13,17 @@ helmCharts:
 
 transformers:
 - change-mysql-password-key.yaml
+
+# See GPX-281 or https://github.com/kubernetes-sigs/kustomize/issues/4303: Would use wrong namespace
+patches:
+- target:
+    labelSelector: app.kubernetes.io/name=db
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
+- target:
+    name: postgrestestapp-db-connect
+  patch: |-
+    - op: remove
+      path: /metadata/namespace
+

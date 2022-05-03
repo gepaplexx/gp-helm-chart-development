@@ -140,33 +140,6 @@ applications:
         prune: true
         selfHeal: true
 
-########################### VELERO ############################
-  velero:
-    name: velero
-    enabled: true
-    argoProject: gepaplexx
-    destination:
-      namespace: velero
-      create: true
-    source:
-      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-velero
-      targetRevision: "*"
-      helm:
-        parameters:
-          - name: configuration.backupStorageLocation.bucket
-            value: prod.gepaplexx.com
-          - name: configuration.backupStorageLocation.config.region
-            value: minio
-          - name: configuration.backupStorageLocation.config.s3Url
-            value: http://10.20.26.100:9000
-          - name: "credentials.sealedSecretContent"
-            value: "AgCi/Y11BlqQepCwTtXJQ93v/OxjusZUv1APF9TaB9M2pKMHwVcQCq0gNBSGEzSnlBFvp8oy76YZEnzNAdSh37MoeHiHCl90ab9k+t0r5O4JWgYFwC2UWoJAwI+l4avnBJuYkKeTgnO+KAr/vUrfdOxZUhUQyEoZ2Ox3XSRPddkCobPItRwDcFdgMjgR7qfXU9o4tfh49C7h1ntxcSqUnojzAgRLYgyKZullBPzl3mu+jVNmQoh29oRhMLzxEpwhnyhDqSnnyy5XyULsD/hrtgBVN4wZy69BWp8v5f838zdJWax8St3/VvbnFbPstjlDtqax2vy2I/iFCME1IacngPNHc94S4hTtYGYUwSJ7NWhI4hyPXzbtsop8e6UHoc+Qd8ckxmRfCUgTkjdhRYf8rts3fQjOAJVjnNUBXe5K0XGAHAy1GnTKT2JsUo6oEGCiyoNQvu6d6ytHZmM1wZovK530Ydwp6dTqHkpLEYHHa8TJMt5+yUbo3P6/DHDFa1oBekxFFwY1ijUm0L7OfLWUI1IHLjLfNYJ+Rxtikjh4g+iInzohnWbAkGBRzhzEiYbXfVt98ZSYAUvJrqHk1lvBDwN7fnHKbpXmHHzE47RIctCtLCCISkjf9MCM9B31fN84DZmKVrYpu0SEmupcM69iXJlwdgpQMPpv0kl9PzLfgZbzYQWftuQdEkdlKHr/6F2QB9ndbBd8PtaAVyjS/kwplDyOOMfbwHWkS7pAfi4aVcty6p6rPJZZ2Oxkj6dalSNQmzbXfmv+OLBap4/MKEbT4qHcI80w26/bXq0zkKvOnu+xS5xkzlzioFeHzgaFS4rldLU69LfnXXYQUppwR8PNpQ=="
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-
 ########################## ROOK/CEPH OPERATOR ##########################
   rookCephOperator:
     name: rook-ceph-operator
@@ -236,6 +209,23 @@ applications:
           value: "true"
         - name: "elasticsearch.nodeCount"
           value: "1"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+####################### CLUSTER-LOGGING-EVENTROUTER #######################
+  clusterLoggingEventrouter:
+    name: cluster-logging-eventrouter
+    enabled: true
+    destination:
+      namespace: openshift-logging
+      create: true
+    argoProject: gepaplexx
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-logging-eventrouter
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true

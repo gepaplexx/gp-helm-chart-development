@@ -1,11 +1,38 @@
+#https://docs.openshift.com/container-platform/4.10/monitoring/configuring-the-monitoring-stack.html#configurable-monitoring-components_configuring-the-monitoring-stack
 infranodes:
-  enabled: false
+  enabled: true
+
 clusterMonitoring:
-  # https://docs.openshift.com/container-platform/4.7/monitoring/enabling-monitoring-for-user-defined-projects.html
   enableUserWorkload: true
-  # https://docs.openshift.com/container-platform/4.7/monitoring/configuring-the-monitoring-stack.html
-  config: ''
+  prometheusK8s:
+    retention: 31d
+    resources:
+      requests:
+        cpu: 300m
+        memory: 4Gi
+      limits:
+        cpu: 1
+    storageClassName: rook-ceph-block
+    storageSize: 20Gi
+  alertmanagerMain:
+    resources:
+      requests:
+        memory: 200Mi
+    storageClassName: rook-ceph-block
+    storageSize: 5Gi
 
 userWorkloadMonitoring:
-  # https://docs.openshift.com/container-platform/4.7/monitoring/configuring-the-monitoring-stack.html
-  config: ''
+  prometheus:
+    retention: 31d
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1Gi
+      limits:
+        cpu: 1
+    storageClassName: rook-ceph-block
+    storageSize: 20Gi
+  thanosRuler:
+    storageClassName: rook-ceph-block
+    storageSize: 5Gi
+
