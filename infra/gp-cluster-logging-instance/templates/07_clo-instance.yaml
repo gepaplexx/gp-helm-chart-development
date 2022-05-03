@@ -15,6 +15,10 @@ spec:
       audit:
         maxAge: {{ .Values.elasticsearch.retentionPolicy.audit.maxAge }}
     elasticsearch:
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      {{- end }}
       resources: 
         limits:
           memory: {{ .Values.elasticsearch.resources.limits.memory }}
@@ -41,6 +45,10 @@ spec:
   visualization:
     type: "kibana"
     kibana:
+      {{- if .Values.infranodes.enabled }}
+      nodeSelector:
+        node-role.kubernetes.io/infra: ''
+      {{- end }}
       resources:
         limits:
           memory: {{ .Values.kibana.resources.limits.memory }}

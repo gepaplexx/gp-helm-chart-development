@@ -108,6 +108,8 @@ applications:
         parameters:
           - name: "alertmanager.config"
             value: "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"
+          - name: "argocd.workflowrepository.enabled"
+            value: "false"
     syncPolicy:
       automated:
         prune: true
@@ -133,33 +135,6 @@ applications:
           value: "https://play.gepaplexx.com/"
         - name: "slack.channel"
           value: "aHR0cHM6Ly9ob29rcy5zbGFjay5jb20vc2VydmljZXMvVDAxRk0zQUNES04vQjAxUTI0NkI1TksvMUFIaHlIUlVsOVlVS2c2WHp5UGh2Z3dDCg=="
-    syncPolicy:
-      automated:
-        prune: true
-        selfHeal: true
-
-########################### VELERO ############################
-  velero:
-    name: velero
-    enabled: false
-    argoProject: gepaplexx
-    destination:
-      namespace: velero
-      create: true
-    source:
-      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
-      chart: gp-velero
-      targetRevision: "*"
-      helm:
-        parameters:
-          - name: "configuration.backupStorageLocation.bucket"
-            value: "steppe.gepaplexx.com"
-          - name: "configuration.backupStorageLocation.config.region"
-            value: "minio"
-          - name: "configuration.backupStorageLocation.config.s3Url"
-            value: "http://10.20.26.100:9000"
-          - name: "credentials.sealedSecretContent"
-            value: "AgCmA0iGHQNR+e/uylCE6s1RJkcFi2a1mAjzn0VAnf2LXxq9vZBvfuTkadS2/TVJX22FzGSW57x6/GQSkinPqs0ke0urNaIM5/ySvkvnKaZMZJxl2CdAp20mAWH3sqws8i67kaSrZYY6Y6W4YI0d5bzLYf/bw9x1T3TryvvVOXAeS0y1w42i0HfEKUcsftYIOgp2abLhL5RgOKxECTT1w8w2soUX2sfIN8mpGLy/o6/5gvUo7IOFnBIcORw1nAh5Co8tVmFWYQBH77+vlQSoCr4d1cqKevHrs7xP22KbN6bNUgjLmNfcCUh34RQX6YhJbBZquoVix7IuQROmXpBQhBNp/wOajcD+JkfTgIstR0KY6Fo3GfRxbB9rVyClDhbkaW/LmHl2ljX1gyb99UFYJxq7mCj6zH5ztmURYlw3zWm3wE7zWm2Nt3wWKlo66WHSDGOBuhb/fcR9rjS1GXDVWja5e8PUdC0yITgbsVGv5apkb6+/tQiPr3rXESUAd1CWwraOs4YaPd0P7WQie42bgiD1J6uDbhh/BLReAd5/W9zA3gOvDrPLFqLY1qYV8h58vPciBc9tMQ9dkoyd/DhFPVg9/wjw0X81g9WN/xsmEWNMHNZQ9/489mYkBjRf9lnzrwc1iQmGEYQ/G+adoH3KlrfOHR3uWPdNdHz+Ba3qJ9eFXHBZtZO014+CrLvgAxYupozauWf/omi3jq6fRPoblhxleuJWUkxZupFUwGc4gDKmyU05NNLgu0ErSyhVxifE5M9I96CJ5kqpt822+XOldOG10ZH/xSUyXDZJuFg4fHI8ZAueZDsZ+tDm52R2d9oaIN2uMZD5WP55CKYfKFh5dz3D"
     syncPolicy:
       automated:
         prune: true
@@ -228,10 +203,23 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       chart: gp-cluster-logging-instance
       targetRevision: "*"
-      helm:
-        parameters:
-        - name: "infranodes.enabled"
-          value: "false"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+####################### CLUSTER-LOGGING-EVENTROUTER #######################
+  clusterLoggingEventrouter:
+    name: cluster-logging-eventrouter
+    enabled: true
+    destination:
+      namespace: openshift-logging
+      create: true
+    argoProject: gepaplexx
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      chart: gp-cluster-logging-eventrouter
+      targetRevision: "*"
     syncPolicy:
       automated:
         prune: true

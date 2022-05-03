@@ -1,0 +1,29 @@
+{{- if .Values.argocd.workflowrepository.enabled }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-argocd-cm
+spec:
+  serviceAccountRef:
+    name: resource-locker-sa
+  patches:
+    - targetObjectRef:
+        apiVersion: v1
+        kind: ConfigMap
+        name: argocd-cm
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+        data:
+          repositories: |
+            - url: {{ .Values.argocd.workflowrepository.url }}
+              type: git
+              usernameSecret:
+                name: {{ .Values.argocd.workflowrepository.secretName }}
+                key: username
+              sshPrivateKeySecret:
+                name: {{ .Values.argocd.workflowrepository.secretName }}
+                key: sshPrivateKey
+              insecure: true
+      patchType: application/merge-patch+json
+      id: patch-argocd-cm
+{{- end }}

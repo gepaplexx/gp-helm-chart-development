@@ -30,6 +30,7 @@ jobs:
         run: |
           helm lint \
              ./bke-runtime/*/. \
+             ./bke-development/*/. \
              ./infra/*/. \
              ./day-2-operations/*/. \
              ./gp-workload/*/. \
@@ -73,6 +74,15 @@ jobs:
         with:
           token: ${{ secrets.PAT }}
           charts_dir: ./gp-apps
+          charts_url: https://gepaplexx.github.io/gp-helm-charts/
+          owner: gepaplexx
+          repository: gp-helm-charts
+          branch: main
+      - name: Publish bke-develoment Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
+          token: ${{ secrets.PAT }}
+          charts_dir: ./bke-development
           charts_url: https://gepaplexx.github.io/gp-helm-charts/
           owner: gepaplexx
           repository: gp-helm-charts

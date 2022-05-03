@@ -1,9 +1,23 @@
-{{- if (eq .Values.project.create true)}}
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: gepaplexx-cicd
+  namespace: openshift-gitops
+spec:
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - namespace: '*'
+      server: '*'
+  sourceRepos:
+    - '*'
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: {{ default "default" .Values.project.name }}
+  name: gepaplexx
+  namespace: openshift-gitops
 spec:
   clusterResourceWhitelist:
     - group: '*'
@@ -14,4 +28,3 @@ spec:
   sourceRepos:
     - '*'
 ...
-{{- end }}

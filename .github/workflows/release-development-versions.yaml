@@ -1,12 +1,18 @@
 ---
-name: Lint Helm Chart
-'on':
-  push:
-    branches:
-      - 'develop'
-    tags-ignore:
-      - '**'
+name: Release Development Version
 
+'on':
+  workflow_dispatch:
+    inputs:
+      dir:
+        description: directory with helm charts to release
+        type: Choice
+        options:
+        - bke-runtime
+        - bke-development
+        - infra
+        - gp-apps
+        - gp-workfload
 jobs:
   lint-helm:
     runs-on: ubuntu-latest
@@ -28,36 +34,39 @@ jobs:
       - name: Lint Helm
         run: |
           helm lint \
-             ./bke-runtime/*/. \
-             ./bke-development/*/. \
-             ./infra/*/. \
-             ./day-2-operations/*/. \
-             ./gp-workload/*/. \
-             ./gp-apps/*/.
+             ./${{ github.event.inputs.dir }}/*/.
 
-
-  pull-request:
-    name: Pull Request
+  release:
     runs-on: ubuntu-latest
     needs:
       - lint-helm
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+      - uses: actions/checkout@v2
         with:
-          branch: main
+          fetch-depth: 0
+    
+      - name: Configure Git 
+        run: |
+          git config user.name "gepardec-complete"
+          git config user.email "gepardec-complete@users.noreply.github.com"
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: v3.8.0
+
+      - name: Publish ${{ github.event.inputs.dir }} Helm charts
+        uses: stefanprodan/helm-gh-pages@master
+        with:
           token: ${{ secrets.PAT }}
+          charts_dir: ./${{ github.event.inputs.dir }}
 
   notify:
     name: Slack Notifications
     runs-on: ubuntu-latest
     if: ${{ failure() }}
     needs:
-      - lint-helm
-      - pull-request
+      - release
     steps:
       - name: Notify Slack channel on failure
         uses: rtCamp/action-slack-notify@v2
