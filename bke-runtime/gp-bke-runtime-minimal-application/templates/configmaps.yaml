@@ -1,0 +1,14 @@
+{{- range $configmap := .Values.configmaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $configmap.name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+  {{- include "gp-bke-runtime-minimal-application.labels" $ | nindent 4 }}
+data:
+  {{- range $item := .items }}
+  {{ $item.key }}: {{ $item.value }}
+  {{- end -}}
+{{- end }}
