@@ -1,5 +1,5 @@
 ---
-name: Release Development Version
+name: Release Helm Charts in Development
 
 'on':
   workflow_dispatch:
