@@ -75,20 +75,6 @@ configmaps: {}
 #    - key: key1
 #      value: value1
 
-secrets: {}
-#  - name: first-secret
-#    mountPath: /etc/
-#    items:
-#    - key: key1
-#      value: "dmFsdWUxCg=="
-#      b64encoded: true
-#    - key: key2
-#      value: secret-value
-#  - name: second-secret
-#    items:
-#    - key: key1
-#      value: value1
-
 resources:
   limits:
     cpu: 500m
