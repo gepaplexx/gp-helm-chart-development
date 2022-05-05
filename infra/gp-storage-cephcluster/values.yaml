@@ -48,6 +48,10 @@ storageclassFs:
   name: rook-ceph-fs
   reclaimPolicy: Delete
 
+volumeSnapshotClass:
+  name: rook-ceph-snapshot
+  deletionPolicy: Delete
+
 # OBJECTSTORE
 cephobjectstore:
   enabled: false
