@@ -1,0 +1,38 @@
+kind: K10
+apiVersion: apik10.kasten.io/v1alpha1
+metadata:
+  name: k10
+  namespace: openshift-operators
+spec:
+  auth:
+    groupAllowList: ["Gepaplexx"]
+    k10AdminGroups: ["Gepaplexx"]
+    openshift:
+      clientSecret: ''
+      dashboardURL: ''
+      enabled: true
+      groupnameClaim: groups
+      groupnamePrefix: 'Gepaplexx'
+      openshiftURL: ''
+      secretName: ''
+      serviceAccount: ''
+  clusterName: ''
+  eula:
+    accept: true
+  global:
+    route:
+      enabled: true
+  rbac:
+    create: true
+  route:
+    enabled: true
+    host: ''
+    tls:
+      enabled: true
+      insecureEdgeTerminationPolicy: Redirect
+      termination: edge
+  scc:
+    create: true
+  serviceAccount:
+    create: true
+    name: ''

@@ -1,0 +1,22 @@
+kasten:
+  clusterName: "gepaplexx"
+  serviceAccount:
+    name: "kasten"
+  rbac:
+    create: true
+  scc:
+    create: true
+  auth:
+    k10AdminGroups: "gepaplexx"
+    groupAllowList: "gepaplexx"
+    openshift:
+      enabled: true
+      serviceAccount: "kasten-dex-sa"
+      clientSecret: ""
+      dashboardURL: "kasten.apps.steppe.gepaplexx.com/k10"
+      openshiftURL: ""
+  route:
+    enabled: true
+    host: "kasten.apps.steppe.gepaplexx.com"
+    tls:
+      enabled: true

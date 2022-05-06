@@ -1,0 +1,13 @@
+apiVersion: v2
+name: gp-kasten-backup
+description: A Helm chart for Kubernetes
+
+type: application
+version: 4.5.14
+appVersion: "4.5.14"
+
+dependencies:
+  - name: k10
+    alias: kasten
+    version: 4.5.14
+    repository: https://charts.kasten.io/
