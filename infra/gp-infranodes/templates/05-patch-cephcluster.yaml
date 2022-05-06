@@ -12,7 +12,7 @@ spec:
   - targetObjectRef:
       apiVersion: v1
       kind: Namespace
-      name: velero
+      name: rook-ceph
     patchTemplate: |
       spec:
         placement:

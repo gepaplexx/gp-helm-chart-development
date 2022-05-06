@@ -36,12 +36,3 @@ spec:
         annotations:
           openshift.io/node-selector: ""
     id: patch-rook-ceph-nodeselector
-  - targetObjectRef:
-      apiVersion: v1
-      kind: Namespace
-      name: velero
-    patchTemplate: |
-      metadata:
-        annotations:
-          openshift.io/node-selector: ""
-    id: patch-velero-nodeselector
