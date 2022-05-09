@@ -577,3 +577,29 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+  ##################### KASTEN K10 BACKUP ######################
+  kasten:
+    name: k10
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: openshift-gitops
+      create: false
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      targetRevision: "*"
+      chart: "gp-kasten-backup"
+      helm:
+        parameters:
+          - name: "kasten.auth.clusterApiURL"
+            value: "api.steppe.gepaplexx.com"
+          - name: "kasten.route.host"
+            value: "kasten.apps.steppe.gepaplexx.com"
+          - name: "kasten.clusterName"
+            value: "steppe"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
