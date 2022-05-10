@@ -509,7 +509,7 @@ applications:
     argoProject: gepaplexx
     destination:
       namespace: k10
-      create: false
+      create: true
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       targetRevision: "*"
