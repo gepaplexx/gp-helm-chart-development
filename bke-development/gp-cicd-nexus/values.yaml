@@ -1,0 +1,30 @@
+nexus:
+  nexus:
+    docker:
+      enabled: true
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "2048Mi"
+      limits:
+        cpu: "2000m" # According to UI 4 CPUs is recommended. Keep an eye on this.
+        memory: "3072Mi"
+  route:
+    enabled: true
+    name: nexus
+    path: "nexus.apps.$clustername.gepaplexx.com"
+  service:
+    enabled: true
+    portName: nexus-ui
+    name: cluster-nexus
+  config:
+    enabled: false # todo: create config and deploy
+    data: nil
+    mountPath: ""
+  serviceAccount:
+    create: true
+    name: "nexus"
+  persistence:
+    enabled: true
+    storageSize: "20Gi"
+    storageClass: "rook-ceph-block"
