@@ -60,3 +60,12 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{- define "gp-kasten-backup.openshift.auth.clientSecret" -}}
+{{- range $index,$secret := (lookup "v1" "ServiceAccount" .Release.Namespace .Values.kasten.auth.serviceAccountName).secrets -}}
+{{- if contains "token" $secret.name -}}
+{{- $token := (lookup "v1" "Secret" $.Release.Namespace $secret.name ).data.token | b64dec }}
+{{- $token  }}
+{{- end -}}
+{{- end -}}
+{{- end -}}

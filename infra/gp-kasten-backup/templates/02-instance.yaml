@@ -1,38 +1,3222 @@
 kind: K10
 apiVersion: apik10.kasten.io/v1alpha1
 metadata:
-  name: k10
-  namespace: openshift-operators
+  name: {{ .Release.Name }}-instance
+  namespace: {{ .Release.Namespace }}
 spec:
+  ambassadorImage:
+    image: ambassador
+    registry: quay.io
+    repository: datawire
+  apigateway:
+    serviceResolver: dns
+  apiservices:
+    deployed: true
   auth:
-    groupAllowList: ["Gepaplexx"]
-    k10AdminGroups: ["Gepaplexx"]
-    openshift:
-      clientSecret: ''
-      dashboardURL: ''
-      enabled: true
-      groupnameClaim: groups
-      groupnamePrefix: 'Gepaplexx'
-      openshiftURL: ''
+    basicAuth:
+      enabled: false
+      htpasswd: ''
       secretName: ''
-      serviceAccount: ''
-  clusterName: ''
-  eula:
-    accept: true
+    dex:
+      enabled: false
+      providerURL: ''
+      redirectURL: ''
+    groupAllowList: {{ .Values.kasten.auth.groups }}
+    k10AdminGroups: {{ .Values.kasten.auth.groups }}
+    k10AdminUsers: []
+    ldap:
+      bindDN: ''
+      bindPW: ''
+      bindPWSecretName: ''
+      dashboardURL: ''
+      enabled: false
+      groupSearch:
+        baseDN: ''
+        filter: ''
+        nameAttr: ''
+        userMatchers: []
+      groupnameClaim: groups
+      groupnamePrefix: ''
+      host: ''
+      insecureNoSSL: false
+      insecureSkipVerifySSL: false
+      restartPod: false
+      secretName: ''
+      startTLS: false
+      userSearch:
+        baseDN: ''
+        emailAttr: ''
+        filter: ''
+        idAttr: ''
+        nameAttr: ''
+        preferredUsernameAttr: ''
+        username: ''
+      usernameClaim: email
+      usernamePrefix: ''
+    oidcAuth:
+      clientID: ''
+      clientSecret: ''
+      enabled: false
+      groupClaim: ''
+      groupPrefix: ''
+      logoutURL: ''
+      prompt: ''
+      providerURL: ''
+      redirectURL: ''
+      scopes: ''
+      secretName: ''
+      usernameClaim: ''
+      usernamePrefix: ''
+    openshift:
+      clientSecret: '' # will be set from patch
+      dashboardURL: '' # will be set from patch
+      enabled: false # will be set from patch
+      groupnameClaim: groups
+      groupnamePrefix: ''
+      insecureCA: true
+      openshiftURL: '' # will be set from patch
+      secretName: ''
+      serviceAccount: ''  # will be set from patch
+      useServiceAccountCA: false
+      usernameClaim: email
+      usernamePrefix: ''
+    tokenAuth:
+      enabled: false
+  awsConfig:
+    assumeRoleDuration: ''
+    efsBackupVaultName: ''
+  cacertconfigmap:
+    name: ''
+  cluster:
+    domainName: cluster.local
+  clusterName: {{ .Values.kasten.clusterName }}
+  dexImage:
+    image: dex
+    registry: quay.io
+    repository: dexidp
+  encryption:
+    primaryKey:
+      awsCmkKeyId: ''
+      vaultTransitKeyName: ''
+      vaultTransitPath: ''
+  executorReplicas: 3
+  externalGateway:
+    annotations: {}
+    awsSSLCertARN: ''
+    create: false
+    fqdn:
+      name: ''
+      type: ''
+  gateway:
+    exposeAdminPort: true
+    insecureDisableSSLVerify: false
+  genericVolumeSnapshot:
+    resources:
+      limits:
+        cpu: ''
+        memory: ''
+      requests:
+        cpu: ''
+        memory: ''
   global:
-    route:
+    airgapped:
+      repository: ''
+    imagePullSecret: ''
+    images:
+      admin: ''
+      aggregatedapis: ''
+      ambassador: ''
+      auth: ''
+      bloblifecyclemanager: ''
+      catalog: ''
+      cephtool: ''
+      config: ''
+      configmap-reload: ''
+      crypto: ''
+      dashboardbff: ''
+      datamover: ''
+      dex: ''
+      events: ''
+      executor: ''
+      frontend: ''
+      grafana: ''
+      jobs: ''
+      kanister: ''
+      kanister-tools: ''
+      logging: ''
+      metering: ''
+      prometheus: ''
+      state: ''
+      upgrade: ''
+      vbrintegrationapi: ''
+    ingress:
+      create: false
+      urlPath: ''
+    persistence:
+      accessMode: ReadWriteOnce
+      catalog:
+        size: ''
       enabled: true
-  rbac:
-    create: true
-  route:
+      grafana:
+        size: 5Gi
+      jobs:
+        size: ''
+      logging:
+        size: ''
+      metering:
+        size: 2Gi
+      mountPath: /mnt/k10state
+      size: 20Gi
+      storageClass: ''
+    rhMarketPlace: true
+    route:
+      enabled: false
+      path: ''
+    upstreamCertifiedImages: false
+  grafana:
+    admin:
+      existingSecret: ''
+      passwordKey: admin-password
+      userKey: admin-user
+    adminUser: admin
+    affinity: {}
+    autoscaling:
+      enabled: false
+    containerSecurityContext: {}
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - disableDeletion: true
+            editable: false
+            folder: ''
+            name: default
+            options:
+              path: /var/lib/grafana/dashboards
+            orgId: 1
+            type: file
+    dashboards:
+      default:
+        default:
+          json: |
+            {
+              "annotations": {
+                "list": [
+                  {
+                    "builtIn": 1,
+                    "datasource": "-- Grafana --",
+                    "enable": true,
+                    "hide": true,
+                    "iconColor": "rgba(0, 211, 255, 1)",
+                    "name": "Annotations & Alerts",
+                    "target": {
+                      "limit": 100,
+                      "matchAny": false,
+                      "tags": [],
+                      "type": "dashboard"
+                    },
+                    "type": "dashboard"
+                  }
+                ]
+              },
+              "editable": true,
+              "gnetId": null,
+              "graphTooltip": 0,
+              "id": 1,
+              "iteration": 1634946056135,
+              "links": [],
+              "panels": [
+                {
+                  "collapsed": false,
+                  "datasource": null,
+                  "gridPos": {
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 0
+                  },
+                  "id": 18,
+                  "panels": [],
+                  "title": "Applications",
+                  "type": "row"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "0",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 5,
+                    "x": 0,
+                    "y": 1
+                  },
+                  "id": 24,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Backups Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 5,
+                    "y": 1
+                  },
+                  "id": 33,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Backups Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 8,
+                    "y": 1
+                  },
+                  "id": 34,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Backups Skipped",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 5,
+                    "x": 13,
+                    "y": 1
+                  },
+                  "id": 35,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Restores Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 18,
+                    "y": 1
+                  },
+                  "id": 36,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Restores Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 21,
+                    "y": 1
+                  },
+                  "id": 23,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Restores Skipped",
+                  "type": "stat"
+                },
+                {
+                  "collapsed": false,
+                  "datasource": null,
+                  "gridPos": {
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 8
+                  },
+                  "id": 16,
+                  "panels": [],
+                  "title": "Cluster",
+                  "type": "row"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "0",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "yellow",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 5,
+                    "x": 0,
+                    "y": 9
+                  },
+                  "id": 10,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_cluster_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Backups Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 5,
+                    "y": 9
+                  },
+                  "id": 19,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_cluster_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Backups Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 8,
+                    "y": 9
+                  },
+                  "id": 28,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_backup_cluster_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Backups Skipped",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 5,
+                    "x": 13,
+                    "y": 9
+                  },
+                  "id": 21,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_cluster_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Restores Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 18,
+                    "y": 9
+                  },
+                  "id": 22,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_cluster_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Restores Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 7,
+                    "w": 3,
+                    "x": 21,
+                    "y": 9
+                  },
+                  "id": 25,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_restore_cluster_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Cluster Restores Skipped",
+                  "type": "stat"
+                },
+                {
+                  "collapsed": false,
+                  "datasource": null,
+                  "gridPos": {
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 16
+                  },
+                  "id": 31,
+                  "panels": [],
+                  "title": "Backup Exports",
+                  "type": "row"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "0",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 5,
+                    "x": 0,
+                    "y": 17
+                  },
+                  "id": 38,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_export_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Exports Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 5,
+                    "y": 17
+                  },
+                  "id": 29,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_export_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Exports Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 8,
+                    "y": 17
+                  },
+                  "id": 20,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_export_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Exports Skipped",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "0",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 5,
+                    "x": 13,
+                    "y": 17
+                  },
+                  "id": 27,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_import_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Imports Completed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "red",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 18,
+                    "y": 17
+                  },
+                  "id": 39,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_import_ended_overall{cluster=\"$cluster\", state=~\"failed|cancelled\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Imports Failed",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "#EAB839",
+                            "value": 1
+                          }
+                        ]
+                      }
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 21,
+                    "y": 17
+                  },
+                  "id": 37,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_import_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "hide": false,
+                      "interval": "",
+                      "legendFormat": "",
+                      "refId": "B"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Imports Skipped",
+                  "type": "stat"
+                },
+                {
+                  "collapsed": false,
+                  "datasource": null,
+                  "gridPos": {
+                    "h": 1,
+                    "w": 24,
+                    "x": 0,
+                    "y": 23
+                  },
+                  "id": 14,
+                  "panels": [],
+                  "title": "System",
+                  "type": "row"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "green",
+                            "value": 1
+                          }
+                        ]
+                      },
+                      "unit": "runs"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 0,
+                    "y": 24
+                  },
+                  "id": 12,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_run_ended_overall{cluster=\"$cluster\", state=\"succeeded\"}[$__range])))",
+                      "format": "time_series",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Policy Runs",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [
+                        {
+                          "options": {
+                            "0": {
+                              "index": 0,
+                              "text": "-"
+                            }
+                          },
+                          "type": "value"
+                        }
+                      ],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "text",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 1
+                          }
+                        ]
+                      },
+                      "unit": "runs"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 2,
+                    "x": 3,
+                    "y": 24
+                  },
+                  "id": 40,
+                  "interval": "1m",
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "none",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "last"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": false,
+                      "expr": "sum(round(increase(action_run_skipped_overall{cluster=\"$cluster\"}[$__range])))",
+                      "format": "time_series",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "timeFrom": null,
+                  "title": "Policy Runs Skipped",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "#ccccdc",
+                            "value": null
+                          }
+                        ]
+                      },
+                      "unit": "bytes"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 6,
+                    "y": 24
+                  },
+                  "id": 6,
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "catalog_persistent_volume_disk_space_used_bytes{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Catalog Volume Used",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "max": 100,
+                      "min": 0,
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 70
+                          },
+                          {
+                            "color": "orange",
+                            "value": 80
+                          },
+                          {
+                            "color": "red",
+                            "value": 90
+                          }
+                        ]
+                      },
+                      "unit": "percent"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 9,
+                    "y": 24
+                  },
+                  "id": 2,
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "showThresholdLabels": false,
+                    "showThresholdMarkers": true,
+                    "text": {}
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "100-catalog_persistent_volume_free_space_percent{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Catalog Volume Used Space",
+                  "type": "gauge"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "#ccccdc",
+                            "value": null
+                          }
+                        ]
+                      },
+                      "unit": "bytes"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 12,
+                    "y": 24
+                  },
+                  "id": 8,
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "jobs_persistent_volume_disk_space_used_bytes{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Jobs Volume Used",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "max": 100,
+                      "min": 0,
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 70
+                          },
+                          {
+                            "color": "orange",
+                            "value": 80
+                          },
+                          {
+                            "color": "red",
+                            "value": 90
+                          }
+                        ]
+                      },
+                      "unit": "percent"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 15,
+                    "y": 24
+                  },
+                  "id": 4,
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "showThresholdLabels": false,
+                    "showThresholdMarkers": true,
+                    "text": {}
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "100-jobs_persistent_volume_free_space_percent{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Jobs Volume Used Space",
+                  "type": "gauge"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "#ccccdc",
+                            "value": null
+                          }
+                        ]
+                      },
+                      "unit": "bytes"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 18,
+                    "y": 24
+                  },
+                  "id": 7,
+                  "options": {
+                    "colorMode": "value",
+                    "graphMode": "area",
+                    "justifyMode": "auto",
+                    "orientation": "auto",
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "text": {},
+                    "textMode": "auto"
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "logging_persistent_volume_disk_space_used_bytes{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Logging Volume Used",
+                  "type": "stat"
+                },
+                {
+                  "datasource": "Prometheus",
+                  "description": "",
+                  "fieldConfig": {
+                    "defaults": {
+                      "color": {
+                        "mode": "thresholds"
+                      },
+                      "mappings": [],
+                      "max": 100,
+                      "min": 0,
+                      "noValue": "-",
+                      "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                          {
+                            "color": "green",
+                            "value": null
+                          },
+                          {
+                            "color": "yellow",
+                            "value": 70
+                          },
+                          {
+                            "color": "orange",
+                            "value": 80
+                          },
+                          {
+                            "color": "red",
+                            "value": 90
+                          }
+                        ]
+                      },
+                      "unit": "percent"
+                    },
+                    "overrides": []
+                  },
+                  "gridPos": {
+                    "h": 6,
+                    "w": 3,
+                    "x": 21,
+                    "y": 24
+                  },
+                  "id": 3,
+                  "options": {
+                    "reduceOptions": {
+                      "calcs": [
+                        "lastNotNull"
+                      ],
+                      "fields": "",
+                      "values": false
+                    },
+                    "showThresholdLabels": false,
+                    "showThresholdMarkers": true,
+                    "text": {}
+                  },
+                  "pluginVersion": "8.1.0",
+                  "targets": [
+                    {
+                      "exemplar": true,
+                      "expr": "100-logging_persistent_volume_free_space_percent{cluster=\"$cluster\"}",
+                      "interval": "",
+                      "legendFormat": "",
+                      "queryType": "randomWalk",
+                      "refId": "A"
+                    }
+                  ],
+                  "title": "Logging Volume Used Space",
+                  "type": "gauge"
+                }
+              ],
+              "schemaVersion": 30,
+              "style": "dark",
+              "tags": [],
+              "templating": {
+                "list": [
+                  {
+                    "description": null,
+                    "error": null,
+                    "hide": 2,
+                    "label": "Cluster",
+                    "name": "cluster",
+                    "query": "",
+                    "skipUrlSync": false,
+                    "type": "constant"
+                  }
+                ]
+              },
+              "time": {
+                "from": "now-24h",
+                "to": "now"
+              },
+              "timepicker": {},
+              "timezone": "",
+              "title": "K10 Dashboard",
+              "uid": "8Ebb3xS7k",
+              "version": 1
+            }
+    dashboardsConfigMaps: {}
+    deploymentStrategy:
+      type: Recreate
+    downloadDashboards:
+      env: {}
+      envFromSecret: ''
+      resources: {}
+    downloadDashboardsImage:
+      pullPolicy: IfNotPresent
+      repository: curlimages/curl
+      sha: ''
+      tag: 7.73.0
+    enableServiceLinks: true
     enabled: true
+    env: {}
+    envFromSecret: ''
+    envRenderSecret: {}
+    envValueFrom: {}
+    extraConfigmapMounts: []
+    extraContainerVolumes: []
+    extraContainers: ''
+    extraEmptyDirMounts: []
+    extraExposePorts: []
+    extraInitContainers: []
+    extraLabels: {}
+    extraSecretMounts: []
+    extraVolumeMounts: []
+    global:
+      airgapped:
+        repository: ''
+      imagePullSecret: ''
+      images:
+        admin: ''
+        aggregatedapis: ''
+        ambassador: ''
+        auth: ''
+        bloblifecyclemanager: ''
+        catalog: ''
+        cephtool: ''
+        config: ''
+        configmap-reload: ''
+        crypto: ''
+        dashboardbff: ''
+        datamover: ''
+        dex: ''
+        events: ''
+        executor: ''
+        frontend: ''
+        grafana: ''
+        jobs: ''
+        kanister: ''
+        kanister-tools: ''
+        logging: ''
+        metering: ''
+        prometheus: ''
+        state: ''
+        upgrade: ''
+        vbrintegrationapi: ''
+      ingress:
+        create: false
+        urlPath: ''
+      persistence:
+        accessMode: ReadWriteOnce
+        catalog:
+          size: ''
+        enabled: true
+        grafana:
+          size: 5Gi
+        jobs:
+          size: ''
+        logging:
+          size: ''
+        metering:
+          size: 2Gi
+        mountPath: /mnt/k10state
+        size: 20Gi
+        storageClass: ''
+      rhMarketPlace: true
+      route:
+        enabled: false
+        path: ''
+      upstreamCertifiedImages: false
+    grafana.ini:
+      analytics:
+        check_for_updates: true
+      auth:
+        disable_login_form: true
+        disable_signout_menu: true
+      auth.anonymous:
+        enabled: true
+        org_name: Main Org.
+        org_role: Admin
+      auth.basic:
+        enabled: false
+      dashboards:
+        default_home_dashboard_path: /var/lib/grafana/dashboards/default/default.json
+      grafana_net:
+        url: 'https://grafana.net'
+      log:
+        mode: console
+      paths:
+        data: /var/lib/grafana/
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+    hostAliases: []
+    image:
+      pullPolicy: IfNotPresent
+      repository: grafana/grafana
+      sha: ''
+      tag: 8.1.0
+    imageRenderer:
+      enabled: false
+      env:
+        HTTP_HOST: 0.0.0.0
+      grafanaSubPath: ''
+      hostAliases: []
+      image:
+        pullPolicy: Always
+        repository: grafana/grafana-image-renderer
+        sha: ''
+        tag: latest
+      networkPolicy:
+        limitEgress: false
+        limitIngress: true
+      podPortName: http
+      priorityClassName: ''
+      replicas: 1
+      resources: {}
+      revisionHistoryLimit: 10
+      securityContext: {}
+      service:
+        enabled: true
+        port: 8081
+        portName: http
+        targetPort: 8081
+      serviceAccountName: ''
+    ingress:
+      annotations: {}
+      enabled: false
+      extraPaths: []
+      hosts:
+        - chart-example.local
+      labels: {}
+      path: /
+      pathType: Prefix
+      tls: []
+    initChownData:
+      enabled: true
+      resources: {}
+    k10image:
+      registry: gcr.io
+      repository: kasten-images
+    ldap:
+      config: ''
+      enabled: false
+      existingSecret: ''
+    livenessProbe:
+      failureThreshold: 10
+      httpGet:
+        path: /api/health
+        port: 3000
+      initialDelaySeconds: 60
+      timeoutSeconds: 30
+    namespaceOverride: ''
+    nodeSelector: {}
+    notifiers: {}
+    persistence:
+      accessModes:
+        - ReadWriteOnce
+      enabled: true
+      finalizers:
+        - kubernetes.io/pvc-protection
+      inMemory:
+        enabled: false
+      size: 5Gi
+      type: pvc
+    plugins: []
+    podDisruptionBudget: {}
+    podPortName: grafana
+    prometheusName: prometheus-server
+    prometheusPrefixURL: /k10/prometheus
+    rbac:
+      create: true
+      extraClusterRoleRules: []
+      extraRoleRules: []
+      namespaced: true
+      pspEnabled: false
+      pspUseAppArmor: true
+    readinessProbe:
+      httpGet:
+        path: /api/health
+        port: 3000
+    replicas: 1
+    resources: {}
+    revisionHistoryLimit: 10
+    securityContext:
+      fsGroup: 472
+      runAsGroup: 472
+      runAsUser: 472
+    service:
+      annotations: {}
+      enabled: true
+      labels: {}
+      port: 80
+      portName: service
+      targetPort: 3000
+      type: ClusterIP
+    serviceAccount:
+      autoMount: true
+      create: true
+      name: null
+      nameTest: null
+    serviceMonitor:
+      enabled: false
+      interval: 1m
+      labels: {}
+      path: /metrics
+      relabelings: []
+      scheme: http
+      scrapeTimeout: 30s
+      tlsConfig: {}
+    sidecar:
+      dashboards:
+        SCProvider: true
+        defaultFolderName: null
+        enabled: false
+        folder: /tmp/dashboards
+        folderAnnotation: null
+        label: grafana_dashboard
+        labelValue: null
+        provider:
+          allowUiUpdates: false
+          disableDelete: false
+          folder: ''
+          foldersFromFilesStructure: false
+          name: sidecarProvider
+          orgid: 1
+          type: file
+        resource: both
+        searchNamespace: null
+      datasources:
+        enabled: false
+        label: grafana_datasource
+        labelValue: null
+        resource: both
+        searchNamespace: null
+      enableUniqueFilenames: false
+      image:
+        repository: quay.io/kiwigrid/k8s-sidecar
+        sha: ''
+        tag: 1.12.2
+      imagePullPolicy: IfNotPresent
+      notifiers:
+        enabled: false
+        label: grafana_notifier
+        resource: both
+        searchNamespace: null
+      resources: {}
+    smtp:
+      existingSecret: ''
+      passwordKey: password
+      userKey: user
+    testFramework:
+      enabled: false
+      image: bats/bats
+      imagePullPolicy: IfNotPresent
+      securityContext: {}
+      tag: v1.1.0
+    tolerations: []
+    ubi:
+      image:
+        pullPolicy: IfNotPresent
+        repository: registry.access.redhat.com/ubi8/ubi-minimal
+        tag: 8.4-210
+  image:
+    image: ''
+    pullPolicy: Always
+    registry: gcr.io
+    repository: kasten-images
+    tag: ''
+  ingress:
+    class: ''
+    create: false
     host: ''
     tls:
+      enabled: false
+    urlPath: ''
+  injectKanisterSidecar:
+    enabled: false
+    namespaceSelector:
+      matchLabels: {}
+    objectSelector:
+      matchLabels: {}
+    webhookServer:
+      port: 8080
+  jaeger:
+    agentDNS: ''
+    enabled: false
+  kanister:
+    backupTimeout: 45
+    checkRepoTimeout: 20
+    deleteTimeout: 45
+    efsPostRestoreTimeout: 45
+    hookTimeout: 20
+    podReadyWaitTimeout: 15
+    restoreTimeout: 600
+    statsTimeout: 20
+  kanisterPodCustomAnnotations: ''
+  kanisterPodCustomLabels: ''
+  kanisterToolsImage:
+    image: kanister-tools
+    pullPolicy: Always
+    registry: ghcr.io
+    repository: kanisterio
+  license: ''
+  limiter:
+    csiSnapshots: 10
+    genericVolumeCopies: 10
+    genericVolumeRestores: 10
+    genericVolumeSnapshots: 10
+    providerSnapshots: 10
+  logLevel: info
+  metering:
+    awsManagedLicense: false
+    awsMarketPlaceIamRole: ''
+    awsMarketplace: false
+    awsRegion: ''
+    consumerId: ''
+    licenseConfigSecretName: ''
+    mode: ''
+    promoID: ''
+    redhatMarketplacePayg: false
+    reportCollectionPeriod: 1800
+    reportPushPeriod: 3600
+    reportingKey: ''
+    serviceAccount:
+      create: false
+      name: ''
+  networkPolicy:
+    create: true
+  optionalColocatedServices:
+    vbrintegrationapi:
+      enabled: false
+  prometheus:
+    alertRelabelConfigs: null
+    alertmanager:
+      affinity: {}
+      baseURL: 'http://localhost:9093'
+      configFileName: alertmanager.yml
+      configFromSecret: ''
+      configMapOverrideName: ''
+      deploymentAnnotations: {}
+      dnsConfig: {}
+      emptyDir:
+        sizeLimit: ''
+      enabled: false
+      extraArgs: {}
+      extraEnv: {}
+      extraInitContainers: []
+      extraSecretMounts: []
+      image:
+        pullPolicy: IfNotPresent
+        repository: quay.io/prometheus/alertmanager
+        tag: v0.21.0
+      ingress:
+        annotations: {}
+        enabled: false
+        extraLabels: {}
+        extraPaths: []
+        hosts: []
+        path: /
+        pathType: Prefix
+        tls: []
+      name: alertmanager
+      nodeSelector: {}
+      persistentVolume:
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+        enabled: true
+        existingClaim: ''
+        mountPath: /data
+        size: 2Gi
+        subPath: ''
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        maxUnavailable: 1
+      podLabels: {}
+      podSecurityPolicy:
+        annotations: {}
+      prefixURL: ''
+      priorityClassName: ''
+      replicaCount: 1
+      resources: {}
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      service:
+        annotations: {}
+        clusterIP: ''
+        externalIPs: []
+        labels: {}
+        loadBalancerIP: ''
+        loadBalancerSourceRanges: []
+        servicePort: 80
+        sessionAffinity: None
+        type: ClusterIP
+      statefulSet:
+        annotations: {}
+        enabled: false
+        headless:
+          annotations: {}
+          enableMeshPeer: false
+          labels: {}
+          servicePort: 80
+        labels: {}
+        podManagementPolicy: OrderedReady
+      tolerations: []
+      useClusterRole: true
+      useExistingRole: false
+    alertmanagerFiles:
+      alertmanager.yml:
+        global: {}
+        receivers:
+          - name: default-receiver
+        route:
+          group_interval: 5m
+          group_wait: 10s
+          receiver: default-receiver
+          repeat_interval: 3h
+    configmapReload:
+      alertmanager:
+        enabled: true
+        extraArgs: {}
+        extraConfigmapMounts: []
+        extraVolumeDirs: []
+        image:
+          pullPolicy: IfNotPresent
+          repository: jimmidyson/configmap-reload
+          tag: v0.5.0
+        name: configmap-reload
+        resources: {}
+      prometheus:
+        enabled: true
+        extraArgs: {}
+        extraConfigmapMounts: []
+        extraVolumeDirs: []
+        image:
+          pullPolicy: IfNotPresent
+          repository: jimmidyson/configmap-reload
+          tag: v0.5.0
+        name: configmap-reload
+        resources: {}
+    extraScrapeConfigs: null
+    forceNamespace: null
+    global:
+      airgapped:
+        repository: ''
+      imagePullSecret: ''
+      images:
+        admin: ''
+        aggregatedapis: ''
+        ambassador: ''
+        auth: ''
+        bloblifecyclemanager: ''
+        catalog: ''
+        cephtool: ''
+        config: ''
+        configmap-reload: ''
+        crypto: ''
+        dashboardbff: ''
+        datamover: ''
+        dex: ''
+        events: ''
+        executor: ''
+        frontend: ''
+        grafana: ''
+        jobs: ''
+        kanister: ''
+        kanister-tools: ''
+        logging: ''
+        metering: ''
+        prometheus: ''
+        state: ''
+        upgrade: ''
+        vbrintegrationapi: ''
+      ingress:
+        create: false
+        urlPath: ''
+      persistence:
+        accessMode: ReadWriteOnce
+        catalog:
+          size: ''
+        enabled: true
+        grafana:
+          size: 5Gi
+        jobs:
+          size: ''
+        logging:
+          size: ''
+        metering:
+          size: 2Gi
+        mountPath: /mnt/k10state
+        size: 20Gi
+        storageClass: ''
+      rhMarketPlace: true
+      route:
+        enabled: false
+        path: ''
+      upstreamCertifiedImages: false
+    imagePullSecrets: null
+    initChownData:
+      enabled: false
+    k10image:
+      registry: gcr.io
+      repository: kasten-images
+    kubeStateMetrics:
+      enabled: false
+    networkPolicy:
       enabled: true
+    nodeExporter:
+      dnsConfig: {}
+      enabled: false
+      extraArgs: {}
+      extraConfigmapMounts: []
+      extraHostPathMounts: []
+      extraInitContainers: []
+      hostNetwork: true
+      hostPID: true
+      hostRootfs: true
+      image:
+        pullPolicy: IfNotPresent
+        repository: quay.io/prometheus/node-exporter
+        tag: v1.1.2
+      name: node-exporter
+      nodeSelector: {}
+      pod:
+        labels: {}
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        maxUnavailable: 1
+      podSecurityPolicy:
+        annotations: {}
+      priorityClassName: ''
+      resources: {}
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      service:
+        annotations:
+          prometheus.io/scrape: 'true'
+        clusterIP: None
+        externalIPs: []
+        hostPort: 9100
+        labels: {}
+        loadBalancerIP: ''
+        loadBalancerSourceRanges: []
+        servicePort: 9100
+        type: ClusterIP
+      tolerations: []
+      updateStrategy:
+        type: RollingUpdate
+    podSecurityPolicy:
+      enabled: false
+    pushgateway:
+      deploymentAnnotations: {}
+      dnsConfig: {}
+      enabled: false
+      extraArgs: {}
+      extraInitContainers: []
+      image:
+        pullPolicy: IfNotPresent
+        repository: prom/pushgateway
+        tag: v1.3.1
+      ingress:
+        annotations: {}
+        enabled: false
+        extraPaths: []
+        hosts: []
+        path: /
+        pathType: Prefix
+        tls: []
+      name: pushgateway
+      nodeSelector: {}
+      persistentVolume:
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+        enabled: false
+        existingClaim: ''
+        mountPath: /data
+        size: 2Gi
+        subPath: ''
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        maxUnavailable: 1
+      podLabels: {}
+      podSecurityPolicy:
+        annotations: {}
+      priorityClassName: ''
+      replicaCount: 1
+      resources: {}
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+      service:
+        annotations:
+          prometheus.io/probe: pushgateway
+        clusterIP: ''
+        externalIPs: []
+        labels: {}
+        loadBalancerIP: ''
+        loadBalancerSourceRanges: []
+        servicePort: 9091
+        type: ClusterIP
+      tolerations: []
+    rbac:
+      create: false
+    scrapeCAdvisor: false
+    server:
+      affinity: {}
+      alertmanagers: []
+      baseURL: /k10/prometheus/
+      configMapOverrideName: k10-prometheus-config
+      configPath: /etc/config/prometheus.yml
+      deploymentAnnotations: {}
+      dnsConfig: {}
+      dnsPolicy: ClusterFirst
+      emptyDir:
+        sizeLimit: ''
+      enableServiceLinks: true
+      enabled: true
+      env: []
+      extraArgs: {}
+      extraConfigmapMounts: []
+      extraFlags:
+        - web.enable-lifecycle
+      extraHostPathMounts: []
+      extraInitContainers: []
+      extraSecretMounts: []
+      extraVolumeMounts: []
+      extraVolumes: []
+      fullnameOverride: prometheus-server
+      global:
+        evaluation_interval: 1m
+        scrape_interval: 1m
+        scrape_timeout: 10s
+      hostAliases: []
+      hostNetwork: false
+      image:
+        pullPolicy: IfNotPresent
+        repository: quay.io/prometheus/prometheus
+        tag: v2.26.0
+      ingress:
+        annotations: {}
+        enabled: false
+        extraLabels: {}
+        extraPaths: []
+        hosts: []
+        path: /
+        pathType: Prefix
+        tls: []
+      livenessProbeFailureThreshold: 3
+      livenessProbeInitialDelay: 30
+      livenessProbePeriodSeconds: 15
+      livenessProbeSuccessThreshold: 1
+      livenessProbeTimeout: 10
+      name: server
+      nodeSelector: {}
+      persistentVolume:
+        accessModes:
+          - ReadWriteOnce
+        annotations: {}
+        enabled: true
+        existingClaim: ''
+        mountPath: /data
+        size: 8Gi
+        storageClass: ''
+        subPath: ''
+      podAnnotations: {}
+      podDisruptionBudget:
+        enabled: false
+        maxUnavailable: 1
+      podLabels: {}
+      podSecurityPolicy:
+        annotations: {}
+      prefixURL: /k10/prometheus
+      priorityClassName: ''
+      readinessProbeFailureThreshold: 3
+      readinessProbeInitialDelay: 30
+      readinessProbePeriodSeconds: 5
+      readinessProbeSuccessThreshold: 1
+      readinessProbeTimeout: 4
+      remoteRead: []
+      remoteWrite: []
+      replicaCount: 1
+      resources: {}
+      retention: 30d
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      service:
+        annotations: {}
+        clusterIP: ''
+        externalIPs: []
+        gRPC:
+          enabled: false
+          servicePort: 10901
+        labels: {}
+        loadBalancerIP: ''
+        loadBalancerSourceRanges: []
+        servicePort: 80
+        sessionAffinity: None
+        statefulsetReplica:
+          enabled: false
+          replica: 0
+        type: ClusterIP
+      sidecarContainers: {}
+      sidecarTemplateValues: {}
+      statefulSet:
+        annotations: {}
+        enabled: false
+        headless:
+          annotations: {}
+          gRPC:
+            enabled: false
+            servicePort: 10901
+          labels: {}
+          servicePort: 80
+        labels: {}
+        podManagementPolicy: OrderedReady
+      storagePath: ''
+      strategy:
+        rollingUpdate:
+          maxSurge: 100%
+          maxUnavailable: 100%
+        type: RollingUpdate
+      terminationGracePeriodSeconds: 300
+      tolerations: []
+      verticalAutoscaler:
+        enabled: false
+    serverFiles:
+      alerting_rules.yml: {}
+      alerts: {}
+      prometheus.yml:
+        rule_files:
+          - /etc/config/recording_rules.yml
+          - /etc/config/alerting_rules.yml
+          - /etc/config/rules
+          - /etc/config/alerts
+        scrape_configs:
+          - job_name: prometheus
+            static_configs:
+              - targets:
+                  - 'localhost:9090'
+          - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            job_name: kubernetes-apiservers
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - action: keep
+                regex: default;kubernetes;https
+                source_labels:
+                  - __meta_kubernetes_namespace
+                  - __meta_kubernetes_service_name
+                  - __meta_kubernetes_endpoint_port_name
+            scheme: https
+            tls_config:
+              ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              insecure_skip_verify: true
+          - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            job_name: kubernetes-nodes
+            kubernetes_sd_configs:
+              - role: node
+            relabel_configs:
+              - action: labelmap
+                regex: __meta_kubernetes_node_label_(.+)
+              - replacement: 'kubernetes.default.svc:443'
+                target_label: __address__
+              - regex: (.+)
+                replacement: /api/v1/nodes/$1/proxy/metrics
+                source_labels:
+                  - __meta_kubernetes_node_name
+                target_label: __metrics_path__
+            scheme: https
+            tls_config:
+              ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              insecure_skip_verify: true
+          - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+            job_name: kubernetes-nodes-cadvisor
+            kubernetes_sd_configs:
+              - role: node
+            relabel_configs:
+              - action: labelmap
+                regex: __meta_kubernetes_node_label_(.+)
+              - replacement: 'kubernetes.default.svc:443'
+                target_label: __address__
+              - regex: (.+)
+                replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
+                source_labels:
+                  - __meta_kubernetes_node_name
+                target_label: __metrics_path__
+            scheme: https
+            tls_config:
+              ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+              insecure_skip_verify: true
+          - job_name: kubernetes-service-endpoints
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - action: keep
+                regex: true
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_scrape
+              - action: replace
+                regex: (https?)
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_scheme
+                target_label: __scheme__
+              - action: replace
+                regex: (.+)
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_path
+                target_label: __metrics_path__
+              - action: replace
+                regex: '([^:]+)(?::\d+)?;(\d+)'
+                replacement: '$1:$2'
+                source_labels:
+                  - __address__
+                  - __meta_kubernetes_service_annotation_prometheus_io_port
+                target_label: __address__
+              - action: labelmap
+                regex: __meta_kubernetes_service_label_(.+)
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_namespace
+                target_label: kubernetes_namespace
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_service_name
+                target_label: kubernetes_name
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_pod_node_name
+                target_label: kubernetes_node
+          - job_name: kubernetes-service-endpoints-slow
+            kubernetes_sd_configs:
+              - role: endpoints
+            relabel_configs:
+              - action: keep
+                regex: true
+                source_labels:
+                  - >-
+                    __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
+              - action: replace
+                regex: (https?)
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_scheme
+                target_label: __scheme__
+              - action: replace
+                regex: (.+)
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_path
+                target_label: __metrics_path__
+              - action: replace
+                regex: '([^:]+)(?::\d+)?;(\d+)'
+                replacement: '$1:$2'
+                source_labels:
+                  - __address__
+                  - __meta_kubernetes_service_annotation_prometheus_io_port
+                target_label: __address__
+              - action: labelmap
+                regex: __meta_kubernetes_service_label_(.+)
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_namespace
+                target_label: kubernetes_namespace
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_service_name
+                target_label: kubernetes_name
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_pod_node_name
+                target_label: kubernetes_node
+            scrape_interval: 5m
+            scrape_timeout: 30s
+          - honor_labels: true
+            job_name: prometheus-pushgateway
+            kubernetes_sd_configs:
+              - role: service
+            relabel_configs:
+              - action: keep
+                regex: pushgateway
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_probe
+          - job_name: kubernetes-services
+            kubernetes_sd_configs:
+              - role: service
+            metrics_path: /probe
+            params:
+              module:
+                - http_2xx
+            relabel_configs:
+              - action: keep
+                regex: true
+                source_labels:
+                  - __meta_kubernetes_service_annotation_prometheus_io_probe
+              - source_labels:
+                  - __address__
+                target_label: __param_target
+              - replacement: blackbox
+                target_label: __address__
+              - source_labels:
+                  - __param_target
+                target_label: instance
+              - action: labelmap
+                regex: __meta_kubernetes_service_label_(.+)
+              - source_labels:
+                  - __meta_kubernetes_namespace
+                target_label: kubernetes_namespace
+              - source_labels:
+                  - __meta_kubernetes_service_name
+                target_label: kubernetes_name
+          - job_name: kubernetes-pods
+            kubernetes_sd_configs:
+              - role: pod
+            relabel_configs:
+              - action: keep
+                regex: true
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+              - action: replace
+                regex: (https?)
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+                target_label: __scheme__
+              - action: replace
+                regex: (.+)
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_path
+                target_label: __metrics_path__
+              - action: replace
+                regex: '([^:]+)(?::\d+)?;(\d+)'
+                replacement: '$1:$2'
+                source_labels:
+                  - __address__
+                  - __meta_kubernetes_pod_annotation_prometheus_io_port
+                target_label: __address__
+              - action: labelmap
+                regex: __meta_kubernetes_pod_label_(.+)
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_namespace
+                target_label: kubernetes_namespace
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_pod_name
+                target_label: kubernetes_pod_name
+              - action: drop
+                regex: Pending|Succeeded|Failed|Completed
+                source_labels:
+                  - __meta_kubernetes_pod_phase
+          - job_name: kubernetes-pods-slow
+            kubernetes_sd_configs:
+              - role: pod
+            relabel_configs:
+              - action: keep
+                regex: true
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+              - action: replace
+                regex: (https?)
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+                target_label: __scheme__
+              - action: replace
+                regex: (.+)
+                source_labels:
+                  - __meta_kubernetes_pod_annotation_prometheus_io_path
+                target_label: __metrics_path__
+              - action: replace
+                regex: '([^:]+)(?::\d+)?;(\d+)'
+                replacement: '$1:$2'
+                source_labels:
+                  - __address__
+                  - __meta_kubernetes_pod_annotation_prometheus_io_port
+                target_label: __address__
+              - action: labelmap
+                regex: __meta_kubernetes_pod_label_(.+)
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_namespace
+                target_label: kubernetes_namespace
+              - action: replace
+                source_labels:
+                  - __meta_kubernetes_pod_name
+                target_label: kubernetes_pod_name
+              - action: drop
+                regex: Pending|Succeeded|Failed|Completed
+                source_labels:
+                  - __meta_kubernetes_pod_phase
+            scrape_interval: 5m
+            scrape_timeout: 30s
+      recording_rules.yml: {}
+      rules: {}
+    serviceAccounts:
+      alertmanager:
+        annotations: {}
+        create: false
+        name: null
+      kubeStateMetrics:
+        create: false
+      nodeExporter:
+        annotations: {}
+        create: false
+        name: null
+      pushgateway:
+        annotations: {}
+        create: false
+        name: null
+      server:
+        annotations: {}
+        create: true
+        name: null
+  rbac:
+    create: true
+  resources: {}
+  route:
+    annotations: {}
+    enabled: false
+    host: ''
+    labels: {}
+    path: ''
+    tls:
+      enabled: false
       insecureEdgeTerminationPolicy: Redirect
       termination: edge
   scc:
     create: true
+  secrets:
+    apiTlsCrt: ''
+    apiTlsKey: ''
+    awsAccessKeyId: ''
+    awsIamRole: ''
+    awsSecretAccessKey: ''
+    azureADEndpoint: ''
+    azureADResourceID: ''
+    azureClientId: ''
+    azureClientSecret: ''
+    azureResourceGroup: ''
+    azureResourceMgrEndpoint: ''
+    azureSubscriptionID: ''
+    azureTenantId: ''
+    dockerConfig: ''
+    dockerConfigPath: ''
+    googleApiKey: ''
+    ibmSoftLayerApiKey: ''
+    ibmSoftLayerApiUsername: ''
+    vsphereEndpoint: ''
+    vspherePassword: ''
+    vsphereUsername: ''
+  service:
+    aggregatedApiPort: 10250
+    externalPort: 8000
+    gatewayAdminPort: 8877
+    internalPort: 8000
   serviceAccount:
-    create: true
-    name: ''
+    create: {{ .Values.kasten.serviceAccount.create }}
+    name: {{ .Values.kasten.serviceAccount.name}}
+  services:
+    aggregatedapis:
+      hostNetwork: false
+    dashboardbff:
+      hostNetwork: false
+    executor:
+      hostNetwork: false
+    securityContext:
+      fsGroup: 1000
+      runAsUser: 1000
+  toolsImage:
+    enabled: true
+    pullPolicy: Always
+  vault:
+    address: 'http://vault:8200'
+    secretName: ''
+  vmWare:
+    taskTimeoutMin: ''

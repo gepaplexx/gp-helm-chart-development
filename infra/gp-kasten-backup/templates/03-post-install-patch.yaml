@@ -1,47 +1,30 @@
+{{- if .Values.kasten.auth.openshift.enabled -}}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
-  name: patch-namespaces-nodeselector-annotation
+  name: patch-kasten-authentication
   namespace: {{ .Values.resourceLocker.namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
+{{/*  annotations:*/}}
+{{/*    helm.sh/hook: post-install,post-upgrade*/}}
 spec:
   serviceAccountRef:
     name: {{ .Values.resourceLocker.serviceAccount }}
   patches:
     - targetObjectRef:
-        apiVersion: v1
-        kind: Namespace
-        name: openshift-logging
+        apiVersion: apik10.kasten.io/v1alpha1
+        kind: K10
+        name: {{ .Release.Name }}-instance
+        namespace: {{ .Release.Namespace }}
       patchTemplate: |
-        metadata:
-          annotations:
-            openshift.io/node-selector: ""
-      id: patch-openshift-logging-nodeselector
-    - targetObjectRef:
-        apiVersion: v1
-        kind: Namespace
-        name: openshift-gitops
-      patchTemplate: |
-        metadata:
-          annotations:
-            openshift.io/node-selector: ""
-      id: patch-openshift-gitops-nodeselector
-    - targetObjectRef:
-        apiVersion: v1
-        kind: Namespace
-        name: rook-ceph
-      patchTemplate: |
-        metadata:
-          annotations:
-            openshift.io/node-selector: ""
-      id: patch-rook-ceph-nodeselector
-    - targetObjectRef:
-        apiVersion: v1
-        kind: Namespace
-        name: velero
-      patchTemplate: |
-        metadata:
-          annotations:
-            openshift.io/node-selector: ""
-      id: patch-velero-nodeselector
+        spec:
+          auth:
+            openshift:
+              clientSecret: "{{ include "gp-kasten-backup.openshift.auth.clientSecret" . }}"
+              serviceAccount: "{{ .Values.kasten.auth.serviceAccountName }}"
+              dashboardURL: "https://{{ .Values.kasten.route.host }}/{{ .Release.Name }}-instance"
+              openshiftURL: "https://{{ .Values.kasten.auth.clusterApiURL }}:6443"
+              insecureCA: true
+              enabled: "true"
+      id: patch-kasten-authentication
+      patchType: application/merge-patch+json
+{{- end -}}
