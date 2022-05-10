@@ -508,7 +508,7 @@ applications:
     enabled: true
     argoProject: gepaplexx
     destination:
-      namespace: openshift-gitops
+      namespace: k10
       create: false
     source:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
