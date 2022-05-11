@@ -1,0 +1,34 @@
+sonarqube:
+  sonarqubeUsername: "admin"
+  sonarqubePassword: "changeme"
+  service:
+    type: ClusterIP
+  ingress:
+    enabled: true
+    ingressClassName: "openshift-default"
+    hostname: "sonarqube.apps.example.gepaplexx.com"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
+  persistence:
+    enabled: true
+  postgresql:
+    auth:
+      password: "changeme"
+    primary:
+      podSecurityContext:
+        enabled: false
+      containerSecurityContext:
+        enabled: false
+    volumePermissions:
+      enabled: false
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+    name: sonarqube
+  metrics:
+    jmx:
+      enabled: true
+    serviceMonitor:
+      enabled: true
