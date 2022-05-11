@@ -3,10 +3,10 @@ resourceLocker:
   serviceAccount: resource-locker-sa
 
 kasten:
-  clusterName: "steppe"
+  clusterName: "example"
   auth:
     groups: ["Gepaplexx"]
-    clusterApiURL: "api.steppe.gepaplexx.com"
+    clusterApiURL: "api.example.gepaplexx.com"
     openshift:
       enabled: true
     serviceAccountName: "kasten-dex-sa"
@@ -14,4 +14,4 @@ kasten:
     create: true
     name: "kasten-sa"
   route:
-    host: "kasten.apps.steppe.gepaplexx.com"
+    host: "kasten.apps.example.gepaplexx.com"
