@@ -590,6 +590,10 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       targetRevision: "*"
       chart: "gp-kasten-operator"
+      helm:
+        parameters:
+          - name: "kasten.route.host"
+            value: "kasten.apps.steppe.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
