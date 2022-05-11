@@ -1,0 +1,17 @@
+resourceLocker:
+  namespace: gp-infrastructure
+  serviceAccount: resource-locker-sa
+
+kasten:
+  clusterName: "example"
+  auth:
+    groups: ["Gepaplexx"]
+    clusterApiURL: "api.example.gepaplexx.com"
+    openshift:
+      enabled: true
+    serviceAccountName: "kasten-dex-sa"
+  serviceAccount:
+    create: true
+    name: "kasten-sa"
+  route:
+    host: "kasten.apps.example.gepaplexx.com"

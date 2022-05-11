@@ -1,0 +1,34 @@
+{{- if .Values.kasten.auth.openshift.enabled -}}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: ResourceLocker
+metadata:
+  name: patch-kasten-authentication
+  namespace: {{ .Values.resourceLocker.namespace }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.resourceLocker.serviceAccount }}
+  patches:
+    - targetObjectRef:
+        apiVersion: apik10.kasten.io/v1alpha1
+        kind: K10
+        name: {{ .Release.Name }}-instance
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          auth:
+            openshift:
+              clientSecret: "{{ include "gp-kasten-backup.openshift.auth.clientSecret" . }}"
+              serviceAccount: "{{ .Values.kasten.auth.serviceAccountName }}"
+              dashboardURL: "https://{{ .Values.kasten.route.host }}/{{ .Release.Name }}-instance"
+              openshiftURL: "https://{{ .Values.kasten.auth.clusterApiURL }}:6443"
+              insecureCA: true
+              enabled: "true"
+            groupAllowList: {{ .Values.kasten.auth.groups }}
+            k10AdminGroups: {{ .Values.kasten.auth.groups }}
+          clusterName: {{ .Values.kasten.clusterName }}
+        serviceAccount:
+          create: {{ .Values.kasten.serviceAccount.create }}
+          name: {{ .Values.kasten.serviceAccount.name}}
+      id: patch-kasten-authentication
+      patchType: application/merge-patch+json
+{{- end -}}

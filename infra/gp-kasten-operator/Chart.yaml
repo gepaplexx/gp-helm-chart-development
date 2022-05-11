@@ -1,0 +1,5 @@
+apiVersion: v2
+name: gp-kasten-operator
+description: A Helm chart for installing kasten k10 operator on OpenShift
+type: application
+version: 0.0.1

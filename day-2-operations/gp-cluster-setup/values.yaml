@@ -501,3 +501,45 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+  ##################### KASTEN K10 OPERATOR ######################
+  kasten-operator:
+    name: k10-operator
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: k10
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      targetRevision: "*"
+      chart: "gp-kasten-operator"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+  ##################### KASTEN K10 BACKUP ######################
+  kasten-instance:
+    name: k10
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: k10
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      targetRevision: "*"
+      chart: "gp-kasten-instance"
+      helm:
+        parameters:
+          - name: "kasten.auth.clusterApiURL"
+            value: "api.${CLUSTERNAME}.gepaplexx.com"
+          - name: "kasten.route.host"
+            value: "kasten.apps.${CLUSTERNAME}.gepaplexx.com"
+          - name: "kasten.clusterName"
+            value: "${CLUSTERNAME}"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
