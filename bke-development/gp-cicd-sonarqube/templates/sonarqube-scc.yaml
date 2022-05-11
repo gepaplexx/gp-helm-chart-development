@@ -1,5 +1,3 @@
-{{- if and (.Values.OpenShift.enabled) (.Values.OpenShift.createSCC) }}
-
 # This SCC allows any user ID but restricts capabilties and host access
 apiVersion: security.openshift.io/v1
 kind: SecurityContextConstraints
@@ -30,17 +28,10 @@ requiredDropCapabilities:
 - SETGID
 runAsUser:
   type: RunAsAny
-# This can be customized for your host machine
 seLinuxContext:
   type: MustRunAs
-# seLinuxOptions:
-#   level:
-#   user:
-#   role:
-#   type:
 supplementalGroups:
   type: RunAsAny
-# This can be customized for your host machine
 volumes:
 - configMap
 - downwardAPI
@@ -48,12 +39,10 @@ volumes:
 - persistentVolumeClaim
 - projected
 - secret
-# If you want a priority on your SCC -- set for a value more than 0
 priority: 11
 users:
 {{- if .Values.sonarqube.serviceAccount.name }}
 - system:serviceaccount:{{ .Release.Namespace }}:{{ .Values.sonarqube.serviceAccount.name }}
 {{- else  }}
 - system:serviceaccount:{{ .Release.Namespace }}:{{ .Release.Name }}-sonarqube
-{{- end }}
 {{- end }}
