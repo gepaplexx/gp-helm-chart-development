@@ -6,7 +6,7 @@ kasten:
   clusterName: "steppe"
   auth:
     groups: ["Gepaplexx"]
-    clusterApiURL: "api.example.gepaplexx.com"
+    clusterApiURL: "api.steppe.gepaplexx.com"
     openshift:
       enabled: true
     serviceAccountName: "kasten-dex-sa"
@@ -14,4 +14,4 @@ kasten:
     create: true
     name: "kasten-sa"
   route:
-    host: "kasten.apps.example.gepaplexx.com"
+    host: "kasten.apps.steppe.gepaplexx.com"

@@ -4,8 +4,6 @@ kind: ResourceLocker
 metadata:
   name: patch-kasten-authentication
   namespace: {{ .Values.resourceLocker.namespace }}
-{{/*  annotations:*/}}
-{{/*    helm.sh/hook: post-install,post-upgrade*/}}
 spec:
   serviceAccountRef:
     name: {{ .Values.resourceLocker.serviceAccount }}
@@ -25,6 +23,12 @@ spec:
               openshiftURL: "https://{{ .Values.kasten.auth.clusterApiURL }}:6443"
               insecureCA: true
               enabled: "true"
+            groupAllowList: {{ .Values.kasten.auth.groups }}
+            k10AdminGroups: {{ .Values.kasten.auth.groups }}
+          clusterName: {{ .Values.kasten.clusterName }}
+        serviceAccount:
+          create: {{ .Values.kasten.serviceAccount.create }}
+          name: {{ .Values.kasten.serviceAccount.name}}
       id: patch-kasten-authentication
       patchType: application/merge-patch+json
 {{- end -}}

@@ -1,5 +1,5 @@
 apiVersion: v2
-name: gp-kasten-backup
+name: gp-kasten-instance
 description: A Helm chart for deploying Kasten on OpenShift
 
 type: application
