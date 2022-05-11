@@ -1,0 +1,6 @@
+provisioner:
+  nfs:
+    path: "/data/col1/steppe"
+    server: "10.11.12.24"
+  serviceAccount:
+    name: "nfs-provisioner"

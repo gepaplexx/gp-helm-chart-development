@@ -1,0 +1,12 @@
+apiVersion: v2
+name: gp-nfs-provisioner
+description: A Helm chart for deploying an nfs provisioner to OpenShift
+
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: nfs-subdir-external-provisioner
+    alias: provisioner
+    version: 4.0.16
+    repository: "https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/"

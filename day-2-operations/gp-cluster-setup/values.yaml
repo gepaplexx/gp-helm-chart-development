@@ -543,3 +543,24 @@ applications:
       automated:
         prune: true
         selfHeal: true
+
+####################### NFS-STORAGE-PROVISIONER ######################
+  nfs-provisioner:
+    name: nfs
+    enabled: false
+    argoProject: gepaplexx
+    destination:
+      namespace: nfs-storage-provisioner
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      targetRevision: "*"
+      chart: "gp-nfs-provisioner"
+      helm:
+        parameters:
+          - name: "provisioner.nfs.path"
+            value: "/data/col1/${CLUSTERNAME}"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true

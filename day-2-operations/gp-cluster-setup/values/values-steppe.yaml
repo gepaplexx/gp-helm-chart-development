@@ -578,7 +578,7 @@ applications:
         prune: true
         selfHeal: true
 
-  ##################### KASTEN K10 OPERATOR ######################
+####################### KASTEN K10 OPERATOR ######################
   kasten-operator:
     name: k10-operator
     enabled: true
@@ -595,7 +595,7 @@ applications:
         prune: true
         selfHeal: true
 
-  ##################### KASTEN K10 BACKUP ######################
+####################### KASTEN K10 BACKUP ######################
   kasten-instance:
     name: k10
     enabled: true
@@ -615,6 +615,27 @@ applications:
             value: "kasten.apps.steppe.gepaplexx.com"
           - name: "kasten.clusterName"
             value: "steppe"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+
+####################### NFS-STORAGE-PROVISIONER ######################
+  nfs-provisioner:
+    name: nfs
+    enabled: true
+    argoProject: gepaplexx
+    destination:
+      namespace: nfs-storage-provisioner
+      create: true
+    source:
+      repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
+      targetRevision: "*"
+      chart: "gp-nfs-provisioner"
+      helm:
+        parameters:
+          - name: "provisioner.nfs.path"
+            value: "/data/col1/steppe"
     syncPolicy:
       automated:
         prune: true
