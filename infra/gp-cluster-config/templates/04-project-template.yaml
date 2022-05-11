@@ -74,6 +74,7 @@ objects:
       requests.memory: {{ .Values.resourceQuota.requests.memory | default "10Gi" }}
       limits.cpu: {{ .Values.resourceQuota.limits.cpu | default "6" }}
       limits.memory: {{ .Values.resourceQuota.limits.memory | default "10Gi" }}
+      nfs-client.storageclass.storage.k8s.io/persistentvolumeclaims: "0"
     scopes:
     - NotTerminating # damit Build-Pods nicht betroffen sind 
 - apiVersion: v1
