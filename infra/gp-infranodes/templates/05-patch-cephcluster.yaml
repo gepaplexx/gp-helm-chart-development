@@ -10,9 +10,10 @@ spec:
     name: {{ .Values.resourceLocker.serviceAccount }}
   patches:
   - targetObjectRef:
-      apiVersion: v1
-      kind: Namespace
-      name: velero
+      apiVersion: ceph.rook.io/v1
+      kind: CephCluster
+      name: {{ .Values.ceph.cluster.name }}
+      namespace: {{ .Values.ceph.cluster.namespace }}
     patchTemplate: |
       spec:
         placement:
