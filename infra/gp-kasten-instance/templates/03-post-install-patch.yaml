@@ -17,7 +17,6 @@ spec:
         spec:
           auth:
             openshift:
-              clientSecret: "{{ include "gp-kasten-backup.openshift.auth.clientSecret" . }}"
               serviceAccount: "{{ .Values.kasten.auth.serviceAccountName }}"
               dashboardURL: "https://{{ .Values.kasten.route.host }}/{{ .Release.Name }}-instance"
               openshiftURL: "https://{{ .Values.kasten.auth.clusterApiURL }}:6443"
