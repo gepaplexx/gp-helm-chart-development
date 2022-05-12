@@ -590,10 +590,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       targetRevision: "*"
       chart: "gp-kasten-operator"
-      helm:
-        parameters:
-          - name: "kasten.route.host"
-            value: "kasten.apps.steppe.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
@@ -619,6 +615,10 @@ applications:
             value: "kasten.apps.steppe.gepaplexx.com"
           - name: "kasten.clusterName"
             value: "steppe"
+    ignoreDifferences:
+      - jsonPointers:
+          - /spec/auth/openshift/clientSecret
+        kind: K10
     syncPolicy:
       automated:
         prune: true

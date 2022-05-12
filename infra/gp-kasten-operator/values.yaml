@@ -1,6 +1,0 @@
-kasten:
-  route:
-    host: "kasten.apps.example.gepaplexx.com"
-  auth:
-    serviceAccount:
-      name: "kasten-dex-sa"

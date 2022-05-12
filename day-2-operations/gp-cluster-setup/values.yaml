@@ -514,10 +514,6 @@ applications:
       repoURL: "https://gepaplexx.github.io/gp-helm-charts/"
       targetRevision: "*"
       chart: "gp-kasten-operator"
-      helm:
-        parameters:
-          - name: "kasten.route.host"
-            value: "kasten.apps.example.gepaplexx.com"
     syncPolicy:
       automated:
         prune: true
@@ -543,6 +539,10 @@ applications:
             value: "kasten.apps.${CLUSTERNAME}.gepaplexx.com"
           - name: "kasten.clusterName"
             value: "${CLUSTERNAME}"
+    ignoreDifferences:
+      - jsonPointers:
+          - /spec/auth/openshift/clientSecret
+        kind: K10
     syncPolicy:
       automated:
         prune: true
