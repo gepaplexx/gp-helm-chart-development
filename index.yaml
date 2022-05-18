@@ -2,10 +2,10 @@ apiVersion: v1
 entries:
   gepaplexx-cicd-eventbus:
   - apiVersion: v2
-    created: "2022-05-18T06:59:29.232165393Z"
+    created: "2022-05-18T07:52:43.826748652Z"
     description: A helm chart for installing required roles and rolebindings and infrastructure
       such as an eventbus for bootstrapping of an cicd instance
-    digest: b410395a95e2ab379af8396763a3e0349db0d222b40578f3979eb5786c6635cf
+    digest: 16d831177029a874d5dfeff3fc1d3465f98b4af7515af50da692f577c9206286
     name: gepaplexx-cicd-eventbus
     type: application
     urls:
@@ -145,6 +145,21 @@ entries:
   gp-cicd-apache:
   - apiVersion: v2
     appVersion: 2.4.53
+    created: "2022-05-18T07:52:43.829899798Z"
+    dependencies:
+    - name: apache
+      repository: https://charts.bitnami.com/bitnami
+      version: 9.0.18
+    description: A Helm chart for deploying an apache web server to publish junit
+      test results
+    digest: 63ae7ec52a49d3ee63b13c3d2456981ae22fea4e4554c4837b24f5736899cb36
+    name: gp-cicd-apache
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-cicd-apache-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 2.4.53
     created: "2022-05-18T06:59:29.236179147Z"
     dependencies:
     - name: apache
@@ -160,7 +175,7 @@ entries:
     version: 0.1.0
   gp-cicd-argo-events:
   - apiVersion: v2
-    created: "2022-05-18T06:59:29.237347821Z"
+    created: "2022-05-18T07:52:43.830936113Z"
     dependencies:
     - alias: argo_events
       condition: argo-events.enabled
@@ -169,7 +184,7 @@ entries:
       version: 1.12.0
     description: A helm chart for argo-events. Required due to argo-events and argo-workflows
       helm chart containing the same CRDs
-    digest: b5567341e19c1e60ff5c1c9a7f83143728b4af7a0756374c000e453d872ed909
+    digest: 8c679b7e20c00a3b2a7e19e1302a2c3c87591af96ff34638a749e30df2bf6a8f
     name: gp-cicd-argo-events
     type: application
     urls:
@@ -178,7 +193,7 @@ entries:
   gp-cicd-nexus:
   - apiVersion: v2
     appVersion: 3.38.1
-    created: "2022-05-18T06:59:29.238991725Z"
+    created: "2022-05-18T07:52:43.832309733Z"
     dependencies:
     - alias: nexus
       name: nexus-repository-manager
@@ -186,7 +201,7 @@ entries:
       version: 38.1.1
     description: A Helm chart for deploying Sonartype Nexus on OpenShift using the
       certified operator
-    digest: 5079c8a5574ff2fbb2d307ac58193fc9d61ad72ab71b8a425cc7d1d7c1d1c3c6
+    digest: 5d01ac23101916311e3149dcff4a90a187bc13810b3fc7a462afe175df4971c6
     name: gp-cicd-nexus
     type: application
     urls:
@@ -291,13 +306,13 @@ entries:
   gp-cicd-sonarqube:
   - apiVersion: v2
     appVersion: 9.4.0
-    created: "2022-05-18T06:59:29.251395509Z"
+    created: "2022-05-18T07:52:43.84115676Z"
     dependencies:
     - name: sonarqube
       repository: https://charts.bitnami.com/bitnami
       version: 1.0.13
     description: A Helm chart for deploying SonarQube Nexus for static code analysis.
-    digest: 6b0fc5b0bf8f3d80813d5e17d799f03444f80d1b1ee52bd47e292d3bbd03f0e6
+    digest: 288cac4c5c2b94b73ad77253de3a21de74bb6b605584c911b8936a94b68b57d9
     name: gp-cicd-sonarqube
     type: application
     urls:
@@ -347,7 +362,7 @@ entries:
     version: 0.0.3
   gp-cicd-tools:
   - apiVersion: v2
-    created: "2022-05-18T06:59:29.270833138Z"
+    created: "2022-05-18T07:52:43.85494186Z"
     dependencies:
     - alias: argo_workflows
       condition: argo-workflows.enabled
@@ -361,7 +376,7 @@ entries:
       version: 2.12.0
     description: A Helm chart for deploying argo infrastructure including workflow,
       rollout and an argocd instance
-    digest: 6d1a3dc5e3a9547b221646e981b4aed5939a5744e5367d75c5b30bf55bb0479f
+    digest: f60d057eff4c9ab3cba309f59017a2447eaa7b04182008198e30201f766b1a62
     name: gp-cicd-tools
     type: application
     urls:
@@ -760,4 +775,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-05-18T06:59:29.230646797Z"
+generated: "2022-05-18T07:52:43.825395833Z"
