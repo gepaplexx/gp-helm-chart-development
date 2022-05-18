@@ -1,0 +1,26 @@
+pvc:
+  size: 512Mi
+
+apache:
+  htdocsPVC: example-results
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 256Mi
+  service:
+    type: ClusterIP
+  ingress:
+    enabled: true
+    ingressClassName: openshift-default
+    hostname: project-testresults.apps.example.com
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    tls: true
+    certManager: true
