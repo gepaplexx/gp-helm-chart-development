@@ -1,5 +1,0 @@
-kiali:
-  subscription:
-    name: kiali-operator
-    channel: "stable"
-    installPlanApproval: Automatic

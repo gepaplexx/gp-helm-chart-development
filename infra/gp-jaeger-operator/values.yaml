@@ -1,5 +1,0 @@
-jaeger:
-  subscription:
-    name: jaeger-operator
-    channel: "stable"
-    installPlanApproval: Automatic

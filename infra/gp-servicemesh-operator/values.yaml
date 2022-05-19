@@ -1,5 +1,0 @@
-servicemesh:
-  subscription:
-    name: servicemesh-operator
-    channel: "stable"
-    installPlanApproval: Automatic
