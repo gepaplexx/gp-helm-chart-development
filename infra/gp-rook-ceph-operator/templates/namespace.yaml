@@ -1,0 +1,8 @@
+kind: Namespace
+metadata:
+  annotations:
+    openshift.io/node-selector: ""
+  labels:
+    kubernetes.io/metadata.name: rook-ceph
+  name: rook-ceph
+spec: {}
