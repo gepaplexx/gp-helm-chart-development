@@ -3,7 +3,7 @@ name: gp-rook-ceph-operator
 description: A Helm chart for Deploying the Rook-Ceph-Operator on OpenShift
 
 type: application
-version: 0.2.0
+version: 0.2.1
 appVersion: v1.9.3
 
 dependencies:
