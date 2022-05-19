@@ -16,9 +16,6 @@ limitRange:
     cpu: 50m
     memory: 128Mi
 
-alertmanager:
-  config:
-
 argocd:
   name: openshift-gitops
   namespace: openshift-gitops
@@ -37,3 +34,7 @@ argocd:
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
     url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
+
+resourceLocker:
+  namespace: gp-infrastructure
+  serviceAccount: resource-locker-sa

@@ -12,8 +12,8 @@ spec:
   - targetObjectRef:
       apiVersion: ceph.rook.io/v1
       kind: CephCluster
-      name: {{ .Values.ceph.cluster.name }}
-      namespace: {{ .Values.ceph.cluster.namespace }}
+      name: {{ .Values.cephcluster.clusterName }}
+      namespace: {{ .Release.Namespace }}
     patchTemplate: |
       spec:
         placement:

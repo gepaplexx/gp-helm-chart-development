@@ -39,3 +39,6 @@ userWorkloadMonitoring:
 resourceLocker:
   serviceAccount: resource-locker-sa
   namespace: gp-infrastructure
+
+alertmanager:
+  config:

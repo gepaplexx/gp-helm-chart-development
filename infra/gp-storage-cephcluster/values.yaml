@@ -1,4 +1,5 @@
 cephcluster:
+  clusterName: rook-ceph
   pspEnable: false
   cephClusterSpec:
     mon:
@@ -13,3 +14,6 @@ cephcluster:
     - name: ceph-objectstore
       storageClass:
         enabled: false
+resourceLocker:
+  namespace: gp-infrastructure
+  serviceAccount: resource-locker-sa
