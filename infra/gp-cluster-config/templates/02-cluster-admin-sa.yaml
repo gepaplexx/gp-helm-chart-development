@@ -1,5 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ .Values.clusterAdminSAName | default "gp-admin-sa" }}
-  namespace: {{ .Values.configNamespaceName | default "openshift-gitops" }}
