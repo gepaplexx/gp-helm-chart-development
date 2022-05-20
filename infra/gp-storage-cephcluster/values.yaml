@@ -10,10 +10,7 @@ cephcluster:
       k10.kasten.io/is-snapshot-class: "true"
   cephBlockPoolsVolumeSnapshotClass:
     enabled: true
-  cephObjectStores:
-    - name: ceph-objectstore
-      storageClass:
-        enabled: false
+  cephObjectStores: []
 resourceLocker:
   namespace: gp-infrastructure
   serviceAccount: resource-locker-sa
