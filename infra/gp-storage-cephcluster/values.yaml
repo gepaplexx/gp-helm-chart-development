@@ -1,7 +1,7 @@
 cephcluster:
   monitoring:
-    enabled: true
-    createPrometheusRules: true
+    enabled: false
+    createPrometheusRules: false
   clusterName: rook-ceph
   pspEnable: false
   cephClusterSpec:
