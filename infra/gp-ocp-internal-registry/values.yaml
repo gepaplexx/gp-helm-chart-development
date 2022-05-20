@@ -2,7 +2,7 @@ pvc:
   name: gp-ocp-internal-registry-pvc
   storage: 100Gi
   volumeMode: Filesystem
-  storageClassName: ceph-filesystem
+  storageClassName: rook-ceph-fs
 
 registry:
   defaultRoute: true

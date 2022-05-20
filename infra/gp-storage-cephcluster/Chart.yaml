@@ -11,7 +11,7 @@ description: A Helm chart for Kubernetes
 # a dependency of application charts to inject those utilities and functions into the rendering
 # pipeline. Library charts do not define any templates and therefore cannot be deployed.
 type: application
-version: 0.3.7
+version: 0.3.8
 appVersion: "v1.9.3"
 
 dependencies:

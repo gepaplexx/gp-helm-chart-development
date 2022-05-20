@@ -19,7 +19,7 @@ elasticsearch:
       memory: "16Gi"
   nodeCount: 3       
   storage:
-    storageClassName: ceph-block
+    storageClassName: rook-ceph-block
     size: 100G
   redundancyPolicy: "SingleRedundancy"
 fluentd:

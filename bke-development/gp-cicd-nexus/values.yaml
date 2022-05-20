@@ -27,4 +27,4 @@ nexus:
   persistence:
     enabled: true
     storageSize: "20Gi"
-    storageClass: "ceph-block"
+    storageClass: "rook-ceph-block"
