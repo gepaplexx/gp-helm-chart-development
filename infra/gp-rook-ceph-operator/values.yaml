@@ -1,3 +1,4 @@
 rook:
   rbacEnable: true
   pspEnable: false
+  hostpathRequiresPrivileged: true
