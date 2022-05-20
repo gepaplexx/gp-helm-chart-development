@@ -9,4 +9,4 @@ spec:
   resources:
     requests:
       storage: {{ .Values.pvc.size }}
-  storageClassName: rook-ceph-fs
+  storageClassName: ceph-filesystem

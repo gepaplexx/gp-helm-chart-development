@@ -5,6 +5,6 @@ eventbus:
   name: default
   persistence:
     enabled: true
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     accessMode: ReadWriteOnce
     size: 5Gi

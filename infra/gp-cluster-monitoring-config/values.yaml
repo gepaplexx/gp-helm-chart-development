@@ -12,13 +12,13 @@ clusterMonitoring:
         memory: 4Gi
       limits:
         cpu: 1
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     storageSize: 100Gi
   alertmanagerMain:
     resources:
       requests:
         memory: 200Mi
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     storageSize: 5Gi
 
 userWorkloadMonitoring:
@@ -30,10 +30,10 @@ userWorkloadMonitoring:
         memory: 1Gi
       limits:
         cpu: 1
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     storageSize: 20Gi
   thanosRuler:
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     storageSize: 5Gi
 
 resourceLocker:
