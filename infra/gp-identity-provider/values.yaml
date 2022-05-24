@@ -14,5 +14,5 @@ git:
 
 htpasswd:
   enable: false
-  k8secretName: {}
+  k8secretName: htpass-secret
   data: {}
