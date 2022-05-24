@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    openshift.io/node-selector: ""
-  labels:
-    kubernetes.io/metadata.name: openshift-gitops
-  name: openshift-gitops
-spec: {}
