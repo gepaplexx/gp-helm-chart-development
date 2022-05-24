@@ -7,7 +7,7 @@ cephcluster:
   cephClusterSpec:
     mon:
       allowMultiplePerNode: true
-    enabled: true
+    # enabled: true
     annotations:
       k10.kasten.io/is-snapshot-class: "true"
   cephBlockPoolsVolumeSnapshotClass:
