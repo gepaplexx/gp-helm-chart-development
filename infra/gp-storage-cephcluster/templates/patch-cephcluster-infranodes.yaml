@@ -1,3 +1,4 @@
+{{- if .Values.cephcluster.runOnInfra }}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
@@ -24,3 +25,4 @@ spec:
             nodeSelector:
               node-role.kubernetes.io/infra: ''
     id: patch-cephcluster
+{{- end }}

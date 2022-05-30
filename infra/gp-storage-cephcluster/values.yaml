@@ -2,6 +2,7 @@ resourceLocker:
   namespace: gp-infrastructure
   serviceAccount: resource-locker-sa
 cephcluster:
+  runOnInfra: false
   clusterName: rook-ceph
   pspEnable: false
   cephClusterSpec:
