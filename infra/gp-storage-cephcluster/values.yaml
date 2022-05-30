@@ -7,12 +7,28 @@ cephcluster:
   cephClusterSpec:
     mon:
       allowMultiplePerNode: true
+    resources:
+      mon:
+        requests:
+          cpu: "150m"
+          memory: "1024Mi"
+        limits:
+          cpu: "1000m"
+          memory: "4096Mi"
+      osd:
+        requests:
+          cpu: "150m"
+          memory: "2048Mi"
+        limits:
+          cpu: "1000m"
+          memory: "4096Mi"
   cephFileSystemVolumeSnapshotClass:
     enabled: true
     annotations:
       k10.kasten.io/is-snapshot-class: "true"
   cephBlockPoolsVolumeSnapshotClass:
     enabled: true
+
   cephObjectStores: []
 
   cephBlockPools:
@@ -54,11 +70,11 @@ cephcluster:
           activeStandby: true
           resources:
             limits:
-              cpu: "2000m"
-              memory: "4Gi"
-            requests:
               cpu: "1000m"
               memory: "4Gi"
+            requests:
+              cpu: "250m"
+              memory: "2Gi"
           priorityClassName: system-cluster-critical
       storageClass:
         enabled: true
