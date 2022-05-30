@@ -1,4 +1,3 @@
-{{- if .Values.cephcluster.runOnInfra }}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: ResourceLocker
 metadata:
@@ -19,10 +18,8 @@ spec:
       spec:
         placement:
           mon:
-            nodeSelector:
-              node-role.kubernetes.io/infra: ''
+            {{- include "infranodes.enabled" . | nindent 12}}
           mgr:
             nodeSelector:
-              node-role.kubernetes.io/infra: ''
+              {{- include "infranodes.enabled" . | nindent 12}}
     id: patch-cephcluster
-{{- end }}
