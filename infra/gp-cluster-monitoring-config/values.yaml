@@ -15,6 +15,7 @@ clusterMonitoring:
     storageClassName: rook-ceph-block
     storageSize: 100Gi
   alertmanagerMain:
+    enableUserAlertmanagerConfig: true
     resources:
       requests:
         memory: 200Mi
