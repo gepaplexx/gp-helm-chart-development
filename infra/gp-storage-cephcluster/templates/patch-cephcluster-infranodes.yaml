@@ -20,13 +20,10 @@ spec:
           mon:
             {{- include "infranodes.enabled" . | nindent 12}}
           mgr:
-            nodeSelector:
-              {{- include "infranodes.enabled" . | nindent 12}}
+            {{- include "infranodes.enabled" . | nindent 12}}
           osd:
-            nodeSelector:
-              {{- include "infranodes.enabled" . | nindent 12}}
+            {{- include "infranodes.enabled" . | nindent 12}}
           crashcollector:
-            nodeSelector:
-              {{- include "infranodes.enabled" . | nindent 12}}
+            {{- include "infranodes.enabled" . | nindent 12}}
     id: patch-cephcluster
     patchType: application/merge-patch+json
