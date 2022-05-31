@@ -132,12 +132,6 @@ argocd:
   version: main-87c3388
   route:
     hostname: "argocd.example.com"
-  workflowrepository:
-    enabled: true
-    username: "" # must be supplied via value in argocd application
-    sshPrivateKey: "" # must be supplied via value in argocd application
-    secretName: "workflow-repository"
-    url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
   applicationset:
     resources:
       limits:

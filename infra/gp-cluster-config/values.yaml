@@ -10,14 +10,11 @@ resourceQuota:
 
 limitRange:
   default:
-    cpu: 300m
-    memory: 2Gi
+    cpu: 250m
+    memory: 512Mi
   defaultRequest:
-    cpu: 25m
+    cpu: 50m
     memory: 128Mi
-
-alertmanager:
-  config:
 
 argocd:
   name: openshift-gitops
@@ -37,3 +34,7 @@ argocd:
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
     url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
+
+resourceLocker:
+  namespace: gp-infrastructure
+  serviceAccount: resource-locker-sa

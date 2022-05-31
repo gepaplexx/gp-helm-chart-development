@@ -14,5 +14,5 @@ spec:
       metadata:
         labels:
           network.openshift.io/policy-group: ingress
-    patchType: application/strategic-merge-patch+json
+    patchType: application/merge-patch+json
     id: label-default-ns-patch

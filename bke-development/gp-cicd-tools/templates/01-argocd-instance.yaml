@@ -7,18 +7,6 @@ metadata:
   name: {{ .Release.Name }}-argocd
   namespace: {{  .Release.Namespace }}
 spec:
-  {{- if .Values.argocd.workflowrepository.enabled }}
-  initialRepositories: |
-    - url: {{ .Values.argocd.workflowrepository.url }}
-      type: git
-      usernameSecret:
-        name: {{ .Values.argocd.workflowrepository.secretName }}
-        key: username
-      sshPrivateKeySecret:
-        name: {{ .Values.argocd.workflowrepository.secretName }}
-        key: sshPrivateKey
-      insecure: true
-  {{- end }}
   applicationSet:
     resources:
       limits:

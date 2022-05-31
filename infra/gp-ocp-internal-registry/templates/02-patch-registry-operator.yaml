@@ -19,5 +19,7 @@ spec:
             managementState: Managed
             pvc:
               claim: {{ .Values.pvc.name }}
+          nodeSelector:
+            node-role.kubernetes.io/infra: ""
       patchType: application/merge-patch+json
       id: patch-registry-operator

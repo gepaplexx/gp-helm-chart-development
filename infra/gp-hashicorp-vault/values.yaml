@@ -1,7 +1,0 @@
-vault:
-  global:
-    openshift: true
-
-  server:
-    dev:
-      enabled: true

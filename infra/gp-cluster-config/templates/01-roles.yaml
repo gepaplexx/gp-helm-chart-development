@@ -885,7 +885,9 @@ rules:
   resources:
   - jenkins
   verbs:
-  - view
+  - get
+  - list
+  - watch
 - apiGroups:
   - ""
   - apps.openshift.io

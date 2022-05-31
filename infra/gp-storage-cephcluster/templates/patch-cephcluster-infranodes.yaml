@@ -12,15 +12,18 @@ spec:
   - targetObjectRef:
       apiVersion: ceph.rook.io/v1
       kind: CephCluster
-      name: {{ .Values.ceph.cluster.name }}
-      namespace: {{ .Values.ceph.cluster.namespace }}
+      name: {{ .Values.cephcluster.clusterName }}
+      namespace: {{ .Release.Namespace }}
     patchTemplate: |
       spec:
         placement:
           mon:
-            nodeSelector:
-              node-role.kubernetes.io/infra: ''
+            {{- include "infranodes.enabled" . | nindent 12}}
           mgr:
-            nodeSelector:
-              node-role.kubernetes.io/infra: ''
+            {{- include "infranodes.enabled" . | nindent 12}}
+          osd:
+            {{- include "infranodes.enabled" . | nindent 12}}
+          crashcollector:
+            {{- include "infranodes.enabled" . | nindent 12}}
     id: patch-cephcluster
+    patchType: application/merge-patch+json
