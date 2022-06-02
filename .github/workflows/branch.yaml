@@ -33,7 +33,6 @@ jobs:
              ./bke-runtime/*/. \
              ./bke-development/*/. \
              ./infra/*/. \
-             ./day-2-operations/*/. \
              ./gp-workload/*/. \
              ./gp-apps/*/.
 
