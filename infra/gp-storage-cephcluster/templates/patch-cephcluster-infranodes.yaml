@@ -21,9 +21,5 @@ spec:
             {{- include "infranodes.enabled" . | nindent 12}}
           mgr:
             {{- include "infranodes.enabled" . | nindent 12}}
-          osd:
-            {{- include "infranodes.enabled" . | nindent 12}}
-          crashcollector:
-            {{- include "infranodes.enabled" . | nindent 12}}
     id: patch-cephcluster
     patchType: application/merge-patch+json
