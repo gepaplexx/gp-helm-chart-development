@@ -1,0 +1,13 @@
+apiVersion: v2
+name: gp-kyverno-policies
+description: A Helm chart for deploying our default kyverno policies to a cluster
+
+type: application
+version: 0.1.0
+
+appVersion: "0.1.0"
+
+dependencies:
+  - name: kyverno-policies
+    version: 2.4.1
+    repository: https://kyverno.github.io/kyverno/

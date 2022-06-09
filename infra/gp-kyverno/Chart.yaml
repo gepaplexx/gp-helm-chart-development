@@ -1,0 +1,16 @@
+apiVersion: v2
+name: gp-kyverno
+description: A Helm chart for deploying kyverno and the policy-reporter dashboard to OpenShift
+
+type: application
+version: 0.1.0
+
+appVersion: "2.4.1"
+dependencies:
+  - name: kyverno
+    version: 2.4.1
+    repository: https://kyverno.github.io/kyverno/
+  - name: policy-reporter
+    alias: policyreporter
+    version: 2.9.0
+    repository: https://kyverno.github.io/policy-reporter

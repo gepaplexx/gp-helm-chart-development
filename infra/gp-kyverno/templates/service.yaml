@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kyverno-policy-reporter
+  namespace: kyverno
+  labels:
+    {{- include "gp-kyverno.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: http
+  type: ClusterIP
+  selector:
+    {{- include "gp-kyverno.policyreporter.selectorLabels" . | nindent 4}}
