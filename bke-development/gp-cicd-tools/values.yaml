@@ -85,7 +85,7 @@ sealedSecrets:
 
 argo_rollouts:
   keepCRDs: false
-  enabled: true
+  enabled: false
   fullnameOverride: argo-rollouts
 # Controllerconfiguration:
   controller:
