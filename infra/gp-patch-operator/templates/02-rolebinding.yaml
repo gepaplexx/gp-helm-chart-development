@@ -1,10 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: resource-locker-sa-binding
+  name: patch-operator-sa-binding
 subjects:
   - kind: ServiceAccount
-    name: resource-locker-sa
+    name: patch-operator-sa
     namespace: {{ .Values.rl.rbac.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

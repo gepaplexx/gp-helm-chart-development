@@ -1,31 +1,31 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-argocd-infranodes
-  namespace: {{ .Values.resourceLocker.namespace }}
+  namespace: {{ .Values.patchOperator.namespace }}
 spec:
   serviceAccountRef:
-    name: {{ .Values.resourceLocker.serviceAccount }}
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
-  - targetObjectRef:
-      apiVersion: argoproj.io/v1alpha1
-      kind: ArgoCD
-      name: {{ .Values.argocd.name }}
-      namespace: {{ .Values.argocd.namespace }}
-    patchTemplate: |
-      spec:
-        nodePlacement:
-          nodeSelector:
-            node-role.kubernetes.io/infra: ""
-    patchType: application/merge-patch+json
-    id: patch-argocd-infranodes
-  - targetObjectRef:
-      apiVersion: pipelines.openshift.io/v1alpha1
-      kind: GitopsService
-      name: cluster
-      namespace: {{ .Values.argocd.namespace }}
-    patchTemplate: |
-      spec:
-        runOnInfra: true
-    patchType: application/merge-patch+json
-    id: patch-argocd-gitopsservice
+    patch-argocd-infranodes:
+      targetObjectRef:
+        apiVersion: argoproj.io/v1alpha1
+        kind: ArgoCD
+        name: {{ .Values.argocd.name }}
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+        spec:
+          nodePlacement:
+            nodeSelector:
+              node-role.kubernetes.io/infra: ""
+      patchType: application/merge-patch+json
+    patch-argocd-gitopsservice:
+      targetObjectRef:
+        apiVersion: pipelines.openshift.io/v1alpha1
+        kind: GitopsService
+        name: cluster
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+        spec:
+          runOnInfra: true
+      patchType: application/merge-patch+json

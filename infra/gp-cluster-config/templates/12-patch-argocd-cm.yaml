@@ -1,13 +1,14 @@
 {{- if .Values.argocd.workflowrepository.enabled }}
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-argocd-cm
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-    - targetObjectRef:
+    patch-argocd-cm:
+      targetObjectRef:
         apiVersion: v1
         kind: ConfigMap
         name: argocd-cm
@@ -25,5 +26,4 @@ spec:
                 key: sshPrivateKey
               insecure: true
       patchType: application/merge-patch+json
-      id: patch-argocd-cm
 {{- end }}

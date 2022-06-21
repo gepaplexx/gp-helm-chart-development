@@ -1,18 +1,18 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: project-template-patch
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-  - targetObjectRef:
-      apiVersion: config.openshift.io/v1
-      kind: Project
-      name: cluster
-    patchTemplate: |
-      spec:
-        projectRequestTemplate:
-          name: project-request
-    patchType: application/merge-patch+json
-    id: project-template-patch
+    project-template-patch:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: Project
+        name: cluster
+      patchTemplate: |
+        spec:
+          projectRequestTemplate:
+            name: project-request
+      patchType: application/merge-patch+json

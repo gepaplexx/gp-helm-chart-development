@@ -1,12 +1,13 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-argocd-rbac
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-    - targetObjectRef:
+    patch-argocd-rbac:
+      targetObjectRef:
         apiVersion: argoproj.io/v1alpha1
         kind: ArgoCD
         name: {{ .Values.argocd.name }}
@@ -16,4 +17,3 @@ spec:
           rbac:
             policy: 'g, Gepaplexx, role:admin'
       patchType: application/merge-patch+json
-      id: patch-argocd-rbac

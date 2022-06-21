@@ -1,18 +1,18 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: label-default-ns
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-  - targetObjectRef:
-      apiVersion: v1
-      kind: Namespace
-      name: default
-    patchTemplate: |
-      metadata:
-        labels:
-          network.openshift.io/policy-group: ingress
-    patchType: application/merge-patch+json
-    id: label-default-ns-patch
+    label-default-ns-patch:
+      targetObjectRef:
+        apiVersion: v1
+        kind: Namespace
+        name: default
+      patchTemplate: |
+        metadata:
+          labels:
+            network.openshift.io/policy-group: ingress
+      patchType: application/merge-patch+json

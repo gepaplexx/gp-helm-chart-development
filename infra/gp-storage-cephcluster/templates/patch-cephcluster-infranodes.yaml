@@ -1,25 +1,25 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-cephcluster
-  namespace: {{ .Values.resourceLocker.namespace }}
+  namespace: {{ .Values.patchOperator.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceAccountRef:
-    name: {{ .Values.resourceLocker.serviceAccount }}
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
-  - targetObjectRef:
-      apiVersion: ceph.rook.io/v1
-      kind: CephCluster
-      name: {{ .Values.cephcluster.clusterName }}
-      namespace: {{ .Release.Namespace }}
-    patchTemplate: |
-      spec:
-        placement:
-          mon:
-            {{- include "infranodes.enabled" . | nindent 12}}
-          mgr:
-            {{- include "infranodes.enabled" . | nindent 12}}
-    id: patch-cephcluster
-    patchType: application/merge-patch+json
+    patch-cephcluster:
+      targetObjectRef:
+        apiVersion: ceph.rook.io/v1
+        kind: CephCluster
+        name: {{ .Values.cephcluster.clusterName }}
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          placement:
+            mon:
+              {{- include "infranodes.enabled" . | nindent 12}}
+            mgr:
+              {{- include "infranodes.enabled" . | nindent 12}}
+      patchType: application/merge-patch+json

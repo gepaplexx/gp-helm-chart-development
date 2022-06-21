@@ -1,14 +1,17 @@
 {{- if .Values.kasten.auth.openshift.enabled -}}
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-kasten-authentication
-  namespace: {{ .Values.resourceLocker.namespace }}
+  namespace: {{ .Values.patchOperator.namespace }}
+  labels:
+  {{- include "gp-kasten-backup.labels" . | nindent 4}}
 spec:
   serviceAccountRef:
-    name: {{ .Values.resourceLocker.serviceAccount }}
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
-    - targetObjectRef:
+    patch-kasten-authentication:
+      targetObjectRef:
         apiVersion: apik10.kasten.io/v1alpha1
         kind: K10
         name: {{ .Release.Name }}-instance
@@ -28,6 +31,5 @@ spec:
         serviceAccount:
           create: {{ .Values.kasten.serviceAccount.create }}
           name: {{ .Values.kasten.serviceAccount.name}}
-      id: patch-kasten-authentication
       patchType: application/merge-patch+json
 {{- end -}}

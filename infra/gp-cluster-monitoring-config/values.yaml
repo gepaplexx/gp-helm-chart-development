@@ -37,8 +37,8 @@ userWorkloadMonitoring:
     storageClassName: rook-ceph-block
     storageSize: 5Gi
 
-resourceLocker:
-  serviceAccount: resource-locker-sa
+patchOperator:
+  serviceAccount: patch-operator-sa
   namespace: gp-infrastructure
 
 alertmanager:

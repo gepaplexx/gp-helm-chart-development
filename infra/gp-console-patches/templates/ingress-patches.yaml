@@ -1,12 +1,13 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-ingress
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-    - targetObjectRef:
+    patch-ingress:
+      targetObjectRef:
         apiVersion: config.openshift.io/v1
         kind: Ingress
         name: cluster
@@ -28,4 +29,3 @@ spec:
             servingCertKeyPairSecret:
               name: console-tls
       patchType: application/merge-patch+json
-      id: patch-ingress

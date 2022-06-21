@@ -1,12 +1,13 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-registry-operator
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
-    - targetObjectRef:
+    patch-registry-operator:
+      targetObjectRef:
         apiVersion: imageregistry.operator.openshift.io/v1
         kind: Config
         name: cluster
