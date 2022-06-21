@@ -1,12 +1,13 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-argocd-ns
 spec:
   serviceAccountRef:
     name: resource-locker-sa
   patches:
-    - targetObjectRef:
+    patch-argocd-ns:
+      targetObjectRef:
         apiVersion: v1
         kind: Namespace
         name: {{ .Values.argocd.name }}
@@ -15,4 +16,3 @@ spec:
           annotations:
             openshift.io/node-selector: ""
       patchType: application/merge-patch+json
-      id: patch-argocd-ns
