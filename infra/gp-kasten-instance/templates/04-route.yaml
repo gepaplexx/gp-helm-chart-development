@@ -4,8 +4,8 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{ include "gp-kasten-backup.labels" . | nindent 4 }}
-    {{ include "gp-kasten-backup.selectorLabels" . | nindent 4 }}
+    {{- include "gp-kasten-backup.labels" . | nindent 4 }}
+    {{- include "gp-kasten-backup.selectorLabels" . | nindent 4 }}
     service: gateway
 spec:
   host: {{ .Values.kasten.route.host }}

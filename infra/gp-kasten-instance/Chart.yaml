@@ -3,4 +3,4 @@ name: gp-kasten-instance
 description: A Helm chart for deploying Kasten on OpenShift
 
 type: application
-version: 0.0.4
+version: 0.0.5

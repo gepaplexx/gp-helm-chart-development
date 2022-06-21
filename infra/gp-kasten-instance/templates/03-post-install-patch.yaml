@@ -4,6 +4,8 @@ kind: Patch
 metadata:
   name: patch-kasten-authentication
   namespace: {{ .Values.patchOperator.namespace }}
+  labels:
+  {{- include "gp-kasten-backup.labels" . | nindent 4}}
 spec:
   serviceAccountRef:
     name: {{ .Values.patchOperator.serviceAccount }}

@@ -15,3 +15,8 @@ kasten:
     name: "kasten-sa"
   route:
     host: "kasten.apps.example.gepaplexx.com"
+  backuplocation:
+    enabled: true
+    size: 100Gi
+    claimName: "kasten-backup-location"
+    storageclass: nfs-client

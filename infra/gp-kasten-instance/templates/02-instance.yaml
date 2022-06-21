@@ -3,4 +3,6 @@ apiVersion: apik10.kasten.io/v1alpha1
 metadata:
   name: {{ .Release.Name }}-instance
   namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "gp-kasten-backup.labels" . | nindent 4}}
 spec: {}
