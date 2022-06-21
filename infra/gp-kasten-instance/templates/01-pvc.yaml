@@ -2,7 +2,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ .Values.kasten.backuplocation.claimname }}
+  name: {{ .Values.kasten.backuplocation.claimName }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-kasten-backup.labels" . | nindent 4}}
