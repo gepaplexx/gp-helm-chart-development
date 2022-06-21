@@ -1,13 +1,14 @@
 {{ if or .Values.git.enable .Values.google.enable .Values.htpasswd.enable }}
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-identity-prov
 spec:
   serviceAccountRef:
     name: resource-locker-sa
   patches:
-    - targetObjectRef:
+    patch-identity-prov:
+      targetObjectRef:
         apiVersion: config.openshift.io/v1
         kind: OAuth
         name: cluster
@@ -46,7 +47,6 @@ spec:
                   name: {{ .Values.htpasswd.k8secretName }}
 {{ end }}
       patchType: application/merge-patch+json
-      id: patch-identity-prov
       sourceObjectRefs:
   {{- if .Values.git.enable }}
       - apiVersion: v1
