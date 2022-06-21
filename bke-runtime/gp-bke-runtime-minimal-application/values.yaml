@@ -3,6 +3,15 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 
+autoscaling:
+  enabled: true
+  minReplicas: 1
+  maxReplicas: 1
+  scaleOnCpu: true
+  cpuUtilization: 75
+  scaleOnMemory: true
+  memoryUtilization: 85
+
 # metadata.name: [RELEASE-NAME]-[nameOverride]
 # metadata.label.app.kubernetes.io/name: [nameOverride]
 nameOverride: ""
@@ -77,8 +86,8 @@ configmaps: {}
 
 resources:
   limits:
-    cpu: 500m
+    cpu: 250m
     memory: 500Mi
   requests:
-    cpu: 250m
+    cpu: 150m
     memory: 250Mi
