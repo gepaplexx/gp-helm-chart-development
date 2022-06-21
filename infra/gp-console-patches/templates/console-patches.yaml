@@ -1,12 +1,13 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-console
 spec:
   serviceAccountRef:
     name: resource-locker-sa
   patches:
-    - targetObjectRef:
+    patch-console:
+      targetObjectRef:
         apiVersion: operator.openshift.io/v1
         kind: Console
         name: cluster
@@ -18,4 +19,3 @@ spec:
               name: custom-logo
           customProductName: {{ .Values.productName }}
       patchType: application/merge-patch+json
-      id: patch-console
