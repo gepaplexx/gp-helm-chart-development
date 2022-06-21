@@ -27,4 +27,3 @@ spec:
         metadata:
           annotations:
             openshift.io/node-selector: ""
-      id: patch-openshift-user-worklaod-monitoring-nodeselector
