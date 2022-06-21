@@ -5,7 +5,9 @@ metadata:
   labels:
     {{- include "gp-bke-runtime-minimal-application.labels" . | nindent 4 }}
 spec:
+  {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "gp-bke-runtime-minimal-application.selectorLabels" . | nindent 6 }}
