@@ -2,10 +2,10 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-default-ingresscontroller
+  namespace: {{ .Release.Namespace }}
 spec:
   serviceAccountRef:
     name: patch-operator-sa
-    namespace: {{ .Release.Namespace }}
   patches:
     patch-default-ingrescontroller:
       targetObjectRef:
