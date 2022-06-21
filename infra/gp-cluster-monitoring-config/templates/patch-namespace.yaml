@@ -1,5 +1,5 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
-kind: ResourceLocker
+kind: Patch
 metadata:
   name: patch-openshift-monitoring-namespaces
   namespace: {{ .Values.resourceLocker.namespace }}
@@ -9,7 +9,8 @@ spec:
   serviceAccountRef:
     name: {{ .Values.resourceLocker.serviceAccount }}
   patches:
-    - targetObjectRef:
+    patch-openshift-monitoring-nodeselector:
+      targetObjectRef:
         apiVersion: v1
         kind: Namespace
         name: openshift-monitoring
@@ -17,8 +18,8 @@ spec:
         metadata:
           annotations:
             openshift.io/node-selector: ""
-      id: patch-openshift-monitoring-nodeselector
-    - targetObjectRef:
+    patch-openshift-user-worklaod-monitoring-nodeselector:
+      targetObjectRef:
         apiVersion: v1
         kind: Namespace
         name: openshift-user-workload-monitoring
