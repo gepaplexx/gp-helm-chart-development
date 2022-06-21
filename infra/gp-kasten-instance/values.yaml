@@ -17,6 +17,6 @@ kasten:
     host: "kasten.apps.example.gepaplexx.com"
   backuplocation:
     enabled: true
-    size: 100Gi
+    size: 150Gi
     claimName: "kasten-backup-location"
     storageclass: nfs-client
