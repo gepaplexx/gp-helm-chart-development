@@ -5,7 +5,7 @@ metadata:
   name: patch-identity-prov
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     patch-identity-prov:
       targetObjectRef:

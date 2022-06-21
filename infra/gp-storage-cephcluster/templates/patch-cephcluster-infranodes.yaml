@@ -2,12 +2,12 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-cephcluster
-  namespace: {{ .Values.resourceLocker.namespace }}
+  namespace: {{ .Values.patchOperator.namespace }}
   annotations:
     argocd.argoproj.io/sync-wave: "-1"
 spec:
   serviceAccountRef:
-    name: {{ .Values.resourceLocker.serviceAccount }}
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
     patch-cephcluster:
       targetObjectRef:

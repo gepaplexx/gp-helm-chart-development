@@ -1,6 +1,6 @@
-resourceLocker:
+patchOperator:
   namespace: gp-infrastructure
-  serviceAccount: resource-locker-sa
+  serviceAccount: patch-operator-sa
 cephcluster:
   runOnInfra: false
   clusterName: rook-ceph

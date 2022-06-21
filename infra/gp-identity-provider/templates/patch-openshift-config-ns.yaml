@@ -4,7 +4,7 @@ metadata:
   name: label-openshift-config-ns-patch
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     label-openshift-config-ns-patch:
       targetObjectRef:

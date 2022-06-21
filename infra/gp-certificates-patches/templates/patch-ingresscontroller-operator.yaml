@@ -4,7 +4,7 @@ metadata:
   name: patch-default-ingresscontroller
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
     namespace: {{ .Release.Namespace }}
   patches:
     patch-default-ingrescontroller:

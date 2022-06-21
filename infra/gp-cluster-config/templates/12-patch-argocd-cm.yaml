@@ -5,7 +5,7 @@ metadata:
   name: patch-argocd-cm
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     patch-argocd-cm:
       targetObjectRef:

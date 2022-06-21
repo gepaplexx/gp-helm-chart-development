@@ -35,6 +35,6 @@ argocd:
     secretName: "workflow-repository"
     url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
 
-resourceLocker:
+patchOperator:
   namespace: gp-infrastructure
-  serviceAccount: resource-locker-sa
+  serviceAccount: patch-operator-sa

@@ -4,7 +4,7 @@ metadata:
   name: patch-ingress
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     patch-ingress:
       targetObjectRef:

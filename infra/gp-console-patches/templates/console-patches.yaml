@@ -4,7 +4,7 @@ metadata:
   name: patch-console
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     patch-console:
       targetObjectRef:

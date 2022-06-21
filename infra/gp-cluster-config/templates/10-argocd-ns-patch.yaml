@@ -4,7 +4,7 @@ metadata:
   name: patch-argocd-ns
 spec:
   serviceAccountRef:
-    name: resource-locker-sa
+    name: patch-operator-sa
   patches:
     patch-argocd-ns:
       targetObjectRef:

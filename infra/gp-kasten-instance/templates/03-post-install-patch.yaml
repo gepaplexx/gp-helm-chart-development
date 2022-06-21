@@ -3,10 +3,10 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-kasten-authentication
-  namespace: {{ .Values.resourceLocker.namespace }}
+  namespace: {{ .Values.patchOperator.namespace }}
 spec:
   serviceAccountRef:
-    name: {{ .Values.resourceLocker.serviceAccount }}
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
     patch-kasten-authentication:
       targetObjectRef:
