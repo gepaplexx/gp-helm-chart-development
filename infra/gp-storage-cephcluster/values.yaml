@@ -5,6 +5,9 @@ cephcluster:
   runOnInfra: false
   clusterName: rook-ceph
   pspEnable: false
+  monitoring:
+    enabled: true
+    createPrometheusRules: true
   cephClusterSpec:
     mon:
       allowMultiplePerNode: true
