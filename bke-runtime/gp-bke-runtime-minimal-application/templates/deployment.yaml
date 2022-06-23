@@ -32,13 +32,13 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.path | default "/" }}
-              port: 8080
+              port: "8080"
           {{- end }}
-          {{- if .Values.livenessProbe.enabled }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: {{ .Values.readinessProbe.path | default "/" }}
-              port: 8080
+              port: "8080"
           {{- end }}
           env:
           {{- range .Values.database }}
