@@ -8,6 +8,9 @@ cephcluster:
   monitoring:
     enabled: true
     createPrometheusRules: true
+    alerts:
+      enabled: true
+      slackurl: ""
   cephClusterSpec:
     mon:
       allowMultiplePerNode: true
