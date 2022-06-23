@@ -100,7 +100,7 @@ data:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
-  name: alertsrouting-rook-ceph
+  name: critical-alerts-rook-ceph
   namespace: {{ .Release.Namespace }}
 spec:
   route:
@@ -109,6 +109,30 @@ spec:
     matchers:
       - name: severity
         value: critical
+  receivers:
+    - name: slack-alert-reveiver
+      slackConfigs:
+        - channel: critical
+          apiURL:
+            name: slack-hook
+            key: url
+          title: "Rook-Ceph Alert"
+          text: |-
+            Themengebiet: STORAGE
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Cluster: {{ .Values.cephcluster.monitoring.environment }}
+---
+{{- if .Values.cephcluster.monitoring.alerts.notifywarniing -}}
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: warning-alerts-rook-ceph
+  namespace: {{ .Release.Namespace }}
+spec:
+  route:
+    receiver: slack-alert-reveiver
+    groupBy: [job]
+    matchers:
       - name: severity
         value: warning
   receivers:
@@ -120,8 +144,8 @@ spec:
             key: url
           title: "Rook-Ceph Alert"
           text: |-
-            Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Description: {{`{{ .CommonAnnotations.description }}`}}
-            documentation: {{`{{ .CommonAnnotations.documentation }}`}}
+            Themengebiet: STORAGE
+            Cluster: {{ .Values.cephcluster.monitoring.environment }}
+{{- end }}
 {{- end }}
 {{- end }}
