@@ -126,7 +126,12 @@ spec:
           text: |-
             Themengebiet: STORAGE
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Cluster: {{ .Values.cephcluster.environment }}
+            Cluster: {{`{{ .Values.cephcluster.environment }}`}}
+            Alerts:
+            {{`{{- range .Alerts -}}`}}
+              - {{`{{ .Annotations.description }}`}}
+              - {{`{{ .Annotations.documentation }}`}}
+            {{`{{- end -}}`}}
 ---
 {{- if .Values.cephcluster.alerts.notifywarniing -}}
 apiVersion: monitoring.coreos.com/v1alpha1
