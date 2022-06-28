@@ -87,15 +87,21 @@ spec:
       path: /metrics
       interval: 5s
 ---
-{{- if .Values.cephcluster.monitoring.alerts.enabled -}}
+{{- if .Values.cephcluster.alerts.enabled -}}
 # Slack Secret for Rook-Ceph Alerts
-apiVersion: v1
-kind: Secret
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
 metadata:
   name: slack-hook
-type: Opaque
-data:
-  url: {{ .Values.cephcluster.monitoring.alerts.slackurl }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  encryptedData:
+    url:  {{ .Values.cephcluster.alerts.slackurl }}
+  template:
+    metadata:
+      creationTimestamp: null
+      name: slack-hook
+      namespace: {{ .Release.Namespace }}
 ---
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
@@ -120,9 +126,9 @@ spec:
           text: |-
             Themengebiet: STORAGE
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Cluster: {{ .Values.cephcluster.monitoring.environment }}
+            Cluster: {{ .Values.cephcluster.environment }}
 ---
-{{- if .Values.cephcluster.monitoring.alerts.notifywarniing -}}
+{{- if .Values.cephcluster.alerts.notifywarniing -}}
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
@@ -145,7 +151,7 @@ spec:
           title: "Rook-Ceph Alert"
           text: |-
             Themengebiet: STORAGE
-            Cluster: {{ .Values.cephcluster.monitoring.environment }}
+            Cluster: {{ .Values.cephcluster.alerts.environment }}
 {{- end }}
 {{- end }}
 {{- end }}
