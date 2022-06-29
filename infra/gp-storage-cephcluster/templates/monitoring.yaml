@@ -126,7 +126,7 @@ spec:
           text: |-
             Themengebiet: STORAGE
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Cluster: {{`{{ .Values.cephcluster.environment }}`}}
+            Cluster: {{ .Values.cephcluster.environment }}
             Alerts:
             {{`{{- range .Alerts -}}`}}
               - {{`{{ .Annotations.description }}`}}
@@ -156,7 +156,13 @@ spec:
           title: "Rook-Ceph Alert"
           text: |-
             Themengebiet: STORAGE
-            Cluster: {{ .Values.cephcluster.alerts.environment }}
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Cluster: {{ .Values.cephcluster.environment }}
+            Alerts:
+            {{`{{- range .Alerts -}}`}}
+              - {{`{{ .Annotations.description }}`}}
+              - {{`{{ .Annotations.documentation }}`}}
+            {{`{{- end -}}`}}
 {{- end }}
 {{- end }}
 {{- end }}
