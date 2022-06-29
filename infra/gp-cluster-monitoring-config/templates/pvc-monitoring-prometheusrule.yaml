@@ -9,7 +9,7 @@ spec:
       rules:
         - alert: PersistentVolumeClaimNearlyFullWarning
           annotations:
-            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
+            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
             summary: PersistentVolumeClaim zu 80% voll.
           expr: |
             (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"} /
