@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pvc-monitoring-rules
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: pvc.monitoring.rules
+      rules:
+        - alert: PersistentVolumeClaimNearlyFullWarning
+          annotations:
+            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
+            summary: PersistentVolumeClaim zu 80% voll.
+          expr: |
+            (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"} /
+            kubelet_volume_stats_capacity_bytes{job="kubelet",metrics_path="/metrics"}) < 0.2 and
+            kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics"} > 0
+          for: 20m
+          labels:
+            severity: warning
+            monitoring: pvc
+        - alert: PersistentVolumeCapacityCritical
+          annotations:
+            description: Anhand der letzten Samplingergebnisse wird erwartet, dass das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} innerhalb von 4 Tagen voll sein wird. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
+            summary: PersistentVolumeClaim innerhalb von 4 Tagen kein Speicherplatz verfügbar.
+          expr: |
+            predict_linear(kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
+            unless on(namespace, persistentvolumeclaim) kube_persistentvolumeclaim_labels{label_alerts_k8s_io_kube_persistent_volume_filling_up="disabled"} == 1
+          for: 20m
+          labels:
+            severity: critical
+            monitoring: pvc
