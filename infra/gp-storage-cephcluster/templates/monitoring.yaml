@@ -126,7 +126,7 @@ spec:
           text: |-
             Themengebiet: STORAGE
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Cluster: {{ .Values.cephcluster.environment }}
+            Cluster: {{ .Values.cephcluster.alerts.environment }}
             Alerts:
             {{`{{- range .Alerts -}}`}}
               - {{`{{ .Annotations.description }}`}}
