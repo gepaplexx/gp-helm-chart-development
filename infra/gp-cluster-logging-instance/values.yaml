@@ -20,7 +20,7 @@ elasticsearch:
   nodeCount: 3       
   storage:
     storageClassName: rook-ceph-block
-    size: 100G
+    size: 300G
   redundancyPolicy: "SingleRedundancy"
 fluentd:
   resources:
