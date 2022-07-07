@@ -2,7 +2,13 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: server-certificate
-  namespace: {{ .Release.Namespace }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}
 spec:
   commonName: Server Internal Cert
   dnsNames:
@@ -18,7 +24,7 @@ spec:
     - vault-internal.{{ .Release.Namespace }}.svc
     - vault-ui
     - vault-ui.{{ .Release.Namespace }}
-    - vault-ui.{{ .Release.Namespace }}.svc
+    - vault-ui.{{ .Release.Namespace }} .svc
   ipAddresses:
     - 127.0.0.1
   issuerRef:
