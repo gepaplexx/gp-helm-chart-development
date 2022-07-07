@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: injector-certificate
+  namespace: {{ .Release.Namespace }}
+spec:
+  commonName: Agent Inject Cert
+  dnsNames:
+    - vault-agent-injector-svc
+    - vault-agent-injector-svc.{{ .Release.Namespace }}
+    - vault-agent-injector-svc.{{ .Release.Namespace }}.svc
+  issuerRef:
+    name: injector-ca-issuer
+  secretName: injector-tls

@@ -1,0 +1,186 @@
+autoUnseal:
+  secretName: gcp-creds
+  creds: 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
+
+vault:
+  global:
+    openshift: true
+    tlsDisable: false
+  ui:
+    enabled: true
+  injector:
+    enabled: true
+    image:
+      repository: "registry.connect.redhat.com/hashicorp/vault-k8s"
+      tag: "0.16.1-ubi"
+    agentImage:
+      repository: "registry.connect.redhat.com/hashicorp/vault"
+      tag: "1.10.3-ubi"
+    replicas: 1
+    resources:
+      requests:
+        memory: '100Mi'
+        cpu: '100m'
+      limits:
+        memory: '150Mi'
+        cpu: '150m'
+        # affinity: |
+        # podAntiAffinity:
+        #  preferredDuringSchedulingIgnoredDuringExecution:
+        # - weight: 100
+        #  podAffinityTerm:
+        #   labelSelector:
+        #     matchExpressions:
+        #     - key: app.kubernetes.io/name
+        #       operator: In
+        #       values:
+        #       - {{ template "vault.name" . }}-agent-injector
+        #     - key: app.kubernetes.io/instance
+        #       operator: In
+        #       values:
+        #       - "{{ .Release.Name }}"
+        #   topologyKey: kubernetes.io/hostname
+        # podDisruptionBudget:
+        # maxUnavailable: 2
+    certs:
+      secretName: 'injector-tls'
+    webhook:
+      annotations:
+        cert-manager.io/inject-ca-from: shahin-vault/injector-certificate
+    extraEnvironmentVars:
+      AGENT_INJECT_TLS_MIN_VERSION: tls13
+  server:
+    extraEnvironmentVars:
+      VAULT_CACERT: /vault/userconfig/internal-certs/ca.crt
+      ###  VAULT_ADDR: "https://vault.shahin-vault.svc:8200" <- often suggested as a fix for tls issues, but messes with local 'vault ...' commands on pods by sending them to the service rather than the local vault server instance
+    standalone:
+      enabled: false
+    auditStorage:
+      enabled: true
+    readinessProbe:
+      enabled: true
+      path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+    livenessProbe:
+      enabled: true
+      path: "/v1/sys/health?standbyok=true"
+      initialDelaySeconds: 60
+    affinity: |
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - {{ template "vault.name" . }}
+              - key: app.kubernetes.io/instance
+                operator: In
+                values:
+                - "{{ .Release.Name }}"
+            topologyKey: kubernetes.io/hostname
+    ha:
+      enabled: true
+      replicas: 3
+      raft:
+        enabled: true
+        setNodeId: true
+
+        config: |
+          ui = true
+          disable_mlock = true  # necessary with integrated storage to play nice with the used BoltDB (may cause OOM if vault's dataset grows large), but causes additional vulnerability to memory attacks! -> disable swaps in OS!
+          service_registration "kubernetes" {} # to get the 'active' kubernetes label on the active server pod for scheduling/routing
+          listener "tcp" {
+            address = "[::]:8200"
+            cluster_address = "[::]:8201"
+            tls_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+            tls_key_file = "/vault/userconfig/internal-certs/tls.key"
+            tls_client_ca_file = "/vault/userconfig/internal-certs/ca.crt"
+          }
+          
+          storage "raft" {
+            path = "/vault/data"
+            retry_join {
+              leader_api_addr = "https://vault-0.vault-internal:8200"
+              leader_tls_servername = "vault-0.vault-internal"
+              leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+              leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
+            }
+            retry_join {
+              leader_api_addr = "https://vault-1.vault-internal:8200"
+              leader_tls_servername = "vault-1.vault-internal"
+              leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+              leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
+            }
+            retry_join {
+              leader_api_addr = "https://vault-2.vault-internal:8200"
+              leader_tls_servername = "vault-2.vault-internal"
+              leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
+              leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+              leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
+            }
+            #     retry_join {
+            #   leader_api_addr = "https://vault-3.vault-internal:8200"
+            #  leader_tls_servername = "vault-3.vault-internal"
+            #  leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
+            #  leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+            #  leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
+            # }
+            # retry_join {
+            #  leader_api_addr = "https://vault-4.vault-internal:8200"
+            #  leader_tls_servername = "vault-4.vault-internal"
+            #  leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
+            #  leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
+            #  leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
+              #      }
+            autopilot {
+              cleanup_dead_servers = "true"
+              last_contact_threshold = "5s"
+              last_contact_failure_threshold = "10m"
+              max_trailing_logs = 1024
+              min_quorum = 2
+              server_stabilization_time = "10s"
+            }
+          }
+          seal "gcpckms" {
+            credentials = "/vault/userconfig/unseal-creds/creds.json"
+            project = "gepaplexx"
+            region = "europe-west6"
+            key_ring = "gepaplexx-play-keyring"
+            crypto_key = "vault-key"
+            disabled = "false"
+          }
+          telemetry {
+            disable_hostname = true #It is recommended to also enable the option disable_hostname to avoid having prefixed metrics with hostname.
+            prometheus_retention_time = "12h" 
+          }
+    image:
+      repository: "registry.connect.redhat.com/hashicorp/vault"
+      tag: "1.10.3-ubi"
+    podDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+    resources:
+      requests:
+        memory: '100Mi'
+      limits:
+        memory: '150Mi'
+    volumes:
+      - name: internal-certs
+        secret:
+          secretName: server-tls
+          optional: false
+      - name: unseal-creds
+        secret:
+          secretName: gcp-creds
+          optional: false
+    volumeMounts:
+      - mountPath: /vault/userconfig/internal-certs
+        name: internal-certs
+        readOnly: true
+      - mountPath: /vault/userconfig/unseal-creds
+        name: unseal-creds
+        readOnly: true
