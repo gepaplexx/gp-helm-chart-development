@@ -68,7 +68,7 @@ roleRef:
   name: operate-workflow-role
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.argo_workflows.workflows.serviceAccount.name }}
+    name: {{ .Values.argo_workflows.workflow.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
     name: argo-workflows-controller

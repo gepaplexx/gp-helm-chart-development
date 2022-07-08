@@ -1,98 +1,52 @@
 ####################
-## ARGO WORFKLOWS ##
+#### VARIABLES #####
 ####################
-argo_workflows:
-  fullnameOverride: argo-workflows
-  enabled: true
-# Ingressconfiguration
-  ingress:
-    enabled: true
-    hostname: "workflows.example.com"
-    ingressClassName: "openshift-default"
-    annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    tls: true
-# Serverconfiguration
-  server:
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
-    auth:
-      mode: client
-      sso:
-        enabled: false
-# Controllerconfiguration
-  controller:
-    containerRuntimeExecutor: emissary
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
-
-# Executorconfiguration
-  executor:
-    podSecurityContext:
-      enabled: false
-    containerSecurityContext:
-      enabled: false
-# Workflowsconfiguration
-  workflows:
-    serviceAccount:
-      create: true
-      name: operate-workflow-sa
-  postgresql:
-    auth:
-      database: argo_workflows
-      username: postgres
-      password: ""
-      existingSecret: "gepaplexx-cicd-tools-postgresql"
-    primary:
-      podSecurityContext:
-        enabled: false
-      containerSecurityContext:
-        enabled: false
+argo_workflows_db: &argo_workflows_db "argo_workflows"
+argo_workflows_db_secret: &argo_workflows_db_secret "gepaplexx-cicd-tools-postgresql"
+argo_workflows_db_host: &argo_workflows_db_host "argo-workflows-postgres"
 
 ####################
 ## SEALED SECRETS ##
 ####################
-
-# Prevent helm-chart changes from generating a new postgresql password and therefore
-# pods being unable to connect to the database.
-
-sealedSecrets:
+sealedSecret:
   postgresql:
+    postgres-password: ""
     password: ""
-    postgresPassword: ""
+    username: ""
 
 ####################
-##  ARGO ROLLOUT  ##
+##  ARGO  EVENTS  ##
 ####################
-
-argo_rollouts:
-  keepCRDs: false
-  enabled: false
-  fullnameOverride: argo-rollouts
-# Controllerconfiguration:
+argo_events:
+  enabled: true
+  fullnameOverride: argo-events
+  openshift: true
+  crds:
+    install: false
   controller:
-    containerSecurityContext:
-      runAsNonRoot: true
-    podSecurityContext:
-      runAsNonRoot: true
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+
+####################
+## ARGO WORFKLOWS ##
+####################
+argo_workflows:
+  enabled: true
+  fullnameOverride: argo-workflows
+  server:
+    ingress:
+      enabled: true
+      hosts:
+        - workflows.example.com
+      ingressClassName: "openshift-default"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      tls:
+        - hosts:
+            - workflows.example.com
+          secretName: workflows.example.com-tls
     resources:
       limits:
         cpu: 500m
@@ -100,17 +54,72 @@ argo_rollouts:
       requests:
         cpu: 250m
         memory: 128Mi
-# DashboardConfiguration
+
+  controller:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
+    persistence:
+      enabled: true
+      postgresql:
+        host: *argo_workflows_db_host
+        port: 5432
+        database: *argo_workflows_db
+        tableName: argo_workflows
+        userNameSecret:
+          name: *argo_workflows_db_secret
+          key: username
+        passwordSecret:
+          name: *argo_workflows_db_secret
+          key: password
+
+    metricsConfig:
+      enabled: true
+
+    serviceMonitor:
+      enabled: true
+
+  workflow:
+    serviceAccount:
+      create: true
+      name: operate-workflow-sa
+
+
+####################
+##  ARGO ROLLOUT  ##
+####################
+argo_rollouts:
+  enabled: false
+  fullnameOverride: argo-rollouts
+  # Controllerconfiguration:
+  controller:
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  # DashboardConfiguration
   dashboard:
     enabled: true
     ingress:
       enabled: true
       hosts:
-      - "rollouts.example.com"
-      tls:
-      - hosts:
         - "rollouts.example.com"
-        secretName: "rollouts.example.com-tls"
+      tls:
+        - hosts:
+            - "rollouts.example.com"
+          secretName: "rollouts.example.com"
       ingressClassName: "openshift-default"
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
@@ -122,14 +131,13 @@ argo_rollouts:
         cpu: 250m
         memory: 128Mi
 
+
 ####################
 ##    ARGO  CD    ##
 ####################
-
 argocd:
   enabled: true
   image: ghcr.io/gepaplexx/argocd
-  version: main-87c3388
   route:
     hostname: "argocd.example.com"
   applicationset:
@@ -183,3 +191,22 @@ argocd:
         cpu: 250m
         memory: 128Mi
 
+######################
+##    Postgresql    ##
+######################
+postgresql:
+  enabled: true
+  fullnameOverride: *argo_workflows_db_host
+  service:
+    ports:
+      postgresql: 5432
+  auth:
+    username: postgres
+    database: *argo_workflows_db
+    password: ""
+    existingSecret: *argo_workflows_db_secret
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
