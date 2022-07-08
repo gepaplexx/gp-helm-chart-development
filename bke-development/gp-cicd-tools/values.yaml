@@ -94,7 +94,7 @@ argo_workflows:
 ##  ARGO ROLLOUT  ##
 ####################
 argo_rollouts:
-  enabled: true
+  enabled: false
   fullnameOverride: argo-rollouts
   # Controllerconfiguration:
   controller:
@@ -136,7 +136,7 @@ argo_rollouts:
 ##    ARGO  CD    ##
 ####################
 argocd:
-  enabled: false
+  enabled: true
   image: ghcr.io/gepaplexx/argocd
   route:
     hostname: "argocd.example.com"
