@@ -201,7 +201,7 @@ postgresql:
     ports:
       postgresql: 5432
   auth:
-    username: postgres
+    username: argo_workflow
     database: *argo_workflows_db
     password: ""
     existingSecret: *argo_workflows_db_secret
