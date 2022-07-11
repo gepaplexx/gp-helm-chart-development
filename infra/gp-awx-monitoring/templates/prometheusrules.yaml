@@ -11,8 +11,8 @@ spec:
       rules:
         - alert: awx_podcount
           annotations:
-            description: AWX auf dem HUB-Cluster ist nicht erreichbar
-            summary: Es muss zumindest 1 Pod da sein
+            description: Es muss zumindest 1 Pod da sein
+            summary: AWX auf dem HUB-Cluster ist nicht erreichbar
           expr: 'absent(sum(up{job=''awx''})>=1)'
           for: 10m
           labels:

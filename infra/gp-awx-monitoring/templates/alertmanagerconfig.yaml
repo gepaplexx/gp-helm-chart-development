@@ -16,6 +16,10 @@ spec:
           text: |-
             Themengebiet: interne Applikation
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Alerts:
+            {{`{{- range .Alerts }}`}}
+              - {{`{{ .Annotations.description }}`}}
+            {{`{{- end -}}`}}
           title: AWX-Alert
   route:
     matchers:
