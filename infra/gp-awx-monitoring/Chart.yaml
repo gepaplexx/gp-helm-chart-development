@@ -1,0 +1,6 @@
+apiVersion: v2
+name: gp-awx-monitoring
+description: A Helm Chart for deploying Monitoring and Alerting Resources for AWX Installation
+
+type: application
+version: 0.1.0

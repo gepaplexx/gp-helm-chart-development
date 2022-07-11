@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    {{- include "gp-awx-monitoring.labels" . | nindent 4 }}
+  name: awx-servicemonitor
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+    - bearerTokenSecret:
+        name: {{ .Values.token.secretName }}
+        key: {{ .Values.token.key}}
+      path: {{ .Values.metrics.path }}
+      port: {{ .Values.metrics.port }}
+      scheme: {{ .Values.metrics.scheme }}
+  jobLabel: "app.kubernetes.io/name"
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      {{ .Values.metrics.selectorLabel }}

@@ -1,0 +1,16 @@
+### AWX Monitoring
+namespace: default
+token:
+  create: true
+  apitoken: ""
+  secretName: awx-token
+  key: token
+metrics:
+  path: /api/v2/metrics
+  selectorLabel: "app.kubernetes.io/name: awx"
+  port: "http"
+  scheme: "http"
+slack:
+  secretName: "slack-hook"
+  key: url
+  url: ""

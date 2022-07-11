@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: critical-awx
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ include "gp-awx-monitoring.labels" . | nindent 4 }}
+spec:
+  receivers:
+    - name: awx-slack-alert
+      slackConfigs:
+        - apiURL:
+            key: {{ .Values.slack.key }}
+            name: {{ .Values.slack.secretName }}
+          channel: critical
+          text: |-
+            Themengebiet: interne Applikation
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Alerts:
+            {{`{{- range .Alerts -}}`}}
+              - {{`{{ .Annotations.description }}`}}
+              - {{`{{ .Annotations.documentation }}`}}
+            {{`{{- end -}}`}}
+          title: AWX-Alert
+  route:
+    groupBy:
+      - job
+    matchers:
+      - name: "app"
+        value: "awx"
+    receiver: awx-slack-alert
