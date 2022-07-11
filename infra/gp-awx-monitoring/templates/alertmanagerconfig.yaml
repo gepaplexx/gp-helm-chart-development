@@ -16,16 +16,10 @@ spec:
           text: |-
             Themengebiet: interne Applikation
             Summary: {{`{{ .CommonAnnotations.summary }}`}}
-            Alerts:
-            {{`{{- range .Alerts -}}`}}
-              - {{`{{ .Annotations.description }}`}}
-              - {{`{{ .Annotations.documentation }}`}}
-            {{`{{- end -}}`}}
           title: AWX-Alert
   route:
-    groupBy:
-      - job
     matchers:
-      - name: "app"
-        value: "awx"
+      - name: "severity"
+        value: "critical"
+        matchType: "="
     receiver: awx-slack-alert

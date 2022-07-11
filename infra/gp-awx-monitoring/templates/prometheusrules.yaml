@@ -16,5 +16,5 @@ spec:
           expr: 'absent(sum(up{job=''awx''})>=1)'
           for: 10m
           labels:
-            severity: critical
-            app: awx
+            severity: "critical"
+            namespace: "{{ .Release.Namespace }}"
