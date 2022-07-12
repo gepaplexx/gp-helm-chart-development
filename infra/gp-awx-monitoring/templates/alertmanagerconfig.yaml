@@ -10,7 +10,7 @@ spec:
     - name: awx-slack-alert
       slackConfigs:
         - apiURL:
-            key: {{ .Values.slack.key }}
+            key: url
             name: {{ .Values.slack.secretName }}
           channel: critical
           text: |-
