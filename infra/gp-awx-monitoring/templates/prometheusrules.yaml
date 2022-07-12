@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alerts-awx
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-awx-monitoring.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: alerts-awx
+      rules:
+        - alert: awx_podcount
+          annotations:
+            description: Es muss zumindest 1 Pod da sein
+            summary: AWX auf dem HUB-Cluster ist nicht erreichbar
+          expr: 'absent(sum(up{job=''awx''})>=1)'
+          for: 10m
+          labels:
+            severity: "critical"
+            namespace: "{{ .Release.Namespace }}"
