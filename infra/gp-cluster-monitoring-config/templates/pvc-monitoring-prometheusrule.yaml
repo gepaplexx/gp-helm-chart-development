@@ -25,7 +25,7 @@ spec:
             summary: PersistentVolumeClaim innerhalb von 4 Tagen kein Speicherplatz verfügbar.
           expr: |
             predict_linear(kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"}[6h], 4 * 24 * 3600) < 0
-            and on (persistentvolumeclaim) (kube_persistentvolumeclaim_labels{label_disable_prediction!=""} )
+            and on (persistentvolumeclaim) (kube_persistentvolumeclaim_labels{label_disable_prediction=""} )
           for: 20m
           labels:
             severity: critical
