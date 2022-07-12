@@ -12,5 +12,4 @@ metrics:
   scheme: "http"
 slack:
   secretName: "slack-hook"
-  key: url
   url: ""
