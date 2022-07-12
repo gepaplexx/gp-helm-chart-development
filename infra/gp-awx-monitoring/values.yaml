@@ -1,7 +1,7 @@
 ### AWX Monitoring
 namespace: default
 token:
-  create: true
+  create: false
   apitoken: ""
   secretName: awx-token
   key: token

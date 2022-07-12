@@ -6,11 +6,11 @@ monitoring:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
       hosts:
-      - grafana.infra.gepaplexx.com
+        - grafana.infra.gepaplexx.com
       tls:
-       - secretName: grafana-general-tls
-         hosts:
-         - grafana.infra.gepaplexx.com
+        - secretName: grafana-general-tls
+          hosts:
+            - grafana.infra.gepaplexx.com
 
   prometheus:
     ingress:
@@ -18,18 +18,19 @@ monitoring:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
       hosts:
-      - prometheus.infra.gepaplexx.com
-      tls:
-      - secretName: prometheus-general-tls
-        hosts:
         - prometheus.infra.gepaplexx.com
+      tls:
+        - secretName: prometheus-general-tls
+          hosts:
+            - prometheus.infra.gepaplexx.com
     prometheusSpec:
-      retentionSize: 50GiB
+      retentionSize: 50GiB  # TODO muss erhöht werden, wenn Cluster neu aufgesetzt wird mit mehr Plattenplatz.
+                            # Damit andere Promethuse abgegriffen werden können
       storageSpec:
         volumeClaimTemplate:
           spec:
             storageClassName: longhorn
-            accessModes: ["ReadWriteOnce"]
+            accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
                 storage: 50Gi
@@ -47,11 +48,11 @@ monitoring:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
       hosts:
-      - alertmanager.infra.gepaplexx.com
+        - alertmanager.infra.gepaplexx.com
       tls:
         - secretName: alertmanager-tls
           hosts:
-          - alertmanager.infra.gepaplexx.com
+            - alertmanager.infra.gepaplexx.com
 
   kubeScheduler:
     enabled: false # wird in microk8s anders gehandhabt
