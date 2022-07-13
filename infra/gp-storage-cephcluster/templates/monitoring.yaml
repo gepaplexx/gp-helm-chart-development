@@ -133,7 +133,7 @@ spec:
               - {{`{{ .Annotations.documentation }}`}}
             {{`{{- end -}}`}}
 ---
-{{- if .Values.cephcluster.alerts.notifyWarning -}}
+{{- if .Values.cephcluster.alerts.notifyWarning }}
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
