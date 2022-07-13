@@ -18,3 +18,45 @@ spec:
           labels:
             severity: "critical"
             namespace: "{{ .Release.Namespace }}"
+        - alert: awx_memory_saturation
+          annotations:
+            summary: AWX Memory Issue
+            description: |
+              AWX hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              siehe auch: https://bit.ly/3RGLUmm
+          expr: |
+            (sum(
+                avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
+              * on(namespace,pod)
+                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="awx", workload_type="deployment"}
+            ) by (pod)
+            /sum(
+                kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
+              * on(namespace,pod)
+                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="awx",workload_type="deployment"}
+            ) by (pod)) > bool 1.5
+          for: 10m
+          labels:
+            severity: "critical"
+            namespace: "{{ .Release.Namespace }}"
+        - alert: awx_cpu_saturation
+          annotations:
+            summary: AWX CPU Issue
+            description: |
+              AWX hat in den letzten 10 Minuten durchschnitlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              siehe auch: https://bit.ly/3uJNCtd
+          expr: |
+            (sum(
+                avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
+              * on(namespace,pod)
+                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="awx", workload_type="deployment"}
+            ) by (pod)
+            /sum(
+                kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
+              * on(namespace,pod)
+                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="awx", workload_type="deployment"}
+            ) by (pod)) > bool 1.2
+          for: 10m
+          labels:
+            severity: "critical"
+            namespace: "{{ .Release.Namespace }}"
