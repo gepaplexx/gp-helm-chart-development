@@ -1,0 +1,68 @@
+{{- if .Values.metrics.enabled -}}
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: {{ .Values.metrics.secretName }}
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  encryptedData:
+    username: {{ .Values.metrics.username }}
+    password: {{ .Values.metrics.password }}
+  template:
+    data: null
+    metadata:
+      creationTimestamp: null
+      name: {{ .Values.metrics.secretName }}
+      namespace: {{ .Release.Namespace }}
+{{- end -}}
+---
+{{- if .Values.metrics.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: vault-metrics
+  annotations:
+    meta.helm.sh/release-name: {{ .Release.Name }}
+    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/name: {{ .Release.Name }}
+spec:
+  jobLabel: vault
+  endpoints:
+    - path: "/v1/sys/metrics"
+      basicAuth:
+        password:
+          key: password
+          name: {{ .Values.metrics.secretName }}
+          optional: false
+        username:
+          key: username
+          name: {{ .Values.metrics.secretName }}
+          optional: false
+      interval: 30s
+      port: https
+      scheme: https
+      tlsConfig:
+        ca:
+          secret:
+            name: server-tls
+            key: ca.crt
+            optional: false
+          serverName: vault-active.{{ .Release.Namespace }}.svc
+      params:
+        format: ['prometheus']
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: vault
+      app.kubernetes.io/name: vault
+  podTargetLabels:
+    - vault-active
+{{- end -}}

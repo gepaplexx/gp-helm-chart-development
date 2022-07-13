@@ -1,7 +1,11 @@
 autoUnseal:
   secretName: gcp-creds
-  creds: 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
-
+  creds: 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
+metrics:
+  enabled: true
+  secretName: metrics-creds
+  username: AgCyVS7/k4XJ+xeTdp7S/rMxlqtXPShx8HKcuzs30ajCr9qOwHTAN0TxRsR97l4lYIOPPZ3T5YELx7sewHsj/gV1PYNLXPfNffcS5Sw47BzRRrW4YJbDa/cnVjOXmSvbCm6KvBDoU3GxqMi3kt/f3eFZ/377ph2gGxDXrwu5y5PPTyZ97uaFsWigmtAy8rwXEvXtRd2LlVFg7OXBDfVyM7K79ZV1e5PP/72+t5hastb2RVtasZsKRV+xsmxrF/2M45u30xjWaLbfGyadtkMdf11LsTJNPxbwXPo8zgZnJsv0C6HIOGIxoaX2lAxdgFhRhYB52334BTcjzDC4t8/sd3Q/L5ve0ynParBWZSb6AnysCiTAKT3e/XJdDTIPWRUlduLqvcn/6hNzeQmY+N5EJYnryMQ6s8uN7/vzwfCv1r2rQv2oyG23PDy/iruQ1Ls0ibI6BIeTCnNej5iMlsYdZCFKV0CtItNrYzF1GLqpmuz9FbGwdEXKmzNaX+Y+LkryyRyMJ4xq/M5Lo7g2IW+00qwK61DpmIGV8cCUJZeObZBDGUVdCjZsBk2OYWhnzNwXLePMqbwojgW7u1ve8WtbSI/Wcl/4VXDs+Dts70aJ6Zy4kuMRAlQVzKn27y9hdSJj92U40soitVDUzTxHy2LnVrZakrKA8cKuKAjhhqhNyYWfQ4xtvGKAmO8RtFWmkRQI39a53T5KInu6Hgy73AW7ZvJajyL1IPEyHA==
+  password: AgAA7pKQY1OdgZD8N1e8NC1+j3N5yyJgVc1xq0ell5vntvEj8XGpRlctMON/DaL7K6z6F4eKZz7O7ruFvfwDwj7iOS9c+qjzWSQNR2ZL1HNq9bTUeJlUMcOqGDiXmBJfz8+AYSum1ieM/SRRR3dgTbaoqXYDz/5egYJg+K4kCd+8S/kANZ0uL3rUjxC93XkqF8hTvRIXEof4e70rOJgVwJXBt+q1QxgRifXOsQQzmys+NAORmSd5xE5Zmt48p9n6HDICyggIagBzCJzCTMIN34XgRQa9FT8fxbc3TJWe8yPifUyclwbxR8gu9EcMmYcIeWUe2trV/Boah/l+ktVFAcEjZPlGNh8R1wybCHSICZG3mxYVPcIDAJY3YRI/15s8HUcVTPhzaUcpuOWect5rjAAojxUoWFJYnrvWOip+Pc3E8hBXS1YV/JJFTcoy4qsYyfEt3CsuR5X1ANNoafsAxRVgOd6beyXOCMMT5g9cRaFj0Yo3tbynJ652Z6iO9cLnxAGS9bn1UOoX8I+e1JPKrHjX/LgwL5T2qs9kMeddtsfQCBfc0y+8XzQByKd9hXIf/l6+QT5IWPa/RQHRMptQ4DifKl+VOT/BIcVaTgw+NXYcZFzjyummVjAu9RzxPxolG9s992roWvwJnkYtK4P4JgJfKovQSNggOX8fyLHnXkH72CTn3V5eC9xdathbiUh2gjPp9tKikLMBlMKKuaFtp6hK+jeiHA==
 vault:
   global:
     openshift: true
@@ -24,35 +28,16 @@ vault:
       limits:
         memory: '150Mi'
         cpu: '150m'
-        # affinity: |
-        # podAntiAffinity:
-        #  preferredDuringSchedulingIgnoredDuringExecution:
-        # - weight: 100
-        #  podAffinityTerm:
-        #   labelSelector:
-        #     matchExpressions:
-        #     - key: app.kubernetes.io/name
-        #       operator: In
-        #       values:
-        #       - {{ template "vault.name" . }}-agent-injector
-        #     - key: app.kubernetes.io/instance
-        #       operator: In
-        #       values:
-        #       - "{{ .Release.Name }}"
-        #   topologyKey: kubernetes.io/hostname
-        # podDisruptionBudget:
-        # maxUnavailable: 2
     certs:
       secretName: 'injector-tls'
     webhook:
       annotations:
-        cert-manager.io/inject-ca-from: shahin-vault/injector-certificate
+        cert-manager.io/inject-ca-from: vault-project/injector-certificate
     extraEnvironmentVars:
       AGENT_INJECT_TLS_MIN_VERSION: tls13
   server:
     extraEnvironmentVars:
       VAULT_CACERT: /vault/userconfig/internal-certs/ca.crt
-      ###  VAULT_ADDR: "https://vault.shahin-vault.svc:8200" <- often suggested as a fix for tls issues, but messes with local 'vault ...' commands on pods by sending them to the service rather than the local vault server instance
     standalone:
       enabled: false
     auditStorage:
@@ -86,7 +71,6 @@ vault:
       raft:
         enabled: true
         setNodeId: true
-
         config: |
           ui = true
           disable_mlock = true  # necessary with integrated storage to play nice with the used BoltDB (may cause OOM if vault's dataset grows large), but causes additional vulnerability to memory attacks! -> disable swaps in OS!
@@ -122,20 +106,6 @@ vault:
               leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
               leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
             }
-            #     retry_join {
-            #   leader_api_addr = "https://vault-3.vault-internal:8200"
-            #  leader_tls_servername = "vault-3.vault-internal"
-            #  leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
-            #  leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
-            #  leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
-            # }
-            # retry_join {
-            #  leader_api_addr = "https://vault-4.vault-internal:8200"
-            #  leader_tls_servername = "vault-4.vault-internal"
-            #  leader_ca_cert_file = "/vault/userconfig/internal-certs/ca.crt"
-            #  leader_client_cert_file = "/vault/userconfig/internal-certs/tls.crt"
-            #  leader_client_key_file = "/vault/userconfig/internal-certs/tls.key"
-              #      }
             autopilot {
               cleanup_dead_servers = "true"
               last_contact_threshold = "5s"

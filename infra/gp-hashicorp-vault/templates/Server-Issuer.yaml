@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: injector-selfsigned-ca
+  name: server-selfsigned-ca
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: {{ .Release.Namespace }}
@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/name: {{ .Release.Name }}
 spec:
-  commonName: Agent Inject CA
+  commonName: Server Internal CA
   duration: 87660h0m0s
   isCA: true
   issuerRef:
@@ -20,12 +20,12 @@ spec:
   privateKey:
     algorithm: ECDSA
     size: 256
-  secretName: injector-ca-secret
+  secretName: server-ca-secret
 ---
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: injector-ca-issuer
+  name: server-ca-issuer
   annotations:
     meta.helm.sh/release-name: {{ .Release.Name }}
     meta.helm.sh/release-namespace: {{ .Release.Namespace }}
@@ -35,4 +35,4 @@ metadata:
     app.kubernetes.io/name: {{ .Release.Name }}
 spec:
   ca:
-    secretName: injector-ca-secret
+    secretName: server-ca-secret
