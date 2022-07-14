@@ -4,8 +4,9 @@ metadata:
   name: {{ .Values.eventbus.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  nats:
-    native:
+  jetstream:
+    version: 2.8.2
+    replicas: 3
       {{- if .Values.eventbus.persistence.enabled }}
       persistence:
         storageClassName: {{ .Values.eventbus.persistence.storageClassName }}
