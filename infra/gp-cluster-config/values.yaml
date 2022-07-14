@@ -38,3 +38,7 @@ argocd:
 patchOperator:
   namespace: gp-infrastructure
   serviceAccount: patch-operator-sa
+
+alerts:
+  slackUrl: "" # must be supplied via value in argocd application
+  environment: "" # must be supplied via value in argocd application
