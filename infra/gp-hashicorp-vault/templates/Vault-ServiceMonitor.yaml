@@ -1,15 +1,11 @@
-{{- if .Values.metrics.enabled -}}
+{{/*
+{{- if .Values.metrics.password -}}
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  name: {{ .Values.metrics.secretName }}
-  annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
+  name: metrics-sealedsecret
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   encryptedData:
     username: {{ .Values.metrics.username }}
@@ -18,7 +14,7 @@ spec:
     data: null
     metadata:
       creationTimestamp: null
-      name: {{ .Values.metrics.secretName }}
+      name: metrics-creds
       namespace: {{ .Release.Namespace }}
 {{- end -}}
 ---
@@ -27,13 +23,8 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: vault-metrics
-  annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   jobLabel: vault
   endpoints:
@@ -41,11 +32,11 @@ spec:
       basicAuth:
         password:
           key: password
-          name: {{ .Values.metrics.secretName }}
+          name: metrics-creds
           optional: false
         username:
           key: username
-          name: {{ .Values.metrics.secretName }}
+          name: metrics-creds
           optional: false
       interval: 30s
       port: https
@@ -66,3 +57,4 @@ spec:
   podTargetLabels:
     - vault-active
 {{- end -}}
+*/}}

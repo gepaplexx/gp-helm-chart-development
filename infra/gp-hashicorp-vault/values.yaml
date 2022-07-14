@@ -1,11 +1,8 @@
 autoUnseal:
-  secretName: gcp-creds
-  creds: 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
+  creds:  #REPLACE ME
 metrics:
-  enabled: true
-  secretName: metrics-creds
-  username: AgCyVS7/k4XJ+xeTdp7S/rMxlqtXPShx8HKcuzs30ajCr9qOwHTAN0TxRsR97l4lYIOPPZ3T5YELx7sewHsj/gV1PYNLXPfNffcS5Sw47BzRRrW4YJbDa/cnVjOXmSvbCm6KvBDoU3GxqMi3kt/f3eFZ/377ph2gGxDXrwu5y5PPTyZ97uaFsWigmtAy8rwXEvXtRd2LlVFg7OXBDfVyM7K79ZV1e5PP/72+t5hastb2RVtasZsKRV+xsmxrF/2M45u30xjWaLbfGyadtkMdf11LsTJNPxbwXPo8zgZnJsv0C6HIOGIxoaX2lAxdgFhRhYB52334BTcjzDC4t8/sd3Q/L5ve0ynParBWZSb6AnysCiTAKT3e/XJdDTIPWRUlduLqvcn/6hNzeQmY+N5EJYnryMQ6s8uN7/vzwfCv1r2rQv2oyG23PDy/iruQ1Ls0ibI6BIeTCnNej5iMlsYdZCFKV0CtItNrYzF1GLqpmuz9FbGwdEXKmzNaX+Y+LkryyRyMJ4xq/M5Lo7g2IW+00qwK61DpmIGV8cCUJZeObZBDGUVdCjZsBk2OYWhnzNwXLePMqbwojgW7u1ve8WtbSI/Wcl/4VXDs+Dts70aJ6Zy4kuMRAlQVzKn27y9hdSJj92U40soitVDUzTxHy2LnVrZakrKA8cKuKAjhhqhNyYWfQ4xtvGKAmO8RtFWmkRQI39a53T5KInu6Hgy73AW7ZvJajyL1IPEyHA==
-  password: AgAA7pKQY1OdgZD8N1e8NC1+j3N5yyJgVc1xq0ell5vntvEj8XGpRlctMON/DaL7K6z6F4eKZz7O7ruFvfwDwj7iOS9c+qjzWSQNR2ZL1HNq9bTUeJlUMcOqGDiXmBJfz8+AYSum1ieM/SRRR3dgTbaoqXYDz/5egYJg+K4kCd+8S/kANZ0uL3rUjxC93XkqF8hTvRIXEof4e70rOJgVwJXBt+q1QxgRifXOsQQzmys+NAORmSd5xE5Zmt48p9n6HDICyggIagBzCJzCTMIN34XgRQa9FT8fxbc3TJWe8yPifUyclwbxR8gu9EcMmYcIeWUe2trV/Boah/l+ktVFAcEjZPlGNh8R1wybCHSICZG3mxYVPcIDAJY3YRI/15s8HUcVTPhzaUcpuOWect5rjAAojxUoWFJYnrvWOip+Pc3E8hBXS1YV/JJFTcoy4qsYyfEt3CsuR5X1ANNoafsAxRVgOd6beyXOCMMT5g9cRaFj0Yo3tbynJ652Z6iO9cLnxAGS9bn1UOoX8I+e1JPKrHjX/LgwL5T2qs9kMeddtsfQCBfc0y+8XzQByKd9hXIf/l6+QT5IWPa/RQHRMptQ4DifKl+VOT/BIcVaTgw+NXYcZFzjyummVjAu9RzxPxolG9s992roWvwJnkYtK4P4JgJfKovQSNggOX8fyLHnXkH72CTn3V5eC9xdathbiUh2gjPp9tKikLMBlMKKuaFtp6hK+jeiHA==
+  username: #REPLACE ME
+  password: #REPLACE ME
 vault:
   global:
     openshift: true
@@ -14,13 +11,6 @@ vault:
     enabled: true
   injector:
     enabled: true
-    image:
-      repository: "registry.connect.redhat.com/hashicorp/vault-k8s"
-      tag: "0.16.1-ubi"
-    agentImage:
-      repository: "registry.connect.redhat.com/hashicorp/vault"
-      tag: "1.10.3-ubi"
-    replicas: 1
     resources:
       requests:
         memory: '100Mi'
@@ -32,7 +22,7 @@ vault:
       secretName: 'injector-tls'
     webhook:
       annotations:
-        cert-manager.io/inject-ca-from: vault-project/injector-certificate
+        cert-manager.io/inject-ca-from: gp-vault/injector-certificate
     extraEnvironmentVars:
       AGENT_INJECT_TLS_MIN_VERSION: tls13
   server:
@@ -43,12 +33,9 @@ vault:
     auditStorage:
       enabled: true
     readinessProbe:
-      enabled: true
       path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
     livenessProbe:
       enabled: true
-      path: "/v1/sys/health?standbyok=true"
-      initialDelaySeconds: 60
     affinity: |
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -67,7 +54,8 @@ vault:
             topologyKey: kubernetes.io/hostname
     ha:
       enabled: true
-      replicas: 3
+      disruptionBudget:
+        maxUnavailable: 1
       raft:
         enabled: true
         setNodeId: true
@@ -127,12 +115,6 @@ vault:
             disable_hostname = true #It is recommended to also enable the option disable_hostname to avoid having prefixed metrics with hostname.
             prometheus_retention_time = "12h" 
           }
-    image:
-      repository: "registry.connect.redhat.com/hashicorp/vault"
-      tag: "1.10.3-ubi"
-    podDisruptionBudget:
-      enabled: true
-      maxUnavailable: 1
     resources:
       requests:
         memory: '100Mi'

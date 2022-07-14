@@ -2,13 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: injector-certificate
-  annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   commonName: Agent Inject Cert
   dnsNames:
@@ -17,4 +12,4 @@ spec:
     - vault-agent-injector-svc.{{ .Release.Namespace }}.svc
   issuerRef:
     name: injector-ca-issuer
-  secretName: injector-tls
+  secretName: {{ .Values.vault.injector.certs.secretName }}

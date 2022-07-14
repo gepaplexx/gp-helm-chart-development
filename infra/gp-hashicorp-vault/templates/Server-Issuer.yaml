@@ -2,13 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: server-selfsigned-ca
-  annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   commonName: Server Internal CA
   duration: 87660h0m0s
@@ -26,13 +21,8 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: server-ca-issuer
-  annotations:
-    meta.helm.sh/release-name: {{ .Release.Name }}
-    meta.helm.sh/release-namespace: {{ .Release.Namespace }}
   labels:
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/name: {{ .Release.Name }}
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   ca:
     secretName: server-ca-secret
