@@ -7,9 +7,9 @@ spec:
   jetstream:
     version: 2.8.2
     replicas: 3
-      {{- if .Values.eventbus.persistence.enabled }}
-      persistence:
-        storageClassName: {{ .Values.eventbus.persistence.storageClassName }}
-        accessMode: {{ .Values.eventbus.persistence.accessMode }}
-        volumeSize: {{ .Values.eventbus.persistence.size }}
-      {{- end }}
+    {{- if .Values.eventbus.persistence.enabled }}
+    persistence:
+      storageClassName: {{ .Values.eventbus.persistence.storageClassName }}
+      accessMode: {{ .Values.eventbus.persistence.accessMode }}
+      volumeSize: {{ .Values.eventbus.persistence.size }}
+    {{- end }}
