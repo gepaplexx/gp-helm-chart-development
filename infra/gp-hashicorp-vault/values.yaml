@@ -33,9 +33,9 @@ vault:
     auditStorage:
       enabled: true
     readinessProbe:
-      path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+      path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204" # show pods as not ready if auto-unseal fails somehow or the node is not initialized yet
     livenessProbe:
-      enabled: true
+      enabled: true # essential for vault to restart when the old certificate expires
     affinity: |
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -58,7 +58,7 @@ vault:
         maxUnavailable: 1
       raft:
         enabled: true
-        setNodeId: true
+        setNodeId: true # makes the raft node id be the same as the pod name for easier troubleshooting
         config: |
           ui = true
           disable_mlock = true  # necessary with integrated storage to play nice with the used BoltDB (may cause OOM if vault's dataset grows large), but causes additional vulnerability to memory attacks! -> disable swaps in OS!
@@ -112,7 +112,7 @@ vault:
             disabled = "false"
           }
           telemetry {
-            disable_hostname = true #It is recommended to also enable the option disable_hostname to avoid having prefixed metrics with hostname.
+            disable_hostname = true #'It is recommended to also enable the option disable_hostname to avoid having prefixed metrics with hostname.'
             prometheus_retention_time = "12h" 
           }
     resources:
