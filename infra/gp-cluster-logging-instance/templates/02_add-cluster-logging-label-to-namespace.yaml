@@ -1,0 +1,18 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: patch-add-label-to-namespace
+spec:
+  serviceAccountRef:
+    name: patch-operator-sa
+  patches:
+    patch-add-label-to-namespace:
+      targetObjectRef:
+        apiVersion: v1
+        kind: Namespace
+        name: openshift-logging
+      patchTemplate: |
+        metadata: 
+          labels:
+            openshift.io/cluster-monitoring: "true"
+      patchType: application/merge-patch+json
