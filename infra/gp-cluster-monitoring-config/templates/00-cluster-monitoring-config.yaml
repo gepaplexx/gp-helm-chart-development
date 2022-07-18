@@ -11,6 +11,9 @@ data:
       {{- include "infranodes.enabled" . | nindent 6 }}
     prometheusK8s:
       {{- include "infranodes.enabled" . | nindent 6 }}
+      externalLabels:
+        cluster: {{. Values.}}
+        prometheus: user_workfload
       retention: {{ .Values.clusterMonitoring.prometheusK8s.retention }}
       resources:
         requests:

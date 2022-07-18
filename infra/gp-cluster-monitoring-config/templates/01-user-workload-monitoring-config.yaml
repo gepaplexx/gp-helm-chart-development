@@ -7,6 +7,9 @@ metadata:
 data:
   config.yaml: |
     prometheus:
+      externalLabels:
+        cluster: {{. Values.cluster }}
+        prometheus: user_workfload
       retention: {{ .Values.userWorkloadMonitoring.prometheus.retention }}
       resources:
         requests:

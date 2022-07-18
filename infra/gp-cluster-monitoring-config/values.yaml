@@ -2,6 +2,8 @@
 infranodes:
   enabled: true
 
+cluster: ""
+
 clusterMonitoring:
   enableUserWorkload: true
   prometheusK8s:
