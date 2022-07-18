@@ -40,5 +40,7 @@ patchOperator:
   serviceAccount: patch-operator-sa
 
 alerts:
-  slackUrl: "" # must be supplied via value in argocd application
+  slackUrl:
+    kube: "" # must be supplied via value in argocd application
+    apiserver: "" # must be supplied via value in argocd application
   environment: "" # must be supplied via value in argocd application

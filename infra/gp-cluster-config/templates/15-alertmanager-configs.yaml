@@ -5,7 +5,7 @@ metadata:
   namespace: openshift-kube-controller-manager-operator
 spec:
   encryptedData:
-    url:  {{ .Values.alerts.slackUrl }}
+    url:  {{ .Values.alerts.slackUrl.kube }}
   template:
     metadata:
       creationTimestamp: null
@@ -49,7 +49,7 @@ metadata:
   namespace: openshift-apiserver
 spec:
   encryptedData:
-    url:  {{ .Values.alerts.slackUrl }}
+    url:  {{ .Values.alerts.slackUrl.apiserver }}
   template:
     metadata:
       creationTimestamp: null
