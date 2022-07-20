@@ -1,0 +1,87 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: slack-hook
+  namespace: openshift-kube-controller-manager-operator
+spec:
+  encryptedData:
+    url:  {{ .Values.alerts.slackUrl.kube }}
+  template:
+    metadata:
+      creationTimestamp: null
+      name: slack-hook
+      namespace: openshift-kube-controller-manager-operator
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: poddisruptionbudget-limit-alert
+  namespace: openshift-kube-controller-manager-operator
+spec:
+  route:
+    receiver: slack-alert-reveiver
+    groupBy: [job]
+    matchers:
+      - name: severity
+        value: critical
+  receivers:
+    - name: slack-alert-reveiver
+      slackConfigs:
+        - channel: critical
+          apiURL:
+            name: slack-hook
+            key: url
+          title: "PodDisruptionBudgetLimit Alert"
+          text: |-
+            Themengebiet: BETRIEB
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Cluster: {{ .Values.alerts.environment }}
+            Alerts:
+            {{`{{- range .Alerts -}}`}}
+              - {{`{{ .Annotations.description }}`}}
+              - {{`{{ .Annotations.documentation }}`}}
+            {{`{{- end -}}`}}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: slack-hook
+  namespace: openshift-apiserver
+spec:
+  encryptedData:
+    url:  {{ .Values.alerts.slackUrl.apiserver }}
+  template:
+    metadata:
+      creationTimestamp: null
+      name: slack-hook
+      namespace: openshift-apiserver
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: apiserver-alerts
+  namespace: openshift-apiserver
+spec:
+  route:
+    receiver: slack-alert-reveiver
+    groupBy: [job]
+    matchers:
+      - name: severity
+        value: critical
+  receivers:
+    - name: slack-alert-reveiver
+      slackConfigs:
+        - channel: critical
+          apiURL:
+            name: slack-hook
+            key: url
+          title: "Apiserver Alert"
+          text: |-
+            Themengebiet: BETRIEB
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Cluster: {{ .Values.alerts.environment }}
+            Alerts:
+            {{`{{- range .Alerts -}}`}}
+              - {{`{{ .Annotations.description }}`}}
+              - {{`{{ .Annotations.documentation }}`}}
+            {{`{{- end -}}`}}
