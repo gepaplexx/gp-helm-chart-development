@@ -2,6 +2,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-add-label-to-namespace
+  namespace: openshift-logging
 spec:
   serviceAccountRef:
     name: patch-operator-sa
