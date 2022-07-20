@@ -12,8 +12,10 @@ data:
         requests:
           cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.cpu }}
           memory: {{ .Values.userWorkloadMonitoring.prometheus.resources.requests.memory }}
+        {{- if .Values.userWorkloadMonitoring.prometheus.resources.limits.cpu }}
         limits:
           cpu: {{ .Values.userWorkloadMonitoring.prometheus.resources.limits.cpu }}
+        {{- end }}
       {{- include "infranodes.enabled" . | nindent 6 }}
       volumeClaimTemplate:
         spec:
