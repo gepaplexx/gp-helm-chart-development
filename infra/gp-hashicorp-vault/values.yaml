@@ -107,7 +107,7 @@ vault:
             credentials = "/vault/userconfig/unseal-creds/creds.json"
             project = "gepaplexx"
             region = "europe-west6"
-            key_ring = "gepaplexx-play-keyring"
+            key_ring = "gepaplexx-keyring"
             crypto_key = "vault-key"
             disabled = "false"
           }
