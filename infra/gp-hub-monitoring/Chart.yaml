@@ -1,0 +1,14 @@
+apiVersion: v2
+name: gp-hub-monitoring
+description: A Helm chart for deploying the Prometheus Monitoring Stack on our Hub-Cluster
+
+type: application
+
+version: 0.1.0
+appVersion: "2.34.0"
+
+dependencies:
+  - name: kube-prometheus-stack
+    alias: monitoring
+    version: 36.2.1
+    repository: https://prometheus-community.github.io/helm-charts/

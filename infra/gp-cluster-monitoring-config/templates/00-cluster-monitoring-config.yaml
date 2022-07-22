@@ -16,8 +16,10 @@ data:
         requests:
           cpu: {{ .Values.clusterMonitoring.prometheusK8s.resources.requests.cpu }}
           memory: {{ .Values.clusterMonitoring.prometheusK8s.resources.requests.memory }}
+        {{- if .Values.clusterMonitoring.prometheusK8s.resources.limits.cpu }}
         limits:
           cpu: {{ .Values.clusterMonitoring.prometheusK8s.resources.limits.cpu }}
+        {{- end }}
       volumeClaimTemplate:
         spec:
           storageClassName: {{ .Values.clusterMonitoring.prometheusK8s.storageClassName }}

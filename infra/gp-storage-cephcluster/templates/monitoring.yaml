@@ -115,6 +115,7 @@ spec:
     matchers:
       - name: severity
         value: critical
+        matchType: "="
   receivers:
     - name: slack-alert-reveiver
       slackConfigs:
@@ -133,7 +134,7 @@ spec:
               - {{`{{ .Annotations.documentation }}`}}
             {{`{{- end -}}`}}
 ---
-{{- if .Values.cephcluster.alerts.notifywarniing -}}
+{{- if .Values.cephcluster.alerts.notifyWarning }}
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: AlertmanagerConfig
 metadata:
@@ -146,6 +147,7 @@ spec:
     matchers:
       - name: severity
         value: warning
+        matchType: "="
   receivers:
     - name: slack-alert-reveiver
       slackConfigs:

@@ -24,3 +24,4 @@ apache:
       cert-manager.io/cluster-issuer: letsencrypt
     tls: true
     certManager: true
+  httpdConfConfigMap: httpd-conf-extra
