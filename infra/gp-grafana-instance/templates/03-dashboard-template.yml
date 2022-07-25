@@ -2,9 +2,9 @@ apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDashboard
 metadata:
   labels:
-    app: grafana-system-dashboard
-  name: dashboard-example
-  finalizers: []
+    dashboard: system
+  name: dashboard-template
+  namespace: {{ .Release.Namespace }}
 spec:
   json: |
     {
@@ -226,8 +226,8 @@ spec:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "Beispiel Dashboard",
+      "title": "Template Dashboard",
       "uid": "sROxSQe7y",
       "version": 3
     }
-  name: dashboard-example.json
+  name: dashboard-template.json

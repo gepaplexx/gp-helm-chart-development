@@ -12,3 +12,7 @@ spec:
   source: community-operators
   sourceNamespace: openshift-marketplace
   startingCSV: grafana-operator.v4.5.0
+  config:
+    env:
+      - name: DASHBOARD_NAMESPACES_ALL
+        value: "true"
