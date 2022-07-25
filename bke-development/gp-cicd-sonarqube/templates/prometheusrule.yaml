@@ -1,0 +1,23 @@
+{{- if .Values.sonarqube.metrics.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alerts-argo-events-controller
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-cicd-sonarqube.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: sonarqube-alerts
+      rules:
+        - alert: sonarqube-podcount
+          annotations:
+            summary: Sonarqube Pod ist down
+            description: Es muss zumindest 1 Pod da sein
+          expr: 'absent(sum(up{job=''cluster-sonarqube-jmx-metrics''})>=1)'
+          for: 10m
+          labels:
+            severity: "critical"
+            type: "internal"
+            namespace: "{{ .Release.Namespace }}"
+{{- end }}

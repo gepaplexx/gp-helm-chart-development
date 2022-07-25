@@ -28,6 +28,13 @@ argo_events:
       enabled: true
       serviceMonitor:
         enabled: true
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 256Mi
   configs:
     nats:
       versions:
@@ -51,7 +58,6 @@ argo_events:
          metricsExporterImage: natsio/prometheus-nats-exporter:0.9.1
          configReloaderImage: natsio/nats-server-config-reloader:0.7.0
          startCommand: nats-server
-
 
 ####################
 ## ARGO WORFKLOWS ##
