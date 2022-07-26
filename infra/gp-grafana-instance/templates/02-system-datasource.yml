@@ -1,0 +1,19 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: system-datasource
+  namespace: {{ .Release.Namespace }}
+spec:
+  datasources:
+    - access: proxy
+      editable: true
+      isDefault: true
+      jsonData:
+        httpHeaderName1: Authorization
+        httpMethod: POST
+      secureJsonData:
+        httpHeaderValue1: 'Bearer need-to-set-token-manually'
+      name: System-Datasource
+      type: prometheus
+      url: {{ .Values.grafana.datasource.prometheus.url }}
+  name: system-datasource.yaml
