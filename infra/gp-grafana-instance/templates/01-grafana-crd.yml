@@ -23,6 +23,3 @@ spec:
           values:
             - system
             - application
-  compat:
-    fixAnnotations: true   # Allows importing dashboards that specify annotation tags as arrays instead of strings.
-    fixHeights: true

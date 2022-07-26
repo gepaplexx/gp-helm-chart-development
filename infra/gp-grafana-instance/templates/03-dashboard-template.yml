@@ -16,7 +16,7 @@ spec:
             "enable": true,
             "hide": true,
             "iconColor": "rgba(0, 211, 255, 1)",
-            "name": "Annotations & Alerts",
+            "name": "dashboard-template.json",
             "type": "dashboard"
           }
         ]
@@ -230,4 +230,3 @@ spec:
       "uid": "sROxSQe7y",
       "version": 3
     }
-  name: dashboard-template.json
