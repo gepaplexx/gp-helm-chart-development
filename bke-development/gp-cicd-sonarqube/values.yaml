@@ -2,6 +2,8 @@ patch:
   namespace: gp-infrastructure
   serviceAccountRef: patch-operator-sa
 sonarqube:
+  updateStrategy:
+    type: Recreate
   sonarqubeUsername: "admin"
   sonarqubePassword: "changeme"
   service:
@@ -31,6 +33,7 @@ sonarqube:
   serviceAccount:
     create: true
     name: sonarqube  #CANNOT BE CHANGED, OTHERWISE OAUTH WON'T WORK!
+    automountServiceAccountToken: true
   metrics:
     jmx:
       enabled: true
@@ -45,17 +48,20 @@ sonarqube:
     - name: sonarqube-proxy
       secret:
         secretName: sonarqube-proxy
+    - name: sonarqube-tls
+      secret:
+        secretName: sonarqube-tls
   extraEnvVarsCM: extra-env-config
   sidecars:
     - args:
         - '-provider=openshift'
-        - '-pass-basic-auth=false'
+        - '-pass-basic-auth=true'
         - '-https-address=:9091'
         - '-http-address='
         - '-email-domain=*'
-        - '-upstream=http://localhost:80'
-        - '-openshift-sar={"resource": "namespaces", "verb": "get"}'  #TODO check was das macht :-D
-        - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}' #TODO check was das macht :-D
+        - '-upstream=http://localhost:9000'
+        - '-openshift-sar={"resource": "namespaces", "verb": "get"}'  # jeder der Namespaces lesen darf, darf sich einloggen
+        - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}' # jeder der Namespaces lesen darf, darf sich einloggen
         - '-tls-cert=/etc/tls/private/tls.crt'
         - '-tls-key=/etc/tls/private/tls.key'
         - '-client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token'
@@ -65,7 +71,6 @@ sonarqube:
         - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
         - '-openshift-ca=/etc/sonarqube-configmaps/ocp-injected-certs/ca-bundle.crt'
         - '-skip-auth-regex=^/metrics'
-        - '-request-logging=true' #TODO: disable!
       image: 'quay.io/openshift/origin-oauth-proxy'
       name: sonarqube-proxy
       ports:
@@ -79,3 +84,6 @@ sonarqube:
         - mountPath: /etc/proxy/secrets
           name: sonarqube-proxy
           readOnly: false
+        - mountPath: /etc/sonarqube-configmaps/ocp-injected-certs/
+          name: ocp-injected-certs
+          readOnly: true

@@ -10,7 +10,7 @@ metadata:
 spec:
   host: {{ .Values.sonarqube.ingress.hostname }}
   port:
-    targetPort: https
+    targetPort: oauth-proxy
   tls:
     termination: reencrypt
   to:
