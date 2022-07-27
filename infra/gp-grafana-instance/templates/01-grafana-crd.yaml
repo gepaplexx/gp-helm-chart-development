@@ -5,11 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   ingress:
-    enabled: True
-    targetPort: https
-    termination: reencrypt
-    annotations:
-      service.beta.openshift.io/serving-cert-secret-name: grafana-tls
+    enabled: false
   config:
     auth:
       disable_login_form: False
