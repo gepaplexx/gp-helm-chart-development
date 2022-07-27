@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: alerts-argo-events-controller
+  name: sonarqube
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-cicd-sonarqube.labels" . | nindent 4 }}
