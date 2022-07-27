@@ -1,0 +1,20 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    service.beta.openshift.io/serving-cert-secret-name: sonarqube-tls
+  labels:
+    {{ include "gp-cicd-sonarqube.labels" . | nindent 4 }}
+  name: sonarqube
+  namespace: {{ .Release.Namespace }}
+spec:
+  host: {{ .Values.sonarqube.ingress.hostname }}
+  port:
+    targetPort: https
+  tls:
+    termination: reencrypt
+  to:
+    kind: Service
+    name: {{ template "common.names.fullname" .Subcharts.sonarqube }}
+    weight: 100
+  wildcardPolicy: None

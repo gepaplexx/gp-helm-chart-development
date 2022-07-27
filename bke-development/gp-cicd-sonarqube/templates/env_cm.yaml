@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: extra-env-config
+  namespace: {{ .Release.Namespace }}
+data:
+  SONAR_WEB_SSO_ENABLE: "true"
+  SONAR_WEB_SSO_LOGINHEADER: "X-Forwarded-Login"
+  SONAR_WEB_SSO_NAMEHEADER: "X-Forwarded-Name"
+{{/*  SONAR_WEB_SSO_GROUPSHEADER: "X-Forwarded-Groups"*/}}
