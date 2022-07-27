@@ -10,9 +10,6 @@ datasource:
   prometheus:
     url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"
 
-serviceAccount:
-  name: grafana
-
 resources:
   requests:
     cpu: 100m
