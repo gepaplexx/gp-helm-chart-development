@@ -15,5 +15,5 @@ spec:
         httpHeaderValue1: 'Bearer need-to-set-token-manually'
       name: System-Datasource
       type: prometheus
-      url: {{ .Values.grafana.datasource.prometheus.url }}
+      url: {{ .Values.datasource.prometheus.url }}
   name: system-datasource.yaml

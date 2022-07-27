@@ -15,7 +15,7 @@ spec:
       level: warn
       mode: console
     security:
-      admin_user: {{ default "admin" .Values.grafana.auth.admin.user }}
+      admin_user: {{ default "admin" .Values.auth.admin.user }}
   dashboardLabelSelector:
     - matchExpressions:
         - key: dashboard
