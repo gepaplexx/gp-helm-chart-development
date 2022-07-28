@@ -1,0 +1,43 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: annotate-sonarqube-service
+  namespace: {{ .Values.patch.namespace }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.patch.serviceAccountRef }}
+  patches:
+    annotate-sonarqube-service:
+      targetObjectRef:
+        apiVersion: v1
+        kind: Service
+        name: {{ template "common.names.fullname" .Subcharts.sonarqube }}
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        metadata:
+          annotations:
+            service.beta.openshift.io/serving-cert-secret-name: sonarqube-tls
+      patchType: application/merge-patch+json
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: annotate-sonarqube-serviceaccount
+  namespace: {{ .Values.patch.namespace }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.patch.serviceAccountRef }}
+  patches:
+    annotate-sonarqube-serviceaccount:
+      targetObjectRef:
+        apiVersion: v1
+        kind: ServiceAccount
+        name: {{ .Values.sonarqube.serviceAccount.name }}
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        metadata:
+          annotations:
+            serviceaccounts.openshift.io/oauth-redirectreference.primary: >-
+              {"kind":"OAuthRedirectReference","apiVersion":"v1","reference":{"kind":"Route","name":"sonarqube"}}
+      patchType: application/merge-patch+json
+
