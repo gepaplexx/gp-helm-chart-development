@@ -5,7 +5,6 @@ sonarqube:
   updateStrategy:
     type: Recreate
   sonarqubeUsername: "admin"
-  sonarqubePassword: "changeme"
   service:
     type: ClusterIP
     extraPorts:
@@ -51,7 +50,7 @@ sonarqube:
     - name: sonarqube-tls
       secret:
         secretName: sonarqube-tls
-  extraEnvVarsCM: extra-env-config
+  extraEnvVarsCM: sonarqube-extra-env-config
   sidecars:
     - args:
         - '-provider=openshift'
