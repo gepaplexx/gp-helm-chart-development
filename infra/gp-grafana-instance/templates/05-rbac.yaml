@@ -3,7 +3,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: grafana-proxy
-  namespace: {{ .Release.Namespace }}
 rules:
   - verbs:
       - create
@@ -23,7 +22,6 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: grafana-cluster-monitoring-binding
-  namespace: {{ .Release.Namespace }}
 subjects:
   - kind: ServiceAccount
     name: grafana-serviceaccount
@@ -36,7 +34,6 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  namespace: {{ .Release.Namespace }}
   name: grafana-proxy-binding
 roleRef:
   kind: ClusterRole
