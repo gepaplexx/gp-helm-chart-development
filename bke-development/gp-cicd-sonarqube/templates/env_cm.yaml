@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sonarqube-extra-env-config
+  namespace: {{ .Release.Namespace }}
+data:
+  SONAR_WEB_SSO_ENABLE: "true"
+  SONAR_WEB_SSO_LOGINHEADER: "X-Forwarded-Email"
+  SONAR_WEB_SSO_NAMEHEADER: "X-Forwarded-User"
+  SONAR_WEB_SSO_EMAILHEADER: "X-Forwarded-Email"
+{{/*  SONAR_WEB_SSO_GROUPSHEADER: "X-Forwarded-Groups"*/}}

@@ -1,0 +1,19 @@
+# Default values for gp-grafana-instance.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+auth:
+  admin:
+    user: "admin"
+
+datasource:
+  prometheus:
+    url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256m
+  limits:
+    cpu: 500m
+    memory: 1Gi
