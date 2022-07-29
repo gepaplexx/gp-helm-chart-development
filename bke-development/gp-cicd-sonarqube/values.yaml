@@ -69,7 +69,7 @@ sonarqube:
         - '-openshift-ca=/etc/pki/tls/cert.pem'
         - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
         - '-openshift-ca=/etc/sonarqube-configmaps/ocp-injected-certs/ca-bundle.crt'
-        - '-skip-auth-regex=^/metrics'
+        - '-skip-auth-regex=(^/metrics|^/batch|^/api)'
       image: 'quay.io/openshift/origin-oauth-proxy'
       name: sonarqube-proxy
       ports:
