@@ -33,10 +33,21 @@ Create names of the appliacation
         {{- true -}}
     {{- end -}}
 {{- end -}}
+{{- range .Values.emptyDir -}}
+    {{- if .mountPath -}}
+        {{- true -}}
+    {{- end -}}
+{{- end -}}
 {{- end -}}
 
 {{- define "gp-bke-runtime-minimal-application.volumeMounts" -}}
 {{- range .Values.configmaps -}}
+    {{- if .mountPath -}}
+- name: {{ .name }}
+  mountPath: {{ .mountPath }}
+    {{- end -}}
+    {{- end -}}
+{{- range .Values.emptyDir -}}
     {{- if .mountPath -}}
 - name: {{ .name }}
   mountPath: {{ .mountPath }}
@@ -52,4 +63,8 @@ Create names of the appliacation
     name: {{ .name }}
     {{- end -}}
 {{- end -}}
+{{- range .Values.emptyDir -}}
+- name: {{ .name }}
+  emptyDir: {}
+  {{- end }}
 {{- end -}}
