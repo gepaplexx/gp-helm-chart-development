@@ -1,0 +1,57 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: eventbus
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+    - interval: 2m
+      port: metrics
+  selector:
+    matchLabels:
+      eventbus-name: default
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: eventsources
+  namespace: {{ .Release.Namespace }}
+spec:
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 2m
+  selector:
+    matchLabels:
+      controller: eventsource-controller
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: sensors
+  namespace: {{ .Release.Namespace }}
+spec:
+  podMetricsEndpoints:
+    - port: metrics
+      interval: 2m
+  selector:
+    matchLabels:
+      controller: sensor-controller
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argo-events-errors
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+    - name: argo-events-errors
+      rules:
+        - alert: ArgoEventsErrors #irgendein Name
+          expr: "rate(argo_events_events_processing_failed_total[4h])>0 or rate(argo_events_action_failed_total[4h])>0"
+          labels:
+            severity: warning
+          annotations:
+            description: {{ printf "Events konnten nicht verarbeitet werden. Prüfe Pod logs in {{$labels.namespace}}. Error Metric comes from Pod {{$labels.pod}}" }}
+            summary: "Argo Events hatte Fehler in den letzten 4 Stunden"
+---
