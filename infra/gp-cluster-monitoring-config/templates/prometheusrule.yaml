@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: prometheus-engine-queries
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: prometheus_engine_queries
+      rules:
+        - alert: ThanosQueriesStuck
+          annotations:
+            description: |
+              Wenn 20 prometheus_engine_queries erreicht sind kommt es zu Gateway Timeouts in der Console bzw. bei Abfragen über den Thanos Querier Endpoint.
+              Derzeitige Lösung: Thanos Querier Pod löschen {{printf "{{$labels.pod}}"}}
+            summary: Thanos Querier erreicht bald 20 Prometheus Engine Queries
+          expr: sum by (pod) (prometheus_engine_queries{job="thanos-querier",container="kube-rbac-proxy-metrics"}) >= 10
+          for: 2m
+          labels:
+            severity: critical
