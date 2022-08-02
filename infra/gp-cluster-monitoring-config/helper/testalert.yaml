@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ourtestalertignoreplease
+  namespace: openshift-monitoring
+spec:
+  groups:
+  - name: OurTestAlertIgnorePleasee
+    rules:
+    - alert: OurTestAlertIgnorePleasee
+      annotations:
+        description: weckdengeparden ist nicht mehr verfuegbar
+        summary: Es muss zumindest 1 Pod da sein
+      expr: absent(sum(up{job='jaskdjlakkds'})>=1)
+      labels:
+        severity: critical
