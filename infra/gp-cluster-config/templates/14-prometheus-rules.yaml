@@ -43,7 +43,7 @@ spec:
           annotations:
             summary: Openshift Apiserver CPU Issue
             description: |
-              Openshift Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Openshift Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 150% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
             (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="openshift-apiserver"}[10m])
@@ -54,7 +54,7 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="openshift-apiserver", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="openshift-apiserver", workload="apiserver", workload_type="deployment"}
-            ) by (pod)) > 1.2
+            ) by (pod)) > 1.5
           for: 10m
           labels:
             severity: "critical"
