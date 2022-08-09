@@ -15,5 +15,9 @@ spec:
       patchTemplate: |
         spec:
           rbac:
-            policy: 'g, Gepaplexx, role:admin'
+            defaultPolicy: '{{ .Values.argocd.rbac.defaultPolicy }}'
+            policy: |
+              {{- range .Values.argocd.rbac.policies }}
+              {{ . }}
+              {{- end }}
       patchType: application/merge-patch+json
