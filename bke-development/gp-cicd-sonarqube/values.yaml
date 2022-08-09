@@ -5,6 +5,7 @@ sonarqube:
   updateStrategy:
     type: Recreate
   sonarqubeUsername: "admin"
+  sonarqubePassword: "admin"
   service:
     type: ClusterIP
     extraPorts:
@@ -14,7 +15,7 @@ sonarqube:
         targetPort: 9091
   ingress:
     enabled: false
-    hostname: "sonarqube.apps.example.gepaplexx.com"
+    hostname: "sonar.apps.play.gepaplexx.com"
   persistence:
     enabled: true
   postgresql:
@@ -75,7 +76,10 @@ sonarqube:
       ports:
         - containerPort: 9091
           name: oauth-proxy
-      resources: {}
+      resources:
+        requests:
+          cpu: 1m
+          memory: 20Mi
       volumeMounts:
         - mountPath: /etc/tls/private
           name: sonarqube-tls
