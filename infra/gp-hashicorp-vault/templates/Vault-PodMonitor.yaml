@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: vault-metrics
+  labels:
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+spec:
+  podMetricsEndpoints:
+    - interval: 2m
+      params:
+        format:
+          - prometheus
+      path: /v1/sys/metrics
+      port: http
+      scheme: http
+  namespaceSelector:
+    matchNames:
+      - gp-vault
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: vault
