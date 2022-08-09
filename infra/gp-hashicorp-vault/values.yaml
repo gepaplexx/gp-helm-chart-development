@@ -1,8 +1,5 @@
 autoUnseal:
   creds:  #REPLACE ME
-metrics:
-  username: #REPLACE ME
-  password: #REPLACE ME
 vault:
   global:
     openshift: true
@@ -57,6 +54,9 @@ vault:
             address = "[::]:8200"
             cluster_address = "[::]:8201"
             tls_disable = true
+            telemetry {
+                unauthenticated_metrics_access = true
+            }
           }
           
           storage "raft" {
