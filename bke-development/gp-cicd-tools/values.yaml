@@ -167,7 +167,6 @@ argo_rollouts:
 ####################
 argocd:
   enabled: true
-  image: ghcr.io/gepaplexx/argocd
   route:
     hostname: "argocd.example.com"
   applicationset:
@@ -203,8 +202,6 @@ argocd:
         cpu: 250m
         memory: 128Mi
   repo:
-    image: ghcr.io/gepaplexx/argocd
-    version: main-87c3388
     resources:
       limits:
         cpu: 500m

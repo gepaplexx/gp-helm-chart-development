@@ -10,7 +10,7 @@ spec:
   groups:
     - name: alerts-openshift-apiserver
       rules:
-        - alert: apiserver_podcount
+        - alert: openshift_apiserver_podcount
           annotations:
             description: Es muss zumindest 1 Pod da sein
             summary: Apiserver am {{ .Values.alerts.environment }}-Cluster nicht mehr erreichbar.
@@ -19,13 +19,13 @@ spec:
           labels:
             severity: "critical"
             namespace: "openshift-apiserver"
-        - alert: apiserver_memory_saturation
+        - alert: openshift_apiserver_memory_saturation
           annotations:
             summary: Openshift Apiserver Memory Issue
             description: |
-              Openshift Apiserver hat in den letzten 10 Minuten durchschnittlich mehr als 250% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Openshift Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 250% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
             avg_over_time(container_memory_working_set_bytes{namespace="openshift-apiserver", container!="", image!=""}[10m])
             * on(namespace,pod)
             group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="openshift-apiserver", workload="apiserver", workload_type="deployment"}
@@ -34,16 +34,16 @@ spec:
             kube_pod_container_resource_requests{job="kube-state-metrics",namespace="openshift-apiserver", resource="memory"}
             * on(namespace,pod)
             group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="openshift-apiserver",workload="apiserver",workload_type="deployment"}
-            ) by (pod)) > bool 2.5) == 1
+            ) by (pod)) > 2.5
           for: 10m
           labels:
             severity: "critical"
             namespace: "openshift-apiserver"
-        - alert: apiserver_cpu_saturation
+        - alert: openshift_apiserver_cpu_saturation
           annotations:
             summary: Openshift Apiserver CPU Issue
             description: |
-              Openshift Apiserver hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Openshift Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
             (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="openshift-apiserver"}[10m])
@@ -54,7 +54,7 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="openshift-apiserver", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="openshift-apiserver", workload="apiserver", workload_type="deployment"}
-            ) by (pod)) > bool 1.2
+            ) by (pod)) > 1.2
           for: 10m
           labels:
             severity: "critical"
@@ -85,14 +85,14 @@ spec:
           annotations:
             summary: Openshift Kube-Apiserver Memory Issue
             description: |
-              Openshift Kube-Apiserver hat in den letzten 10 Minuten durchschnittlich mehr als 800% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Openshift Kube-Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 800% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
             avg_over_time(container_memory_working_set_bytes{namespace="openshift-kube-apiserver", container="kube-apiserver", image!=""}[10m])
             ) by (pod)
             /sum(
             kube_pod_container_resource_requests{job="kube-state-metrics",namespace="openshift-kube-apiserver", resource="memory",container="kube-apiserver"}
-            ) by (pod)) > bool 8) == 1
+            ) by (pod)) > 8
           for: 10m
           labels:
             severity: "critical"
@@ -101,14 +101,14 @@ spec:
           annotations:
             summary: Openshift Kube-Apiserver CPU Issue
             description: |
-              Openshift Kube-Apiserver hat in den letzten 10 Minuten durchschnittlich mehr als 500% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Openshift Kube-Apiserver {{`{{$labels.pod}}`}} hat in den letzten 10 Minuten durchschnittlich mehr als 500% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="openshift-kube-apiserver",container="kube-apiserver"}[10m])
             ) by (pod)
             /sum(
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="openshift-kube-apiserver", resource="cpu", container="kube-apiserver"}
-            ) by (pod)) > bool 5) == 1
+            ) by (pod)) > 5
           for: 10m
           labels:
             severity: "critical"
