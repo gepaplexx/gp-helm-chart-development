@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   gepaplexx-cicd-eventbus:
   - apiVersion: v2
+    created: "2022-08-09T12:10:45.90970965Z"
+    description: A helm chart for installing required roles and rolebindings and infrastructure
+      such as an eventbus for bootstrapping of an cicd instance
+    digest: 2e9a8c770a589bcac506b13e360a0ca28cc09a202572093bac75c791218d5f7b
+    name: gepaplexx-cicd-eventbus
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gepaplexx-cicd-eventbus-0.1.3.tgz
+    version: 0.1.3
+  - apiVersion: v2
     created: "2022-08-01T09:59:58.908038096Z"
     description: A helm chart for installing required roles and rolebindings and infrastructure
       such as an eventbus for bootstrapping of an cicd instance
@@ -206,14 +216,14 @@ entries:
   gp-cicd-apache:
   - apiVersion: v2
     appVersion: 2.4.53
-    created: "2022-08-01T09:59:58.911219435Z"
+    created: "2022-08-09T12:10:45.9128928Z"
     dependencies:
     - name: apache
       repository: https://charts.bitnami.com/bitnami
       version: 9.0.18
     description: A Helm chart for deploying an apache web server to publish junit
       test results
-    digest: 5c760a55fe5f8fa4eba878aec5894efae86d04d532ec9d7276adc8f0d7c7d31e
+    digest: 8430c7af5077beb975fea4450e3adc32874cce568d5d1f8d3095e2825077247d
     name: gp-cicd-apache
     type: application
     urls:
@@ -269,7 +279,7 @@ entries:
   gp-cicd-nexus:
   - apiVersion: v2
     appVersion: 3.38.1
-    created: "2022-08-01T09:59:58.91243805Z"
+    created: "2022-08-09T12:10:45.914278121Z"
     dependencies:
     - alias: nexus
       name: nexus-repository-manager
@@ -277,7 +287,7 @@ entries:
       version: 38.1.1
     description: A Helm chart for deploying Sonartype Nexus on OpenShift using the
       certified operator
-    digest: 522b045252e34a7514a1ab2606b034dcb62510037a24ea5420ba142412ffde5b
+    digest: 7349242371ee6e1d2f7e81479ceeb2e70b82b18b249f69ea6126f24e1cc3d285
     name: gp-cicd-nexus
     type: application
     urls:
@@ -382,13 +392,13 @@ entries:
   gp-cicd-sonarqube:
   - apiVersion: v2
     appVersion: 9.4.0
-    created: "2022-08-01T09:59:58.921874265Z"
+    created: "2022-08-09T12:10:45.923693267Z"
     dependencies:
     - name: sonarqube
       repository: https://charts.bitnami.com/bitnami
       version: 1.0.13
     description: A Helm chart for deploying SonarQube Nexus for static code analysis.
-    digest: 9047a23698217a54ba81af2a38c1b468a43249153b0d96886bab6c34dc677ae6
+    digest: 8bfc76708e9fe1413213e24f3068a35e77c2da49a9deb4d759f2053c23c4a7ca
     name: gp-cicd-sonarqube
     type: application
     urls:
@@ -647,6 +657,36 @@ entries:
     - https://gepaplexx.github.io/gp-helm-chart-development/gp-cicd-sonarqube-0.0.3.tgz
     version: 0.0.3
   gp-cicd-tools:
+  - apiVersion: v2
+    created: "2022-08-09T12:10:45.935774254Z"
+    dependencies:
+    - alias: argo_events
+      condition: argo-events.enabled
+      name: argo-events
+      repository: https://argoproj.github.io/argo-helm
+      version: ~2.0.2
+    - alias: argo_workflows
+      condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: ~0.16.6
+    - alias: argo_rollouts
+      condition: argo_rollouts.enabled
+      name: argo-rollouts
+      repository: https://argoproj.github.io/argo-helm
+      version: ~2.17.0
+    - condition: argo_workflows.persistence.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.6.14
+    description: A Helm chart for deploying argo infrastructure including workflow,
+      rollout, events and an argocd instance
+    digest: 907f532e52cd66747d8bb9d8e798af020fcdb3c8bac34a17e352223bb245ae57
+    name: gp-cicd-tools
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-cicd-tools-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v2
     created: "2022-08-01T09:59:58.93370211Z"
     dependencies:
@@ -1942,4 +1982,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-08-09T11:50:17.304036973Z"
+generated: "2022-08-09T12:10:45.908515432Z"
