@@ -217,6 +217,14 @@ argocd:
       requests:
         cpu: 250m
         memory: 128Mi
+  rbac:
+    defaultPolicy: ''
+    policies:
+      - 'p, role:gepardec-admin, applications, *, *, allow'
+      - 'p, role:gepardec-admin, repositories, *, *, allow'
+      - 'p, role:gepardec-admin, projects, *, *, allow'
+      - 'g, Gepaplexx, role:admin'
+      - 'g, Gepardec, role:gepardec-admin'
 
 ######################
 ##    Postgresql    ##

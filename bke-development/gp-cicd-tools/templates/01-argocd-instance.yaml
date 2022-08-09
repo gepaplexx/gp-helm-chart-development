@@ -42,7 +42,11 @@ spec:
   prometheus:
     enabled: false
   rbac:
-    policy: g, Gepaplexx, role:admin
+    defaultPolicy: '{{ .Values.argocd.rbac.defaultPolicy }}'
+    policy: |
+      {{- range .Values.argocd.rbac.policies }}
+      {{ . }}
+      {{- end }}
     scopes: '[groups]'
   redis:
     resources:
