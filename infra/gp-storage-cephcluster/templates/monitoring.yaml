@@ -68,6 +68,39 @@ subjects:
     name: rook-ceph-mgr
     namespace: {{ .Release.Namespace }} # namespace:cluster
 ---
+### Prometheus Pod in openshift-monitoring mit ServiceAccount prometheus-k8s muss Berechtigungen haben um auf rook-ceph namespace zugreifen zu können.
+### Mit diesen Berechtigungen findet Prometheus die Pods welche gescraped werden sollen.
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheus-k8s
+  namespace: {{ .Release.Namespace }}
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - ''
+    resources:
+      - services
+      - endpoints
+      - pods
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheus-k8s
+  namespace: {{ .Release.Namespace }}
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-k8s
+    namespace: openshift-monitoring
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus-k8s
+---
 # ServiceMonitor to scrape prometheus metrics
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
