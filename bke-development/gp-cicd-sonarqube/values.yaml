@@ -15,7 +15,7 @@ sonarqube:
         targetPort: 9091
   ingress:
     enabled: false
-    hostname: "sonar.apps.play.gepaplexx.com"
+    hostname: "sonarqube.apps.example.gepaplexx.com"
   persistence:
     enabled: true
   postgresql:
