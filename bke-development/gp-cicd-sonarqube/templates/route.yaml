@@ -33,7 +33,7 @@ spec:
   port:
     targetPort: http
   tls:
-    termination: Edge
+    termination: edge
   to:
     kind: Service
     name: {{ template "common.names.fullname" .Subcharts.sonarqube }}
