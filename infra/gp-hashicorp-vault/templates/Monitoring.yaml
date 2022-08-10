@@ -45,9 +45,6 @@ spec:
       path: /v1/sys/metrics
       port: http
       scheme: http
-  namespaceSelector:
-    matchNames:
-      - {{ .Release.Namespace }}
   selector:
     matchLabels:
       app.kubernetes.io/name: vault
