@@ -5,6 +5,7 @@ sonarqube:
   updateStrategy:
     type: Recreate
   sonarqubeUsername: "admin"
+  sonarqubePassword: "admin"
   service:
     type: ClusterIP
     extraPorts:
@@ -75,7 +76,10 @@ sonarqube:
       ports:
         - containerPort: 9091
           name: oauth-proxy
-      resources: {}
+      resources:
+        requests:
+          cpu: 1m
+          memory: 20Mi
       volumeMounts:
         - mountPath: /etc/tls/private
           name: sonarqube-tls
