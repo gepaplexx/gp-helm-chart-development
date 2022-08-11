@@ -21,7 +21,7 @@ spec:
               type: GitHub
               github:
                 clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
-                organizations: {{`"{{ (index . 1).data.restrOrgs | b64dec }}"`}}
+                organizations: {{`{{ (index . 1).data.restrOrgs | b64dec }}`}}
                 clientSecret:
                   name: {{ .Values.git.k8secretName }}
 {{ end }} {{ if .Values.google.enable }}
