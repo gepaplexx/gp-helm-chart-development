@@ -18,6 +18,7 @@ spec:
         metadata:
           annotations:
             openshift.io/node-selector: ""
+      patchType: application/merge-patch+json
     patch-openshift-user-worklaod-monitoring-nodeselector:
       targetObjectRef:
         apiVersion: v1
@@ -27,3 +28,4 @@ spec:
         metadata:
           annotations:
             openshift.io/node-selector: ""
+      patchType: application/merge-patch+json
