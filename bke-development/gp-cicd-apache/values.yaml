@@ -1,7 +1,15 @@
 pvc:
   size: 512Mi
 
+patch:
+  serviceAccountRef: patch-operator-sa
+  namespace: gp-infrastructure
+route:
+  hostname: "testresults.example.com"
+
 apache:
+  updateStrategy:
+    type: Recreate  # für pvc
   htdocsPVC: example-results
   podSecurityContext:
     enabled: false
@@ -16,12 +24,58 @@ apache:
       memory: 256Mi
   service:
     type: ClusterIP
-  ingress:
-    enabled: true
-    ingressClassName: openshift-default
-    hostname: project-testresults.apps.example.com
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
-    tls: true
-    certManager: true
+      service.beta.openshift.io/serving-cert-secret-name: apache-tls
+    extraPorts:
+      - name: oauth-proxy
+        port: 9091
+        targetPort: 9091
   httpdConfConfigMap: httpd-conf-extra
+  # configuration for OAuth Proxy Sidecar
+  sidecars:
+    - name: oauth-proxy
+      args:
+        - '-provider=openshift'
+        - '-pass-basic-auth=true'
+        - '-https-address=:9091'
+        - '-http-address='
+        - '-email-domain=*'
+        - '-upstream=http://localhost:8080'
+        - '-openshift-sar={"resource": "namespaces", "verb": "get"}'  # jeder der Namespaces lesen darf, darf sich einloggen
+        - '-openshift-delegate-urls={"/": {"resource": "namespaces", "verb": "get"}}' # jeder der Namespaces lesen darf, darf sich einloggen
+        - '-tls-cert=/etc/tls/private/tls.crt'
+        - '-tls-key=/etc/tls/private/tls.key'
+        - '-client-secret-file=/var/run/secrets/kubernetes.io/serviceaccount/token'
+        - '-cookie-secret-file=/etc/proxy/secrets/session_secret'
+        - '-openshift-service-account=testresults'
+        - '-openshift-ca=/etc/pki/tls/cert.pem'
+        - '-openshift-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+        - '-openshift-ca=/etc/apache-configmaps/ocp-injected-certs/ca-bundle.crt'
+      image: 'quay.io/openshift/origin-oauth-proxy'
+      ports:
+        - containerPort: 9091
+          name: oauth-proxy
+      resources:
+        requests:
+          cpu: 1m
+          memory: 20Mi
+      volumeMounts:
+        - mountPath: /etc/tls/private
+          name: apache-tls
+          readOnly: false
+        - mountPath: /etc/proxy/secrets
+          name: testresult-proxy
+          readOnly: false
+        - mountPath: /etc/apache-configmaps/ocp-injected-certs/
+          name: ocp-injected-certs
+          readOnly: true
+  extraVolumes:
+    - name: ocp-injected-certs
+      configMap:
+        name: ocp-injected-certs
+    - name: testresult-proxy
+      secret:
+        secretName: testresult-proxy
+    - name: apache-tls
+      secret:
+        secretName: apache-tls
