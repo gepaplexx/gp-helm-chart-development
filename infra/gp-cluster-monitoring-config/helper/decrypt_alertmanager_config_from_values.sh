@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cluster=play
 
 if [ -n "$1" ];

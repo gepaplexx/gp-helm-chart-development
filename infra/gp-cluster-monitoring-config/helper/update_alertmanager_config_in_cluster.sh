@@ -1,3 +1,5 @@
+#!/bin/bash
+
 echo "Es wird ein Update auf das SealedSecret gemacht."
 echo "Das SealedSecret wird dann widerum zum secret alertmanager-main."
 echo "Wenn ArgoCD Auto Sync ein ist, wird das überschrieben."
