@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: sonarqube-proxy-binding
+  name: {{ .Release.Name }}-sonarqube-proxy-binding
 roleRef:
   kind: ClusterRole
   name: gp-auth-proxy

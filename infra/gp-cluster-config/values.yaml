@@ -34,6 +34,10 @@ argocd:
     sshPrivateKey: "" # must be supplied via value in argocd application
     secretName: "workflow-repository"
     url: "git@github.com:gepaplexx/gepaplexx-cicd.git"
+  rbac:
+    defaultPolicy: ''
+    policies:
+      - 'g, Gepaplexx, role:admin'
 
 patchOperator:
   namespace: gp-infrastructure

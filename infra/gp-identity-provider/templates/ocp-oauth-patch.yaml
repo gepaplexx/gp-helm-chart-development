@@ -20,8 +20,8 @@ spec:
               mappingMethod: claim
               type: GitHub
               github:
-                clientID: {{`{{ (index . 0).data.clientId | b64dec }}`}}
-                organizations: {{`{{ (index . 0).data.restrOrgs | b64dec }}`}}
+                clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
+                organizations: {{`{{ (index . 1).data.restrOrgs | b64dec }}`}}
                 clientSecret:
                   name: {{ .Values.git.k8secretName }}
 {{ end }} {{ if .Values.google.enable }}
@@ -30,11 +30,11 @@ spec:
               type: Google
               google:
                 {{- if not .Values.git.enable }}
-                clientID: {{`{{ (index . 0).data.clientId | b64dec }}`}}
-                hostedDomain: {{`{{ (index . 0).data.restrDomain | b64dec }}`}}
+                clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
+                hostedDomain: {{`"{{ (index . 1).data.restrDomain | b64dec }}"`}}
                 {{- else }}
-                clientID: {{`{{ (index . 1).data.clientId | b64dec }}`}}
-                hostedDomain: {{`{{ (index . 1).data.restrDomain | b64dec }}`}}
+                clientID: {{`"{{ (index . 2).data.clientId | b64dec }}"`}}
+                hostedDomain: {{`"{{ (index . 2).data.restrDomain | b64dec }}"`}}
                 {{- end }}
                 clientSecret:
                   name: {{ .Values.google.k8secretName }}

@@ -1,7 +1,7 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
-  name: annotate-sonarqube-service
+  name: {{ .Release.Name }}-annotate-sonarqube-service
   namespace: {{ .Values.patch.namespace }}
 spec:
   serviceAccountRef:
@@ -22,7 +22,7 @@ spec:
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
-  name: annotate-sonarqube-serviceaccount
+  name: {{ .Release.Name }}-annotate-sonarqube-serviceaccount
   namespace: {{ .Values.patch.namespace }}
 spec:
   serviceAccountRef:

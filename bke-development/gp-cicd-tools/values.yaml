@@ -167,7 +167,6 @@ argo_rollouts:
 ####################
 argocd:
   enabled: true
-  image: ghcr.io/gepaplexx/argocd
   route:
     hostname: "argocd.example.com"
   applicationset:
@@ -203,8 +202,6 @@ argocd:
         cpu: 250m
         memory: 128Mi
   repo:
-    image: ghcr.io/gepaplexx/argocd
-    version: main-87c3388
     resources:
       limits:
         cpu: 500m
@@ -220,6 +217,14 @@ argocd:
       requests:
         cpu: 250m
         memory: 128Mi
+  rbac:
+    defaultPolicy: ''
+    policies:
+      - 'p, role:gepardec-admin, applications, *, *, allow'
+      - 'p, role:gepardec-admin, repositories, *, *, allow'
+      - 'p, role:gepardec-admin, projects, *, *, allow'
+      - 'g, Gepaplexx, role:admin'
+      - 'g, Gepardec, role:gepardec-admin'
 
 ######################
 ##    Postgresql    ##
