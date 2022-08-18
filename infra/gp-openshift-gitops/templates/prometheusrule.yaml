@@ -17,15 +17,14 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd_memory_saturation
           annotations:
             summary: Argo CD Application-Controller Memory Issue
             description: |
               Argo CD hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
@@ -34,19 +33,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 1.5) == 1
+            ) by (pod)) > 1.5
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd_memory_limit
           annotations:
             summary: Argo CD Application-Controller Memory Issue
             description: |
               Argo CD Application-Controller hat in den letzten 10 Minuten durchschnittlich mehr als 85% der Memory Limits benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
@@ -55,19 +53,18 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd_cpu_saturation
           annotations:
             summary: Argo CD Application-Controller CPU Issue
             description: |
               Argo CD Application-Controller hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
@@ -76,19 +73,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 1.2) == 1
+            ) by (pod)) > 1.2
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd_cpu_limit
           annotations:
             summary: Argo CD Application-Controller CPU Issue
             description: |
               Argo CD Application-Controller ist in den letzten 10 Minuten durchschnittlich mehr als 85% der limitierten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
@@ -97,12 +93,11 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -123,15 +118,14 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-reposerver_memory_saturation
           annotations:
             summary: Argo CD Reposerver Memory Issue
             description: |
               Argo CD Reposerver hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
@@ -140,19 +134,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 1.5) == 1
+            ) by (pod)) > 1.5
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-reposerver_memory_limit
           annotations:
             summary: Argo CD Reposerver Memory Issue
             description: |
               Argo CD Reposerver hat in den letzten 10 Minuten durchschnittlich mehr als 85% der Memory Limits benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
@@ -161,19 +154,18 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-reposerver_cpu_saturation
           annotations:
             summary: Argo CD Reposerver CPU Issue
             description: |
               Argo CD Reposerver hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
@@ -182,19 +174,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 1.2) == 1
+            ) by (pod)) > 1.2
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-reposerver_cpu_limit
           annotations:
             summary: Argo CD CPU Issue
             description: |
               Argo CD Reposerver ist in den letzten 10 Minuten durchschnittlich mehr als 85% der limitierten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
@@ -203,12 +194,11 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-repo-server.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
@@ -229,15 +219,14 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-server_memory_saturation
           annotations:
             summary: Argo CD Server Memory Issue
             description: |
               Argo CD Server hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
@@ -246,19 +235,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 1.5) == 1
+            ) by (pod)) > 1.5
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-server_memory_limit
           annotations:
             summary: Argo CD Server Memory Issue
             description: |
               Argo CD Server hat in den letzten 10 Minuten durchschnittlich mehr als 85% der Memory Limits benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
@@ -267,19 +255,18 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-reposerver_cpu_saturation
           annotations:
             summary: Argo CD Server CPU Issue
             description: |
               Argo CD Server hat in den letzten 10 Minuten durchschnittlich mehr als 120% der requesten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
@@ -288,19 +275,18 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 1.2) == 1
+            ) by (pod)) > 1.2
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
         - alert: argocd-server_cpu_limit
           annotations:
             summary: Argo CD Server CPU Issue
             description: |
               Argo CD Server ist in den letzten 10 Minuten durchschnittlich mehr als 85% der limitierten CPU verbraucht. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
-            ((sum(
+            (sum(
                 avg_over_time(node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{namespace="{{ .Release.Namespace }}"}[10m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
@@ -309,10 +295,9 @@ spec:
                 kube_pod_container_resource_limits{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "gp-openshift-gitops.argocd-server.workload" . }}", workload_type="deployment"}
-            ) by (pod)) > bool 0.85) == 1
+            ) by (pod)) > 0.85
           for: 10m
           labels:
             severity: "warning"
-            type: internal
-            namespace: "{{ .Release.Namespace }}"
+            type: "internal"
 ---

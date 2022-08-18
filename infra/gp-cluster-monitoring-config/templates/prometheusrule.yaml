@@ -16,4 +16,5 @@ spec:
           expr: sum by (pod) (prometheus_engine_queries{job="thanos-querier",container="kube-rbac-proxy-metrics"}) >= 10
           for: 2m
           labels:
-            severity: critical
+            severity: "critical"
+            type: "internal"

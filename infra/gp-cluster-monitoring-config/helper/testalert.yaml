@@ -13,4 +13,6 @@ spec:
         summary: Weiterhin ignorieren
       expr: absent(sum(up{job='hoffentlichGibtEsDiesenJobNicht'})>=1)
       labels:
-        severity: critical
+        severity: "warning"
+        type: "internal"
+

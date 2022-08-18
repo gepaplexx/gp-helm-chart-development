@@ -17,8 +17,8 @@ spec:
             kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics"} > 0
           for: 20m
           labels:
-            severity: warning
-            monitoring: pvc
+            severity: "warning"
+            type: "internal"
         - alert: PersistentVolumeCapacityCritical
           annotations:
             description: Anhand der letzten Samplingergebnisse wird erwartet, dass das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} innerhalb von 4 Tagen voll sein wird. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
@@ -28,5 +28,5 @@ spec:
             and on (persistentvolumeclaim) (kube_persistentvolumeclaim_labels{label_disable_prediction!="true"} )
           for: 20m
           labels:
-            severity: critical
-            monitoring: pvc
+            severity: "critical"
+            type: "internal"
