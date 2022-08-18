@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-update-blocked-node-drain-failed
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+    - name: cluster-update-blocked-node-drain-failed
+      rules:
+        - alert: NodeDrainFailed
+          annotations:
+            description: |
+              Dieser Alert feuert, wenn der Drain einer Node über eine Stunde dauert und nicht durchgeführt werden kann.
+              Dies kann dazu führen, dass ClusterUpdates nicht durchgeführt werden können.
+              'Drain failed on {{ $labels.node }} , updates may be blocked. For
+              more details:  oc logs -f -n {{ $labels.namespace }} {{ $labels.pod }}
+              -c machine-config-daemon'
+            summary: Failed to drain Node
+          expr: |
+          mcd_drain_err > 0
+          labels:
+            severity: "warning"
+            type: "internal"
