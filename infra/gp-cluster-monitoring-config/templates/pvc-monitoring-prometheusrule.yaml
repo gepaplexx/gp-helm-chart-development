@@ -12,9 +12,11 @@ spec:
             description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
             summary: PersistentVolumeClaim zu 80% voll.
           expr: |
-            (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"} /
-            kubelet_volume_stats_capacity_bytes{job="kubelet",metrics_path="/metrics"}) < 0.2 and
-            kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics"} > 0
+            100 * (
+              (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"}
+              / kubelet_volume_stats_capacity_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"}) < 0.2
+              and kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"} > 0
+            )
           for: 20m
           labels:
             severity: warning
@@ -24,9 +26,11 @@ spec:
             description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 90% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
             summary: PersistentVolumeClaim zu 90% voll.
           expr: |
-            (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics"} /
-            kubelet_volume_stats_capacity_bytes{job="kubelet",metrics_path="/metrics"}) < 0.1 and
-            kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics"} > 0
+            100 * (
+              (kubelet_volume_stats_available_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"}
+              / kubelet_volume_stats_capacity_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"}) < 0.1
+              and kubelet_volume_stats_used_bytes{job="kubelet",metrics_path="/metrics",persistentvolumeclaim!~".*nfs.*"} > 0
+            )
           for: 20m
           labels:
             severity: critical
