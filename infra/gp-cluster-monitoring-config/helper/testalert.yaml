@@ -5,12 +5,12 @@ metadata:
   namespace: openshift-monitoring
 spec:
   groups:
-  - name: OurTestAlertIgnorePleasee
+  - name: OurTestAlertIgnorePlease
     rules:
-    - alert: OurTestAlertIgnorePleasee
+    - alert: OurTestAlertIgnorePlease
       annotations:
-        description: weckdengeparden ist nicht mehr verfuegbar
-        summary: Es muss zumindest 1 Pod da sein
-      expr: absent(sum(up{job='jaskdjlakkds'})>=1)
+        description: Hier gibt es nichts zu sehen -> bitte ignorieren
+        summary: Weiterhin ignorieren
+      expr: absent(sum(up{job='hoffentlichGibtEsDiesenJobNicht'})>=1)
       labels:
         severity: critical
