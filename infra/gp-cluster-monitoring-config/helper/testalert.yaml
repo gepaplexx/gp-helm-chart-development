@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: ourtestalertignoreplease
+  namespace: openshift-monitoring
+spec:
+  groups:
+  - name: OurTestAlertIgnorePlease
+    rules:
+    - alert: OurTestAlertIgnorePlease
+      annotations:
+        description: Hier gibt es nichts zu sehen -> bitte ignorieren
+        summary: Weiterhin ignorieren
+      expr: absent(sum(up{job='hoffentlichGibtEsDiesenJobNicht'})>=1)
+      labels:
+        severity: "warning"
+        type: "internal"
+

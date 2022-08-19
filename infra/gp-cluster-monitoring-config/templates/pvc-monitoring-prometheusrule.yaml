@@ -19,8 +19,8 @@ spec:
             )
           for: 20m
           labels:
-            severity: warning
-            monitoring: pvc
+            severity: "warning"
+            type: "internal"
         - alert: PersistentVolumeClaimAlmostFullAlert
           annotations:
             description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 90% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
@@ -33,5 +33,5 @@ spec:
             )
           for: 20m
           labels:
-            severity: critical
-            monitoring: pvc
+            severity: "critical"
+            type: "internal"

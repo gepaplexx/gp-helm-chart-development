@@ -50,7 +50,8 @@ spec:
         - alert: ArgoEventsErrors #irgendein Name
           expr: "rate(argo_events_events_processing_failed_total[4h])>0 or rate(argo_events_action_failed_total[4h])>0"
           labels:
-            severity: warning
+            severity: "warning"
+            type: "internal"
           annotations:
             description: {{ printf "Events konnten nicht verarbeitet werden. Prüfe Pod logs in {{$labels.namespace}}. Error Metric comes from Pod {{$labels.pod}}" }}
             summary: "Argo Events hatte Fehler in den letzten 4 Stunden"

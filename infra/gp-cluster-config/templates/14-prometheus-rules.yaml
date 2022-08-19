@@ -18,7 +18,7 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-apiserver"
+            type: "internal"
         - alert: openshift_apiserver_memory_saturation
           annotations:
             summary: Openshift Apiserver Memory Issue
@@ -38,7 +38,7 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-apiserver"
+            type: "internal"
         - alert: openshift_apiserver_cpu_saturation
           annotations:
             summary: Openshift Apiserver CPU Issue
@@ -58,7 +58,7 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-apiserver"
+            type: "internal"
 ---
 ##############################################################################
 ######################### OPENSHIFT KUBE API SERVER ##########################
@@ -80,7 +80,7 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-kube-apiserver"
+            type: "internal"
         - alert: kubeapiserver_memory_saturation
           annotations:
             summary: Openshift Kube-Apiserver Memory Issue
@@ -96,7 +96,7 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-kube-apiserver"
+            type: "internal"
         - alert: kubeapiserver_cpu_saturation
           annotations:
             summary: Openshift Kube-Apiserver CPU Issue
@@ -112,4 +112,4 @@ spec:
           for: 10m
           labels:
             severity: "critical"
-            namespace: "openshift-kube-apiserver"
+            type: "internal"
