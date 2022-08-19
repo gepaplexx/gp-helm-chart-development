@@ -190,7 +190,7 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="cpu"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}", workload="{{ template "argo-workflows.controller.fullname" .Subcharts.argo_workflows  }}", workload_type="deployment"}
-            ) by (pod) > 1.2
+            ) by (pod)) > 1.2
           for: 10m
           labels:
             severity: "warning"
