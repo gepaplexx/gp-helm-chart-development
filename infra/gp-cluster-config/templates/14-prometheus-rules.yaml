@@ -13,7 +13,7 @@ spec:
         - alert: openshift_apiserver_podcount
           annotations:
             description: Es muss zumindest 1 Pod da sein
-            summary: Apiserver am {{ .Values.alerts.environment }}-Cluster nicht mehr erreichbar.
+            summary: Apiserver nicht mehr erreichbar.
           expr: 'absent(sum(up{job="api"})>=1)'
           for: 10m
           labels:
@@ -75,7 +75,7 @@ spec:
         - alert: kubeapiserver_podcount
           annotations:
             description: Es muss zumindest 1 Pod da sein
-            summary: Kube-Apiserver am {{ .Values.alerts.environment }}-Cluster nicht mehr erreichbar.
+            summary: Kube-Apiserver nicht mehr erreichbar.
           expr: 'absent(sum(up{job="apiserver"})>=1)'
           for: 10m
           labels:
