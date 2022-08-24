@@ -2,8 +2,8 @@ pvc:
   size: 512Mi
 
 patch:
-  serviceAccountRef: patch-operator-sa
-  namespace: gp-infrastructure
+  serviceAccountRef: operate-workflow-sa
+  namespace: gepaplexx-cicd
 route:
   hostname: "testresults.example.com"
 
