@@ -1,0 +1,14 @@
+apiVersion: operators.coreos.com/v1alpha1
+
+kind: Subscription
+metadata:
+  labels:
+    {{ include "gp-keycloak-operator.labels" . | nindent 4 }}
+  name: keycloak-operator
+  namespace: {{ .Release.Namespace }}
+spec:
+  channel: {{ .Values.update.channel }}
+  installPlanApproval: {{ .Values.update.approval }}
+  name: keycloak-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
