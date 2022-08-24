@@ -3,7 +3,6 @@ pvc:
 
 patch:
   serviceAccountRef: operate-workflow-sa
-  namespace: gepaplexx-cicd
 route:
   hostname: "testresults.example.com"
 
