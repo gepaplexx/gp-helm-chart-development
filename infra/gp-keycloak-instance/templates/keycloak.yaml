@@ -1,0 +1,34 @@
+apiVersion: k8s.keycloak.org/v2alpha1
+kind: Keycloak
+metadata:
+  name: sso
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
+spec:
+  hostname: {{  .Values.ingress.hostname }}
+  instances: {{ .Values.replicas }}
+  serverConfiguration:
+    - name: features-disabled
+      value: "{{ .Values.features.disabled }}"
+    - name: features
+      value: "{{ .Values.features.enabled }}"
+    - name: health_enabled
+      value: 'true'
+    - name: metrics-enabled
+      value: 'true'
+  {{- if .Values.persistence.enabled }}
+    - name: db
+      value: postgres
+    - name: db-url-host
+      value: {{ .Values.postgresql.fullnameOverride }}
+    - name: db-username
+      secret:
+        name:  keycloak-config
+        key: username
+    - name: db-password
+      secret:
+        name: keycloak-config
+        key: password
+  {{- end }}
+  tlsSecret: keycloak-tls
