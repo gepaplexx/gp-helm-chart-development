@@ -60,3 +60,13 @@ spec:
           labels:
             severity: "critical"
             type: "internal"
+        - alert: cluster_is_updating
+          annotations:
+            summary: Clusterupdate is in Progress
+            description: |
+              Es läuft gerade ein Clusterupdate
+          expr: |
+            absent(sum by (Value) (cluster_version) )
+          labels:
+            severity: "info"
+            type: "internal"
