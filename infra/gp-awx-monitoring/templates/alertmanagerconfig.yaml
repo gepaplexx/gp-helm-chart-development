@@ -27,3 +27,8 @@ spec:
         value: "critical"
         matchType: "="
     receiver: awx-slack-alert
+  inhibit_rule:
+    - source_matchers:
+        - alertname = cluster_is_updating
+      target_matchers:
+        - alertname = PersistentVolumeClaimNearlyFullWarning
