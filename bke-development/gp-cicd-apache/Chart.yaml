@@ -3,7 +3,7 @@ name: gp-cicd-apache
 description: A Helm chart for deploying an apache web server to publish junit test results
 
 type: application
-version: 0.1.2
+version: 0.2.2
 appVersion: "2.4.53"
 
 dependencies:

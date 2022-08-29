@@ -1,0 +1,22 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: {{ .Release.Name }}-patch-apache-deployment
+  namespace: {{ .Release.Namespace }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.patch.serviceAccountRef }}
+  patches:
+    patch-serviceaccount-reference:
+      patchType: application/merge-patch+json
+      targetObjectRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name:  "{{ template "common.names.fullname" .Subcharts.apache }}"
+        namespace: "{{ .Release.Namespace }}"
+      patchTemplate: |
+        spec:
+          template:
+            spec:
+              serviceAccount: "testresults"
+              serviceAccountName: "testresults"

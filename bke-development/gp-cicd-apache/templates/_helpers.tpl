@@ -50,13 +50,6 @@ app.kubernetes.io/name: {{ include "gp-cicd-apache.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "gp-cicd-apache.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "gp-cicd-apache.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
+{{- define "gp-cicd-apache.session_secret" -}}
+{{ randAlphaNum 32 }}
 {{- end }}

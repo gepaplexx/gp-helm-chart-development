@@ -19,5 +19,4 @@ spec:
           labels:
             severity: "critical"
             type: "internal"
-            namespace: "{{ .Release.Namespace }}"
 {{- end }}

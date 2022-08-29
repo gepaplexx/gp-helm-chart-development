@@ -84,4 +84,5 @@ for f in $(find $HOME -name Chart.yaml); do
       do_update
     fi
   fi
+  rm -rf ../.cache/
 done
