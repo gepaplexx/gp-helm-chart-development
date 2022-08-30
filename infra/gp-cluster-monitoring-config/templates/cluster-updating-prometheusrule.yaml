@@ -1,7 +1,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: cluster_is_updating
+  name: cluster-is-updating
   namespace: openshift-monitoring
 spec:
   groups:
