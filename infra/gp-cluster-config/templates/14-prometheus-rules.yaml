@@ -113,3 +113,25 @@ spec:
           labels:
             severity: "critical"
             type: "internal"
+---
+##############################################################################
+################################### NODES ####################################
+##############################################################################
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: alerts-ocp-nodes
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name: alerts-ocp-nodes
+      rules:
+        - alert: node_unready
+          annotations:
+            description: Node Issue
+            summary: 'Node {{ $labels.node }} ist seit 30 Minuten NICHT mehr im Status Ready.'
+          expr: 'kube_node_status_condition{job="kube-state-metrics",condition="Ready",status="true"} == 0'
+          for: 30m
+          labels:
+            severity: "critical"
+            type: "internal"
