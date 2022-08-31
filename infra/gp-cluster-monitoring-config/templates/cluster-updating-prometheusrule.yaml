@@ -7,7 +7,7 @@ spec:
   groups:
   - name: cluster-is-updating
     rules:
-      - alert: cluster-is-updating
+      - alert: ClusterIsUpdating
         annotations:
           summary: Clusterupdate is in Progress
           description: |
