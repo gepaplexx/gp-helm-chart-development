@@ -2,7 +2,8 @@ pvc:
   size: 512Mi
 
 patch:
-  serviceAccountRef: operate-workflow-sa
+  serviceAccountRef: patch-operator-sa
+  namespace: gp-infrastructure
 route:
   hostname: "testresults.example.com"
 

@@ -2,7 +2,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: {{ .Release.Name }}-patch-apache-deployment
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.patch.namespace }}
 spec:
   serviceAccountRef:
     name: {{ .Values.patch.serviceAccountRef }}
