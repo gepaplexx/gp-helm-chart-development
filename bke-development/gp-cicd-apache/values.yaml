@@ -68,6 +68,9 @@ apache:
         - mountPath: /etc/apache-configmaps/ocp-injected-certs/
           name: ocp-injected-certs
           readOnly: true
+  extraPodSpec:
+    serviceAccount: testresults
+    serviceAccountName: testresults
   extraVolumes:
     - name: ocp-injected-certs
       configMap:
