@@ -1,0 +1,21 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-is-updating
+  namespace: openshift-monitoring
+spec:
+  groups:
+  - name: cluster-is-updating
+    rules:
+      - alert: ClusterIsUpdating
+        annotations:
+          summary: Clusterupdate is in Progress
+          description: |
+            Es läuft gerade ein Clusterupdate
+        # present_over_time with 15m removes any interruptions when the cluster_version_operator pod restarts
+        # and gives the cluster some time to normalize after the update
+        expr: |
+          present_over_time(cluster_version{type="updating"}[15m])
+        labels:
+          severity: "info"
+          type: "internal"
