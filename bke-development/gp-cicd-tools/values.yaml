@@ -63,6 +63,22 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
+  # sso configuration:
+  sso:
+    issuer: "https://sso.apps.clustername.example.com/realms/internal"
+    clientSecret:
+      name:
+      key:
+    clientId:
+      name:
+      key:
+    rbac:
+      enabled: true
+  rbac:
+    sudoGroup: Gepaplexx
+    developGroup: Gepardec
+    customerAdminGroup: "example"
+
   enabled: true
   fullnameOverride: argo-workflows
   server:

@@ -1,0 +1,125 @@
+## BEGINN DEFAULT READONLY USER
+# Default ReadOnly SA for OAuth authenticated users
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflows-read-only
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'system:authenticated:oauth' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "0"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: workflow-read-only-role
+rules:
+- apiGroups:
+    - argoproj.io
+  verbs:
+    - "get"
+    - "list"
+    - "watch"
+  resources:
+  - analysisruns
+  - analysistemplates
+  - clusteranalysistemplates
+  - clusterworkflowtemplates
+  - cronworkflows
+  - eventbus
+  - eventsources
+  - experiments
+  - sensors
+  - workfloweventbindings
+  - workflows
+  - workflowtaskresults
+  - workflowtasksets
+  - workflowtemplates
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflow-read-only-binding
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: workflow-read-only-role
+subjects:
+  - kind: ServiceAccount
+    name: workflows-read-only
+    namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: workflows-developer
+    namespace: {{ .Release.Namespace }}
+## END DEFAULT READONLY USER
+---
+## BEGIN GEPAPLEXX ARGO WORKFLOWS SUPER USER
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflows-super-admin
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.sudoGroup }}' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "999"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflows-super-admin
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: operate-workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: workflows-gepaplexx-admin
+    namespace: {{ .Release.Namespace }}
+## END GEPAPLEXX ARGO WORKFLOWS SUPER USER
+---
+## BEGINN ARGO WORKFLOWS DEVELOPER PERMISSIONS
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflows-developer
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.developGroup }}' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "100"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: workflow-developer-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "update"
+      - "create"
+      - "delete"
+      - "patch"
+    resources:
+      - analysisruns
+      - analysistemplates
+      - cronworkflows
+      - workfloweventbindings
+      - workflows
+      - workflowtaskresults
+      - workflowtasksets
+      - workflowtemplates
+---
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflow-developer-binding
+roleRef:
+  apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  name: workflow-developer-role
+subjects:
+  - kind: ServiceAccount
+    name: workflows-developer
+    namespace: {{ .Release.Namespace }}
