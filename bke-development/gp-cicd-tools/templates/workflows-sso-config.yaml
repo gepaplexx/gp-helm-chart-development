@@ -9,7 +9,7 @@ spec:
     {{ .Values.argo_workflows.sso.clientSecret.key }}: {{ .Values.argo_workflows.sso.clientSecret.secret }}
   template:
     data:
-      {{ .Values.argo_workflows.sso.clientId.key }}: {{ .Values.argo_workflows.sso.clientId.id | b64enc }}
+      {{ .Values.argo_workflows.sso.clientId.key }}: {{ .Values.argo_workflows.sso.clientId.id }}
     metadata:
       name: {{ .Values.argo_workflows.sso.clientSecret.name }}
       namespace: {{ .Release.Namespace }}
