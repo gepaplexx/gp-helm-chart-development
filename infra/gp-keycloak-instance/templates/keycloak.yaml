@@ -13,7 +13,7 @@ spec:
       value: "{{ .Values.features.disabled }}"
     - name: features
       value: "{{ .Values.features.enabled }}"
-    - name: health_enabled
+    - name: health-enabled
       value: 'true'
     - name: metrics-enabled
       value: 'true'
