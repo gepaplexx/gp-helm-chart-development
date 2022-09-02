@@ -66,6 +66,7 @@ argo_workflows:
   # sso configuration:
   sso:
     issuer: "https://sso.apps.clustername.example.com/realms/internal"
+    redirectUrl: "https://workflows.example.com/oauth2/callback"
     clientSecret:
       name: argo-workflows-sso
       key: client-secret
@@ -78,8 +79,9 @@ argo_workflows:
       enabled: true
   rbac:
     sudoGroup: Gepaplexx
-    developGroup: Gepardec
-    customerAdminGroup: "example"
+    clusterscoped:
+      developerGroup: Gepardec
+      enabled: false
 
   enabled: true
   fullnameOverride: argo-workflows
@@ -87,6 +89,9 @@ argo_workflows:
     extraArgs:
       - "--auth-mode=sso"
       - "--auth-mode=client"
+    extraEnv:
+      - name: "SSO_DELEGATE_RBAC_TO_NAMESPACE"
+        value: "true"
     ingress:
       enabled: true
       hosts:

@@ -52,6 +52,7 @@ rules:
   - workflowtaskresults
   - workflowtasksets
   - workflowtemplates
+  - pipelines
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -65,9 +66,6 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: workflows-read-only
-    namespace: {{ .Release.Namespace }}
-  - kind: ServiceAccount
-    name: workflows-developer
     namespace: {{ .Release.Namespace }}
 ## END DEFAULT READONLY USER
 ---
@@ -97,15 +95,6 @@ subjects:
 ## END GEPAPLEXX ARGO WORKFLOWS SUPER USER
 ---
 ## BEGINN ARGO WORKFLOWS DEVELOPER PERMISSIONS
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: workflows-developer
-  namespace: {{ .Release.Namespace }}
-  annotations:
-    workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.developGroup }}' in groups"
-    workflows.argoproj.io/rbac-rule-precedence: "100"
----
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -114,19 +103,40 @@ rules:
   - apiGroups:
       - argoproj.io
     verbs:
+      - "get"
+      - "list"
+      - "watch"
       - "update"
       - "create"
       - "delete"
       - "patch"
     resources:
-      - analysisruns
-      - analysistemplates
-      - cronworkflows
-      - workfloweventbindings
-      - workflows
-      - workflowtaskresults
-      - workflowtasksets
-      - workflowtemplates
+    - analysisruns
+    - analysistemplates
+    - clusteranalysistemplates
+    - clusterworkflowtemplates
+    - cronworkflows
+    - eventbus
+    - eventsources
+    - experiments
+    - sensors
+    - workfloweventbindings
+    - workflows
+    - workflowtaskresults
+    - workflowtasksets
+    - workflowtemplates
+    - pipelines
+---
+{{- if .Values.argo_workflows.rbac.clusterscoped.enabled }}
+# ServiceAccount und Clusterrolebinding nur anlegen, wenn es eine Gruppe gibt, die Clusterweit Workflows anlegen darf
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflow-developer
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.clusterscoped.developerGroup }}' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "100"
 ---
 apiVersion: authorization.openshift.io/v1
 kind: ClusterRoleBinding
@@ -138,5 +148,10 @@ roleRef:
   name: workflow-developer-role
 subjects:
   - kind: ServiceAccount
-    name: workflows-developer
+    name: workflow-developer
     namespace: {{ .Release.Namespace }}
+## END ARGO WORKFLOWS DEVELOPER PERMISSIONS
+---
+{{- end }}
+
+

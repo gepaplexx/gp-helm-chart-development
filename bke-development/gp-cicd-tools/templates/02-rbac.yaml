@@ -8,6 +8,7 @@ rules:
     verbs:
       - "*"
     resources:
+      - pipelines
       - analysisruns
       - analysistemplates
       - applications
@@ -80,7 +81,7 @@ subjects:
 apiVersion: authorization.openshift.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cluster-admin-argocd-binding
+  name: cluster-admin-argo-binding
 roleRef:
   apiVersion: rbac.authorization.k8s.io
   kind: ClusterRole
