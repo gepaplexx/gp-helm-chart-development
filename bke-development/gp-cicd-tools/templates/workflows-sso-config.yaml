@@ -90,7 +90,7 @@ roleRef:
   name: operate-workflow-role
 subjects:
   - kind: ServiceAccount
-    name: workflows-gepaplexx-admin
+    name: workflows-super-admin
     namespace: {{ .Release.Namespace }}
 ## END GEPAPLEXX ARGO WORKFLOWS SUPER USER
 ---
