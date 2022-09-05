@@ -53,6 +53,17 @@ rules:
   - workflowtasksets
   - workflowtemplates
   - pipelines
+# damit Logs der Workflows auf der UI ausgelesen werden können.
+- apiGroups:
+    - ""
+  verbs:
+    - get
+    - list
+    - watch
+  resources:
+    - pods/log
+    - pods/status
+    - pods
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
