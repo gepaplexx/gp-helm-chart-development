@@ -60,7 +60,3 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
-
-{{- define "gp-cicd-sonarqube.session_secret" -}}
-{{ randAlphaNum 32 }}
-{{- end }}
