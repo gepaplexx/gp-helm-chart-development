@@ -14,9 +14,9 @@ vault:
       limits:
         memory: '150Mi'
         cpu: '150m'
-  dataStorage:
-    size: '500Mi'
   server:
+    dataStorage:
+      size: '500Mi'
     standalone:
       enabled: false
     readinessProbe:
