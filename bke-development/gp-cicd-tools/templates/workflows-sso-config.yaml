@@ -2,16 +2,16 @@ apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
   creationTimestamp: null
-  name: {{ .Values.argo_workflows.sso.clientSecret.name }}
+  name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   encryptedData:
-    {{ .Values.argo_workflows.sso.clientSecret.key }}: {{ .Values.argo_workflows.sso.clientSecret.secret }}
+    {{ .Values.argo_workflows.server.sso.clientSecret.key }}: {{ .Values.argo_workflows.server.sso.clientSecret.secret }}
   template:
     data:
-      {{ .Values.argo_workflows.sso.clientId.key }}: {{ .Values.argo_workflows.sso.clientId.id }}
+      {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ .Values.argo_workflows.server.sso.clientId.id }}
     metadata:
-      name: {{ .Values.argo_workflows.sso.clientSecret.name }}
+      name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
       namespace: {{ .Release.Namespace }}
 ---
 ### RBAC CONFIGURATION
