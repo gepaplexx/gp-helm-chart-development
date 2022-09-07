@@ -1,0 +1,44 @@
+patch:
+  namespace: gp-infrastructure
+  serviceAccount: patch-operator-sa
+ingress:
+  hostname: sso.apps.cluster.example.com
+realm:
+  internalName: internal
+
+replicas: 1
+persistence:
+  enabled: true
+  auth:
+    password: ""
+features:
+  # Comma separeted list of features to be disabled
+  disabled: "admin2"
+  # Comma separeted list of features to be enabled
+  enabled: "openshift-integration"
+
+provider:
+  openshift:
+    enabled: true
+    clientSecret: ""
+
+######################
+##    Postgresql    ##
+######################
+postgresql:
+  fullnameOverride: postgresql-keycloak
+  service:
+    ports:
+      postgresql: 5432
+  auth:
+    username: keycloak # don't override
+    database: keycloak # don't override
+    existingSecret: keycloak-config # don't override
+  primary:
+    podSecurityContext:
+      enabled: false
+    containerSecurityContext:
+      enabled: false
+    persistence:
+      size: 8Gi
+

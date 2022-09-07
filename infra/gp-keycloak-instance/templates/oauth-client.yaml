@@ -1,0 +1,12 @@
+{{- if .Values.provider.openshift.enabled }}
+apiVersion: oauth.openshift.io/v1
+kind: OAuthClient
+grantMethod: prompt
+metadata:
+  name: keycloak
+  labels:
+    {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
+redirectURIs:
+  - https://{{ .Values.ingress.hostname }}/realms/{{ .Values.realm.internalName }}/
+secret: "will-be-patched"
+{{- end }}
