@@ -6,7 +6,7 @@ sonarqube:
   ingress:
     enabled: true
     ingressClassName: "openshift-default"
-    hostname: "sonarqube-dev.apps.play.gepaplexx.com"
+    hostname: "sonarqube.apps.cluster.example.com"
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt
     tls: true
