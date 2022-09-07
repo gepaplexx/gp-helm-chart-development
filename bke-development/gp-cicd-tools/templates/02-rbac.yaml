@@ -8,6 +8,7 @@ rules:
     verbs:
       - "*"
     resources:
+      - pipelines
       - analysisruns
       - analysistemplates
       - applications
@@ -77,12 +78,12 @@ subjects:
     name: argo-workflows-server
     namespace: {{ .Release.Namespace }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1
+apiVersion: authorization.openshift.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: cluster-admin-argocd-binding
+  name: cluster-admin-argo-binding
 roleRef:
-  apiGroup: rbac.authorization.k8s.io
+  apiVersion: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
@@ -98,3 +99,7 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Release.Name }}-argocd-applicationset-controller
     namespace: {{ .Release.Namespace }}
+  - kind: ServiceAccount
+    name: argo-workflows-server
+    namespace: {{ .Release.Namespace }}
+---
