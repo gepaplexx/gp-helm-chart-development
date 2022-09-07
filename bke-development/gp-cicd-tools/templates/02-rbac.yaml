@@ -78,12 +78,12 @@ subjects:
     name: argo-workflows-server
     namespace: {{ .Release.Namespace }}
 ---
-apiVersion: authorization.openshift.io/v1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: cluster-admin-argo-binding
 roleRef:
-  apiVersion: rbac.authorization.k8s.io
+  apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
