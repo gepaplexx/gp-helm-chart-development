@@ -122,6 +122,7 @@ argo_workflows:
 
     persistence:
       enabled: true
+      archive: true
       postgresql:
         host: *argo_workflows_db_host
         port: 5432
@@ -134,6 +135,23 @@ argo_workflows:
           name: *argo_workflows_db_secret
           key: password
 
+  archive:
+    enabled: true
+    secretkey: ""
+  useDefaultArtifactRepo: true
+  artifactRepository:
+    archiveLogs: true
+    s3:
+      accessKeySecret:
+        name: minio-artifact-repository
+        key: accesskey
+      secretKeySecret:
+        name: minio-artifact-repository
+        key: secretkey
+      insecure: true
+      bucket: argo-workflows
+      endpoint: argo-workflows-artifacts.gepaplexx-cicd-tools:9000
+
     metricsConfig:
       enabled: true
 
@@ -144,6 +162,30 @@ argo_workflows:
     serviceAccount:
       create: true
       name: operate-workflow-sa
+
+#####################
+## Workflows Minio ##
+#####################
+minio:
+  existingSecret: "minio-artifact-repository"
+  securityContext:
+    runAsUser: 0
+  fullnameOverride: minio-artifact-repository
+  replicas: 1
+  persistence:
+    size: 25Gi
+  resources:
+    requests:
+      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
+  defaultBucket:
+    enabled: true
+    name: argo-workflows
+  makeBucketJob:
+    securityContext:
+      enabled: true
+      runAsUser: 0
+  serviceAccount:
+    name: minio
 
 
 ####################
@@ -165,6 +207,7 @@ argo_rollouts:
       requests:
         cpu: 250m
         memory: 128Mi
+
   # DashboardConfiguration
   dashboard:
     enabled: true
