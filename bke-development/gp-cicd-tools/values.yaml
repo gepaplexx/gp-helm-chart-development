@@ -134,16 +134,8 @@ argo_workflows:
           name: *argo_workflows_db_secret
           key: password
 
-    archive:
-      enabled: true
-
-
-    metricsConfig:
-      enabled: true
-
-    serviceMonitor:
-      enabled: true
-
+  archive:
+    enabled: true
   useDefaultArtifactRepo: true
   artifactRepository:
     archiveLogs: true
@@ -157,6 +149,13 @@ argo_workflows:
       insecure: true
       bucket: argo-workflows
       endpoint: argo-workflows-artifacts
+
+    metricsConfig:
+      enabled: true
+
+    serviceMonitor:
+      enabled: true
+
   workflow:
     serviceAccount:
       create: true
@@ -170,8 +169,6 @@ minio:
   replicas: 1
   persistence:
     size: 25Gi
-  securityContext:
-    enabled: false
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -180,9 +177,13 @@ minio:
     name: argo-workflows
   makeBucketJob:
     securityContext:
-      enabled: false
+      enabled: true
   serviceAccount:
     name: minio
+  metrics:
+    serviceMonitor:
+      enabled: true
+
 
 ####################
 ##  ARGO ROLLOUT  ##
