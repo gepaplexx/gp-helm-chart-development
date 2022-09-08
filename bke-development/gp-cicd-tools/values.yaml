@@ -122,6 +122,7 @@ argo_workflows:
 
     persistence:
       enabled: true
+      archive: true
       postgresql:
         host: *argo_workflows_db_host
         port: 5432
