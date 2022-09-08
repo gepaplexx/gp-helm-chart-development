@@ -134,6 +134,9 @@ argo_workflows:
           name: *argo_workflows_db_secret
           key: password
 
+    archive:
+      enabled: true
+
     metricsConfig:
       enabled: true
 
@@ -145,6 +148,30 @@ argo_workflows:
       create: true
       name: operate-workflow-sa
 
+#####################
+## Workflows Minio ##
+#####################
+minio:
+  fullnameOverride: argo-workflows-artifacts
+  replicas: 1
+  persistence:
+    size: 25Gi
+  securityContext:
+    enabled: false
+  resources:
+    requests:
+      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
+  defaultBucket:
+    enabled: true
+    name: argo-workflows
+  makeBucketJob:
+    securityContext:
+      enabled: false
+  serviceAccount:
+    name: minio
+  metrics:
+    serviceMonitor:
+      enabled: true
 
 ####################
 ##  ARGO ROLLOUT  ##
