@@ -149,7 +149,7 @@ argo_workflows:
         key: secretkey
       insecure: true
       bucket: argo-workflows
-      endpoint: argo-workflows-artifacts
+      endpoint: argo-workflows-artifacts.gepaplexx-cicd-tools:9000
 
     metricsConfig:
       enabled: true
