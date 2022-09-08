@@ -136,26 +136,7 @@ argo_workflows:
 
     archive:
       enabled: true
-    useDefaultArtifactRepo: true
-    artifactRepository:
-      archiveLogs: true
-      s3:
-        accessKeySecret:
-          # name: <releaseName>-minio
-          key: accesskey
-        secretKeySecret:
-          # name: <releaseName>-minio
-          key: secretkey
-        insecure: true
-        # bucket:
-        # endpoint:
-        # region:
-        # roleARN:
-        # useSDKCreds: true
-        # encryptionOptions:
-        #    enableEncryption: true
-      # -- Store artifact in a GCS object store
-      # @default -- `{}` (See [values.yaml])
+
 
     metricsConfig:
       enabled: true
@@ -163,6 +144,19 @@ argo_workflows:
     serviceMonitor:
       enabled: true
 
+  useDefaultArtifactRepo: true
+  artifactRepository:
+    archiveLogs: true
+    s3:
+      accessKeySecret:
+        name:  argo-workflows-artifacts
+        key: accesskey
+      secretKeySecret:
+        name:  argo-workflows-artifacts
+        key: secretkey
+      insecure: true
+      bucket: argo-workflows
+      endpoint: argo-workflows-artifacts
   workflow:
     serviceAccount:
       create: true
@@ -189,9 +183,6 @@ minio:
       enabled: false
   serviceAccount:
     name: minio
-  metrics:
-    serviceMonitor:
-      enabled: true
 
 ####################
 ##  ARGO ROLLOUT  ##
