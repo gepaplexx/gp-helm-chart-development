@@ -12,4 +12,21 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.minio.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
+---
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  name: minio-artifact-repository
+  namespace: {{ .Release.Namespace }}
+spec:
+  encryptedData:
+    secretkey: {{ .Values.argo_workflows.archive.secretkey }}
+  template:
+    data:
+      accesskey: minio
+    metadata:
+      creationTimestamp: null
+      name: minio-artifact-repository
+      namespace: {{ .Release.Namespace }}
+    type: Opaque
 {{- end }}
