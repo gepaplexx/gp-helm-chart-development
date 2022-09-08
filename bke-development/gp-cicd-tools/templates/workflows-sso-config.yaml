@@ -94,11 +94,23 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: workflows-super-admin
-  namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: operate-workflow-role
+subjects:
+  - kind: ServiceAccount
+    name: workflows-super-admin
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: workflows-super-admin-admin-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: admin
 subjects:
   - kind: ServiceAccount
     name: workflows-super-admin
@@ -137,6 +149,17 @@ rules:
     - workflowtasksets
     - workflowtemplates
     - pipelines
+  # damit Logs der Workflows auf der UI ausgelesen werden können.
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - pods/log
+      - pods/status
+      - pods
 ---
 {{- if .Values.argo_workflows.rbac.clusterscoped.enabled }}
 # ServiceAccount und Clusterrolebinding nur anlegen, wenn es eine Gruppe gibt, die Clusterweit Workflows anlegen darf
