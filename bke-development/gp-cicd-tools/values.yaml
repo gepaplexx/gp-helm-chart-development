@@ -181,16 +181,8 @@ minio:
     securityContext:
       enabled: true
       runAsUser: 0
-  updatePrometheusJob:
-    securityContext:
-      enabled: true
-      runAsUser: 0
   serviceAccount:
     name: minio
-  metrics:
-    serviceMonitor:
-      enabled: true
-      runAsUser: 0
 
 
 ####################
