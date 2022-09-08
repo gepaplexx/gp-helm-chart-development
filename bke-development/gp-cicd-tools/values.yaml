@@ -165,6 +165,8 @@ argo_workflows:
 ## Workflows Minio ##
 #####################
 minio:
+  securityContext:
+    runAsUser: 0
   fullnameOverride: argo-workflows-artifacts
   replicas: 1
   persistence:
@@ -178,11 +180,17 @@ minio:
   makeBucketJob:
     securityContext:
       enabled: true
+      runAsUser: 0
+  updatePrometheusJob:
+    securityContext:
+      enabled: true
+      runAsUser: 0
   serviceAccount:
     name: minio
   metrics:
     serviceMonitor:
       enabled: true
+      runAsUser: 0
 
 
 ####################
