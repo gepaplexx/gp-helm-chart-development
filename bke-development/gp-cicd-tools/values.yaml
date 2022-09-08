@@ -136,6 +136,26 @@ argo_workflows:
 
     archive:
       enabled: true
+    useDefaultArtifactRepo: true
+    artifactRepository:
+      archiveLogs: true
+      s3:
+        accessKeySecret:
+          # name: <releaseName>-minio
+          key: accesskey
+        secretKeySecret:
+          # name: <releaseName>-minio
+          key: secretkey
+        insecure: true
+        # bucket:
+        # endpoint:
+        # region:
+        # roleARN:
+        # useSDKCreds: true
+        # encryptionOptions:
+        #    enableEncryption: true
+      # -- Store artifact in a GCS object store
+      # @default -- `{}` (See [values.yaml])
 
     metricsConfig:
       enabled: true
