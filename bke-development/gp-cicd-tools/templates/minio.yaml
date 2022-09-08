@@ -29,4 +29,37 @@ spec:
       name: minio-artifact-repository
       namespace: {{ .Release.Namespace }}
     type: Opaque
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: clone-minio-secret
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: Clone Minio Secret
+      match:
+        any:
+        - resources:
+            kinds:
+            - Namespace
+            names:
+            - "*-cicd"
+      exclude:
+        any:
+        - resources:
+            kinds:
+            - Namespace
+            names:
+            - gepaplexx-cicd-tools
+      generate:
+        kind: Secret
+        apiVersion: v1
+        name: minio-artifact-repository
+        # namespace for the generated resource
+        namespace: "{{`{{request.object.metadata.name}}`}}"
+        synchronize : true
+        clone:
+          namespace: {{ .Release.Namespace }}
+          name: minio-artifact-repository
 {{- end }}
