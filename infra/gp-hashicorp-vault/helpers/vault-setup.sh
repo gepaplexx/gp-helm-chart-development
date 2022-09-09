@@ -199,3 +199,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ROOT_TO
       vault write identity/group-alias name='Gepardec' \
          mount_accessor=${OIDC_AUTH_ACCESSOR} \
          canonical_id=${GROUP_ID}"
+
+echo "==============================================="
+echo "donesies. better have that cigarette finished."
+echo "don't forget to save the vault-init.json file somewhere save. it contains the root token and the recovery keys"
