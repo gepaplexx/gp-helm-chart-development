@@ -24,10 +24,7 @@ spec:
   template:
     data:
       accesskey: minio
-    metadata:
-      creationTimestamp: null
-      name: minio-artifact-repository
-      namespace: {{ .Release.Namespace }}
+    metadata: {}
     type: Opaque
 ---
 apiVersion: kyverno.io/v1

@@ -10,9 +10,7 @@ spec:
   template:
     data:
       {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ .Values.argo_workflows.server.sso.clientId.id }}
-    metadata:
-      name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
-      namespace: {{ .Release.Namespace }}
+    metadata: {}
 ---
 ### RBAC CONFIGURATION
 ## BEGINN DEFAULT READONLY USER
