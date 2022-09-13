@@ -53,7 +53,7 @@ spec:
                   preferredUsername:
                     - uid
                 insecure: true
-                url: "ldap://10.20.26.10/ou=GEPAPLEXX,dc=gp,dc=local?uid"
+                url: "ldap://10.20.26.10:389/OU=Users,OU=GEPAPLEXX,DC=gp,DC=local?uid"
 {{ end }} {{ if .Values.htpasswd.enable }}
             - name: HTPasswd
               mappingMethod: claim
