@@ -16,3 +16,6 @@ htpasswd:
   enable: false
   k8secretName: htpass-secret
   data: {}
+
+ldap:
+  enable: true

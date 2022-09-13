@@ -38,6 +38,22 @@ spec:
                 {{- end }}
                 clientSecret:
                   name: {{ .Values.google.k8secretName }}
+{{ end }} {{- if .Values.ldap.enable }}
+            - name: LdapIdp
+              mappingMethod: claim
+              type: LDAP
+              ldap:
+                attributes:
+                  id:
+                    - dn
+                  email:
+                    - mail
+                  name:
+                    - cn
+                  preferredUsername:
+                    - uid
+                insecure: true
+                url: "ldap://10.20.26.10/ou=GEPAPLEXX,dc=gp,dc=local?uid"
 {{ end }} {{ if .Values.htpasswd.enable }}
             - name: HTPasswd
               mappingMethod: claim
