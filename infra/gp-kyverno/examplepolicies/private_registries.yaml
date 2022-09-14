@@ -1,0 +1,57 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ${REGISTRY}-private-image-registry-policy
+spec:
+  background: true
+  failurePolicy: Fail
+  validationFailureAction: enforce
+  rules:
+    # Diese Policy kontrolliert, ob die angegebene Registry in einem neu erstelltem Pod vorkommt und
+    # kopiert in dem Fall das angegebene Secret (muss existieren) in den Namespace des Pods mit der Registry.
+    # Kann erweitert werden, dass die Policy nur auf Images in bestimmten Namespaces hört. Beispielsweise um mehrere
+    # Kunden trennen zu können.
+    - name: clone-container-registry-secret
+      match:
+        resources:
+          kinds:
+            - Pod
+      preconditions:
+        any:
+          - key: "${REGISTRY}"
+            operator: In
+            value: "{{ images.initContainers.*.registry || `[]` }}"
+          - key: "${REGISTRY}"
+            operator: In
+            value: "{{ images.containers.*.registry }}"
+      generate:
+        apiVersion: v1
+        clone:
+          name: "${REGISTRYSECRET}"
+          namespace: "${SECRETNAMESPACE}"
+        kind: Secret
+        name: "${REGISTRYSECRET}"
+        namespace: '{{ request.object.metadata.namespace }}'
+        synchronize: true
+
+    # Diese Policy kontrolliert, ob die angegebene Registry in einem neu erstelltem Pod vorkommt und
+    # patch in dem Fall den Pod, damit er das angegebene ImagePullSecret verwendet.
+    - name: patch-container-registry-secret
+      match:
+        resources:
+          kinds:
+            - Pod
+      preconditions:
+        all:
+        any:
+          - key: "${REGISTRY}"
+            operator: In
+            value: "{{ images.initContainers.*.registry || `[]` }}"
+          - key: "${REGISTRY}"
+            operator: In
+            value: "{{ images.containers.*.registry }}"
+      mutate:
+        patchStrategicMerge:
+          spec:
+            imagePullSecrets:
+              - name: "${REGISTRYSECRET}"
