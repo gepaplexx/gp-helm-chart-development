@@ -19,3 +19,7 @@ htpasswd:
 
 ldap:
   enable: true
+  k8secretName: ldap-secret
+  bindPassword: {}
+  bindDN: {}
+  ldapUrl: {}
