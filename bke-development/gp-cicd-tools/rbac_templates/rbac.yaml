@@ -1,0 +1,48 @@
+## Examples for Namespace permissions:
+apiVersion: v1
+kind: Secret
+metadata:
+  name: workflow-developer-token
+  namespace: $NAMESPACE
+  annotations:
+    kubernetes.io/service-account.name: workflow-developer
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workflow-developer
+  namespace: $NAMESPACE
+  annotations:
+    workflows.argoproj.io/rbac-rule: "'$GROUPNAME' in groups"
+    workflows.argoproj.io/rbac-rule-precedence: "300"
+secrets:
+  - name: workflow-developer-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: workflow-developer-binding
+  namespace: $NAMESPACE
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: workflow-developer-role
+subjects:
+  - kind: ServiceAccount
+    name: workflow-developer
+    namespace: $NAMESPACE
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: $NAMESPACE-cicd-clusterworkflow-binding
+  namespace: $NAMESPACE
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: workflow-clusterresources-role
+subjects:
+  - kind: ServiceAccount
+    name: workflow-developer
+    namespace: $NAMESPACE

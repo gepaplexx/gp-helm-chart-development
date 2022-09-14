@@ -28,6 +28,14 @@ rules:
       - workflowtasksets
       - workflowtemplates
       - workflowtaskresults
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+    resources:
+      - secrets
+    resourceNames:
+      - minio-artifact-repository
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole

@@ -1,7 +1,6 @@
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
-  creationTimestamp: null
   name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
   namespace: {{ .Release.Namespace }}
 spec:
@@ -16,6 +15,15 @@ spec:
 ## BEGINN DEFAULT READONLY USER
 # Default ReadOnly SA for OAuth authenticated users
 apiVersion: v1
+kind: Secret
+metadata:
+  name: workflows-read-only-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: workflows-read-only
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: workflows-read-only
@@ -23,6 +31,8 @@ metadata:
   annotations:
     workflows.argoproj.io/rbac-rule: "'system:authenticated:oauth' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "0"
+secrets:
+  - name: workflows-read-only-token
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -62,7 +72,17 @@ rules:
     - pods/log
     - pods/status
     - pods
+# erlaubt das Abrufen von Logs von Archived Workflows.
+- apiGroups:
+    - ""
+  verbs:
+    - get
+  resources:
+    - secrets
+  resourceNames:
+    - minio-artifact-repository
 ---
+{{- if .Values.argo_workflows.rbac.defaultRead }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -78,7 +98,17 @@ subjects:
     namespace: {{ .Release.Namespace }}
 ## END DEFAULT READONLY USER
 ---
+{{- end }}
 ## BEGIN GEPAPLEXX ARGO WORKFLOWS SUPER USER
+apiVersion: v1
+kind: Secret
+metadata:
+  name: workflows-super-admin-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: workflows-super-admin
+type: kubernetes.io/service-account-token
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -87,6 +117,8 @@ metadata:
   annotations:
     workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.sudoGroup }}' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "999"
+secrets:
+  - name: workflows-super-admin-token
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -96,19 +128,6 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: operate-workflow-role
-subjects:
-  - kind: ServiceAccount
-    name: workflows-super-admin
-    namespace: {{ .Release.Namespace }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: workflows-super-admin-admin-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: admin
 subjects:
   - kind: ServiceAccount
     name: workflows-super-admin
@@ -158,17 +177,37 @@ rules:
       - pods/log
       - pods/status
       - pods
+  # erlaubt das Abrufen von Logs von Archived Workflows.
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+    resources:
+      - secrets
+    resourceNames:
+      - minio-artifact-repository
 ---
 {{- if .Values.argo_workflows.rbac.clusterscoped.enabled }}
 # ServiceAccount und Clusterrolebinding nur anlegen, wenn es eine Gruppe gibt, die Clusterweit Workflows anlegen darf
 apiVersion: v1
+kind: Secret
+metadata:
+  name: workflow-developer-default-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: workflow-developer-default
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: workflow-developer
+  name: workflow-developer-default
   namespace: {{ .Release.Namespace }}
   annotations:
     workflows.argoproj.io/rbac-rule: "'{{ .Values.argo_workflows.rbac.clusterscoped.developerGroup }}' in groups"
     workflows.argoproj.io/rbac-rule-precedence: "100"
+secrets:
+  - name: workflow-developer-default-token
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -180,10 +219,24 @@ roleRef:
   name: workflow-developer-role
 subjects:
   - kind: ServiceAccount
-    name: workflow-developer
+    name: workflow-developer-default
     namespace: {{ .Release.Namespace }}
 ## END ARGO WORKFLOWS DEVELOPER PERMISSIONS
 ---
 {{- end }}
-
-
+# Required for Namespace Delegation so Clusterworkflowtemplates can be used during workflow execution
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: workflow-clusterresources-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+    resources:
+      - clusteranalysistemplates
+      - clusterworkflowtemplates
+---

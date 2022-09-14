@@ -68,6 +68,7 @@ argo_workflows:
     clusterscoped:
       developerGroup: Gepardec
       enabled: false
+    defaultRead: true
 
   enabled: true
   fullnameOverride: argo-workflows
