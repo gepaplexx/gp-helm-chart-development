@@ -1,0 +1,42 @@
+{{- if .Values.ldap.enable }}
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: patch-identity-prov
+spec:
+  serviceAccountRef:
+    name: patch-operator-sa
+  patches:
+    patch-identity-prov:
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      patchTemplate: |
+        spec:
+          identityProviders:
+            - name: LdapIdp
+              mappingMethod: claim
+              type: LDAP
+              ldap:
+                attributes:
+                  id:
+                    - dn
+                  email:
+                    - mail
+                  name:
+                    - cn
+                  preferredUsername:
+                    - uid
+                bindDN: {{`"{{ (index . 1).data.bindDN | b64dec }}"`}}
+                bindPassword:
+                  name: {{ .Values.ldap.k8secretName }}
+                insecure: true
+                url: {{`"{{ (index . 1).data.ldapUrl | b64dec }}"`}}
+      patchType: application/merge-patch+json
+      sourceObjectRefs:
+      - apiVersion: v1
+        kind: Secret
+        name: {{ .Values.google.k8secretName }}
+        namespace: openshift-config
+{{ end }}
