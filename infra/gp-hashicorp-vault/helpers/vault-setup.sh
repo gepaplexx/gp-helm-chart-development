@@ -3,7 +3,7 @@
 #This script sets up HashiCorp Vault.
 #For this it:
 #  * enables kubernetes auth mode for serviceaccount authentication
-#  * enabled oidc auth mode and configures it with our keycloak
+#  * enables oidc auth mode and configures it with our keycloak
 #  * sets up a few default roles, groups, and group mappings
 #  * it also enables a secret store for cicd workflows
 #
@@ -26,8 +26,8 @@ help() {
   echo
   usage
   echo "options:"
-  echo "h                 displays help"
-  echo "s                 skip non-repeatable actions. Requires access_token parameter to be set. Warning: this will override changes in some policies and configs! "
+  echo "-h                 displays help"
+  echo "-s                 skip non-repeatable actions. Requires access_token parameter to be set. Warning: this will override changes in some policies and configs! "
   echo
   echo "parameters:"
   echo "cluster_name      cluster's name, used in oidc redirect url setup"
@@ -82,9 +82,9 @@ echo "==============================================="
 # INITIALIZE VAULT
 if [ -z "${ACCESS_TOKEN}" ]; then
   echo "initializing vault & waiting 10 seconds for initialization to be complete. don't worry. be happy. chill out. and grab a cigarette"
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault operator init -recovery-shares=3 -recovery-threshold=3 -format=json"  > "${DIR}"/vault-init.json
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault operator init -recovery-shares=3 -recovery-threshold=3 -format=json"  > "${DIR}"/vault-init-"${CLUSTER}".json
   sleep 10  # Required to ensure vault is correctly initialized and unsealed from GCP.
-  ACCESS_TOKEN=$(cat "${DIR}"/vault-init.json | jq -r .root_token)
+  ACCESS_TOKEN=$(cat "${DIR}"/vault-init-"${CLUSTER}".json | jq -r .root_token)
 fi
 
 # DEFAULT SECRET STORE FOR CICD
@@ -102,6 +102,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         }'
       )"
 
+# CICD-ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && \
     vault policy write cicd-admin \
       <(echo 'path \"/development/cicd/*\"
@@ -190,6 +191,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable kubernetes"
 fi
+
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault write auth/kubernetes/config kubernetes_host=https://\${KUBERNETES_SERVICE_HOST}:\${KUBERNETES_SERVICE_PORT}"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/cicd-reader \
@@ -202,6 +204,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable oidc"
 fi
+
 # DEFAULT ROLE
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/role/default \
