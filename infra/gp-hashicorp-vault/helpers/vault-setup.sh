@@ -25,14 +25,15 @@ help() {
   echo "Sets up the base HashiCorp Vault installation"
   echo
   usage
-  echo "options:"
-  echo "-h                 displays help"
-  echo "-s                 skip non-repeatable actions. Requires access_token parameter to be set. Warning: this will override changes in some policies and configs! "
-  echo
-  echo "parameters:"
-  echo "cluster_name      cluster's name, used in oidc redirect url setup"
-  echo "client_secret     client secret for oidc setup"
-  echo "access_token      OPTIONAL: a sufficiently privileged Vault token to perform the setup with (skips initialization). Required with -s"
+  echo """
+  options:
+  -h                 displays help
+  -s                 skip non-repeatable actions. Requires access_token parameter to be set. Warning: this will override changes in some policies and configs!
+
+  parameters:
+  cluster_name      cluster's name, used in oidc redirect url setup
+  client_secret     client secret for oidc setup
+  access_token      OPTIONAL: a sufficiently privileged Vault token to perform the setup with (skips initialization). Required with -s"""
 }
 
 while getopts ":hs" option; do
@@ -42,16 +43,13 @@ while getopts ":hs" option; do
         exit;;
       s)
         skip_non_repeatable=true
+        shift
         ;;
       \?)
         usage
         exit;;
    esac
 done
-
-if [ "${skip_non_repeatable}" = true ]; then
-  shift
-fi
 
 
 CLUSTER="${1}"
@@ -90,6 +88,11 @@ fi
 # DEFAULT SECRET STORE FOR CICD
 if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/cicd kv-v2"
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/admin kv-v2"
+  # Prefill development/admin with required secrets for workflows.
+  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}')
+  ARGOCD_PASSWORD=$(kubectl -n gepaplexx-cicd-tools get secret gepaplexx-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
 fi
 
 # DEFAULT POLICIES
@@ -99,7 +102,12 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       <(echo 'path \"/development/cicd/*\"
         {
           capabilities = [\"read\", \"list\"]
-        }'
+        }
+        path \"development/admin/*\"
+        {
+          capabilities = [\"read\", \"list\"]
+        }
+        '
       )"
 
 # CICD-ADMIN
@@ -108,7 +116,12 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       <(echo 'path \"/development/cicd/*\"
         {
           capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
-        }'
+        }
+        path \"development/admin/*\"
+        {
+          capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
+        }
+        '
       )"
 
 # ADMIN
