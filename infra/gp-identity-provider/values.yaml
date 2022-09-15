@@ -1,12 +1,12 @@
 google:
-  enable: true
+  enable: false
   k8secretName: google-oauth-secret
   clientId: {}
   restrDomain: {}
   clientSecret: {}
 
 git:
-  enable: true
+  enable: false
   k8secretName: github-oauth-secret
   clientId: {}
   restrOrgs: []
@@ -18,8 +18,8 @@ htpasswd:
   data: {}
 
 ldap:
-  enable: true
+  enable: false
   k8secretName: ldap-secret
-  bindPassword: {}
-  bindDN: {}
-  ldapUrl: {}
+  bindPassword: changeMe
+  bindDN: changeMe
+  ldapUrl: changeMe
