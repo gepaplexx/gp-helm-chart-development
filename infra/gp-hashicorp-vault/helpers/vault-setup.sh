@@ -90,7 +90,7 @@ if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/cicd kv-v2"
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/admin kv-v2"
   # Prefill development/admin with required secrets for workflows.
-  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}')
+  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}'  | awk '{ print substr( $0, 9 )}')
   ARGOCD_PASSWORD=$(kubectl -n gepaplexx-cicd-tools get secret gepaplexx-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
 fi
