@@ -43,7 +43,6 @@ while getopts ":hs" option; do
         exit;;
       s)
         skip_non_repeatable=true
-        shift
         ;;
       \?)
         usage
@@ -51,6 +50,7 @@ while getopts ":hs" option; do
    esac
 done
 
+shift $(( OPTIND - 1 ))
 
 CLUSTER="${1}"
 CLIENT_SECRET="${2}"
