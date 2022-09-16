@@ -17,6 +17,8 @@ DIR=$(dirname $0)
 namespace="gp-vault"
 skip_non_repeatable=false
 
+set -e
+
 usage() {
   echo "Usage: $PRG [-h|s] cluster_name client_secret [access_token]"
 }
@@ -64,7 +66,7 @@ if [ -z "${CLUSTER}" ]; then
   usage
   exit 1
 fi
-if [[ -z "${ACCESS_TOKEN}" ]] && [[ "${skip_non_repeatable}" = true ]]; then
+if [ -z "${ACCESS_TOKEN}" ] && [ "${skip_non_repeatable}" = true ]; then
   echo "Skipping non repeatable actions requires an access token!"
   echo
   usage
