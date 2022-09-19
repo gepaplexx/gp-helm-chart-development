@@ -21,5 +21,5 @@ ldap:
   enable: false
   k8secretName: ldap-secret
   bindPassword: changeMe
-  bindDN: changeMe
-  ldapUrl: changeMe
+  bindDN: "CN=Username,OU=Users,OU=Org,DC=domain,DC=tld"
+  ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?uid"
