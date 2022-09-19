@@ -63,18 +63,20 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
+  enabled: true
   # Override version of Argo Workflows due to release of 3.4.0
   images:
     tag: v3.4.0
     pullPolicy: IfNotPresent
+
   rbac:
     sudoGroup: Gepaplexx
     clusterscoped:
       developerGroup: Gepardec
       enabled: false
     defaultRead: true
-
-  enabled: true
+    clientSecret: "" # SealedsecretEncrypted ClientSecret
+    clientId: "argo-workflows"
   fullnameOverride: argo-workflows
   server:
     extraArgs:
@@ -147,7 +149,6 @@ argo_workflows:
         memory: 128Mi
 
     persistence:
-      enabled: true
       archive: true
       nodeStatusOffLoad: true # if true node status is only saved to the persistence DB to avoid the 1MB limit in etcd
       archiveTTL: 120d
