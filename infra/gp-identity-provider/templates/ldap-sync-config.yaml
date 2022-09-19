@@ -1,0 +1,24 @@
+{{if .Values.ldap.enable}}
+kind: LDAPSyncConfig
+apiVersion: v1
+url: {{ .Values.ldap.ldapUrl }}
+insecure: true
+rfc2307:
+  groupsQuery:
+    baseDN: {{ .Values.ldap.groupsQuery }}
+    scope: sub
+    derefAliases: never
+    pageSize: 0
+  groupUIDAttribute: dn
+  groupNameAttributes: [ cn ]
+  groupMembershipAttributes: [ member ]
+  usersQuery:
+    baseDN: {{ .Values.ldap.usersQuery }}
+    scope: sub
+    derefAliases: never
+    pageSize: 0
+  userUIDAttribute: dn
+  userNameAttributes: [ name ]
+  tolerateMemberNotFoundErrors: false
+  tolerateMemberOutOfScopeErrors: false
+{{end}}
