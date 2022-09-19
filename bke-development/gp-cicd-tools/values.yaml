@@ -84,6 +84,8 @@ argo_workflows:
     extraEnv:
       - name: "SSO_DELEGATE_RBAC_TO_NAMESPACE"
         value: "true"
+      - name:  "POD_NAMES"
+        value: "v1"
     # sso configuration:
     sso:
       issuer: "https://sso.apps.clustername.example.com/realms/internal"
@@ -125,6 +127,9 @@ argo_workflows:
         memory: 4Gi
 
   controller:
+    extraEnv:
+      - name: "POD_NAMES"
+        value: "v1"
     parallelism: 10 # 10 workflows can be executed at the same time cluster-wide
     namespaceParallelism: 5 # only 5 workflows per namespace can be executed in parallel
     nodeStatusOffLoad: false
