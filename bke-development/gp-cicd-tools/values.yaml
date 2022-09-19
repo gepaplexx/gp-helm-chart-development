@@ -92,11 +92,9 @@ argo_workflows:
       clientSecret:
         name: argo-workflows-sso
         key: client-secret
-        secret: "" # SealedsecretEncrypted ClientSecret
       clientId:
         name: argo-workflows-sso
         key: client-id
-        id: "argo-workflows"
       rbac:
         enabled: true
     ingress:
@@ -139,7 +137,7 @@ argo_workflows:
         ttlStrategy:
             secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
     workflowRestrictions:
-      templateReferencing: Strictstrict # only workflows using workflowTemplateRef will be executed
+      templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
       limits:
         cpu: 500m

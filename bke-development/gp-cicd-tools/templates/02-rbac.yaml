@@ -28,6 +28,7 @@ rules:
       - workflowtasksets
       - workflowtemplates
       - workflowtaskresults
+      - workflowartifactgctasks
   - apiGroups:
       - ""
     verbs:
@@ -80,7 +81,7 @@ subjects:
     name: {{ .Values.argo_workflows.workflow.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
-    name: argo-workflows-controller
+    name: argo-workflows-workflow-controller
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
     name: argo-workflows-server
