@@ -99,7 +99,7 @@ spec:
                     - cn
                   preferredUsername:
                     - uid
-                bindDN: {{`"{{ (index . 1).data.bindDN | b64dec }}"`}}
+                bindDn: {{`"{{ (index . 1).data.bindDn | b64dec }}"`}}
                 bindPassword:
                   name: {{ .Values.ldap.k8secretName }}
                 insecure: true
