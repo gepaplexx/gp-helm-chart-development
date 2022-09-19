@@ -64,9 +64,8 @@ argo_events:
 ####################
 argo_workflows:
   enabled: true
-  # Override version of Argo Workflows due to release of 3.4.0
   images:
-    tag: v3.4.0
+    tag: v3.4.0 # Delete this line after new Helm Chart vor 3.4.0 is released
     pullPolicy: IfNotPresent
 
   rbac:
