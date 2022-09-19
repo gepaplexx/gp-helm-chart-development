@@ -28,11 +28,6 @@ dependencies:
   repository: "https://argoproj.github.io/argo-helm"
   version: ~0.16.6
   condition: argo-workflows.enabled
-- name: argo-rollouts
-  alias: argo_rollouts
-  repository: "https://argoproj.github.io/argo-helm"
-  version: ~2.17.0
-  condition: argo_rollouts.enabled
 - name: postgresql
   repository: "https://charts.bitnami.com/bitnami"
   version: ~11.6.14

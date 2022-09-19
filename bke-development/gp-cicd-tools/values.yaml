@@ -188,50 +188,6 @@ minio:
   serviceAccount:
     name: minio
 
-
-####################
-##  ARGO ROLLOUT  ##
-####################
-argo_rollouts:
-  enabled: false
-  fullnameOverride: argo-rollouts
-  # Controllerconfiguration:
-  controller:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-
-  # DashboardConfiguration
-  dashboard:
-    enabled: true
-    ingress:
-      enabled: true
-      hosts:
-        - "rollouts.example.com"
-      tls:
-        - hosts:
-            - "rollouts.example.com"
-          secretName: "rollouts.example.com"
-      ingressClassName: "openshift-default"
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-
-
 ####################
 ##    ARGO  CD    ##
 ####################
