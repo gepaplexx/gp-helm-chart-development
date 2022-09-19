@@ -65,7 +65,7 @@ argo_events:
 argo_workflows:
   # Override version of Argo Workflows due to release of 3.4.0
   images:
-    tag: 3.4.0
+    tag: v3.4.0
     pullPolicy: IfNotPresent
   rbac:
     sudoGroup: Gepaplexx
