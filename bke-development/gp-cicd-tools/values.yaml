@@ -63,6 +63,10 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
+  # Override version of Argo Workflows due to release of 3.4.0
+  images:
+    tag: 3.4.0
+    pullPolicy: IfNotPresent
   rbac:
     sudoGroup: Gepaplexx
     clusterscoped:
@@ -112,7 +116,28 @@ argo_workflows:
         cpu: 250m
         memory: 128Mi
 
+  mainContainer:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 4Gi
+
   controller:
+    parallelism: 10 # 10 workflows can be executed at the same time cluster-wide
+    namespaceParallelism: 5 # only 5 workflows per namespace can be executed in parallel
+    nodeStatusOffLoad: false
+    workflowDefaults:
+      metadata:
+        annotations:
+          argo: workflows
+      spec:
+        ttlStrategy:
+            secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+    workflowRestrictions:
+      templateReferencing: Strictstrict # only workflows using workflowTemplateRef will be executed
     resources:
       limits:
         cpu: 500m
@@ -124,6 +149,8 @@ argo_workflows:
     persistence:
       enabled: true
       archive: true
+      nodeStatusOffLoad: true # if true node status is only saved to the persistence DB to avoid the 1MB limit in etcd
+      archiveTTL: 120d
       postgresql:
         host: *argo_workflows_db_host
         port: 5432
