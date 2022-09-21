@@ -1,6 +1,9 @@
 {{if .Values.ldap.enable}}
 kind: LDAPSyncConfig
 apiVersion: v1
+metadata:
+  name: basic-sync-config
+  namespace: openshift-config
 url: {{ .Values.ldap.ldapUrl }}
 insecure: true
 rfc2307:
