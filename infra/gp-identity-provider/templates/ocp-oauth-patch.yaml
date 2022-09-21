@@ -34,14 +34,24 @@ spec:
                 clientSecret:
                   name: {{ .Values.google.k8secretName }}
 {{ end }}  {{ if .Values.ldap.enable }}
-            - name: Gepardec
+            - name: Ldap
               mappingMethod: claim
-              type: Google
-              google:
-                clientID: {{`{{ (index . 2).data.clientId | b64dec }}`}}
-                hostedDomain: {{`{{ (index . 2).data.restrDomain | b64dec }}`}}
-                clientSecret:
-                  name: {{ .Values.google.k8secretName }}
+              type: Ldap
+                ldap:
+                  attributes:
+                    id:
+                      - dn
+                    email:
+                      - mail
+                    name:
+                      - cn
+                    preferredUsername:
+                      - uid
+                  bindDn: {{`"{{ (index . 2).data.bindDn | b64dec }}"`}}
+                  bindPassword:
+                    name: {{ .Values.ldap.k8secretName }}
+                  insecure: true
+                  url: {{`"{{ (index . 2).data.ldapUrl | b64dec }}"`}}
 {{ end }} {{ if .Values.htpasswd.enable }}
             - name: HTPasswd
               mappingMethod: claim
