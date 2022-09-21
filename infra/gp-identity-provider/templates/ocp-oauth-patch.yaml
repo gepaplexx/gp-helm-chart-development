@@ -1,5 +1,4 @@
 # https://github.com/redhat-cop/patch-operator/issues/26
-----
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
