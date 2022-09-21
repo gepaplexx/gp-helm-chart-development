@@ -1,4 +1,3 @@
-{{ if or .Values.git.enable .Values.google.enable .Values.htpasswd.enable }}
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
@@ -7,7 +6,14 @@ spec:
   serviceAccountRef:
     name: patch-operator-sa
   patches:
-    patch-identity-prov:
+{{- if .Values.git.enable }}
+    patch-identity-prov-gepaplexx:
+      patchType: application/merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          name: {{ .Values.git.k8secretName }}
+          namespace: openshift-config
       targetObjectRef:
         apiVersion: config.openshift.io/v1
         kind: OAuth
@@ -15,7 +21,6 @@ spec:
       patchTemplate: |
         spec:
           identityProviders:
-{{- if .Values.git.enable }}
             - name: Gepaplexx
               mappingMethod: claim
               type: GitHub
@@ -23,40 +28,80 @@ spec:
                 clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
                 organizations: {{`{{ (index . 1).data.restrOrgs | b64dec }}`}}
                 clientSecret:
-                  name: {{ .Values.git.k8secretName }}
-{{ end }} {{ if .Values.google.enable }}
+                    name: {{ .Values.git.k8secretName }}
+  {{end}}
+  {{- if .Values.google.enable }}
+    patch-identity-prov-gepardec:
+      patchType: application/merge-patch+json
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          name: {{ .Values.google.k8secretName }}
+          namespace: openshift-config
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      patchTemplate: |
+        spec:
+          identityProviders:
             - name: Gepardec
               mappingMethod: claim
               type: Google
-              google:
-                {{- if not .Values.git.enable }}
+              github:
                 clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
-                hostedDomain: {{`"{{ (index . 1).data.restrDomain | b64dec }}"`}}
-                {{- else }}
-                clientID: {{`"{{ (index . 2).data.clientId | b64dec }}"`}}
-                hostedDomain: {{`"{{ (index . 2).data.restrDomain | b64dec }}"`}}
-                {{- end }}
+                hostedDomain: {{`{{ (index . 1).data.restrOrgs | b64dec }}`}}
                 clientSecret:
                   name: {{ .Values.google.k8secretName }}
-{{ end }} {{ if .Values.htpasswd.enable }}
+  {{end}}
+  {{ if .Values.htpasswd.enable}}
+    patch-identity-prov-htpasswd:
+      patchType: application/merge-patch+json
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      patchTemplate: |
+        spec:
+          identityProviders:
             - name: HTPasswd
               mappingMethod: claim
               type: HTPasswd
               htpasswd:
                 fileData:
-                  name: {{ .Values.htpasswd.k8secretName }}
-{{ end }}
+                  name: htpass-secret
+  {{end}}
+  {{ if .Values.ldap.enable}}
+    patch-identity-prov-ldap:
       patchType: application/merge-patch+json
       sourceObjectRefs:
-  {{- if .Values.git.enable }}
-      - apiVersion: v1
-        kind: Secret
-        name: {{ .Values.git.k8secretName }}
-        namespace: openshift-config
-  {{- end }} {{ if .Values.google.enable }}
-      - apiVersion: v1
-        kind: Secret
-        name: {{ .Values.google.k8secretName }}
-        namespace: openshift-config
-  {{ end }}
-{{ end }}
+        - apiVersion: v1
+          kind: Secret
+          name: {{ .Values.ldap.k8secretName }}
+          namespace: openshift-config
+      targetObjectRef:
+        apiVersion: config.openshift.io/v1
+        kind: OAuth
+        name: cluster
+      patchTemplate: |
+        spec:
+          identityProviders:
+            - name: Ldap
+              mappingMethod: claim
+              type: Ldap
+              ldap:
+                attributes:
+                  id:
+                    - dn
+                  email:
+                    - mail
+                  name:
+                    - cn
+                  preferredUsername:
+                    - uid
+                bindDn: {{`"{{ (index . 1).data.bindDn | b64dec }}"`}}
+                bindPassword:
+                  name: {{ .Values.ldap.k8secretName }}
+                insecure: true
+                url: {{`"{{ (index . 1).data.ldapUrl | b64dec }}"`}}
+  {{end}}

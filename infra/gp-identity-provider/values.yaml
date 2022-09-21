@@ -1,12 +1,12 @@
 google:
-  enable: true
+  enable: false
   k8secretName: google-oauth-secret
   clientId: {}
   restrDomain: {}
   clientSecret: {}
 
 git:
-  enable: true
+  enable: false
   k8secretName: github-oauth-secret
   clientId: {}
   restrOrgs: []
@@ -16,3 +16,12 @@ htpasswd:
   enable: false
   k8secretName: htpass-secret
   data: {}
+
+ldap:
+  enable: false
+  k8secretName: ldap-secret
+  bindPassword: changeMe
+  bindDn: "CN=Username,OU=Users,OU=Org,DC=domain,DC=tld"
+  ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?uid"
+  groupsQuery: "OU=Groups,DC=domain,DC=tld"
+  usersQuery: "OU=Users,DC=domain,DC=tld"
