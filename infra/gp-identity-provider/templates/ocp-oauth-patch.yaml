@@ -21,7 +21,7 @@ spec:
               type: GitHub
               github:
                 clientID: {{`"{{ (index . 1).data.clientId | b64dec }}"`}}
-                organizations: {{`"{{ (index . 1).data.restrOrgs | b64dec }}"`}}
+                organizations: {{`{{ (index . 1).data.restrOrgs | b64dec }}`}}
                 clientSecret:
                   name: {{ .Values.git.k8secretName }}
 {{ end }} {{ if .Values.google.enable }}
@@ -36,7 +36,7 @@ spec:
 {{ end }}  {{ if .Values.ldap.enable }}
             - name: Ldap
               mappingMethod: claim
-              type: Ldap
+              type: LDAP
               ldap:
                 attributes:
                   id:
@@ -47,7 +47,7 @@ spec:
                     - cn
                   preferredUsername:
                     - uid
-                bindDn: {{`"{{ (index . 3).data.bindDn | b64dec }}"`}}
+                bindDN: {{`"{{ (index . 3).data.bindDn | b64dec }}"`}}
                 bindPassword:
                   name: {{ .Values.ldap.k8secretName }}
                 insecure: true
