@@ -37,21 +37,21 @@ spec:
             - name: Ldap
               mappingMethod: claim
               type: Ldap
-                ldap:
-                  attributes:
-                    id:
-                      - dn
-                    email:
-                      - mail
-                    name:
-                      - cn
-                    preferredUsername:
-                      - uid
-                  bindDn: {{`"{{ (index . 2).data.bindDn | b64dec }}"`}}
-                  bindPassword:
-                    name: {{ .Values.ldap.k8secretName }}
-                  insecure: true
-                  url: {{`"{{ (index . 2).data.ldapUrl | b64dec }}"`}}
+              ldap:
+                attributes:
+                  id:
+                    - dn
+                  email:
+                    - mail
+                  name:
+                    - cn
+                  preferredUsername:
+                    - uid
+                bindDn: {{`"{{ (index . 2).data.bindDn | b64dec }}"`}}
+                bindPassword:
+                  name: {{ .Values.ldap.k8secretName }}
+                insecure: true
+                url: {{`"{{ (index . 2).data.ldapUrl | b64dec }}"`}}
 {{ end }} {{ if .Values.htpasswd.enable }}
             - name: HTPasswd
               mappingMethod: claim
