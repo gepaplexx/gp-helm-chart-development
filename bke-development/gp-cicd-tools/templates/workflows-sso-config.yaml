@@ -5,10 +5,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   encryptedData:
-    {{ .Values.argo_workflows.server.sso.clientSecret.key }}: {{ .Values.argo_workflows.server.sso.clientSecret.secret }}
+    {{ .Values.argo_workflows.server.sso.clientSecret.key }}: {{ .Values.argo_workflows.rbac.clientSecret }}
   template:
     data:
-      {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ .Values.argo_workflows.server.sso.clientId.id }}
+      {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ .Values.argo_workflows.rbac.clientId }}
     metadata: {}
 ---
 ### RBAC CONFIGURATION

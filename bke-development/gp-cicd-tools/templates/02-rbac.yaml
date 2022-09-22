@@ -28,6 +28,7 @@ rules:
       - workflowtasksets
       - workflowtemplates
       - workflowtaskresults
+      - workflowartifactgctasks
   - apiGroups:
       - ""
     verbs:
@@ -36,6 +37,16 @@ rules:
       - secrets
     resourceNames:
       - minio-artifact-repository
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - pods/log
+      - pods/status
+      - pods
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -80,7 +91,7 @@ subjects:
     name: {{ .Values.argo_workflows.workflow.serviceAccount.name }}
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
-    name: argo-workflows-controller
+    name: argo-workflows-workflow-controller
     namespace: {{ .Release.Namespace }}
   - kind: ServiceAccount
     name: argo-workflows-server

@@ -63,15 +63,21 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
+  enabled: true
+  fullnameOverride: argo-workflows
+
+  images:
+    pullPolicy: IfNotPresent
+
   rbac:
     sudoGroup: Gepaplexx
     clusterscoped:
       developerGroup: Gepardec
       enabled: false
     defaultRead: true
+    clientSecret: "" # SealedsecretEncrypted ClientSecret
+    clientId: "argo-workflows"
 
-  enabled: true
-  fullnameOverride: argo-workflows
   server:
     extraArgs:
       - "--auth-mode=sso"
@@ -86,11 +92,9 @@ argo_workflows:
       clientSecret:
         name: argo-workflows-sso
         key: client-secret
-        secret: "" # SealedsecretEncrypted ClientSecret
       clientId:
         name: argo-workflows-sso
         key: client-id
-        id: "argo-workflows"
       rbac:
         enabled: true
     ingress:
@@ -112,7 +116,25 @@ argo_workflows:
         cpu: 250m
         memory: 128Mi
 
+  mainContainer:
+    resources:
+      requests:
+        cpu: 250m
+        memory: 512Mi
+      limits:
+        cpu: 1
+        memory: 4Gi
+
   controller:
+    parallelism: 10 # 10 workflows can be executed at the same time cluster-wide
+    namespaceParallelism: 5 # only 5 workflows per namespace can be executed in parallel
+    nodeStatusOffLoad: false
+    workflowDefaults:
+      spec:
+        ttlStrategy:
+            secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+    workflowRestrictions:
+      templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
       limits:
         cpu: 500m
@@ -122,8 +144,9 @@ argo_workflows:
         memory: 128Mi
 
     persistence:
-      enabled: true
       archive: true
+      nodeStatusOffLoad: true # if true node status is only saved to the persistence DB to avoid the 1MB limit in etcd
+      archiveTTL: 120d
       postgresql:
         host: *argo_workflows_db_host
         port: 5432
@@ -152,7 +175,6 @@ argo_workflows:
       insecure: true
       bucket: argo-workflows
       endpoint: minio-artifact-repository.gepaplexx-cicd-tools:9000
-
     metricsConfig:
       enabled: true
 
@@ -187,50 +209,6 @@ minio:
       runAsUser: 0
   serviceAccount:
     name: minio
-
-
-####################
-##  ARGO ROLLOUT  ##
-####################
-argo_rollouts:
-  enabled: false
-  fullnameOverride: argo-rollouts
-  # Controllerconfiguration:
-  controller:
-    metrics:
-      enabled: true
-      serviceMonitor:
-        enabled: true
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-
-  # DashboardConfiguration
-  dashboard:
-    enabled: true
-    ingress:
-      enabled: true
-      hosts:
-        - "rollouts.example.com"
-      tls:
-        - hosts:
-            - "rollouts.example.com"
-          secretName: "rollouts.example.com"
-      ingressClassName: "openshift-default"
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-    resources:
-      limits:
-        cpu: 500m
-        memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
-
 
 ####################
 ##    ARGO  CD    ##
