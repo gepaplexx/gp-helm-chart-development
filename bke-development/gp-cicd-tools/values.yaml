@@ -65,6 +65,9 @@ argo_events:
 argo_workflows:
   enabled: true
   fullnameOverride: argo-workflows
+  crds:
+    install: true
+    keep: false
 
   images:
     pullPolicy: IfNotPresent
