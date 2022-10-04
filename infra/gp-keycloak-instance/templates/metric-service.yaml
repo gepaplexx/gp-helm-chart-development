@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}-service-metrics'
-  label:
+  labels:
     metrics-service: sso
 spec:
   selector:
