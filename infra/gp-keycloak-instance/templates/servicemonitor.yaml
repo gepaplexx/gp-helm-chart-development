@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: '{{ include "gp-keycloak-instance.fullname" . }}'
+spec:
+  endpoints:
+    - interval: 5s
+      port: metrics
+  selector:
+    matchLabels:
+      metrics-service: sso

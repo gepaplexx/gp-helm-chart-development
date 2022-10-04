@@ -42,4 +42,5 @@ postgresql:
       enabled: false
     persistence:
       size: 8Gi
-
+serviceMonitor:
+  name: sso
