@@ -5,8 +5,9 @@ metadata:
   labels:
     metrics-service: sso
 spec:
-  selector:
-    {{- include "gp-keycloak-instance.selectorLabels" . | nindent 4 }}
+  selector: # This selector will cause problems when multiple keycloak instances are within one namespace!!!! KC-Operator causes the problem because Pods are not properly labeled
+    app: keycloak
+    app.kubernetes.io/managed-by: keycloak-operator
   ports:
     - name: metrics
       protocol: TCP
