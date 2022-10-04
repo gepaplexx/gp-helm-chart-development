@@ -16,7 +16,7 @@ spec:
     encoding: PKCS1
     size: 2048
   renewBefore: 360h0m0s
-  secretName: '{{ include "gp-keycloak-instance.fullname" . }}'
+  secretName: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
   usages:
     - server auth
     - client auth

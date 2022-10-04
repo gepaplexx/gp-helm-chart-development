@@ -33,4 +33,4 @@ spec:
         name: '{{ include "gp-keycloak-instance.fullname" . }}'
         key: password
   {{- end }}
-  tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}'
+  tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
