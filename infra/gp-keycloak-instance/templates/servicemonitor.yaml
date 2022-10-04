@@ -6,6 +6,7 @@ spec:
   endpoints:
     - interval: 5s
       port: metrics
+      scheme: https
   selector:
     matchLabels:
       metrics-service: sso
