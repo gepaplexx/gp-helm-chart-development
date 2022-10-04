@@ -7,7 +7,6 @@ metadata:
 spec:
   dnsNames:
     - {{ .Values.ingress.hostname }}
-    - '{{ include "gp-keycloak-instance.fullname" . }}-service-metrics.{{ .Release.Namespace }}.svc' # fro scraping https
   duration: 2160h0m0s
   issuerRef:
     kind: ClusterIssuer

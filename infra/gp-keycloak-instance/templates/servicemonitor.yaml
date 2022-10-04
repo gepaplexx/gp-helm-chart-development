@@ -13,7 +13,7 @@ spec:
             name: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
             key: tls.crt
             optional: false
-        serverName: '{{ include "gp-keycloak-instance.fullname" . }}-service-metrics.{{ .Release.Namespace }}.svc'
+        serverName: '{{ .Values.ingress.hostname }}'
   selector:
     matchLabels:
       metrics-service: sso
