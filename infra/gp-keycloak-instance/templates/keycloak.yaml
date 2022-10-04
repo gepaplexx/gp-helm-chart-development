@@ -8,6 +8,9 @@ metadata:
 spec:
   hostname: {{  .Values.ingress.hostname }}
   instances: {{ .Values.replicas }}
+  {{- if .Values.image }}
+  image: {{ .Values.image }}
+  {{- end }}
   serverConfiguration:
     - name: features-disabled
       value: "{{ .Values.features.disabled }}"
