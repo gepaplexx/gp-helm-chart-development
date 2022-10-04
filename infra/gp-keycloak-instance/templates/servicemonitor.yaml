@@ -7,6 +7,13 @@ spec:
     - interval: 5s
       port: metrics
       scheme: https
+      tlsConfig:
+        ca:
+          secret:
+            name: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
+            key: tls.crt
+            optional: false
+        serverName: '{{ include "gp-keycloak-instance.fullname" . }}-service-metrics.{{ .Release.Namespace }}.svc'
   selector:
     matchLabels:
       metrics-service: sso
