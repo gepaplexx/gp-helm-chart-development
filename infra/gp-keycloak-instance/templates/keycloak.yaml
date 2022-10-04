@@ -23,14 +23,14 @@ spec:
     - name: db
       value: postgres
     - name: db-url-host
-      value: {{ .Values.postgresql.fullnameOverride }}
+      value: '{{ .Values.postgresql.fullnameOverride }}'
     - name: db-username
       secret:
-        name: '{{ include "gp-keycloak-instance.fullname" . }}'
+        name: '{{ .Values.postgresql.fullnameOverride }}'
         key: username
     - name: db-password
       secret:
-        name: '{{ include "gp-keycloak-instance.fullname" . }}'
+        name: '{{ .Values.postgresql.fullnameOverride }}'
         key: password
   {{- end }}
   tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
