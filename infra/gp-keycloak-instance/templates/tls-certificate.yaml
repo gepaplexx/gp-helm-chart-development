@@ -2,7 +2,6 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}'
-  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
 spec:
