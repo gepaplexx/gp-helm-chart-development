@@ -1,0 +1,14 @@
+{{- if .Values.postgresql.backup.enabled }}
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: "{{ .Values.postgresql.backup.size }}"
+  volumeMode: Filesystem
+  storageClassName: rook-ceph-fs
+{{- end }}

@@ -42,5 +42,12 @@ postgresql:
       enabled: false
     persistence:
       size: 8Gi
+  backup:
+    enabled: false
+    # default values if backu is enabled
+    size: 10Gi
+    schedule: '0 0 * * *'
+    retain:
+      days: 8 # need to +1, so 7 days = 8
 serviceMonitor:
   name: sso
