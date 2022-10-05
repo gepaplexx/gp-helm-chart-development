@@ -3,6 +3,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-identity-prov
+  namespace: gp-infrastructure
 spec:
   serviceAccountRef:
     name: patch-operator-sa
@@ -46,6 +47,7 @@ spec:
                   name:
                     - cn
                   preferredUsername:
+                    - cn
                     - uid
                 bindDN: {{`"{{ (index . 3).data.bindDn | b64dec }}"`}}
                 bindPassword:

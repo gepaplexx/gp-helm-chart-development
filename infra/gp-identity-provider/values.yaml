@@ -22,6 +22,6 @@ ldap:
   k8secretName: ldap-secret
   bindPassword: changeMe
   bindDn: "CN=Username,OU=Users,OU=Org,DC=domain,DC=tld"
-  ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?uid"
+  ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?cn?sub"
   groupsQuery: "OU=Groups,DC=domain,DC=tld"
   usersQuery: "OU=Users,DC=domain,DC=tld"
