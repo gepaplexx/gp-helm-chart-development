@@ -1,6 +1,6 @@
 #!/bin/bash
 
-filename="encryptMe.yml"
+filename="encryptMe.yaml"
 secretname="ldap-secret"
 namespace="openshift-config"
 
