@@ -3,6 +3,7 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-identity-prov
+  namespace: gp-infrastructure
 spec:
   serviceAccountRef:
     name: patch-operator-sa
