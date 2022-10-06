@@ -24,4 +24,8 @@ ldap:
   bindDn: "CN=Username,OU=Users,OU=Org,DC=domain,DC=tld"
   ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?cn?sub"
   groupsQuery: "OU=Groups,DC=domain,DC=tld"
-  usersQuery: "OU=Users,DC=domain,DC=tld"
+  syncFilter: ""
+  groupMappings: []
+#    "CN=OC Editors,OU=Groups,OU=GEPAPLEXX,DC=gp,DC=local": ldap-editor
+#    "CN=OC_Administrators,OU=Groups,OU=GEPAPLEXX,DC=gp,DC=local": ldap-admin
+#    "CN=OC_Readonly_Users,OU=Groups,OU=GEPAPLEXX,DC=gp,DC=local": ldap-ro
