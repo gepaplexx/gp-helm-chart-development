@@ -3,7 +3,7 @@ apiVersion: oauth.openshift.io/v1
 kind: OAuthClient
 grantMethod: prompt
 metadata:
-  name: keycloak
+  name: keycloak # Should be used '{{ include "gp-keycloak-instance.fullname" . }}'
   labels:
     {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
 redirectURIs:
