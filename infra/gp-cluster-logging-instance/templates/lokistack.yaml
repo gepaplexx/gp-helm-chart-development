@@ -4,7 +4,7 @@ metadata:
   name: logging-loki
   namespace: openshift-logging
   labels:
-    {{ include "gp-clusterlogging-instance.labels"}}
+  {{- include "gp-clusterlogging-instance.labels" . | nindent 4}}
 spec:
   limits:
     global:
@@ -29,42 +29,42 @@ spec:
   template:
     compactor:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.compactor.replicas }}
     distributor:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.distributor.replicas }}
     gateway:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.gateway.replicas }}
     indexGateway:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.indexGateway.replicas }}
     ingester:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.ingester.replicas }}
     querier:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.querier.replicas }}
     queryFrontend:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.queryFrontend.replicas }}
     ruler:
       {{- if .Values.lokistack.configuration.runOnInfra }}
-      {{- include "infranodes.enabled" | nindent 6 }}
+      {{- include "infranodes.enabled" .  | nindent 6 }}
       {{- end }}
       replicas: {{ .Values.lokistack.configuration.ruler.replicas }}
   tenants:
