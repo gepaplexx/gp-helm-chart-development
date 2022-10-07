@@ -4,7 +4,7 @@ clusterlogging:
   managementState: "Managed"
 lokistack:
   minio:
-    enabled: true
+    enabled: false
   configuration:
     runOnInfra: true
     storageClassName: rook-ceph-block
