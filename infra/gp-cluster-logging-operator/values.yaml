@@ -1,7 +1,8 @@
 clusterlogging:
   subscription:
     channel: "stable"
-
-elasticsearch:
+    updatestrategy: "automatic"
+loki:
   subscription:
     channel: "stable"
+    updatestrategy: "automatic"

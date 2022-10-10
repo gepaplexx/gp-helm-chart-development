@@ -1,0 +1,55 @@
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki
+  namespace: openshift-logging
+  labels:
+  {{- include "gp-clusterlogging-instance.labels" . | nindent 4}}
+spec:
+  limits:
+    global:
+      ingestion:
+        ingestionRate: {{ .Values.lokistack.configuration.limits.ingestion.ingestionRate }}
+      queries:
+        maxChunksPerQuery: {{ .Values.lokistack.configuration.limits.queries.maxChunksPerQuery }}
+        maxQuerySeries: {{ .Values.lokistack.configuration.limits.queries.maxQueriesSeries }}
+      retention:
+        days: {{ .Values.lokistack.configuration.retention.days }}
+  managementState: Managed
+  replicationFactor: 1
+  size: {{ .Values.lokistack.configuration.size }}
+  storage:
+    schemas:
+      - effectiveDate: "2022-06-01"
+        version: v12
+    secret:
+      name: loki-backend-secret
+      type: s3
+  storageClassName: {{ .Values.lokistack.configuration.storageClassName }}
+  template:
+    compactor:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.compactor.replicas }}
+    distributor:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.distributor.replicas }}
+    gateway:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.gateway.replicas }}
+    indexGateway:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.indexGateway.replicas }}
+    ingester:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.ingester.replicas }}
+    querier:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.querier.replicas }}
+    queryFrontend:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.queryFrontend.replicas }}
+    ruler:
+      {{- include "infranodes.enabled" .  | nindent 6 }}
+      replicas: {{ .Values.lokistack.configuration.ruler.replicas }}
+  tenants:
+    mode: openshift-logging

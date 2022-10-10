@@ -2,40 +2,61 @@ infranodes:
   enabled: true
 clusterlogging:
   managementState: "Managed"
-elasticsearch:
-  retentionPolicy: 
-    application:
-      maxAge: 30d
-    infra:
-      maxAge: 30d
-    audit:
-      maxAge: 2d
-  resources:
-    limits:
-      memory: "16Gi"
-      cpu: "2"
-    requests:
-      cpu: "1"
-      memory: "16Gi"
-  nodeCount: 3       
-  storage:
+lokistack:
+  minio:
+    enabled: false
     storageClassName: rook-ceph-block
-    size: 100G
-  redundancyPolicy: "SingleRedundancy"
-fluentd:
-  resources:
     limits:
-      memory: " 736Mi"
-      cpu: "250m"
-    requests:
-      cpu: "150m"
-      memory: "736Mi"
-kibana:
+      ingestion:
+        ingestionRate: 20
+      queries:
+        maxChunksPerQuery: 4000000
+        maxQueriesSeries: 1000
+    retention:
+      days: 30
+    size: 1x.small  # Valid values are: 1x.extra-small, 1x.small, 1x.medium
+    compactor:
+      replicas: 1
+    distributor:
+      replicas: 1
+    gateway:
+      replicas: 1
+    indexGateway:
+      replicas: 1
+    ingester:
+      replicas: 1
+    querier:
+      replicas: 2
+    queryFrontend:
+      replicas: 2
+    ruler:
+      replicas: 1
+  backend:
+    bucketname: loki
+    accesskey: loki
+    secretkey: ""
+    endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000"
+
+# Sollte später über die NetApp direkt geregelt werden.
+minio:
+  existingSecret: "loki-backend-secret"
+  securityContext:
+    runAsUser: 0
+  fullnameOverride: loki-backend-storage
   replicas: 1
+  persistence:
+    size: 200Gi
   resources:
-    limits:
-      memory: " 1Gi"
-      cpu: "250m"
     requests:
-      cpu: "150m"
-      memory: "1Gi"
+      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
+    limits:
+      memory: 4Gi
+  makeBucketJob:
+    securityContext:
+      enabled: true
+      runAsUser: 0
+  defaultBucket:
+    enabled: true
+    name: loki
+  serviceAccount:
+    name: loki-minio
