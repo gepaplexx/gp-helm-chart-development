@@ -6,7 +6,13 @@ ingress:
 auth:
   admin:
     user: "admin"
-
+  adminGroups: "Gepaplexx"
+  editorGroups: "Editor"
+sso:
+  keycloak:
+    clientSecret: ""
+    clientId: "grafana"
+    realmUrl: "https://sso.apps.clustername.basedomain.com/realms/realmname"
 datasource:
   prometheus:
     url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"

@@ -4,17 +4,32 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  configMaps:
-    - grafana-oauth-config
   ingress:
     enabled: true
     pathType: Prefix
     path: "/"
     hostname: {{ .Values.ingress.hostname }}
   config:
+    server:
+      root_url: https://{{ .Values.ingress.hostname }}
     auth:
       disable_login_form: False
       disable_signout_menu: False
+    auth.generic_oauth:
+      client_id: {{ .Values.sso.keycloak.clientId}}
+      enabled: true
+      client_secret: ""
+      allow_sign_up: true
+      token_url: >-
+        {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/token
+      api_url: >-
+        {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/userinfo
+      role_attribute_path: >-
+        contains(groups[*], '{{ .Values.auth.adminGroups }}') && 'Admin' || contains(groups[*],
+        '{{ .Values.auth.editorGroups }}') && 'Editor' || 'Viewer'
+      auth_url: >-
+        {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
+      scopes: profile
     auth.anonymous:
       enabled: false
     log:
