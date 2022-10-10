@@ -36,7 +36,7 @@ lokistack:
     bucketname: loki
     accesskey: loki
     secretkey: ""
-    endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000"
+    endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
 # Sollte später über die NetApp direkt geregelt werden.
 minio:
