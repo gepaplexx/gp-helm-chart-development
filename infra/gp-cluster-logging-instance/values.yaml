@@ -29,7 +29,7 @@ lokistack:
     querier:
       replicas: 2
     queryFrontend:
-      replicas: 2
+      replicas: 1
     ruler:
       replicas: 1
   backend:
