@@ -5,8 +5,6 @@ clusterlogging:
 lokistack:
   minio:
     enabled: false
-  configuration:
-    runOnInfra: true
     storageClassName: rook-ceph-block
     limits:
       ingestion:
