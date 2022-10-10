@@ -5,8 +5,8 @@ clusterlogging:
 lokistack:
   minio:
     enabled: false
-    storageClassName: rook-ceph-block
   configuration:
+    storageClassName: rook-ceph-block
     limits:
       ingestion:
         ingestionRate: 20
