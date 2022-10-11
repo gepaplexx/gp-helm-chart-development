@@ -12,20 +12,47 @@ spec:
       editable: true
       isDefault: true
       jsonData:
-        httpHeaderName1: Authorization
         httpMethod: POST
+        httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
       secureJsonData:
-        httpHeaderValue1: 'Bearer need-to-set-token-manually'
-    - name: Loki
+        httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+    - name: Loki (Application)
       type: loki
-      url: {{ .Values.datasource.loki.url }}
+      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
       access: proxy
       editable: true
-      isDefault: true
+      isDefault: false
       jsonData:
-        httpHeaderName1: Authorization
         httpMethod: POST
+        httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderName2: X-Scope-OrgID
       secureJsonData:
-        httpHeaderValue1: 'Bearer need-to-set-token-manually'
-
+        httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderValue2: application
+    - name: Loki (Infrastructure)
+      type: loki
+      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
+      access: proxy
+      editable: true
+      isDefault: false
+      jsonData:
+        httpMethod: POST
+        httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderName2: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderValue2: infrastructure
+    - name: Loki (Audit)
+      type: loki
+      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
+      access: proxy
+      editable: true
+      isDefault: false
+      jsonData:
+        httpMethod: POST
+        httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderName2: X-Scope-OrgID
+      secureJsonData:
+        httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
+        httpHeaderValue2: audit
   name: system-datasources.yaml
