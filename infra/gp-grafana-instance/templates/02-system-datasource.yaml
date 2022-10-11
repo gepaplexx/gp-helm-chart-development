@@ -18,7 +18,7 @@ spec:
         httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
     - name: Loki (Application)
       type: loki
-      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
+      url: https://${GATEWAY_ADDRESS}/
       access: proxy
       editable: true
       isDefault: false
@@ -26,12 +26,14 @@ spec:
         httpMethod: POST
         httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderName2: X-Scope-OrgID
+        tlsAuthWithCACert: true
       secureJsonData:
         httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderValue2: application
+        tlsCACert: ${GATEWAY_SERVICE_CA}
     - name: Loki (Infrastructure)
       type: loki
-      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
+      url: https://${GATEWAY_ADDRESS}/
       access: proxy
       editable: true
       isDefault: false
@@ -39,12 +41,14 @@ spec:
         httpMethod: POST
         httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderName2: X-Scope-OrgID
+        tlsAuthWithCACert: true
       secureJsonData:
         httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderValue2: infrastructure
+        tlsCACert: ${GATEWAY_SERVICE_CA}
     - name: Loki (Audit)
       type: loki
-      url: https://logging-loki-query-frontend-http.openshift-logging.svc:3100/
+      url: https://${GATEWAY_ADDRESS}/
       access: proxy
       editable: true
       isDefault: false
@@ -52,7 +56,9 @@ spec:
         httpMethod: POST
         httpHeaderName1: Authorization # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderName2: X-Scope-OrgID
+        tlsAuthWithCACert: true
       secureJsonData:
         httpHeaderValue1: 'Bearer need-to-set-token-manually' # TODO remove after GPX-495 Grafana Datasource Integration - Forward OAuth Identity
         httpHeaderValue2: audit
+        tlsCACert: ${GATEWAY_SERVICE_CA}
   name: system-datasources.yaml

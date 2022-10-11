@@ -46,3 +46,12 @@ spec:
           values:
             - system
             - application
+  deployment:
+    env:
+      - name: GATEWAY_SERVICE_CA
+        valueFrom:
+          configMapKeyRef:
+            key: service-ca.crt
+            name: openshift-service-ca.crt
+      - name: GATEWAY_ADDRESS
+        value: 'logging-loki-gateway-http.openshift-logging.svc:3100'
