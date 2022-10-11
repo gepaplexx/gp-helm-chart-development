@@ -54,4 +54,4 @@ spec:
             key: service-ca.crt
             name: openshift-service-ca.crt
       - name: GATEWAY_ADDRESS
-        value: 'logging-loki-gateway-http.openshift-logging.svc:3100'
+        value: 'logging-loki-query-frontend-http.openshift-logging.svc:3100'
