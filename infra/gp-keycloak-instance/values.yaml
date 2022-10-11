@@ -16,7 +16,7 @@ features:
   # Comma separeted list of features to be disabled
   disabled: "admin2"
   # Comma separeted list of features to be enabled
-  enabled: "openshift-integration"
+  enabled: "openshift-integration,token_exchange,impersonation,admin_fine_grained_authz"
 
 provider:
   openshift:
