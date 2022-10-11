@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 ingress:
-  hostname: grafana.apps.play.gepaplexx.com  # TODO Umstellen auf example
+  hostname: grafana.apps.example.gepaplexx.com
 auth:
   admin:
     user: "admin"
@@ -16,6 +16,8 @@ sso:
 datasource:
   prometheus:
     url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"
+  loki:
+    url: "tbd"
 
 resources:
   requests:

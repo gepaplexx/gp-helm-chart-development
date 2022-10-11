@@ -1,11 +1,14 @@
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
-  name: system-datasource
+  name: system-datasources
   namespace: {{ .Release.Namespace }}
 spec:
   datasources:
-    - access: proxy
+    - name: Prometheus
+      type: prometheus
+      url: {{ .Values.datasource.prometheus.url }}
+      access: proxy
       editable: true
       isDefault: true
       jsonData:
@@ -13,7 +16,16 @@ spec:
         httpMethod: POST
       secureJsonData:
         httpHeaderValue1: 'Bearer need-to-set-token-manually'
-      name: System-Datasource
-      type: prometheus
-      url: {{ .Values.datasource.prometheus.url }}
-  name: system-datasource.yaml
+    - name: Loki
+      type: loki
+      url: {{ .Values.datasource.loki.url }}
+      access: proxy
+      editable: true
+      isDefault: true
+      jsonData:
+        httpHeaderName1: Authorization
+        httpMethod: POST
+      secureJsonData:
+        httpHeaderValue1: 'Bearer need-to-set-token-manually'
+
+  name: system-datasources.yaml
