@@ -1,4 +1,4 @@
-{{- if not .Values.ldap.enable }}
+{{- if .Values.ldap.enable }}
 kind: ServiceAccount
 apiVersion: v1
 metadata:
