@@ -23,7 +23,7 @@ ldap:
   bindPassword: changeMe
   bindDn: "CN=Username,OU=Users,OU=Org,DC=domain,DC=tld"
   ldapUrl: "ldap://host/OU=Users,OU=Org,DC=domain,DC=tld?cn?sub"
-  groupsQuery: "OU=Groups,DC=domain,DC=tld"
+  usersQuery: "OU=Groups,DC=domain,DC=tld"
   syncFilter: ""
   groupMappings: []
 #    "CN=OC Editors,OU=Groups,OU=GEPAPLEXX,DC=gp,DC=local": ldap-editor
