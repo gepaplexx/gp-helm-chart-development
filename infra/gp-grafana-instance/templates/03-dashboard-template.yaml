@@ -32,7 +32,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "System-Datasource",
+          "datasource": "Prometheus",
           "fieldConfig": {
             "defaults": {},
             "overrides": []
@@ -126,7 +126,7 @@ spec:
           "bars": false,
           "dashLength": 10,
           "dashes": false,
-          "datasource": "System-Datasource",
+          "datasource": "Prometheus",
           "fieldConfig": {
             "defaults": {},
             "overrides": []
