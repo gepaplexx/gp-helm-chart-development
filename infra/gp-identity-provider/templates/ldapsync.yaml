@@ -65,7 +65,7 @@ spec:
             {{- if .Values.ldap.groupMappings }}
             groupUIDNameMapping:
               {{- range $key, $val := .Values.ldap.groupMappings }}
-              {{ $val | toYaml }}
+              {{ $val | toYaml | toString | replace "\"" "" | replace "'" "" }}
               {{- end }}
             {{- end }}
             activeDirectory:
