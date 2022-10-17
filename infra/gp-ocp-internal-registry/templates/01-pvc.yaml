@@ -5,6 +5,8 @@ metadata:
     imageregistry.openshift.io: "true"
   name: {{ .Values.pvc.name }}
   namespace: openshift-image-registry
+  labels:
+      "alerts.k8s.io/kube-persistent-volume-filling-up=disabled"
 spec:
   accessModes:
   - ReadWriteMany
