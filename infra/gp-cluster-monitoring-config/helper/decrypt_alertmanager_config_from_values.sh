@@ -11,5 +11,5 @@ valuesFile="../../../../gepardec-run-cluster-configuration/cluster-applications/
 
 echo -e "\nACHTUNG: Du verwendest gerade: $(oc whoami --show-server=true)\nUnd folgendes values File: ${valuesFile}"
 
-CURRENTSECRET=$(kubectl -n gp-infrastructure get secret --sort-by metadata.creationTimestamp | grep sealed-secrets-key | head -n 1 | cut -d " " -f 1)
+CURRENTSECRET=$(kubectl -n gp-infrastructure get secret --sort-by metadata.creationTimestamp | grep sealed-secrets-key | tail -n 1 | cut -d " " -f 1)
 kubeseal --recovery-private-key <(oc -n gp-infrastructure get secret ${CURRENTSECRET} -o jsonpath="{.data.tls\.key}" | base64 -d) --recovery-unseal -f <(helm template -s templates/08-alertmanager-config-sealed-secret.yaml --set alertmanager.config=$(grep -A2 alertmanager.config  ${valuesFile} | grep value | cut -d '"' -f2) ..) -o yaml | grep -o "alertmanager.yaml.*" | cut -d " " -f2 | base64 -d | tee alertmanager-from-values-${valuesFileSuffix}.yml
