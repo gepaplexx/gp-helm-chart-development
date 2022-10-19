@@ -13,6 +13,9 @@ kyverno:
     enabled: true
   webhooksCleanup:
     enable: true
+  resources:
+    limits:
+      memory: 1.5Gi
 
   config:
     resourceFilters:
