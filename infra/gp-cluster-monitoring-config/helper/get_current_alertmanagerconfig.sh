@@ -4,7 +4,7 @@ filename="alertmanager.yml"
 
 if [ -e ${filename} ];
 then
-  cp ${filename} ${filename}_$(date +%Y-%m-%d_%H-%M-%S)
+  cp ${filename} $(date +%Y-%m-%d_%H-%M-%S)_${filename}
 fi
 
 echo -e "\nACHTUNG: Du verwendest gerade: $(oc whoami --show-server=true)\n"
