@@ -1,8 +1,8 @@
 clusterlogging:
   subscription:
     channel: "stable"
-    updatestrategy: "automatic"
+    installPlanApproval: "automatic"
 loki:
   subscription:
     channel: "stable"
-    updatestrategy: "automatic"
+    installPlanApproval: "automatic"

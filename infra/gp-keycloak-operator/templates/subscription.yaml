@@ -15,8 +15,8 @@ metadata:
   name: keycloak-operator
   namespace: {{ .Release.Namespace }}
 spec:
-  channel: "{{ .Values.update.channel }}"
-  installPlanApproval: "{{ .Values.update.approval }}"
+  channel: "{{ .Values.subscription.channel }}"
+  installPlanApproval: "{{ .Values.subscription.installPlanApproval }}"
   name: keycloak-operator
   source: community-operators
   sourceNamespace: openshift-marketplace

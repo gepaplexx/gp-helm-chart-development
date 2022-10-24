@@ -6,6 +6,6 @@ metadata:
 spec:
   channel: "{{ .Values.clusterlogging.subscription.channel }}"
   name: cluster-logging
-  installPlanApproval: "{{ .Values.clusterlogging.subscription.updatestrategy }}"
+  installPlanApproval: "{{ .Values.clusterlogging.subscription.installPlanApproval }}"
   source: redhat-operators 
   sourceNamespace: openshift-marketplace
