@@ -6,8 +6,8 @@ metadata:
   name: patch-operator
   namespace: openshift-operators
 spec:
-  channel: alpha
-  installPlanApproval: Automatic
+  channel: "{{ .Values.subscription.channel }}"
+  installPlanApproval: "{{ .Values.subscription.installPlanApproval }}"
   name: patch-operator
   source: community-operators
   sourceNamespace: openshift-marketplace

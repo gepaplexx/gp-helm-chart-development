@@ -6,8 +6,8 @@ metadata:
   labels:
     operators.coreos.com/grafana-operator.openshift-monitoring: ''
 spec:
-  channel: v4
-  installPlanApproval: Automatic
+  channel: "{{ .Values.subscription.channel }}"
+  installPlanApproval: "{{ .Values.subscription.installPlanApproval }}"
   name: grafana-operator
   source: community-operators
   sourceNamespace: openshift-marketplace

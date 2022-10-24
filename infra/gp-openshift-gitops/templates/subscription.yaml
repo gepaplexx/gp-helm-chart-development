@@ -4,8 +4,8 @@ metadata:
   name: openshift-gitops-operator
   namespace: openshift-operators
 spec:
-  channel: {{ .Values.gitops.channel }}
-  installPlanApproval: {{ .Values.gitops.installPlanApproval }}
+  channel: "{{ .Values.gitops.channel }}"
+  installPlanApproval: "{{ .Values.gitops.installPlanApproval }}"
   name: openshift-gitops-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
