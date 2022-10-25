@@ -13,8 +13,6 @@ lokistack:
       queries:
         maxChunksPerQuery: 4000000
         maxQueriesSeries: 1000
-    retention:
-      days: 30
     size: 1x.small  # Valid values are: 1x.extra-small, 1x.small, 1x.medium
     compactor:
       replicas: 1

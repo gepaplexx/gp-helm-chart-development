@@ -13,8 +13,6 @@ spec:
       queries:
         maxChunksPerQuery: {{ .Values.lokistack.configuration.limits.queries.maxChunksPerQuery }}
         maxQuerySeries: {{ .Values.lokistack.configuration.limits.queries.maxQueriesSeries }}
-      retention:
-        days: {{ .Values.lokistack.configuration.retention.days }}
   managementState: Managed
   replicationFactor: 1
   size: {{ .Values.lokistack.configuration.size }}
