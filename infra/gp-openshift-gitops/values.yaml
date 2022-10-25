@@ -1,4 +1,4 @@
-gitops:
+subscription:
   channel: stable
   installPlanApproval: Automatic
   disableDefaultInstance: false

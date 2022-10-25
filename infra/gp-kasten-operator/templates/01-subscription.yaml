@@ -6,8 +6,8 @@ metadata:
   labels:
     operators.coreos.com/k10-kasten-operator-rhmp.openshift-operators: ''
 spec:
-  channel: stable
-  installPlanApproval: Automatic
+  channel: "{{ .Values.subscription.channel }}"
+  installPlanApproval: "{{ .Values.subscription.installPlanApproval }}"
   name: k10-kasten-operator-rhmp
   source: redhat-marketplace
   sourceNamespace: openshift-marketplace

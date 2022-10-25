@@ -7,7 +7,7 @@ metadata:
   namespace: openshift-operators-redhat
 spec:
   channel: "{{ .Values.loki.subscription.channel }}"
-  installPlanApproval: "{{ .Values.loki.subscription.updatestrategy }}"
+  installPlanApproval: "{{ .Values.loki.subscription.installPlanApproval }}"
   name: loki-operator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
