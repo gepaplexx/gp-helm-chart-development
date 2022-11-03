@@ -89,17 +89,20 @@ fi
 
 # DEFAULT SECRET STORE FOR CICD
 if [ "${skip_non_repeatable}" = false ]; then
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/cicd kv-v2"
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault secrets enable -path=development/admin kv-v2"
+  # Enable Audit Logging
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault audit enable file file_path=stdout"
+  
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/cicd kv-v2"
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/admin kv-v2"
   # Prefill development/admin with required secrets for workflows.
-  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}'  | awk '{ print substr( $0, 9 )}')
+  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
   ARGOCD_PASSWORD=$(kubectl -n gepaplexx-cicd-tools get secret gepaplexx-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
 fi
 
 # DEFAULT POLICIES
 # CICD-READER
-kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && \
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write cicd-reader \
       <(echo 'path \"/development/cicd/*\"
         {
@@ -113,7 +116,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       )"
 
 # CICD-ADMIN
-kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && \
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write cicd-admin \
       <(echo 'path \"/development/cicd/*\"
         {
