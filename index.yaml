@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   gepaplexx-cicd-eventbus:
   - apiVersion: v2
+    created: "2022-11-03T08:53:03.85232823Z"
+    description: A helm chart for installing required roles and rolebindings and infrastructure
+      such as an eventbus for bootstrapping of an cicd instance
+    digest: 01697a1e5d38880590cf54ac3a9cda22e804d2e7bd4f3abbc4f88647878b915c
+    name: gepaplexx-cicd-eventbus
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gepaplexx-cicd-eventbus-0.1.5.tgz
+    version: 0.1.5
+  - apiVersion: v2
     created: "2022-10-03T09:17:07.513180191Z"
     description: A helm chart for installing required roles and rolebindings and infrastructure
       such as an eventbus for bootstrapping of an cicd instance
@@ -236,14 +246,14 @@ entries:
   gp-cicd-apache:
   - apiVersion: v2
     appVersion: 2.4.53
-    created: "2022-10-03T09:17:07.517513573Z"
+    created: "2022-11-03T08:53:03.856774878Z"
     dependencies:
     - name: apache
       repository: https://charts.bitnami.com/bitnami
       version: 9.0.18
     description: A Helm chart for deploying an apache web server to publish junit
       test results
-    digest: 5b9ed23407b39f10c0339ff998730150aa06edac545b2c54e2da7542a34b4477
+    digest: a2dff159f6b1964e66bebf236d86d01cdf262fe4b2c0206ebab24203c22f3240
     name: gp-cicd-apache
     type: application
     urls:
@@ -314,7 +324,7 @@ entries:
   gp-cicd-nexus:
   - apiVersion: v2
     appVersion: 3.38.1
-    created: "2022-10-03T09:17:07.519086711Z"
+    created: "2022-11-03T08:53:03.858153692Z"
     dependencies:
     - alias: nexus
       name: nexus-repository-manager
@@ -322,7 +332,7 @@ entries:
       version: 38.1.1
     description: A Helm chart for deploying Sonartype Nexus on OpenShift using the
       certified operator
-    digest: 7cf4b74dcdb337f88577a654f5902156e960a1ea0e728766323d6c6d5a9dbbd4
+    digest: 98c98fb91dca75dfbc5e159b2fd7c1cd03daca73742d8356397fd801b4c1544a
     name: gp-cicd-nexus
     type: application
     urls:
@@ -427,13 +437,13 @@ entries:
   gp-cicd-sonarqube:
   - apiVersion: v2
     appVersion: 9.4.0
-    created: "2022-10-03T09:17:07.529808756Z"
+    created: "2022-11-03T08:53:03.866702585Z"
     dependencies:
     - name: sonarqube
       repository: https://charts.bitnami.com/bitnami
       version: 1.0.14
     description: A Helm chart for deploying SonarQube Nexus for static code analysis.
-    digest: 7ea4fa8e3e66ba6a9970461156eb3f7b51402fee6b4f63570e6ff6d9bfa6b8d9
+    digest: 0dfca6dca1c421b4d66ab67876ad019cac0bdcaaa5bcc6f4276a9c7aba3a31d8
     name: gp-cicd-sonarqube
     type: application
     urls:
@@ -706,6 +716,35 @@ entries:
     - https://gepaplexx.github.io/gp-helm-chart-development/gp-cicd-sonarqube-0.0.3.tgz
     version: 0.0.3
   gp-cicd-tools:
+  - apiVersion: v2
+    created: "2022-11-03T08:53:03.876804294Z"
+    dependencies:
+    - alias: argo_events
+      condition: argo-events.enabled
+      name: argo-events
+      repository: https://argoproj.github.io/argo-helm
+      version: ~2.0.6
+    - alias: argo_workflows
+      condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: ~0.20.1
+    - condition: argo_workflows.persistence
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ~11.6.14
+    - condition: argo_workflows.archive.enabled
+      name: minio
+      repository: https://helm.min.io/
+      version: 8.0.10
+    description: A Helm chart for deploying argo infrastructure including workflow,
+      rollout, events and an argocd instance
+    digest: 067a2e0f36a36d879ac8e038f74b334b0fd5548c2126afb0873ebe288662f42b
+    name: gp-cicd-tools
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-cicd-tools-0.6.22.tgz
+    version: 0.6.22
   - apiVersion: v2
     created: "2022-10-03T09:17:07.543131029Z"
     dependencies:
@@ -2830,4 +2869,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-charts/gp-velero-2.23.4.tgz
     version: 2.23.4
-generated: "2022-10-17T16:11:44.485355276Z"
+generated: "2022-11-03T08:53:03.851368319Z"
