@@ -37,8 +37,8 @@ spec:
             command: ["/bin/bash", "-c"]
             args:
               - |
-                currentChannel=$(oc get clusterversion -o jsonpath="{.items[0].spec.channel}") 
-                newestChannel=$(oc get clusterversion -o=jsonpath="{.items[0].status.desired.channels}" | jq '.[] | select(test("stable"))' | sort -Vr | head -1 | cut -d '"' -f 2)
+                currentChannel=$(oc get clusterversion version -o jsonpath="{.spec.channel}")
+                newestChannel=$(oc get clusterversion version -o=jsonpath="{.status.desired.channels}" | jq '.[] | select(test("{{ .Values.checker.desiredChannel }}"))' | sort -Vr | head -1 | cut -d '"' -f 2)
 
                 echo "Current Channel is $currentChannel"
                 echo "Newest Channel is  $newestChannel"
@@ -51,8 +51,8 @@ spec:
                               
                 CURRENT_VERSION=$(oc adm upgrade | sed -n -e 's/Cluster version is //p');
                 echo "AKTUELLE VERSION ist $CURRENT_VERSION";
-                UPDATES=$(oc get clusterversion -o jsonpath='{.items[].status.availableUpdates}{"\n"}');
-                VERSIONS=$(oc get clusterversion -o jsonpath='{.items[].status.availableUpdates[*].version}{"\n"}');
+                UPDATES=$(oc get clusterversion version -o jsonpath='{.status.availableUpdates}{"\n"}');
+                VERSIONS=$(oc get clusterversion version -o jsonpath='{.status.availableUpdates[*].version}{"\n"}');
                 echo "VERFUEGBARE VERSIONEN sind $VERSIONS";
                 NEW_VERSION=$(echo $VERSIONS | tr " " "\n" | sort -Vr | head -1);
                 echo "AUSGEWAEHLTE VERSION ist $NEW_VERSION";
