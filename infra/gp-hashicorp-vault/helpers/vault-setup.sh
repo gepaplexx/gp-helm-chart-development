@@ -97,11 +97,20 @@ if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
 fi
 
+# ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
+if [ "${skip_non_repeatable}" = false ]; then
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable kubernetes"
+fi
+
+KUBERNETES_AUTH_ACCESSOR=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+      vault auth list -format=json" | jq -r '."kubernetes/".accessor')
+
 # DEFAULT POLICIES
 # CICD-READER
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN}  && \
     vault policy write cicd-reader \
-      <(echo 'path \"/development/cicd/*\"
+      <(echo '
+        path \"/development/cicd/data/{{identity.entity.aliases.${KUBERNETES_AUTH_ACCESSOR}.metadata.service_account_namespace}}/*\"
         {
           capabilities = [\"read\", \"list\"]
         }
@@ -201,11 +210,6 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
           capabilities = [\"read\", \"create\", \"update\", \"list\"]
         }'
       )"
-
-# ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
-if [ "${skip_non_repeatable}" = false ]; then
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable kubernetes"
-fi
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault write auth/kubernetes/config kubernetes_host=https://\${KUBERNETES_SERVICE_HOST}:\${KUBERNETES_SERVICE_PORT}"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
