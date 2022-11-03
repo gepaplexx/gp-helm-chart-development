@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   jetstream:
-    version: 2.8.2
+    version: latest
     replicas: 3
     {{- if .Values.eventbus.persistence.enabled }}
     persistence:

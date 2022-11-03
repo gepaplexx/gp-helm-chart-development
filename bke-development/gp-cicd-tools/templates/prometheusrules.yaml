@@ -105,9 +105,9 @@ spec:
             description: |
               Argo Events Controller hat eine Workqueue von 15 oder größer über mehr als 10 Minuten
           expr: |
-            workqueue_depth{name="eventbus-controller"} > 15 OR
-            workqueue_depth{name="eventsource-controller"} > 15  OR
-            workqueue_depth{name="sensor-controller"} > 15
+            workqueue_depth{name="eventbus-controller"} > 10 OR
+            workqueue_depth{name="eventsource-controller"} > 10  OR
+            workqueue_depth{name="sensor-controller"} > 10
           for: 10m
           labels:
             severity: "warning"
