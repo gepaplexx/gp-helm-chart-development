@@ -90,7 +90,7 @@ fi
 # DEFAULT SECRET STORE FOR CICD
 if [ "${skip_non_repeatable}" = false ]; then
   # Enable Audit Logging
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault"
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault audit enable file file_path=stdout"
   
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/cicd kv-v2"
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/admin kv-v2"
