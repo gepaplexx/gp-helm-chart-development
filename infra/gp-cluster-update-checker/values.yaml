@@ -13,6 +13,7 @@ checker:
     requests:
       memory: "100Mi"
       cpu: "10m"
+  desiredChannel: "stable"
 
 updater:
   schedule: '"0 3 * * 2-5"'
