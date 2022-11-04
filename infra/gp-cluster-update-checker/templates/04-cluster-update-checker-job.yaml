@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: cluster-update-checker
 spec:
-  schedule: {{ .Values.checker.schedule }}
+  schedule: {{ .Values.checker.cluster.schedule }}
   startingDeadlineSeconds: 60
   successfulJobsHistoryLimit: {{ .Values.checker.successfulJobsHistoryLimit }}
   concurrencyPolicy: "Allow"

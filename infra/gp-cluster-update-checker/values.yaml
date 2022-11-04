@@ -2,7 +2,10 @@ clustername: ""
 consoleUrl: ""
 
 checker:
-  schedule: '"0 16 * * 1-4"'
+  cluster:
+    schedule: '"0 16 * * 1-4"'
+  operator:
+    schedule: '"0 7 * * MON"'
   successfulJobsHistoryLimit: 2
   suspend: false
   updateTime: "05"
