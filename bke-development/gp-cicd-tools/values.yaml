@@ -123,6 +123,11 @@ argo_workflows:
         cpu: 250m
         memory: 128Mi
 
+    metricsConfig:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+
     persistence:
       archive: true
       nodeStatusOffLoad: true # if true node status is only saved to the persistence DB to avoid the 1MB limit in etcd
@@ -155,11 +160,6 @@ argo_workflows:
       insecure: true
       bucket: argo-workflows
       endpoint: minio-artifact-repository.gepaplexx-cicd-tools:9000
-    metricsConfig:
-      enabled: true
-
-    serviceMonitor:
-      enabled: true
 
   workflow:
     serviceAccount:
