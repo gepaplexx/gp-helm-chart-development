@@ -7,7 +7,7 @@ spec:
   startingDeadlineSeconds: 60
   successfulJobsHistoryLimit: {{ .Values.checker.successfulJobsHistoryLimit }}
   concurrencyPolicy: "Allow"
-  suspend: {{ .Values.checker.suspend }}
+  suspend: {{ .Values.checker.cluster.suspend }}
   jobTemplate:
     spec:
       template:
