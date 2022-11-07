@@ -33,13 +33,15 @@ spec:
               args:
                 - |
                   csv=$(oc get subs -A -o json | jq -r '.items[] | select(.status.state == "UpgradePending") | [.metadata.name, .status.installedCSV, .status.currentCSV] | @csv' | tr -d '"')
-                  res="Verfügbare Operator Updates: \n\n"
-                  echo "Available Updates: "
-                  while IFS="," read -r name installed available
-                  do
-                    res="${res}>*Name:* ${name}\n>*Aktuelle Version:* ${installed}\n>*Neue Version:* ${available}\n\n"
-                    echo "Name: ${name}, Current Version: ${installed}, New Version: ${available}"
-                  done < <(echo $csv)
-                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text": "'"$res"'"}' $SLACK_TARGET_CHANNEL
-
+                  if [[ $csv != "" ]];
+                  then
+                    res="Verfügbare Operator Updates: \n\n"
+                    echo "Available Updates: "
+                    while IFS="," read -r name installed available
+                    do
+                      res="${res}>*Name:* ${name}\n>*Aktuelle Version:* ${installed}\n>*Neue Version:* ${available}\n\n"
+                      echo "Name: ${name}, Current Version: ${installed}, New Version: ${available}"
+                    done < <(echo $csv)
+                    curl -X POST -H 'Content-type&#58; application/json' --data '{"text": "'"$res"'"}' $SLACK_TARGET_CHANNEL
+                  fi
           restartPolicy: Never
