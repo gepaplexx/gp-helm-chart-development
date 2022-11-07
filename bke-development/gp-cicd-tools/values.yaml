@@ -18,7 +18,7 @@ sealedSecret:
 ##  ARGO  EVENTS  ##
 ####################
 argo_events:
-  enabled: true
+  enabled: false
   fullnameOverride: argo-events
   openshift: true
   crds:
@@ -35,6 +35,22 @@ argo_events:
       requests:
         cpu: 250m
         memory: 256Mi
+  configs:
+    jetstream:
+      versions:
+      # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
+      # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
+        - version: "2.9.5"
+          natsImage: nats:2.9.5
+          metricsExporterImage: natsio/prometheus-nats-exporter:0.10.1
+          configReloaderImage: natsio/nats-server-config-reloader:0.7.4
+          startCommand: /nats-server
+      # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
+        - version: "latest"
+          natsImage: nats:latest
+          metricsExporterImage: natsio/prometheus-nats-exporter:latest
+          configReloaderImage: natsio/nats-server-config-reloader:latest
+          startCommand: /nats-server
 
 ####################
 ## ARGO WORFKLOWS ##

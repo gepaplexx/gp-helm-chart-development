@@ -8,3 +8,7 @@ eventbus:
     storageClassName: rook-ceph-block
     accessMode: ReadWriteOnce
     size: 5Gi
+  jetstream:
+    # Die Version des JetStream EventBus' muss in der argo-events-controller-manager ConfigMap vorhanden sein.
+    # Hierfür müssen die Values im Chart "gepaplexx-cicd-tools" angepasst werden.
+    version: 2.9.5
