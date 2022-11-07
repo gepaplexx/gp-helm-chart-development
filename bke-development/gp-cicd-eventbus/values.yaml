@@ -8,3 +8,5 @@ eventbus:
     storageClassName: rook-ceph-block
     accessMode: ReadWriteOnce
     size: 5Gi
+  jetstream:
+    version: 2.9.5
