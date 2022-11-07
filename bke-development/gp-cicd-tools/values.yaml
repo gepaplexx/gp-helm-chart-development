@@ -18,7 +18,7 @@ sealedSecret:
 ##  ARGO  EVENTS  ##
 ####################
 argo_events:
-  enabled: false
+  enabled: true
   fullnameOverride: argo-events
   openshift: true
   crds:

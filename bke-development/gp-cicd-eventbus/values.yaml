@@ -4,7 +4,7 @@ serviceAccount:
 eventbus:
   name: default
   persistence:
-    enabled: true
+    enabled: false
     storageClassName: rook-ceph-block
     accessMode: ReadWriteOnce
     size: 5Gi
