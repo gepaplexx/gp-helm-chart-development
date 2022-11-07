@@ -35,6 +35,14 @@ argo_events:
       requests:
         cpu: 250m
         memory: 256Mi
+  configs:
+    jetstream:
+      versions:
+        - version: "2.9.5"
+          natsImage: nats:2.9.5
+          metricsExporterImage: natsio/prometheus-nats-exporter:0.10.1
+          configReloaderImage: natsio/nats-server-config-reloader:0.7.4
+          startCommand: /nats-server
 
 ####################
 ## ARGO WORFKLOWS ##
