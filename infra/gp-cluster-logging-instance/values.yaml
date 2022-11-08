@@ -6,7 +6,7 @@ lokistack:
   minio:
     enabled: false
   configuration:
-    storageClassName: rook-ceph-block
+    storageClassName: rook-ceph-fs
     limits:
       ingestion:
         ingestionRate: 20
