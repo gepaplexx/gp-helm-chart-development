@@ -10,6 +10,7 @@ spec:
     global:
       ingestion:
         ingestionRate: {{ .Values.lokistack.configuration.limits.ingestion.ingestionRate }}
+        ingestionBurstSize: {{ .Values.lokistack.configuration.limits.ingestion.ingestionBurstSize }}
       queries:
         maxChunksPerQuery: {{ .Values.lokistack.configuration.limits.queries.maxChunksPerQuery }}
         maxQuerySeries: {{ .Values.lokistack.configuration.limits.queries.maxQueriesSeries }}

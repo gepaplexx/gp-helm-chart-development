@@ -9,7 +9,10 @@ lokistack:
     storageClassName: rook-ceph-fs
     limits:
       ingestion:
-        ingestionRate: 20
+        # not entirely clear what does values do, but apparently they fix the ingestionRateLimit error inside of the log
+        # collectors
+        ingestionRate: 200
+        ingestionBurstSize: 150
       queries:
         maxChunksPerQuery: 4000000
         maxQueriesSeries: 1000
