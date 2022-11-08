@@ -197,7 +197,7 @@ minio:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
   buckets:
-    name: argo-workflows
+  - name: argo-workflows
     purge: false
     policy: none
   makeBucketJob:
