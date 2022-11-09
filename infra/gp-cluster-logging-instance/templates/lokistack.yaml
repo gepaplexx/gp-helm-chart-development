@@ -4,10 +4,31 @@ metadata:
   name: logging-loki
   namespace: openshift-logging
   labels:
-  {{- include "gp-clusterlogging-instance.labels" . | nindent 4}}
+  {{- include "gp-clusterlogging-instance.labels" . | nindent 4 }}
 spec:
+  rules:
+    enabled: {{ .Values.lokistack.rules.enabled }}
+    # Standardmäßig werden alle Namespaces für die Rule discovery herangezogen. Außer es wird das Label "logging.alerts.disabled" auf den Namespace gesetzt.
+    namespaceSelector:
+      matchExpressions:
+        - key: logging.alerts.disabled
+          operator: NotIn
+          values:
+            - 'true'
+    # Standardmäßig werden alle Rules in Namespaces herangezogen und die darin enthaltenen Alerting-/Recordingrules als aktiv betrachtet.
+    # Ausnahme: das label "logging.rule.disabled" wird auf die jeweilige Rule gesetzt.
+    selector:
+      matchExpressions:
+        - key: logging.rule.disabled
+          operator: NotIn
+          values:
+            - 'true'
   limits:
     global:
+      # in der aktuellen Version des Loki-Operators in OpenShift noch nicht unterstützt.
+      # lt. Dokuemntation sollte das allerdings so funktionieren: https://loki-operator.dev/docs/retention_support.md/#implementation-detailsnotesconstraints
+#      retentionLimits:
+#        periodDays: {{ .Values.lokistack.configuration.limits.logRetention }}
       ingestion:
         ingestionRate: {{ .Values.lokistack.configuration.limits.ingestion.ingestionRate }}
         ingestionBurstSize: {{ .Values.lokistack.configuration.limits.ingestion.ingestionBurstSize }}
