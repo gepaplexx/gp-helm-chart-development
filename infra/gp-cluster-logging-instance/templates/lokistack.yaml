@@ -25,10 +25,6 @@ spec:
             - 'true'
   limits:
     global:
-      # in der aktuellen Version des Loki-Operators in OpenShift noch nicht unterstützt.
-      # lt. Dokuemntation sollte das allerdings so funktionieren: https://loki-operator.dev/docs/retention_support.md/#implementation-detailsnotesconstraints
-#      retentionLimits:
-#        periodDays: {{ .Values.lokistack.configuration.limits.logRetention }}
       ingestion:
         ingestionRate: {{ .Values.lokistack.configuration.limits.ingestion.ingestionRate }}
         ingestionBurstSize: {{ .Values.lokistack.configuration.limits.ingestion.ingestionBurstSize }}
