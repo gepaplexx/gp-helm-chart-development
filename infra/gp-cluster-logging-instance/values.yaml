@@ -3,6 +3,9 @@ infranodes:
 clusterlogging:
   managementState: "Managed"
 lokistack:
+  # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
+  rules:
+    enabled: true
   minio:
     enabled: false
   configuration:
