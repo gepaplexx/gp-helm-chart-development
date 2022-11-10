@@ -48,10 +48,17 @@ spec:
             - application
   deployment:
     env:
-      - name: GATEWAY_SERVICE_CA
+      - name: SERVICE_CA
         valueFrom:
           configMapKeyRef:
             key: service-ca.crt
             name: openshift-service-ca.crt
-      - name: GATEWAY_ADDRESS
-        value: 'logging-loki-gateway-http.openshift-logging.svc:8080/api/logs/v1/'
+      - name: LOKI_GATEWAY_ADDRESS
+        value: 'https://logging-loki-gateway-http.openshift-logging.svc:8080/api/logs/v1/'
+      - name: THANOS_QUERIER_ADDRESS
+        value: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
+      - name: BEARER_TOKEN
+        valueFrom:
+          secretKeyRef:
+            key: token
+            name: grafana-serviceaccount-token

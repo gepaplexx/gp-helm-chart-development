@@ -13,12 +13,6 @@ sso:
     clientSecret: ""
     clientId: "grafana"
     realmUrl: "https://sso.apps.clustername.basedomain.com/realms/realmname"
-datasource:
-  prometheus:
-    url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"
-  loki:
-    url: "tbd"
-
 resources:
   requests:
     cpu: 100m

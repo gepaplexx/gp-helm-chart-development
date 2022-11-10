@@ -12,3 +12,26 @@ roleRef:
   name: cluster-monitoring-view
   apiGroup: rbac.authorization.k8s.io
 ---
+## Grafana temporarily gets cluster-admin rights to query loki logs
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: grafana-cluster-admin-binding
+subjects:
+  - kind: ServiceAccount
+    name: grafana-serviceaccount
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+---
+# static secret to have a token with cluster admin rights
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-serviceaccount-token
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    kubernetes.io/service-account.name: grafana-serviceaccount
+type: kubernetes.io/service-account-token
