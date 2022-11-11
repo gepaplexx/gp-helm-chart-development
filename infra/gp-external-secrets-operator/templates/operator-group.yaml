@@ -3,6 +3,4 @@ kind: OperatorGroup
 metadata:
   name: external-secrets-og
   namespace: {{ .Release.Namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "-1"
 spec: {}

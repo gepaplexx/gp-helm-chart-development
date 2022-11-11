@@ -3,8 +3,6 @@ kind: OperatorConfig
 metadata:
   name: gp-eso
   namespace: {{ .Release.Namespace }}
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   serviceMonitor:
     enabled: true
