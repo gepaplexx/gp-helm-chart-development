@@ -34,7 +34,7 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="awx",workload_type="deployment"}
-            ) by (pod) > 1.5
+            ) by (pod)) > 1.5
           for: 10m
           labels:
             severity: "critical"
