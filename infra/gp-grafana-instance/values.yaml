@@ -1,6 +1,8 @@
 # Default values for gp-grafana-instance.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
+grafana:
+  version: docker.io/grafana/grafana:9.2.4
 ingress:
   hostname: grafana.apps.example.gepaplexx.com
 auth:
@@ -13,12 +15,6 @@ sso:
     clientSecret: ""
     clientId: "grafana"
     realmUrl: "https://sso.apps.clustername.basedomain.com/realms/realmname"
-datasource:
-  prometheus:
-    url: "https://thanos-querier-openshift-monitoring.apps.example.gepaplexx.com:443"
-  loki:
-    url: "tbd"
-
 resources:
   requests:
     cpu: 100m
