@@ -1,0 +1,5 @@
+apiVersion: v2
+name: gp-external-secrets-configuration
+description: A Helm chart for Kubernetes containing configuration for the External Secrets Operator
+type: application
+version: 0.1.0
