@@ -3,6 +3,8 @@ kind: OperatorConfig
 metadata:
   name: gp-eso
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-external-secrets-configuration.labels" . | nindent 4 }}
 spec:
   serviceMonitor:
     enabled: true
@@ -11,7 +13,6 @@ spec:
       cpu: 10m
       memory: 96Mi
     limits:
-      cpu: 100m
       memory: 256Mi
   certController:
     serviceMonitor:
@@ -21,7 +22,6 @@ spec:
         cpu: 10m
         memory: 96Mi
       limits:
-        cpu: 100m
         memory: 256Mi
   webhook:
     serviceMonitor:
@@ -31,5 +31,4 @@ spec:
         cpu: 10m
         memory: 96Mi
       limits:
-        cpu: 100m
         memory: 256Mi

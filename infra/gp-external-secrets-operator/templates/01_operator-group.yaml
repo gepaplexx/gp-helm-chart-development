@@ -1,0 +1,10 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: {{ .Release.Namespace }}-og
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-external-secrets-operator.labels" . | nindent 4 }}
+spec:
+  targetNamespaces:
+    - {{ .Release.Namespace }}
