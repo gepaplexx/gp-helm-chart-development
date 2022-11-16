@@ -13,7 +13,7 @@ spec:
       cpu: 10m
       memory: 96Mi
     limits:
-      cpu: 100m
+      memory: 256Mi
   certController:
     serviceMonitor:
       enabled: true
@@ -22,7 +22,7 @@ spec:
         cpu: 10m
         memory: 96Mi
       limits:
-        cpu: 100m
+        memory: 256Mi
   webhook:
     serviceMonitor:
       enabled: true
@@ -31,4 +31,4 @@ spec:
         cpu: 10m
         memory: 96Mi
       limits:
-        cpu: 100m
+        memory: 256Mi
