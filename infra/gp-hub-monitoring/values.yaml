@@ -29,7 +29,7 @@ monitoring:
 
   prometheus:
     ingress:
-      enabled: false
+      enabled: true
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
       hosts:
@@ -44,7 +44,7 @@ monitoring:
         volumeClaimTemplate:
           spec:
             storageClassName: longhorn
-            accessModes: [ "ReadWriteOnce" ]
+            accessModes: [ "ReadWriteMany" ]
             resources:
               requests:
                 storage: 50Gi
@@ -55,7 +55,6 @@ monitoring:
       additionalServiceMonitors:
         namespaceSelector:
           any: "true"
-      remoteRead: [ ]
   alertmanager:
     ingress:
       enabled: false
