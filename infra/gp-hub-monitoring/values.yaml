@@ -39,6 +39,7 @@ monitoring:
           hosts:
             - prometheus.infra.gepaplexx.com
     prometheusSpec:
+      enableRemoteWriteReceiver: true
       retentionSize: 50GiB  # TODO muss erhöht werden, wenn Cluster neu aufgesetzt wird mit mehr Plattenplatz.
       storageSpec:
         volumeClaimTemplate:
