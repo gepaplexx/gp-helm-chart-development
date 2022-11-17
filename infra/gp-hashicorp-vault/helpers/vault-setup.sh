@@ -118,13 +118,37 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 # CICD-ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write cicd-admin \
-      <(echo 'path \"/development/cicd/*\"
+      <(echo '
+        # This policy allows access to all cicd resources on development/*,
+        # make sure it is only given to admins and SAs that are restriced to
+        # GPX-only namespaces
+
+        path \"development/cicd/*\"
         {
           capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
         }
         path \"development/admin/*\"
         {
           capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
+        }
+        '
+      )"
+
+# CICD-ADMIN-READONLY
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault policy write cicd-admin-readonly \
+      <(echo '
+        # This policy allows access to all cicd resources on development/*,
+        # make sure it is only given to admins and SAs that are restriced to
+        # GPX-only namespaces
+
+        path \"development/cicd/*\"
+        {
+          capabilities = [\"read\", \"list\"]
+        }
+        path \"development/admin/*\"
+        {
+          capabilities = [\"read\", \"list\"]
         }
         '
       )"
@@ -216,6 +240,13 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       bound_service_account_names=operate-workflow-sa \
       bound_service_account_namespaces='*' \
       policies=cicd-reader \
+      ttl=24h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/cicd-admin-reader \
+      bound_service_account_names=operate-workflow-sa \
+      bound_service_account_namespaces='gepaplexx-cicd-eventbus' \
+      bound_service_account_namespaces='gepaplexx-cicd-tools' \
+      policies=cicd-admin-readonly \
       ttl=24h"
 
 # ENABLE & CONFIGURE OIDC AUTH INTEGRATION
