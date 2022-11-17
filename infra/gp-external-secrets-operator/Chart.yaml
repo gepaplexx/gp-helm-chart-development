@@ -2,4 +2,4 @@ apiVersion: v2
 name: gp-external-secrets-operator
 description: A Helm chart for installing External Secrets Operator on OpenShift https://github.com/external-secrets/external-secrets/
 type: application
-version: 0.1.2
+version: 0.1.3
