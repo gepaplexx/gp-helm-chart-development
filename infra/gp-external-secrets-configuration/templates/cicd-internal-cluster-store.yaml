@@ -1,14 +1,14 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: cicd-development-store
+  name: cicd-internal-cluster-store
 spec:
   provider:
     vault:
       auth:
         kubernetes:
           mountPath: kubernetes
-          role: cicd-reader
+          role: cicd-admin-reader
           serviceAccountRef:
             name: operate-workflow-sa
       path: development/cicd/
