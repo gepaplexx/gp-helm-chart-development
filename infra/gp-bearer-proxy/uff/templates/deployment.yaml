@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gp-bearer-proxy.fullname" . }}
+  labels:
+    {{- include "gp-bearer-proxy.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "gp-bearer-proxy.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "gp-bearer-proxy.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - mountPath: /etc/nginx/templates # mount nginx-conf volumn to /etc/nginx
+              readOnly: false
+              name: nginx-conf
+            - mountPath: /app/nginx/tls # mount nginx-conf volumn to /etc/nginx
+              readOnly: false
+              name: secret-cert
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: nginx-config # place ConfigMap `nginx-conf` on /etc/nginx
+            items:
+              - key: nginx.conf
+                path: default.conf.template
+        - name: secret-cert
+          secret:
+            secretName: {{ include "gp-bearer-proxy.fullname" . }}
+            items:
+              - key: tls.crt
+                path: server.cert
+              - key: tls.key
+                path: server.key
