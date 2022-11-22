@@ -6,7 +6,6 @@ metadata:
 data:
     nginx.sh: |-
           #bin/bash
-          echo "ich bins, der dendemann, ich bin müde, der dendemann ist müde"
           echo "
           events { worker_connections 1024; }
           http{

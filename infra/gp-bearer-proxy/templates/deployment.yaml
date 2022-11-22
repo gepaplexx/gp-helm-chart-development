@@ -30,14 +30,14 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-#          livenessProbe:
-#            httpGet:
-#              path: /
-#              port: http
-#          readinessProbe:
-#            httpGet:
-#              path: /
-#              port: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
           volumeMounts:
             - mountPath: /opt/bitnami/nginx/conf/shells # mount nginx-conf volumn to /etc/nginx
               readOnly: false
