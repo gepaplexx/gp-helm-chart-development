@@ -64,30 +64,28 @@ spec:
             key: token
             name: grafana-serviceaccount-token
   containers:
-    - command:
-        - "bash"
     - args:
-        - '/opt/bitnami/nginx/conf/shells/nginx.sh'
+        - /opt/bitnami/nginx/conf/shells/nginx.sh
+      command:
+        - bash
       image: 'bitnami/nginx:1.23.2-debian-11-r2'
       name: bearer-alertmanager-proxy
       ports:
         - containerPort: 8080
           name: http
+          protocol: TCP
       volumeMounts:
-        - mountPath: /opt/bitnami/nginx/conf/shells # mount nginx-conf volumn to /etc/nginx
+        - mountPath: /opt/bitnami/nginx/conf/shells
+          name: configmap-nginx-config
           readOnly: false
-          name: nginx-conf
-        - mountPath: /app/nginx/tls # mount nginx-conf volumn to /etc/nginx
-          readOnly: false
-          name: secret-cert
         - mountPath: /etc/nginx
+          name: configmap-openshift-service-ca
           readOnly: true
-          name: trusted-cert
         - mountPath: /app/nginx/bearer
+          name: secret-grafana-serviceaccount-token
           readOnly: true
-          name: bearer-token
   secrets:
-    - openshift-service-ca.crt
     - grafana-serviceaccount-token
   configMaps:
     - nginx-config
+    - openshift-service-ca
