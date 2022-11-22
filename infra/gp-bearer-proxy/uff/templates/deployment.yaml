@@ -26,28 +26,34 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+#          livenessProbe:
+#            httpGet:
+#              path: /
+#              port: http
+#          readinessProbe:
+#            httpGet:
+#              path: /
+#              port: http
           volumeMounts:
-            - mountPath: /etc/nginx/templates # mount nginx-conf volumn to /etc/nginx
+            - mountPath: /opt/bitnami/nginx/conf/server_blocks # mount nginx-conf volumn to /etc/nginx
               readOnly: false
               name: nginx-conf
             - mountPath: /app/nginx/tls # mount nginx-conf volumn to /etc/nginx
               readOnly: false
               name: secret-cert
+            - mountPath: /etc/nginx
+              readOnly: true
+              name: trusted-cert
+            - mountPath: /app/nginx/bearer
+              readOnly: true
+              name: bearer-token
       volumes:
         - name: nginx-conf
           configMap:
             name: nginx-config # place ConfigMap `nginx-conf` on /etc/nginx
             items:
               - key: nginx.conf
-                path: default.conf.template
+                path: default.conf
         - name: secret-cert
           secret:
             secretName: {{ include "gp-bearer-proxy.fullname" . }}
@@ -56,3 +62,15 @@ spec:
                 path: server.cert
               - key: tls.key
                 path: server.key
+        - name: trusted-cert
+          configMap:
+            name: openshift-service-ca.crt
+            items:
+              - key: service-ca.crt
+                path: trusted.crt
+        - name: bearer-token
+          secret:
+            secretName: grafana-serviceaccount-token
+            items:
+              - key: token
+                path: token

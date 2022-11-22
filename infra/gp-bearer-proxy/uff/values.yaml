@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
-  pullPolicy: Always
+  repository: bitnami/nginx
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.23.2"
+  tag: "1.23.2-debian-11-r2"
 
 imagePullSecrets: []
 nameOverride: ""
