@@ -68,7 +68,7 @@ spec:
         - "bash"
     - args:
         - '/opt/bitnami/nginx/conf/shells/nginx.sh'
-      image: '"bitnami/nginx:1.23.2-debian-11-r2"'
+      image: 'bitnami/nginx:1.23.2-debian-11-r2'
       name: bearer-alertmanager-proxy
       ports:
         - containerPort: 8080
