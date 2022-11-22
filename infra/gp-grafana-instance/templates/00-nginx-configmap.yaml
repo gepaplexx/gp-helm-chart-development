@@ -19,4 +19,7 @@ data:
                   proxy_ssl_trusted_certificate /etc/nginx/trusted.crt;
               }
           }}" > /opt/bitnami/nginx/conf/nginx.conf
+          info "** Starting NGINX setup **"
+          /opt/bitnami/scripts/nginx/setup.sh
+          info "** NGINX setup finished! **"
           /opt/bitnami/scripts/nginx/run.sh
