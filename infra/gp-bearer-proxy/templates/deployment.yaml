@@ -22,6 +22,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - "bash"
+          args:
+            - "/opt/bitnami/nginx/conf/shells/nginx.sh"
           ports:
             - name: http
               containerPort: 80
@@ -35,7 +39,7 @@ spec:
 #              path: /
 #              port: http
           volumeMounts:
-            - mountPath: /opt/bitnami/nginx/conf/server_blocks # mount nginx-conf volumn to /etc/nginx
+            - mountPath: /opt/bitnami/nginx/conf/shells # mount nginx-conf volumn to /etc/nginx
               readOnly: false
               name: nginx-conf
             - mountPath: /app/nginx/tls # mount nginx-conf volumn to /etc/nginx
@@ -52,8 +56,8 @@ spec:
           configMap:
             name: nginx-config # place ConfigMap `nginx-conf` on /etc/nginx
             items:
-              - key: nginx.conf
-                path: default.conf
+              - key: nginx.sh
+                path: nginx.sh
         - name: secret-cert
           secret:
             secretName: {{ include "gp-bearer-proxy.fullname" . }}

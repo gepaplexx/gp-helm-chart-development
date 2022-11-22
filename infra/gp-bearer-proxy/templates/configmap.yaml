@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: grafana-operator-system
+data:
+    nginx.sh: |-
+          #bin/bash
+          echo "ich bins, der dendemann, ich bin müde, der dendemann ist müde"
+          echo "
+          events { worker_connections 1024; }
+          http{
+          server {
+              listen 8080 default;
+
+              location / {
+                  proxy_pass https://alertmanager-main.openshift-monitoring.svc.cluster.local:9094;
+                  proxy_set_header Authorization 'Bearer $(cat /app/nginx/bearer/token)';
+                  proxy_set_header Host alertmanager-main.openshift-monitoring.svc.cluster.local;
+                  proxy_ssl_trusted_certificate /etc/nginx/trusted.crt;
+              }
+          }}" > /opt/bitnami/nginx/conf/nginx.conf
+          /opt/bitnami/scripts/nginx/run.sh
+
+
+
+
+
+
