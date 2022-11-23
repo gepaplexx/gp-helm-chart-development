@@ -100,11 +100,21 @@ if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
 fi
 
+# ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
+if [ "${skip_non_repeatable}" = false ]; then
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable kubernetes"
+fi
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault write auth/kubernetes/config kubernetes_host=https://\${KUBERNETES_SERVICE_HOST}:\${KUBERNETES_SERVICE_PORT}"
+
+KUBERNETES_AUTH_ACCESSOR=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+      vault auth list -format=json" | jq -r '."kubernetes/".accessor')
+
 # DEFAULT POLICIES
 # CICD-READER
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write cicd-reader \
-      <(echo 'path \"/development/cicd/*\"
+      <(echo '
+        path \"/development/cicd/data/{{identity.entity.aliases.${KUBERNETES_AUTH_ACCESSOR}.metadata.service_account_namespace}}/*\"
         {
           capabilities = [\"read\", \"list\"]
         }
@@ -118,13 +128,37 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 # CICD-ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write cicd-admin \
-      <(echo 'path \"/development/cicd/*\"
+      <(echo '
+        # This policy allows access to all cicd resources on development/*,
+        # make sure it is only given to admins and SAs that are restricted to
+        # GPX-only namespaces
+
+        path \"development/cicd/*\"
         {
           capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
         }
         path \"development/admin/*\"
         {
           capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
+        }
+        '
+      )"
+
+# CICD-ADMIN-READONLY
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault policy write cicd-admin-readonly \
+      <(echo '
+        # This policy allows access to all cicd resources on development/*,
+        # make sure it is only given to admins and SAs that are restricted to
+        # GPX-only namespaces
+
+        path \"development/cicd/*\"
+        {
+          capabilities = [\"read\", \"list\"]
+        }
+        path \"development/admin/*\"
+        {
+          capabilities = [\"read\", \"list\"]
         }
         '
       )"
@@ -205,17 +239,18 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         }'
       )"
 
-# ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
-if [ "${skip_non_repeatable}" = false ]; then
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault auth enable kubernetes"
-fi
-
-kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault write auth/kubernetes/config kubernetes_host=https://\${KUBERNETES_SERVICE_HOST}:\${KUBERNETES_SERVICE_PORT}"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/cicd-reader \
       bound_service_account_names=operate-workflow-sa \
       bound_service_account_namespaces='*' \
       policies=cicd-reader \
+      ttl=24h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/cicd-admin-reader \
+      bound_service_account_names=operate-workflow-sa \
+      bound_service_account_namespaces='gepaplexx-cicd-eventbus' \
+      bound_service_account_namespaces='gepaplexx-cicd-tools' \
+      policies=cicd-admin-readonly \
       ttl=24h"
 
 # ENABLE & CONFIGURE OIDC AUTH INTEGRATION

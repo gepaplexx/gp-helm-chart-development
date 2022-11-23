@@ -1,0 +1,16 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: cicd-internal-cluster-store
+spec:
+  provider:
+    vault:
+      auth:
+        kubernetes:
+          mountPath: kubernetes
+          role: cicd-admin-reader
+          serviceAccountRef:
+            name: operate-workflow-sa
+      path: development/cicd/
+      server: 'http://vault-active.gp-vault.svc.cluster.local:8200'
+      version: v2
