@@ -33,8 +33,7 @@ monitoring:
     extraSecret:
       name: prometheus-auth
       data:
-       auth: |
-         prometheus:$2b$12$GtjYce9gxCtDepyGgBY5der5KqyZ6g2UDLoCqc19wAFm0dKXGP/Oq
+       auth: ""
     ingress:
       enabled: true
       annotations:
