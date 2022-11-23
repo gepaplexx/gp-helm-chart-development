@@ -130,7 +130,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
     vault policy write cicd-admin \
       <(echo '
         # This policy allows access to all cicd resources on development/*,
-        # make sure it is only given to admins and SAs that are restriced to
+        # make sure it is only given to admins and SAs that are restricted to
         # GPX-only namespaces
 
         path \"development/cicd/*\"
@@ -149,7 +149,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
     vault policy write cicd-admin-readonly \
       <(echo '
         # This policy allows access to all cicd resources on development/*,
-        # make sure it is only given to admins and SAs that are restriced to
+        # make sure it is only given to admins and SAs that are restricted to
         # GPX-only namespaces
 
         path \"development/cicd/*\"
