@@ -53,7 +53,12 @@ monitoring:
             failureThreshold: 120
             periodSeconds: 30
       enableRemoteWriteReceiver: true
-      retentionSize: 50GiB  # TODO muss erhöht werden, wenn Cluster neu aufgesetzt wird mit mehr Plattenplatz.
+      resources:
+        requests:
+          memory: 6Gi
+          cpu: 3000m
+      retentionSize: 250GiB
+      retention: 30d
       storageSpec:
         volumeClaimTemplate:
           spec:
@@ -61,7 +66,7 @@ monitoring:
             accessModes: [ "ReadWriteMany" ]
             resources:
               requests:
-                storage: 50Gi
+                storage: 300Gi
       ruleSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
