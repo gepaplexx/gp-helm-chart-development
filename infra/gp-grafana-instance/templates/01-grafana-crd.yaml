@@ -63,3 +63,25 @@ spec:
           secretKeyRef:
             key: token
             name: grafana-serviceaccount-token
+  containers:
+    - args:
+        - /opt/bitnami/nginx/conf/shells/nginx.sh
+      command:
+        - bash
+      image: 'bitnami/nginx:1.23.2-debian-11-r2'
+      name: bearer-alertmanager-proxy
+      ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+      volumeMounts:
+        - mountPath: /opt/bitnami/nginx/conf/shells
+          name: configmap-nginx-config
+          readOnly: false
+        - mountPath: /app/nginx/bearer
+          name: secret-grafana-serviceaccount-token
+          readOnly: true
+  secrets:
+    - grafana-serviceaccount-token
+  configMaps:
+    - nginx-config
