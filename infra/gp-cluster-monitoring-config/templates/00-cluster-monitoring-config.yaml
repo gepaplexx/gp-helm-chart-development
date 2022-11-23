@@ -11,6 +11,19 @@ data:
       {{- include "infranodes.enabled" . | nindent 6 }}
     prometheusK8s:
       {{- include "infranodes.enabled" . | nindent 6 }}
+      externalLabels:
+        gepardec_cluster: {{ .Values.clusterMonitoring.prometheusK8s.clusterName }}
+      {{- if .Values.clusterMonitoring.prometheusK8s.remoteWrite.enabled }}
+      remoteWrite:
+        - url: {{ .Values.clusterMonitoring.prometheusK8s.remoteWrite.url }}
+          basicAuth:
+            username:
+              name: hub-remote-write-authentication
+              key: username
+            password:
+              name: hub-remote-write-authentication
+              key: password
+      {{- end }}
       retention: {{ .Values.clusterMonitoring.prometheusK8s.retention }}
       resources:
         requests:
