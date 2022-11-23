@@ -1,4 +1,6 @@
 monitoring:
+  defaultRules:
+    create: false
   grafana:
     adminPassword: "changeme"
     ingress:
