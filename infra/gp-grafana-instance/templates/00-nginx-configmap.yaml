@@ -16,7 +16,7 @@ data:
                   proxy_pass https://alertmanager-main.openshift-monitoring.svc.cluster.local:9094;
                   proxy_set_header Authorization 'Bearer $(cat /app/nginx/bearer/token)';
                   proxy_set_header Host alertmanager-main.openshift-monitoring.svc.cluster.local;
-                  proxy_ssl_trusted_certificate /etc/nginx/trusted.crt;
+                  proxy_ssl_verify  off;
               }
           }}" > /opt/bitnami/nginx/conf/nginx.conf
           info "** Starting NGINX setup **"

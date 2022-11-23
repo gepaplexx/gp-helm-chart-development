@@ -78,9 +78,6 @@ spec:
         - mountPath: /opt/bitnami/nginx/conf/shells
           name: configmap-nginx-config
           readOnly: false
-        - mountPath: /etc/nginx
-          name: configmap-openshift-service-ca
-          readOnly: true
         - mountPath: /app/nginx/bearer
           name: secret-grafana-serviceaccount-token
           readOnly: true
@@ -88,4 +85,3 @@ spec:
     - grafana-serviceaccount-token
   configMaps:
     - nginx-config
-    - openshift-service-ca
