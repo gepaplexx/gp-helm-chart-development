@@ -1,0 +1,10 @@
+kind: Group
+apiVersion: user.openshift.io/v1
+metadata:
+  name: observability_core_extern
+users:
+  - aleksander.lazic
+  - georg.hoellebauer
+  - hannes.schaller
+  - rainhard.vladyka
+  - johann.stadler
