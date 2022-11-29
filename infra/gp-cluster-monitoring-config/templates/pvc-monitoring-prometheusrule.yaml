@@ -9,7 +9,7 @@ spec:
       rules:
         - alert: PersistentVolumeClaimNearlyFullWarning
           annotations:
-            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
+            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 80% voll. Aktuell sind {{`{{ $value }}`}} verfügbar.
             summary: PersistentVolumeClaim zu 80% voll.
           expr: |
             100 * (
@@ -23,7 +23,7 @@ spec:
             type: "internal"
         - alert: PersistentVolumeClaimAlmostFullAlert
           annotations:
-            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 90% voll. Aktuell sind {{`{{ $value | humanizePercentage }}`}} verfügbar.
+            description: Das PersistentVolume claimed von {{`{{ $labels.persistentvolumeclaim }}`}} im Namespace {{`{{ $labels.namespace }}`}} ist mehr als 90% voll. Aktuell sind {{`{{ $value }}`}} verfügbar.
             summary: PersistentVolumeClaim zu 90% voll.
           expr: |
             100 * (
