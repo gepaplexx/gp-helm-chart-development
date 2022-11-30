@@ -7,7 +7,7 @@ bases:
 
 helmCharts:
 - name: gp-bke-runtime-minimal-application
-  version: 0.0.14
+  version: 0.1.18
   repo: https://gepaplexx.github.io/gp-helm-charts/
   includeCRDs: false
   releaseName: mytestapp
