@@ -28,8 +28,8 @@ spec:
       imagefs.inodesFree: "5%"
     evictionPressureTransitionPeriod: 0s
     imageMinimumGCAge: 5m
-    imageGCHighThresholdPercent: 80
-    imageGCLowThresholdPercent: 75
+    imageGCHighThresholdPercent: 70
+    imageGCLowThresholdPercent: 45
 ---
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
@@ -61,5 +61,5 @@ spec:
       imagefs.inodesFree: "5%"
     evictionPressureTransitionPeriod: 0s
     imageMinimumGCAge: 5m
-    imageGCHighThresholdPercent: 80
-    imageGCLowThresholdPercent: 75
+    imageGCHighThresholdPercent: 70
+    imageGCLowThresholdPercent: 45
