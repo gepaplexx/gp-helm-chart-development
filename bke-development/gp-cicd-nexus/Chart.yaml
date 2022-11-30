@@ -9,5 +9,5 @@ appVersion: "3.38.1"
 dependencies:
   - name: nexus-repository-manager
     alias: nexus
-    version: "38.1.1"
+    version: "38.1.2"
     repository: "https://sonatype.github.io/helm3-charts/"
