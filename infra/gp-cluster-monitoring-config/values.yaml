@@ -5,6 +5,11 @@ infranodes:
 clusterMonitoring:
   enableUserWorkload: true
   prometheusK8s:
+    clusterName: ""
+    remoteWrite:
+      enabled: true
+      url: https://prometheus.infra.gepaplexx.com/api/v1/write
+      password: ""  # SealedSecret encrypted password for accessing prometheus remote write endpoint
     retention: 31d
     resources:
       requests:

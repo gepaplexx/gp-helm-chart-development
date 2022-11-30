@@ -1,4 +1,6 @@
 monitoring:
+  defaultRules:
+    create: false
   grafana:
     adminPassword: "changeme"
     ingress:
@@ -28,10 +30,18 @@ monitoring:
         client_secret: "add-me-to-inventory"
 
   prometheus:
+    extraSecret:
+      name: prometheus-auth
+      data:
+       auth: ""
     ingress:
       enabled: true
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
+        # Add Basic Authentication to public ingress. Using the extra secret that has been configured above.
+        nginx.ingress.kubernetes.io/auth-type: basic
+        nginx.ingress.kubernetes.io/auth-secret: prometheus-auth
+        nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required for accessing prometheus via public ingress'
       hosts:
         - prometheus.infra.gepaplexx.com
       tls:
@@ -39,15 +49,32 @@ monitoring:
           hosts:
             - prometheus.infra.gepaplexx.com
     prometheusSpec:
-      retentionSize: 50GiB  # TODO muss erhöht werden, wenn Cluster neu aufgesetzt wird mit mehr Plattenplatz.
+      containers: # Patch prometheus startup probe to give the container time to replay the WAL from disk
+        - name: prometheus
+          startupProbe:
+            failureThreshold: 120
+            periodSeconds: 30
+          livenessProbe:
+            failureThreshold: 10
+            periodSeconds: 90
+          readinessProbe:
+            failureThreshold: 120
+            periodSeconds: 30
+      enableRemoteWriteReceiver: true
+      resources:
+        requests:
+          memory: 6Gi
+          cpu: 3000m
+      retentionSize: 250GiB
+      retention: 30d
       storageSpec:
         volumeClaimTemplate:
           spec:
             storageClassName: longhorn
-            accessModes: [ "ReadWriteMany" ]
+            accessModes: [ "ReadWriteOnce" ]
             resources:
               requests:
-                storage: 50Gi
+                storage: 300Gi
       ruleSelectorNilUsesHelmValues: false
       serviceMonitorSelectorNilUsesHelmValues: false
       podMonitorSelectorNilUsesHelmValues: false
