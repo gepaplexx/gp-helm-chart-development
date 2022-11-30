@@ -3,7 +3,14 @@ kind: Grafana
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-grafana-instance.labels" . | nindent 4 }}
 spec:
+  dataStorage:
+    accessModes:
+      - ReadWriteMany
+    size: 10Gi
+    class: rook-ceph-fs
   baseImage: {{ .Values.grafana.version}}
   ingress:
     enabled: true

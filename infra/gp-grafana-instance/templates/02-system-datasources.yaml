@@ -67,4 +67,8 @@ spec:
       access: proxy
       editable: true
       isDefault: false
+      customJsonData:
+        handleGrafanaManagedAlerts: true
+        implementation: prometheus
+
   name: system-datasources.yaml
