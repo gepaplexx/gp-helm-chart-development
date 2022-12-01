@@ -46,13 +46,6 @@ lokistack:
 # bitnami minio chart
 minio:
   existingSecret: "loki-backend-secret"
-  podSecurityContext:
-    enabled: true
-    fsGroup: 1001
-  containerSecurityContext:
-    enabled: true
-    runAsUser: 1001
-    runAsNonRoot: true
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
