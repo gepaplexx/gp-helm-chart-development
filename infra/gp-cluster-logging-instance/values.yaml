@@ -43,10 +43,16 @@ lokistack:
     endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
 # Sollte später über die NetApp direkt geregelt werden.
+# bitnami minio chart
 minio:
   existingSecret: "loki-backend-secret"
-  securityContext:
-    runAsUser: 0
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1001
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1001
+    runAsNonRoot: true
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
