@@ -44,7 +44,6 @@ lokistack:
 
 # bitnami minio chart
 minio:
-  existingSecret: "loki-backend-secret"
   podSecurityContext:
     enabled: true
     fsGroup: 1000700000
@@ -61,10 +60,5 @@ minio:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
     limits:
       memory: 4Gi
-  defaultBucket:
-    enabled: true
-    name: loki
-  auth:
-    existingSecret: loki-backend-storage
 
 
