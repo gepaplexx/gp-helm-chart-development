@@ -44,6 +44,7 @@ lokistack:
 
 # bitnami minio chart
 minio:
+  existingSecret: "loki-backend-secret-different"
   podSecurityContext:
     enabled: true
     fsGroup: 1000700000
@@ -51,9 +52,34 @@ minio:
     enabled: true
     runAsUser: 1000700000
     runAsNonRoot: true
-  fullnameOverride: loki-backend-storage-diffrent
+  fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
-    size: 300Gi
+    size: 200Gi
+  resources:
+    requests:
+      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
+    limits:
+      memory: 4Gi
+  makeBucketJob:
+    securityContext:
+      enabled: true
+      runAsUser: 0
+  defaultBucket:
+    enabled: true
+    name: loki
+  serviceAccount:
+    create: false
+    automountServiceAccountToken: true
+    name: loki-minio
+  extraVolumes:
+    - name: minio-user
+      secret:
+        defaultMode: 420
+        secretName: loki-backend-secret
+  usersExistingSecrets:
+    - loki-backend-secret
+  auth:
+    existingSecret: loki-backend-secret
 
 
