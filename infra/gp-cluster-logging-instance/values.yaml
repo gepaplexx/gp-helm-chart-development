@@ -42,7 +42,6 @@ lokistack:
     secretkey: ""
     endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
-# Sollte später über die NetApp direkt geregelt werden.
 # bitnami minio chart
 minio:
   existingSecret: "loki-backend-secret"
@@ -73,3 +72,9 @@ minio:
     create: false
     automountServiceAccountToken: true
     name: loki-minio
+  extraVolumes:
+    - name: minio-user
+      secret:
+        defaultMode: 420
+        secretName: loki-backend-secret
+
