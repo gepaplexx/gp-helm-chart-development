@@ -44,7 +44,8 @@ lokistack:
 
 # bitnami minio chart
 minio:
-  existingSecret: "loki-backend-secret"
+  auth:
+    existingSecret: "loki-backend-storage"
   podSecurityContext:
     enabled: true
     fsGroup: 1000700000
@@ -55,7 +56,7 @@ minio:
   fullnameOverride: loki-backend-storage-different
   replicas: 1
   persistence:
-    size: 200Gi
+    size: 300Gi
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -65,12 +66,33 @@ minio:
     securityContext:
       enabled: true
       runAsUser: 0
-  defaultBucket:
-    enabled: true
-    name: loki
   serviceAccount:
     create: false
     automountServiceAccountToken: true
     name: loki-minio
+  provisioning:
+    enabled: true
+    users:
+       - username: loki
+    buckets:
+       - name: loki
+         versioning: false
+         # Versioning is automatically enabled if withLock is true
+         # ref: https://docs.min.io/docs/minio-bucket-versioning-guide.html
+         withLock: false
+         # Only when mode is 'distributed'
+         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
+         lifecycle:
+           - id: Loki7dRetention
+             prefix: Loki
+             disabled: false
+             expiry:
+               days: 30
+               # Days !OR! date
+               # date: "2021-11-11T00:00:00Z"
+               nonconcurrentDays: 3
+         # Only when mode is 'distributed'
+         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
+
 
 
