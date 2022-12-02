@@ -70,4 +70,6 @@ minio:
     enabled: true
     name: loki
   serviceAccount:
+    create: false
+    automountServiceAccountToken: true
     name: loki-minio
