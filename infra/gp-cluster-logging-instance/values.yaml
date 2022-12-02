@@ -44,8 +44,6 @@ lokistack:
 
 # bitnami minio chart
 minio:
-  auth:
-    existingSecret: "loki-backend-storage"
   podSecurityContext:
     enabled: true
     fsGroup: 1000700000
@@ -71,9 +69,14 @@ minio:
     automountServiceAccountToken: true
     name: loki-minio
   provisioning:
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1000700000
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1000700000
+      runAsNonRoot: true
     enabled: true
-    users:
-       - username: loki
     buckets:
        - name: loki
          versioning: false
