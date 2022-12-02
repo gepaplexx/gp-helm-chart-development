@@ -72,14 +72,5 @@ minio:
     create: false
     automountServiceAccountToken: true
     name: loki-minio
-  extraVolumes:
-    - name: minio-user
-      secret:
-        defaultMode: 420
-        secretName: loki-backend-secret
-  usersExistingSecrets:
-    - loki-backend-secret
-  auth:
-    existingSecret: loki-backend-secret
 
 
