@@ -61,24 +61,13 @@ minio:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
     limits:
       memory: 4Gi
-  makeBucketJob:
-    securityContext:
-      enabled: true
-      runAsUser: 0
   defaultBucket:
     enabled: true
     name: loki
   serviceAccount:
-    create: false
+    create: true
     automountServiceAccountToken: true
     name: loki-minio
-  extraVolumes:
-    - name: minio-user
-      secret:
-        defaultMode: 420
-        secretName: loki-backend-secret
-  usersExistingSecrets:
-    - loki-backend-secret
   auth:
     existingSecret: loki-backend-storage
 
