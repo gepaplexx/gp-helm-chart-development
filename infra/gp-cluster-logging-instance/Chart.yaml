@@ -3,7 +3,7 @@ name: gp-cluster-logging-instance
 description: A Helm chart for Kubernetes
 
 type: application
-version: 2.0.7-dev5
+version: 2.0.7-dev6
 
 dependencies:
   - name: minio
