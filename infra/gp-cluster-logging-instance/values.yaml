@@ -55,7 +55,7 @@ minio:
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
-    size: 200Gi
+    size: 300Gi
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -64,10 +64,6 @@ minio:
   defaultBucket:
     enabled: true
     name: loki
-  serviceAccount:
-    create: true
-    automountServiceAccountToken: true
-    name: loki-minio
   auth:
     existingSecret: loki-backend-storage
 
