@@ -55,7 +55,6 @@ minio:
   replicas: 1
   persistence:
     size: 300Gi
-    existingClaim: "loki-backend-storage"
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -66,9 +65,8 @@ minio:
       enabled: true
       runAsUser: 0
   serviceAccount:
-    create: false
+    create: true
     automountServiceAccountToken: true
-    name: loki-minio
   provisioning:
     users:
       - username: loki
