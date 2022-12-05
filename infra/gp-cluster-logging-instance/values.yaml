@@ -39,7 +39,7 @@ lokistack:
   backend:
     bucketname: loki
     accesskey: loki
-    secretkey: "lokilokiloki"
+    secretkey: ""
     endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
 # bitnami minio chart
@@ -68,11 +68,8 @@ minio:
     create: true
     automountServiceAccountToken: true
   provisioning:
-    users:
-      - username: loki
-        password: lokilokiloki
-        policies:
-          - readwrite
+    usersExistingSecrets:
+      - loki-backend-user-secret
     podSecurityContext:
       enabled: true
       fsGroup: 1000700000
