@@ -40,7 +40,7 @@ lokistack:
     bucketname: loki
     accesskey: loki
     secretkey: "lokilokiloki"
-    endpoint: "http://loki-backend-storage-different.openshift-logging.svc.cluster.local:9000/"
+    endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
 # bitnami minio chart
 minio:
@@ -51,7 +51,7 @@ minio:
     enabled: true
     runAsUser: 1000700000
     runAsNonRoot: true
-  fullnameOverride: loki-backend-storage-different
+  fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
     size: 300Gi
