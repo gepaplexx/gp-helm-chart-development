@@ -55,6 +55,7 @@ minio:
   replicas: 1
   persistence:
     size: 300Gi
+    existingClaim: "loki-backend-storage"
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
