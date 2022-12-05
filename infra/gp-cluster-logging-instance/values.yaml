@@ -35,7 +35,7 @@ lokistack:
     queryFrontend:
       replicas: 1
     ruler:
-      replicas: 1
+      replicas: 0
   backend:
     bucketname: loki
     accesskey: loki
