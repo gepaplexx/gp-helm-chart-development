@@ -5,7 +5,7 @@ clusterlogging:
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
-    enabled: true
+    enabled: false
   minio:
     enabled: false
   configuration:
