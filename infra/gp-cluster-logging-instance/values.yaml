@@ -55,6 +55,8 @@ minio:
   replicas: 1
   persistence:
     size: 300Gi
+  auth:
+    existingSecret: "loki-backend-secret"
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -68,8 +70,6 @@ minio:
     create: true
     automountServiceAccountToken: true
   provisioning:
-    usersExistingSecrets:
-      - loki-backend-user-secret
     podSecurityContext:
       enabled: true
       fsGroup: 1000700000
