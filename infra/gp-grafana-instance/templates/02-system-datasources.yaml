@@ -47,20 +47,6 @@ spec:
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
-    - name: Loki (Audit)
-      type: loki
-      url: ${LOKI_GATEWAY_ADDRESS}/audit/
-      access: proxy
-      editable: true
-      isDefault: false
-      jsonData:
-        httpMethod: POST
-        httpHeaderName1: Authorization
-        oauthPassThru: false
-        tlsAuthWithCACert: true
-      secureJsonData:
-        httpHeaderValue1: Bearer ${BEARER_TOKEN}
-        tlsCACert: ${SERVICE_CA}
     - name: Alertmanager
       type: alertmanager
       url: http://localhost:8080
