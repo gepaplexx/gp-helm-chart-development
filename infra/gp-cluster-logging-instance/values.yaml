@@ -87,7 +87,7 @@ minio:
          # Only when mode is 'distributed'
          # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
          lifecycle:
-           - id: Loki7dRetention
+           - id: Loki30dRetention
              prefix: Loki
              disabled: false
              expiry:
