@@ -5,7 +5,7 @@ clusterlogging:
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
-    enabled: true
+    enabled: false
   minio:
     enabled: false
   configuration:
@@ -35,22 +35,28 @@ lokistack:
     queryFrontend:
       replicas: 1
     ruler:
-      replicas: 1
+      replicas: 0
   backend:
     bucketname: loki
     accesskey: loki
     secretkey: ""
     endpoint: "http://loki-backend-storage.openshift-logging.svc.cluster.local:9000/"
 
-# Sollte später über die NetApp direkt geregelt werden.
+# bitnami minio chart
 minio:
-  existingSecret: "loki-backend-secret"
-  securityContext:
-    runAsUser: 0
+  podSecurityContext:
+    enabled: true
+    fsGroup: 1000700000
+  containerSecurityContext:
+    enabled: true
+    runAsUser: 1000700000
+    runAsNonRoot: true
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
-    size: 200Gi
+    size: 300Gi
+  auth:
+    existingSecret: "loki-backend-secret"
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
@@ -60,8 +66,37 @@ minio:
     securityContext:
       enabled: true
       runAsUser: 0
-  defaultBucket:
-    enabled: true
-    name: loki
   serviceAccount:
-    name: loki-minio
+    create: true
+    automountServiceAccountToken: true
+  provisioning:
+    podSecurityContext:
+      enabled: true
+      fsGroup: 1000700000
+    containerSecurityContext:
+      enabled: true
+      runAsUser: 1000700000
+      runAsNonRoot: true
+    enabled: true
+    buckets:
+       - name: loki
+         versioning: false
+         # Versioning is automatically enabled if withLock is true
+         # ref: https://docs.min.io/docs/minio-bucket-versioning-guide.html
+         withLock: false
+         # Only when mode is 'distributed'
+         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
+         lifecycle:
+           - id: Loki30dRetention
+             prefix: Loki
+             disabled: false
+             expiry:
+               days: 30
+               # Days !OR! date
+               # date: "2021-11-11T00:00:00Z"
+               nonconcurrentDays: 3
+         # Only when mode is 'distributed'
+         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
+
+
+
