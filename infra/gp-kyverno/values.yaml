@@ -6,6 +6,7 @@
 #      kubectl delete mutatingwebhookconfiguration kyverno-verify-mutating-webhook-cfg;
 
 kyverno:
+  replicaCount: 3
   rbac:
     serviceAccount:
       name: kyverno
