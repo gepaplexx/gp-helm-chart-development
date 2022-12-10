@@ -8,5 +8,5 @@ appVersion: "2.4.53"
 
 dependencies:
   - name: apache
-    version: "9.0.18"
+    version: "9.2.9"
     repository: "https://charts.bitnami.com/bitnami"
