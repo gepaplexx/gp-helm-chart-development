@@ -187,8 +187,10 @@ argo_workflows:
 #####################
 minio:
   existingSecret: "minio-artifact-repository"
-  securityContext:
-    runAsUser: 0
+  containerSecurityContext:
+    enabled: false
+  podSecurityContext:
+    enabled: false
   fullnameOverride: minio-artifact-repository
   replicas: 1
   persistence:
@@ -206,6 +208,13 @@ minio:
       runAsUser: 0
   serviceAccount:
     name: minio
+  provisioning:
+    containerSecurityContext:
+      enabled: false
+    podSecurityContext:
+      enabled: false
+
+
 
 ####################
 ##    ARGO  CD    ##
