@@ -187,10 +187,6 @@ argo_workflows:
 #####################
 minio:
   existingSecret: "minio-artifact-repository"
-  containerSecurityContext:
-    enabled: false
-  podSecurityContext:
-    enabled: false
   fullnameOverride: minio-artifact-repository
   replicas: 1
   persistence:
@@ -198,21 +194,13 @@ minio:
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
-  buckets:
-  - name: argo-workflows
-    purge: false
-    policy: none
-  makeBucketJob:
-    securityContext:
-      enabled: true
-      runAsUser: 0
+  provisioning:
+    buckets:
+    - name: argo-workflows
+      purge: false
+      policy: none
   serviceAccount:
     name: minio
-  provisioning:
-    containerSecurityContext:
-      enabled: false
-    podSecurityContext:
-      enabled: false
 
 
 
