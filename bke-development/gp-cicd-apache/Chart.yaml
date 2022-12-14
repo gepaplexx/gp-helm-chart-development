@@ -3,10 +3,10 @@ name: gp-cicd-apache
 description: A Helm chart for deploying an apache web server to publish junit test results
 
 type: application
-version: 0.2.5
+version: 0.3.0
 appVersion: "2.4.53"
 
 dependencies:
   - name: apache
-    version: "9.0.18"
+    version: "9.2.9"
     repository: "https://charts.bitnami.com/bitnami"
