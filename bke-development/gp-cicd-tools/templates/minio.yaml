@@ -21,7 +21,7 @@ metadata:
 spec:
   encryptedData:
     secretkey: {{ .Values.argo_workflows.archive.secretkey }}
-    root-password: {{ .Values.lokistack.backend.secretkey }}
+    root-password: {{ .Values.argo_workflows.archive.secretkey }}
   template:
     data:
       accesskey: minio
