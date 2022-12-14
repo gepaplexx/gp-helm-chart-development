@@ -186,7 +186,8 @@ argo_workflows:
 ## Workflows Minio ##
 #####################
 minio:
-  existingSecret: "minio-artifact-repository"
+  auth:
+    existingSecret: "minio-artifact-repository"
   fullnameOverride: minio-artifact-repository
   replicas: 1
   persistence:
