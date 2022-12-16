@@ -7,13 +7,15 @@ metadata:
   namespace: openshift-logging
 spec:
   collection:
-    # Defaults, ansonsten spinnt der Operator zusätzlich fluentd collectoren hoch
     logs:
+      type: fluentd
       fluentd:
-        resources: null
-      type: ''
-    resources: null
-    type: vector
+        resources:
+          limits:
+            memory: 736Mi
+          requests:
+            cpu: 100m
+            memory: 736Mi
   logStore:
     # Defaults, ansonsten spinnt der Operator zusätzlich elasticsearch hoch
     elasticsearch:
