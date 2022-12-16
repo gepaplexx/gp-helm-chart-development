@@ -129,6 +129,51 @@ argo_workflows:
       spec:
         ttlStrategy:
             secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+        metrics:
+          prometheus:
+            - name: duration_gauge
+              help: "Duration gauge by name"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+                - key: status
+                  value: "{{ workflow.status }}"
+              gauge:
+                realtime: true                  # This metric will be emitted in real time. For more info see: docs/metrics.md
+                value: "{{workflow.duration}}"  # Use {{workflow.duration}} in workflow-level and {{duration}} in template-level
+            - name: failure_count
+              help: "Workflow Failure Counter"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+              when: "{{status}} != Succeeded"
+              counter:
+                value: 1
+            - name: success_count
+              help: "Workflow Success Counter"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+              when: "{{status}} == Succeeded"
+              counter:
+                value: 1
+            - name: result_count
+              help: "Workflow Result Counter"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+                - key: status
+                  value: "{{ workflow.status }}"
+              counter:
+                value: 1
     workflowRestrictions:
       templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
