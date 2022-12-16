@@ -186,6 +186,7 @@ argo_workflows:
 
     metricsConfig:
       enabled: true
+      metricsTTL: 7200 # Metriken werden nach 2 Stunden vom Workflow Controller Endpunkt gelöscht.
     serviceMonitor:
       enabled: true
 
