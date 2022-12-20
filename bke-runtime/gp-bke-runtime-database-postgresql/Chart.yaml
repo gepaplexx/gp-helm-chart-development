@@ -2,10 +2,10 @@ apiVersion: v2
 name: gp-bke-runtime-database-postgresql
 description: A Helm chart to provide a PostgreSQL databse
 type: application
-version: 0.1.0
-appVersion: "14.1.0"
+version: 0.2.0
+appVersion: "15.1.0"
 dependencies:
 - name: postgresql
   alias: db
-  version: 11.0.3
+  version: 12.1.5
   repository: https://charts.bitnami.com/bitnami
