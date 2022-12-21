@@ -1,8 +1,8 @@
 read:
-  replicas: 3
+  replicas: 4
   affinity: {}
 write:
-  replicas: 3
+  replicas: 4
   affinity: {}
 storage:
   bucketNames:
