@@ -1,0 +1,3 @@
+networking:
+  hostname: alertmanager-health.infra.gepaplexx.com
+  port: 2112
