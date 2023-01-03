@@ -2,6 +2,8 @@ infranodes:
   enabled: true
 clusterlogging:
   managementState: "Managed"
+clusterlogforward:
+  clusterName: "play"
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
