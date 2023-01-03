@@ -1,0 +1,22 @@
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+spec:
+  outputs:
+    - name: loki
+      secret:
+        name: loki-hub-secret
+      type: loki
+      url: 'https://loki.infra.gepaplexx.com'
+  pipelines:
+    - inputRefs:
+        - application
+        - infrastructure
+        - audit
+      labels:
+        cluster: not-set
+      name: application-logs
+      outputRefs:
+        - loki
