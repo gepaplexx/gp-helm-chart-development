@@ -5,6 +5,37 @@ loki:
     pspEnabled: false
   selfMonitoring:
     enabled: true
+    logsInstance:
+      clients:
+        - externalLabels:
+            cluster: loki
+          url: http://loki-gateway.hub-logging.svc.cluster.local/loki/api/v1/push
+          basicAuth:
+            password:
+              key: PASSWORD
+              name: loki-basic-auth-secret
+            username:
+              key: USER_NAME
+              name: loki-basic-auth-secret
+  gateway:
+    enabled: true
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+      hosts:
+        - host: loki.infra.gepaplexx.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: loki-general-tls
+          hosts:
+            - loki.infra.gepaplexx.com
+    basicAuth:
+      enabled: false
+      username: loki
+      password: "**************************"
   read:
     replicas: 3
     affinity: ""
