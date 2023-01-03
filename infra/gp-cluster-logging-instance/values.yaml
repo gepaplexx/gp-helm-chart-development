@@ -2,8 +2,8 @@ infranodes:
   enabled: true
 clusterlogging:
   managementState: "Managed"
-clusterlogforward:
-  clusterName: "play"
+clusterlogforwarder:
+  clusterName: "not-set"
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
@@ -47,12 +47,9 @@ lokistack:
 # bitnami minio chart
 minio:
   podSecurityContext:
-    enabled: true
-    fsGroup: 1000700000
+    enabled: false
   containerSecurityContext:
-    enabled: true
-    runAsUser: 1000700000
-    runAsNonRoot: true
+    enabled: false
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
@@ -73,12 +70,9 @@ minio:
     automountServiceAccountToken: true
   provisioning:
     podSecurityContext:
-      enabled: true
-      fsGroup: 1000700000
+      enabled: false
     containerSecurityContext:
-      enabled: true
-      runAsUser: 1000700000
-      runAsNonRoot: true
+      enabled: false
     enabled: true
     buckets:
        - name: loki
