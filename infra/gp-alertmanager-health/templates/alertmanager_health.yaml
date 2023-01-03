@@ -20,7 +20,7 @@ spec:
         name: {{ .Release.Name }}
     spec:
       containers:
-        - image: ghcr.io/gepaplexx/alertmanager-health:latest
+        - image: ghcr.io/gepaplexx/alertmanager-healthcheck:main
           imagePullPolicy: IfNotPresent
           name: {{ .Release.Name }}
           ports:
