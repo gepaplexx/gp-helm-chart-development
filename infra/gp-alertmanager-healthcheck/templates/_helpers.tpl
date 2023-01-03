@@ -1,16 +1,16 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "gp-alertmanager-health.name" -}}
+{{- define "gp-alertmanager-healthcheck.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "gp-alertmanager-health.labels" -}}
-helm.sh/chart: {{ include "gp-alertmanager-health.chart" . }}
-{{ include "gp-alertmanager-health.selectorLabels" . }}
+{{- define "gp-alertmanager-healthcheck.labels" -}}
+helm.sh/chart: {{ include "gp-alertmanager-healthcheck.chart" . }}
+{{ include "gp-alertmanager-healthcheck.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -21,21 +21,21 @@ name: {{ .Release.Name }}
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "gp-alertmanager-health.chart" -}}
+{{- define "gp-alertmanager-healthcheck.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Selector labels
 */}}
-{{- define "gp-alertmanager-health.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "gp-alertmanager-health.name" . }}
+{{- define "gp-alertmanager-healthcheck.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "gp-alertmanager-healthcheck.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Common Annotations
 */}}
-{{- define "gp-alertmanager-health.annotations" -}}
+{{- define "gp-alertmanager-healthcheck.annotations" -}}
 meta.helm.sh/release-name: {{ .Release.Name }}
 {{- end }}

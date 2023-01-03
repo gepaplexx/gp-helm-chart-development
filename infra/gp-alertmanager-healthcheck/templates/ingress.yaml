@@ -3,9 +3,9 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    {{- include "gp-alertmanager-health.annotations" . | nindent 4 }}
+    {{- include "gp-alertmanager-healthcheck.annotations" . | nindent 4 }}
   labels:
-    {{- include "gp-alertmanager-health.labels" . | nindent 4 }}
+    {{- include "gp-alertmanager-healthcheck.labels" . | nindent 4 }}
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
