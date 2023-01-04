@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-alertmanager-healthcheck.labels" . | nindent 4 }}
+  annotations:
+    {{- include "gp-alertmanager-healthcheck.annotations" . | nindent 4 }}
+spec:
+  minReadySeconds: 10
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      name: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        name: {{ .Release.Name }}
+    spec:
+      containers:
+        - image: ghcr.io/gepaplexx/alertmanager-healthcheck:main
+          imagePullPolicy: IfNotPresent
+          name: {{ .Release.Name }}
+          ports:
+            - containerPort: {{ .Values.networking.port }}
+              name: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "gp-alertmanager-healthcheck.labels" . | nindent 4 }}
+  annotations:
+    {{- include "gp-alertmanager-healthcheck.annotations" . | nindent 4 }}
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  ports:
+    - name: {{ .Release.Name }}-http
+      port: {{ .Values.networking.port }}
+      targetPort: {{ .Values.networking.port }}
+  selector:
+    name: {{ .Release.Name }}
+  type: ClusterIP
