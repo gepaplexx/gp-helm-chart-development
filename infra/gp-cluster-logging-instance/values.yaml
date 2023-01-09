@@ -94,5 +94,8 @@ minio:
          # Only when mode is 'distributed'
          # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
 
-
-
+loki_hub_secret:
+  password: ""
+  username: ""
+  tlscrt: ""
+  tlskey: ""
