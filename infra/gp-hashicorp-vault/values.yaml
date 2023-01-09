@@ -19,6 +19,7 @@ vault:
       size: '500Mi'
     standalone:
       enabled: false
+    updateStrategyType: RollingUpdate
     readinessProbe:
       path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204" # show pods as not ready if auto-unseal fails somehow or the node is not initialized yet
     livenessProbe:
