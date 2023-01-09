@@ -16,6 +16,13 @@ spec:
           requests:
             cpu: 100m
             memory: 736Mi
+  forwarder:
+    fluentd:
+      buffer:
+        chunkLimitSize: 32m
+        flushMode: immediate
+        flushThreadCount: 8
+        retryType: periodic
   logStore:
     # Defaults, ansonsten spinnt der Operator zusätzlich elasticsearch hoch
     elasticsearch:
