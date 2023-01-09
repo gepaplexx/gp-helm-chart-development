@@ -14,9 +14,9 @@ spec:
     - inputRefs:
         - application
         - infrastructure
-        - audit
       labels:
         cluster: {{ .Values.clusterlogforwarder.clusterName }}
-      name: application-logs
+      name: cluster-logs
       outputRefs:
         - loki
+        - default
