@@ -1,6 +1,8 @@
 ---
 name: Lint Helm Chart on Branch
 'on':
+  schedule:
+    - cron: "0 7 * * 1"
   push:
     branches:
       - '!main'

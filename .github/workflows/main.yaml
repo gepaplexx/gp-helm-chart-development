@@ -2,6 +2,8 @@
 name: Build and push Helm charts
 
 'on':
+  schedule:
+    - cron: "0 7 * * 1"
   push:
     branches:
       - 'main'
