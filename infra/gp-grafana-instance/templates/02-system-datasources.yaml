@@ -4,8 +4,10 @@ metadata:
   name: system-datasources
   namespace: {{ .Release.Namespace }}
 spec:
+  name: system-datasources.yaml
   datasources:
     - name: Prometheus
+      uid: prometheus
       type: prometheus
       url: ${THANOS_QUERIER_ADDRESS}
       access: proxy
@@ -20,6 +22,7 @@ spec:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
     - name: Loki (Application)
+      uid: logging-application
       type: loki
       url: ${LOKI_GATEWAY_ADDRESS}/application/
       access: proxy
@@ -34,6 +37,7 @@ spec:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
     - name: Loki (Infrastructure)
+      uid: logging-infrastructure
       type: loki
       url: ${LOKI_GATEWAY_ADDRESS}/infrastructure/
       access: proxy
@@ -48,6 +52,7 @@ spec:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
     - name: Alertmanager
+      uid: alertmanager
       type: alertmanager
       url: http://localhost:8080
       access: proxy
@@ -57,4 +62,3 @@ spec:
         handleGrafanaManagedAlerts: true
         implementation: prometheus
 
-  name: system-datasources.yaml
