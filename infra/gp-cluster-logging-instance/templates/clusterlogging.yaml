@@ -19,9 +19,9 @@ spec:
   forwarder:
     fluentd:
       buffer:
-        chunkLimitSize: 1G
+        chunkLimitSize: 512M
         flushMode: immediate
-        flushThreadCount: 16
+        flushThreadCount: 8
         retryType: periodic
   logStore:
     # Defaults, ansonsten spinnt der Operator zusätzlich elasticsearch hoch
