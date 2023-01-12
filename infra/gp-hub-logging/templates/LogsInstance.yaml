@@ -1,0 +1,28 @@
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: LogsInstance
+metadata:
+  name: hub-logging
+  namespace: hub-logging
+  labels:
+    helm.sh/chart: loki-3.8.0
+    app.kubernetes.io/name: loki
+    app.kubernetes.io/instance: loki
+    app.kubernetes.io/version: "2.7.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  clients:
+    - url: http://loki-gateway.hub-logging.svc.cluster.local/loki/api/v1/push
+      externalLabels:
+        openshift_labels_cluster: hub
+      basicAuth:
+        password:
+          key: PASSWORD
+          name: loki-basic-auth-secret
+        username:
+          key: USER_NAME
+          name: loki-basic-auth-secret
+  podLogsNamespaceSelector: {}
+  podLogsSelector:
+    matchLabels:
+      app.kubernetes.io/name: loki
+      app.kubernetes.io/instance: loki
