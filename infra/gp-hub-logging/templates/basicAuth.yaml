@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: loki-basic-auth-secret
+type: Opaque
+data:
+  USER_NAME: {{ default "" .Values.loki.gateway.basicAuth.username | b64enc | quote }}
+  PASSWORD: {{ default "" .Values.loki.gateway.basicAuth.password | b64enc | quote }}
