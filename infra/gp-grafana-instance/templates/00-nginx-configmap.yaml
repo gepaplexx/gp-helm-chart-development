@@ -19,7 +19,7 @@ data:
                   proxy_ssl_verify  off;
               }
           }}" > /opt/bitnami/nginx/conf/nginx.conf
-          info "** Starting NGINX setup **"
+          echo "** Starting NGINX setup **"
           /opt/bitnami/scripts/nginx/setup.sh
-          info "** NGINX setup finished! **"
+          echo "** NGINX setup finished! **"
           /opt/bitnami/scripts/nginx/run.sh
