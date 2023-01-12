@@ -8,21 +8,7 @@ metadata:
 spec:
   collection:
     logs:
-      type: fluentd
-      fluentd:
-        resources:
-          limits:
-            memory: 736Mi
-          requests:
-            cpu: 100m
-            memory: 736Mi
-  forwarder:
-    fluentd:
-      buffer:
-        chunkLimitSize: 512M
-        flushMode: immediate
-        flushThreadCount: 8
-        retryType: periodic
+      type: vector
   logStore:
     # Defaults, ansonsten spinnt der Operator zusätzlich elasticsearch hoch
     elasticsearch:
