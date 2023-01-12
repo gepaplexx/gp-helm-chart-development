@@ -4,7 +4,7 @@ metadata:
   labels:
         {{- include "gp-hub-logging.labels" . | nindent 4 }}
   name: kubernetes-logs
-  namespace: hub-logging
+  namespace: {{ .Release.Namespace }}
 spec:
   namespaceSelector:
     any: true
