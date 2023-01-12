@@ -5,6 +5,8 @@ metadata:
     logging.openshift.io/preview-vector-collector: enabled
   name: instance
   namespace: openshift-logging
+  labels:
+    {{- include "gp-clusterlogging-instance.labels" . | nindent 4 }}
 spec:
   collection:
     logs:
