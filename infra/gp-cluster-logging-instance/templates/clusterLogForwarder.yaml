@@ -3,9 +3,11 @@ kind: ClusterLogForwarder
 metadata:
   name: instance
   namespace: openshift-logging
+  labels:
+    {{- include "gp-clusterlogging-instance.labels" . | nindent 4 }}
 spec:
   outputs:
-    - name: loki
+    - name: hub-central-logging
       secret:
         name: loki-hub-secret
       type: loki
@@ -18,5 +20,5 @@ spec:
         cluster: {{ .Values.clusterlogforwarder.clusterName }}
       name: cluster-logs
       outputRefs:
-        - loki
+        - hub-central-logging
         - default
