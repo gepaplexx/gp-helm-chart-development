@@ -27,12 +27,12 @@ loki:
     basicAuth:
       enabled: true
       username: loki
-      password: "insert here :)"
+      password: "changes-via-inventory"
   read:
-    replicas: 7
+    replicas: 3
     affinity: ""
   write:
-    replicas: 10
+    replicas: 3
     affinity: ""
   storage:
     bucketNames:
@@ -42,13 +42,13 @@ loki:
     type: s3
     s3:
       endpoint: loki-minio
-      secretAccessKey: supersecretpass
+      secretAccessKey: "changes-via-inventory"
       accessKeyId: loki
       s3ForcePAthStyle: false
       insecure: true
   minio:
     enabled: true
     rootUser: loki
-    rootPassword: supersecretpass
+    rootPassword: "changes-via-inventory"
     persistence:
-      size: 100Gi
+      size: 500Gi
