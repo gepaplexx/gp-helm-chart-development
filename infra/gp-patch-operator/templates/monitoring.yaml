@@ -35,11 +35,11 @@ spec:
     - name: patch-operator-errors
       rules:
         - alert: Patch Operator wirft Fehler #irgendein Name
-          expr: "controller_runtime_reconcile_errors_total{service='patch-operator-controller-manager-metrics-service'} > 2" # Ein Fehler ist okay, da diese auftreten können, aber beim nächsten Reconcile Cycle gefixed werden sollten.
+          expr: "increase(controller_runtime_reconcile_errors_total{service='patch-operator-controller-manager-metrics-service'})[1h] > 2" # Ein Fehler ist okay, da diese auftreten können, aber beim nächsten Reconcile Cycle gefixed werden sollten.
           labels:
             severity: "warning"
             type: "internal"
           annotations:
-            description: {{ printf "Patch-Operator wirft Fehler. Prüfe Pod logs in {{$labels.namespace}}. Error Metric kommt von Pod {{$labels.pod}}. Problem liegt potential bei {{$lbale.scontroller}}" }}
+            description: {{ printf "Patch-Operator wirft Fehler. Prüfe Pod logs in {{$labels.namespace}}. Error Metric kommt von Pod {{$labels.pod}}. Problem liegt potential bei {{$labels.scontroller}}" }}
             summary: "Patch-Operator wirft Fehler"
 ---
