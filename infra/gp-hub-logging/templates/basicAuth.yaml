@@ -6,5 +6,5 @@ metadata:
         {{- include "gp-hub-logging.labels" . | nindent 4 }}
 type: Opaque
 data:
-  USER_NAME: {{ default "" .Values.loki.gateway.basicAuth.username | b64enc | quote }}
-  PASSWORD: {{ default "" .Values.loki.gateway.basicAuth.password | b64enc | quote }}
+  USER_NAME: {{ .Values.loki.gateway.basicAuth.username | b64enc | quote }}
+  PASSWORD: {{ .Values.loki.gateway.basicAuth.password | b64enc | quote }}
