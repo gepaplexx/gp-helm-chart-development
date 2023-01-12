@@ -5,24 +5,16 @@ loki:
     pspEnabled: false
   selfMonitoring:
     enabled: true
-    logsInstance:
-      clients:
-        - externalLabels:
-            cluster: loki
-          url: http://loki-gateway.hub-logging.svc.cluster.local/loki/api/v1/push
-          basicAuth:
-            password:
-              key: PASSWORD
-              name: loki-basic-auth-secret
-            username:
-              key: USER_NAME
-              name: loki-basic-auth-secret
   gateway:
     enabled: true
+    affinity: " "
+    verboseLogging: true
+    replicas: 1
     ingress:
       enabled: true
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
+        nginx.org/client-max-body-size: "0"
       hosts:
         - host: loki.infra.gepaplexx.com
           paths:
@@ -33,14 +25,14 @@ loki:
           hosts:
             - loki.infra.gepaplexx.com
     basicAuth:
-      enabled: false
+      enabled: true
       username: loki
-      password: "**************************"
+      password: "insert here :)"
   read:
-    replicas: 3
+    replicas: 7
     affinity: ""
   write:
-    replicas: 3
+    replicas: 10
     affinity: ""
   storage:
     bucketNames:
@@ -59,4 +51,4 @@ loki:
     rootUser: loki
     rootPassword: supersecretpass
     persistence:
-      size: 10Gi
+      size: 100Gi
