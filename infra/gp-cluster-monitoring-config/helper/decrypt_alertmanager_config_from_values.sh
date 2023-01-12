@@ -6,7 +6,8 @@ if [ -n "$1" ]; then
   valuesFileSuffix=$1
 fi
 
-valuesFile="../../../../gepardec-run-cluster-configuration/cluster-applications/gp-cluster-applications/values/values-${valuesFileSuffix}.yaml"
+repositoryPath="../../../.."
+valuesFile="${repositoryPath}/gepardec-run-cluster-configuration/cluster-applications/gp-cluster-applications/values/values-${valuesFileSuffix}.yaml"
 
 echo -e "\nACHTUNG: Du verwendest gerade: $(oc whoami --show-server=true)\nUnd folgendes values File: ${valuesFile}"
 
