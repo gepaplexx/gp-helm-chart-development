@@ -3,4 +3,4 @@ name: gp-patch-operator
 description: A Helm chart for deploying the patch operator on Openshift 4.x
 
 type: application
-version: 0.1.2
+version: 0.1.3
