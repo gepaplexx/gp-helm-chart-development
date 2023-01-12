@@ -4,11 +4,7 @@ metadata:
   name: hub-logging
   namespace: hub-logging
   labels:
-    helm.sh/chart: loki-3.8.0
-    app.kubernetes.io/name: loki
-    app.kubernetes.io/instance: loki
-    app.kubernetes.io/version: "2.7.0"
-    app.kubernetes.io/managed-by: Helm
+      {{- include "gp-hub-logging.labels" . | nindent 4 }}
 spec:
   clients:
     - url: http://loki-gateway.hub-logging.svc.cluster.local/loki/api/v1/push

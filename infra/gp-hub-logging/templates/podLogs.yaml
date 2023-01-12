@@ -2,9 +2,7 @@ apiVersion: monitoring.grafana.com/v1alpha1
 kind: PodLogs
 metadata:
   labels:
-    app.kubernetes.io/instance: loki
-    app.kubernetes.io/name: loki
-    app.kubernetes.io/version: 2.7.0
+        {{- include "gp-hub-logging.labels" . | nindent 4 }}
   name: kubernetes-logs
   namespace: hub-logging
 spec:
