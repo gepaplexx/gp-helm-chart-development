@@ -2,8 +2,6 @@
 name: Release Helm Charts in Development
 
 'on':
-  schedule:
-    - cron: "0 7 * * 1"
   workflow_dispatch:
     inputs:
       dir:

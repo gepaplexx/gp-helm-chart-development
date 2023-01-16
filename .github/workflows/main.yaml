@@ -3,7 +3,7 @@ name: Build and push Helm charts
 
 'on':
   schedule:
-    - cron: "0 7 * * 1"
+    - cron: "0 0 * * 1"
   push:
     branches:
       - 'main'
@@ -39,6 +39,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name != `schedule` }}
     needs:
       - lint-helm
     steps:
