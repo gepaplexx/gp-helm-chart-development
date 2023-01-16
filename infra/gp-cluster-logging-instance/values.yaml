@@ -54,6 +54,9 @@ minio:
   replicas: 1
   persistence:
     size: 300Gi
+    storageClass: "rook-ceph-fs"
+    accessModes:
+      - ReadWriteMany
   auth:
     existingSecret: "loki-backend-secret"
   resources:

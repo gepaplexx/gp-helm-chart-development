@@ -1,0 +1,45 @@
+# ServiceMonitor for Patch-Operator
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-servicemonitor
+  namespace: {{ .Release.Namespace }}
+spec:
+  endpoints:
+    - bearerTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+      interval: 30s
+      port: https
+      scheme: https
+      tlsConfig:
+        ca:
+          secret:
+            key: tls.crt
+            name: patch-operator-certs
+            optional: false
+        serverName: patch-operator-controller-manager-metrics-service.{{ .Release.Namespace }}.svc
+  jobLabel: patch-operator
+  namespaceSelector:
+    matchNames:
+      - openshift-operators
+  selector:
+    matchLabels:
+      control-plane: patch-operator
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: patch-operator-errors
+  namespace: {{ .Release.Namespace }}
+spec:
+  groups:
+    - name: patch-operator-errors
+      rules:
+        - alert: Patch Operator wirft Fehler #irgendein Name
+          expr: "increase(controller_runtime_reconcile_errors_total{service='patch-operator-controller-manager-metrics-service'})[1h] > 2" # Ein Fehler ist okay, da diese auftreten können, aber beim nächsten Reconcile Cycle gefixed werden sollten.
+          labels:
+            severity: "warning"
+            type: "internal"
+          annotations:
+            description: {{ printf "Patch-Operator wirft Fehler. Prüfe Pod logs in {{$labels.namespace}}. Error Metric kommt von Pod {{$labels.pod}}. Problem liegt potential bei {{$labels.scontroller}}" }}
+            summary: "Patch-Operator wirft Fehler"
+---

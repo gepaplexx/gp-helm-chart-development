@@ -12,7 +12,7 @@ data:
     prometheusK8s:
       {{- include "infranodes.enabled" . | nindent 6 }}
       externalLabels:
-        gepardec_cluster: {{ .Values.clusterMonitoring.prometheusK8s.clusterName }}
+        cluster_discriminator: {{ .Values.clusterMonitoring.prometheusK8s.clusterName }}
       {{- if .Values.clusterMonitoring.prometheusK8s.remoteWrite.enabled }}
       remoteWrite:
         - url: {{ .Values.clusterMonitoring.prometheusK8s.remoteWrite.url }}
