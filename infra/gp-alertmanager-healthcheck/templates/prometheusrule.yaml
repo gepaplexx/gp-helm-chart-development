@@ -12,8 +12,8 @@ spec:
             description: >-
               Ein Alertmanager sendet keinen Status!
             summary: >-
-              Vom Alertmanager auf {{ "{{" }} $labels.gepardec_cluster {{ "}}" }} wurde für 15min
+              Vom Alertmanager auf {{ "{{" }} $labels.cluster_discriminator {{ "}}" }} wurde für 15min
               kein Status empfangen!
-          expr: 'rate(alertmanager_status[10m]) == 0'
+          expr: 'rate(alertmanager_health_checks_received[10m]) == 0'
           labels:
             severity: critical
