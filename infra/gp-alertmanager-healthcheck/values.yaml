@@ -1,3 +1,6 @@
 networking:
   hostname: alertmanager-healthcheck.infra.gepaplexx.com
   port: 2112
+
+slack:
+  url:

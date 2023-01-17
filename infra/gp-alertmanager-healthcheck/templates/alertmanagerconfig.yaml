@@ -1,0 +1,38 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{ include "gp-awx-monitoring.labels" . | nindent 4 }}
+spec:
+  receivers:
+    - name: slack_critical
+      slackConfigs:
+        - apiURL:
+            key: url
+            name: {{ .Release.Name }}-url
+          channel: critical
+          text: |-
+            Themengebiet: interne Applikation
+            Summary: {{`{{ .CommonAnnotations.summary }}`}}
+            Alerts:
+            {{`{{- range .Alerts }}`}}
+              - {{`{{ .Annotations.description }}`}}
+            {{`{{- end -}}`}}
+          title: Alertmanager-Healthcheck-Alert
+  route:
+    matchers:
+      - name: "severity"
+        value: "critical"
+        matchType: "="
+    receiver: slack_critical
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{{ .Release.Name }}-url
+  namespace: {{ .Release.Namespace }}
+data:
+  url: {{ .Values.slack.url | b64enc }}
