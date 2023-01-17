@@ -17,7 +17,7 @@ spec:
         - application
         - infrastructure
       labels:
-        cluster: {{ .Values.clusterlogforwarder.clusterName }}
+        cluster_discriminator: {{ .Values.clusterlogforwarder.clusterName }}
       name: cluster-logs
       outputRefs:
         - hub-central-logging
