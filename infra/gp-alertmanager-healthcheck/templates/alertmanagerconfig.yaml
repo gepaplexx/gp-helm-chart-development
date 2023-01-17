@@ -4,7 +4,7 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{ include "gp-awx-monitoring.labels" . | nindent 4 }}
+    {{ include "gp-alertmanager-healthcheck.labels" . | nindent 4 }}
 spec:
   receivers:
     - name: slack_critical
@@ -32,7 +32,7 @@ spec:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{{ .Release.Name }}-url
+  name: {{ .Release.Name }}-url
   namespace: {{ .Release.Namespace }}
 data:
   url: {{ .Values.slack.url | b64enc }}
