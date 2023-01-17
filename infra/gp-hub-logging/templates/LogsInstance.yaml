@@ -9,7 +9,7 @@ spec:
   clients:
     - url: http://loki-gateway.hub-logging.svc.cluster.local/loki/api/v1/push
       externalLabels:
-        openshift_labels_cluster: hub
+        openshift_labels_cluster_discriminator: hub
       basicAuth:
         password:
           key: PASSWORD
