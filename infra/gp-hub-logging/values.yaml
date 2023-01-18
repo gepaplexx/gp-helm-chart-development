@@ -48,6 +48,7 @@ loki:
       insecure: true
   minio:
     enabled: true
+    drivesPerNode: 1
     rootUser: loki
     rootPassword: "changes-via-inventory"
     persistence:
