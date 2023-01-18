@@ -2,6 +2,8 @@ infranodes:
   enabled: true
 clusterlogging:
   managementState: "Managed"
+clusterlogforwarder:
+  clusterName: "not-set"
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
@@ -18,7 +20,7 @@ lokistack:
         ingestionBurstSize: 150
       queries:
         maxChunksPerQuery: 4000000
-        maxQueriesSeries: 1000
+        maxQueriesSeries: 10000
     size: 1x.small  # Valid values are: 1x.extra-small, 1x.small, 1x.medium
     compactor:
       replicas: 1
@@ -45,12 +47,9 @@ lokistack:
 # bitnami minio chart
 minio:
   podSecurityContext:
-    enabled: true
-    fsGroup: 1000700000
+    enabled: false
   containerSecurityContext:
-    enabled: true
-    runAsUser: 1000700000
-    runAsNonRoot: true
+    enabled: false
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
@@ -74,12 +73,9 @@ minio:
     automountServiceAccountToken: true
   provisioning:
     podSecurityContext:
-      enabled: true
-      fsGroup: 1000700000
+      enabled: false
     containerSecurityContext:
-      enabled: true
-      runAsUser: 1000700000
-      runAsNonRoot: true
+      enabled: false
     enabled: true
     buckets:
        - name: loki
@@ -101,5 +97,8 @@ minio:
          # Only when mode is 'distributed'
          # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
 
-
-
+loki_hub_secret:
+  password: ""
+  username: ""
+  tlscrt: ""
+  tlskey: ""

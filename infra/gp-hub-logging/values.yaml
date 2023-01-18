@@ -1,0 +1,54 @@
+loki:
+  loki:
+    auth_enabled: false
+  rbac:
+    pspEnabled: false
+  selfMonitoring:
+    enabled: true
+  gateway:
+    enabled: true
+    affinity: " "
+    verboseLogging: true
+    replicas: 1
+    ingress:
+      enabled: true
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt
+        nginx.org/client-max-body-size: "0"
+      hosts:
+        - host: loki.infra.gepaplexx.com
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: loki-general-tls
+          hosts:
+            - loki.infra.gepaplexx.com
+    basicAuth:
+      enabled: true
+      username: loki
+      password: "changes-via-inventory"
+  read:
+    replicas: 3
+    affinity: ""
+  write:
+    replicas: 3
+    affinity: ""
+  storage:
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+    type: s3
+    s3:
+      endpoint: loki-minio
+      secretAccessKey: "changes-via-inventory"
+      accessKeyId: loki
+      s3ForcePAthStyle: false
+      insecure: true
+  minio:
+    enabled: true
+    rootUser: loki
+    rootPassword: "changes-via-inventory"
+    persistence:
+      size: 500Gi
