@@ -18,7 +18,7 @@ clusterMonitoring:
       limits: {}
         #cpu:
     storageClassName: rook-ceph-block
-    storageSize: 100Gi
+    storageSize: 135Gi
   alertmanagerMain:
     enableUserAlertmanagerConfig: true
     resources:
