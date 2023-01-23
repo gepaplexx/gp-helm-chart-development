@@ -65,7 +65,7 @@ mimir:
     persistence:
       size: 300Gi
       storageClass: longhorn
-    rootPassword: "" # TODO: in Inventory auslagern
+    rootPassword: "" # will be set from inventory
   nginx:
     enabled: true
     ingress:
