@@ -1,103 +1,159 @@
-monitoring:
-  defaultRules:
-    create: false
-  grafana:
-    adminPassword: "changeme"
-    ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-        nginx.ingress.kubernetes.io/rewrite-target: /
-      hosts:
-        - grafana.infra.gepaplexx.com
-      tls:
-        - secretName: grafana-general-tls
-          hosts:
-            - grafana.infra.gepaplexx.com
-    grafana.ini:
-      server:
-        domain: grafana.infra.gepaplexx.com
-        root_url: "https://grafana.infra.gepaplexx.com"
-      auth.github:
-        enabled: true
-        allow_sign_up: true
-        scopes: user:email,read:org
-        auth_url: https://github.com/login/oauth/authorize
-        token_url: https://github.com/login/oauth/access_token
-        api_url: https://api.github.com/user
-        allowed_organizations: gepaplexx
-        client_id: "add-me-to-inventory"
-        client_secret: "add-me-to-inventory"
-
-  prometheus:
-    extraSecret:
-      name: prometheus-auth
-      data:
-       auth: ""
-    ingress:
-      enabled: true
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
-        # Add Basic Authentication to public ingress. Using the extra secret that has been configured above.
-        nginx.ingress.kubernetes.io/auth-type: basic
-        nginx.ingress.kubernetes.io/auth-secret: prometheus-auth
-        nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required for accessing prometheus via public ingress'
-      hosts:
-        - prometheus.infra.gepaplexx.com
-      tls:
-        - secretName: prometheus-general-tls
-          hosts:
-            - prometheus.infra.gepaplexx.com
-    prometheusSpec:
-      containers: # Patch prometheus startup probe to give the container time to replay the WAL from disk
-        - name: prometheus
-          startupProbe:
-            failureThreshold: 120
-            periodSeconds: 30
-          livenessProbe:
-            failureThreshold: 10
-            periodSeconds: 90
-          readinessProbe:
-            failureThreshold: 120
-            periodSeconds: 30
-      enableRemoteWriteReceiver: true
-      resources:
-        requests:
-          memory: 6Gi
-          cpu: 3000m
-      retentionSize: 250GiB
-      retention: 30d
-      storageSpec:
-        volumeClaimTemplate:
-          spec:
-            storageClassName: longhorn
-            accessModes: [ "ReadWriteOnce" ]
-            resources:
-              requests:
-                storage: 300Gi
-      ruleSelectorNilUsesHelmValues: false
-      serviceMonitorSelectorNilUsesHelmValues: false
-      podMonitorSelectorNilUsesHelmValues: false
-      probeSelectorNilUsesHelmValues: false
-      additionalServiceMonitors:
-        namespaceSelector:
-          any: "true"
+mimir:
+  runtimeConfig:
+    overrides:
+      anonymous:
+        max_global_series_per_user: 0
+        max_label_names_per_series: 60
+        ingestion_rate: 200000
+        ingestion_burst_size: 500000
+        compactor_blocks_retention_period: 15d  # initial test to find out storage requirements
+        out_of_order_time_window: 12h
   alertmanager:
-    ingress:
+    persistentVolume:
+      size: 1Gi
+    storageClass: longhorn
+  distributor:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+  ingester:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    persistentVolume:
+      size: 80Gi
+      storageClass: longhorn
+    zoneAwareReplication:
       enabled: false
+  querier:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+  queryFrontend:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+  store_gateway:
+    zoneAwareReplication:
+      enabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+    persistentVolume:
+      size: 3Gi
+      storageClass: longhorn
+  compactor:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    persistentVolume:
+      size: 10Gi
+      storageClass: longhorn
+  rollout_operator:
+    enabled: false
+  minio:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 1024Mi
+    persistence:
+      size: 300Gi
+      storageClass: longhorn
+    rootPassword: "" # TODO: in Inventory auslagern
+  nginx:
+    enabled: true
+    ingress:
+      enabled: true
+      ingressClassName: public
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
+        nginx.org/client-max-body-size: "0"
       hosts:
-        - alertmanager.infra.gepaplexx.com
+        - host: mimir.infra.gepaplexx.com
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
       tls:
-        - secretName: alertmanager-tls
+        - secretName: mimir-nginx-tls
           hosts:
-            - alertmanager.infra.gepaplexx.com
+            - mimir.infra.gepaplexx.com
+    basicAuth:
+      enabled: true
+      username: "prometheus"
+      password: "" # Value gets set from inventory
+  metaMonitoring:
+    serviceMonitor:
+      enabled: true
+      labels:
+        instance: primary
+    grafanaAgent:
+      logs:
+        enabled: false
+      metrics:
+        scrapeK8s:
+          enabled: true
+          kubeStateMetrics:
+            namespace: kube-system
+            labelSelectors:
+              app.kubernetes.io/name: kube-state-metrics
+grafana:
+  rbac:
+    pspEnabled: false # PSP are deprecated - removed in kubernetes 1.25
+  ingress:
+    enabled: true
+    ingressClassName: public
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - grafana.infra.gepaplexx.com
+    tls:
+        - secretName: grafana-tls
+          hosts:
+          - grafana.infra.gepaplexx.com
+  persistence:
+    enabled: true
+    type: pvc
+    accessModes: [ "ReadWriteOnce" ]
+    size: 2Gi
+    storageClassName: longhorn
+  adminUser: "admin"
+  adminPassword: "" # value gets set from inventory
+  grafana.ini:
+    server:
+      domain: grafana.infra.gepaplexx.com
+      root_url: "https://grafana.infra.gepaplexx.com"
+    auth.github:
+      enabled: true
+      allow_sign_up: true
+      scopes: user:email,read:org
+      auth_url: https://github.com/login/oauth/authorize
+      token_url: https://github.com/login/oauth/access_token
+      api_url: https://api.github.com/user
+      allowed_organizations: gepaplexx
+      client_id: "" # Value gets set from inventory
+      client_secret: "" # Value gets set from inventory
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+      - name: Mimir
+        uid: mimir
+        type: prometheus
+        # url is in the format of {{ .Release.Name }}-mimir-nginx.{{ .Release.Namespace }}.svc.cluster:80/prometheus
+        url: http://monitoring-stack-mimir-nginx.hub-monitoring.svc:80/prometheus
+        access: proxy
+        isDefault: true
+        editable: true
+        jsonData:
+          httpMethod: POST
+          prometheusType: Mimir
+          prometheusVersion: "2.4.0"
 
-  kubeScheduler:
-    enabled: false # wird in microk8s anders gehandhabt
-  kubeControllerManager:
-    enabled: false # wird in microk8s anders gehandhabt
-  kubeProxy:
-    enabled: false # wird in microk8s anders gehandhabt
-
+kube-state-metrics:
+  namespaceOverride: "kube-system"
