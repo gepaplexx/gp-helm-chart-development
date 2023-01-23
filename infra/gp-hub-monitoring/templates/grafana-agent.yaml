@@ -1,0 +1,17 @@
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: GrafanaAgent
+metadata:
+  labels:
+    {{- include "gp-hub-monitoring.labels" . | nindent 4 }}
+  name: metrics-agent
+  namespace: {{ .Release.Namespace }}
+spec:
+  enableConfigReadAPI: false
+  logLevel: info
+  metrics:
+    instanceSelector:
+      matchLabels:
+        {{- include "gp-hub-monitoring.labels" . | nindent 8 }}
+    externalLabels:
+      cluster_discriminator: hub
+  serviceAccountName: grafana-agent
