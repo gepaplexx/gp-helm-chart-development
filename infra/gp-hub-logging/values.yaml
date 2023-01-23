@@ -1,10 +1,14 @@
 loki:
+  monitoring:
+    selfMonitoring:
+      enabled: true
+    serviceMonitor:
+      labels:
+        instance: primary
   loki:
     auth_enabled: false
   rbac:
     pspEnabled: false
-  selfMonitoring:
-    enabled: true
   gateway:
     enabled: true
     affinity: " "
