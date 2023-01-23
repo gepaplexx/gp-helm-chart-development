@@ -35,7 +35,7 @@ spec:
     - name: patch-operator-errors
       rules:
         - alert: Patch Operator wirft Fehler #irgendein Name
-          expr: "increase(controller_runtime_reconcile_errors_total{service='patch-operator-controller-manager-metrics-service'})[1h] > 2" # Ein Fehler ist okay, da diese auftreten können, aber beim nächsten Reconcile Cycle gefixed werden sollten.
+          expr: "increase(controller_runtime_reconcile_errors_total{service='patch-operator-controller-manager-metrics-service'}[1h]) > 2" # Ein Fehler ist okay, da diese auftreten können, aber beim nächsten Reconcile Cycle gefixed werden sollten.
           labels:
             severity: "warning"
             type: "internal"
