@@ -8,7 +8,7 @@ clusterMonitoring:
     clusterName: ""
     remoteWrite:
       enabled: true
-      url: https://prometheus.infra.gepaplexx.com/api/v1/write
+      url: https://mimir.infra.gepaplexx.com/api/v1/push
       password: ""  # SealedSecret encrypted password for accessing prometheus remote write endpoint
     retention: 31d
     resources:
