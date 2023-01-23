@@ -39,7 +39,7 @@ jobs:
 
   release:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != `schedule` }}
+    if: ${{ github.event_name != 'schedule' }}
     needs:
       - lint-helm
     steps:
