@@ -46,7 +46,6 @@ loki:
     replicas: 3
     affinity: ""
 
-
 minio:
   fullnameOverride: loki-backend-storage
   replicas: 1
