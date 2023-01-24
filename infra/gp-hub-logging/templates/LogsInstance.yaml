@@ -1,7 +1,7 @@
 apiVersion: monitoring.grafana.com/v1alpha1
 kind: LogsInstance
 metadata:
-  name: hub-logging
+  name: hubLogsInstance
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "gp-hub-logging.labels" . | nindent 4 }}
@@ -20,4 +20,4 @@ spec:
   podLogsNamespaceSelector: {}
   podLogsSelector:
     matchLabels:
-      {{- include "gp-hub-logging.labels" . | nindent 6 }}
+      instance: primary

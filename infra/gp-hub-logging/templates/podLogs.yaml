@@ -3,7 +3,8 @@ kind: PodLogs
 metadata:
   labels:
     {{- include "gp-hub-logging.labels" . | nindent 4 }}
-  name: kubernetes-logs
+    instance: primary
+  name: clusterPodLogs
   namespace: {{ .Release.Namespace }}
 spec:
   namespaceSelector:
