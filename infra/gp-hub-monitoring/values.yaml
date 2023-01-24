@@ -138,22 +138,6 @@ grafana:
       allowed_organizations: gepaplexx
       client_id: "" # Value gets set from inventory
       client_secret: "" # Value gets set from inventory
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-      - name: Mimir
-        uid: mimir
-        type: prometheus
-        # url is in the format of {{ .Release.Name }}-mimir-nginx.{{ .Release.Namespace }}.svc.cluster:80/prometheus
-        url: http://monitoring-stack-mimir-nginx.hub-monitoring.svc:80/prometheus
-        access: proxy
-        isDefault: true
-        editable: true
-        jsonData:
-          httpMethod: POST
-          prometheusType: Mimir
-          prometheusVersion: "2.4.0"
 
 kube-state-metrics:
   namespaceOverride: "kube-system"
