@@ -1,0 +1,21 @@
+apiVersion: monitoring.grafana.com/v1alpha1
+kind: MetricsInstance
+metadata:
+  name: metricsinstance
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-hub-monitoring.labels" . | nindent 4 }}
+spec:
+  remoteWrite:
+    - url: http://{{ .Release.Name}}-mimir-nginx.{{ .Release.Namespace }}.svc:80/api/v1/push
+      basicAuth:
+        username:
+          key: username
+          name: mimir-basic-auth-credentials
+        password:
+          key: password
+          name: mimir-basic-auth-credentials
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector:
+    matchLabels:
+      instance: primary

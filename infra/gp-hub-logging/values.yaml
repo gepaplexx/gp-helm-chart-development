@@ -1,4 +1,10 @@
 loki:
+  monitoring:
+    selfMonitoring:
+      enabled: true
+    serviceMonitor:
+      labels:
+        instance: primary
   loki:
     auth_enabled: false
     storage:
@@ -10,9 +16,6 @@ loki:
         insecure: true
   rbac:
     pspEnabled: false
-  monitoring:
-    selfMonitoring:
-      enabled: true
   gateway:
     enabled: true
     affinity: " "
@@ -35,7 +38,7 @@ loki:
     basicAuth:
       enabled: true
       username: loki
-      password: "changes-with-inventory"
+      password: "changes-via-inventory"
   read:
     replicas: 3
     affinity: ""
@@ -50,7 +53,7 @@ minio:
   persistence:
     size: 500Gi
   auth:
-    rootPassword: "changes-with-inventory"
+    rootPassword: "changes-via-inventory"
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
