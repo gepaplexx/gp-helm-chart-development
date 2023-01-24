@@ -74,6 +74,8 @@ mimir:
       annotations:
         cert-manager.io/cluster-issuer: letsencrypt
         nginx.org/client-max-body-size: "0"
+        nginx.ingress.kubernetes.io/auth-secret: mimir-basic-auth-credentials
+        nginx.ingress.kubernetes.io/auth-realm: 'Authentication Required for pushing metrics to mimir via public ingress'
       hosts:
         - host: mimir.infra.gepaplexx.com
           paths:
@@ -83,10 +85,6 @@ mimir:
         - secretName: mimir-nginx-tls
           hosts:
             - mimir.infra.gepaplexx.com
-    basicAuth:
-      enabled: true
-      username: "prometheus"
-      password: "" # Value gets set from inventory
   metaMonitoring:
     serviceMonitor:
       enabled: true
