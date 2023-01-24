@@ -3,7 +3,7 @@ kind: PodLogs
 metadata:
   labels:
     {{- include "gp-hub-logging.labels" . | nindent 4 }}
-    customSelector: loki
+    instance: primary
   name: clusterPodLogs
   namespace: {{ .Release.Namespace }}
 spec:

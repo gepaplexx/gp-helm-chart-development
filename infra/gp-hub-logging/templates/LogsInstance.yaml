@@ -20,4 +20,4 @@ spec:
   podLogsNamespaceSelector: {}
   podLogsSelector:
     matchLabels:
-      customSelector: loki
+      instance: primary
