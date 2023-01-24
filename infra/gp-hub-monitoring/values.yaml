@@ -1,3 +1,7 @@
+auth:
+  mimir:
+    htpasswd: ""
+
 mimir:
   runtimeConfig:
     overrides:
