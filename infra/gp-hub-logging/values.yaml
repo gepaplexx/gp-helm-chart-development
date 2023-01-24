@@ -1,10 +1,18 @@
 loki:
   loki:
     auth_enabled: false
+    storage:
+      s3:
+        endpoint: loki-backend-storage:9000
+        secretAccessKey: "changes-with-inventory"
+        accessKeyId: admin
+        s3ForcePathStyle: true
+        insecure: true
   rbac:
     pspEnabled: false
-  selfMonitoring:
-    enabled: true
+  monitoring:
+    selfMonitoring:
+      enabled: true
   gateway:
     enabled: true
     affinity: " "
@@ -27,29 +35,39 @@ loki:
     basicAuth:
       enabled: true
       username: loki
-      password: "changes-via-inventory"
+      password: "changes-with-inventory"
   read:
     replicas: 3
     affinity: ""
   write:
     replicas: 3
     affinity: ""
-  storage:
-    bucketNames:
-      chunks: chunks
-      ruler: ruler
-      admin: admin
-    type: s3
-    s3:
-      endpoint: loki-minio
-      secretAccessKey: "changes-via-inventory"
-      accessKeyId: loki
-      s3ForcePAthStyle: false
-      insecure: true
-  minio:
+
+
+minio:
+  fullnameOverride: loki-backend-storage
+  replicas: 1
+  persistence:
+    size: 500Gi
+  auth:
+    rootPassword: "changes-with-inventory"
+  resources:
+    requests:
+      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
+    limits:
+      memory: 4Gi
+  serviceAccount:
+    create: true
+    automountServiceAccountToken: true
+  provisioning:
     enabled: true
-    drivesPerNode: 1
-    rootUser: loki
-    rootPassword: "changes-via-inventory"
-    persistence:
-      size: 500Gi
+    buckets:
+      - name: chunks
+        policy: none
+        purge: false
+      - name: ruler
+        policy: none
+        purge: false
+      - name: admin
+        policy: none
+        purge: false
