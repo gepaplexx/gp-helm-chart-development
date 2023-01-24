@@ -5,15 +5,12 @@ metadata:
     logging.openshift.io/preview-vector-collector: enabled
   name: instance
   namespace: openshift-logging
+  labels:
+    {{- include "gp-clusterlogging-instance.labels" . | nindent 4 }}
 spec:
   collection:
-    # Defaults, ansonsten spinnt der Operator zusätzlich fluentd collectoren hoch
     logs:
-      fluentd:
-        resources: null
-      type: ''
-    resources: null
-    type: vector
+      type: vector
   logStore:
     # Defaults, ansonsten spinnt der Operator zusätzlich elasticsearch hoch
     elasticsearch:

@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-alertmanager-healthcheck.labels" . | nindent 4 }}
+    instance: primary
   annotations:
     {{- include "gp-alertmanager-healthcheck.annotations" . | nindent 4 }}
 spec:

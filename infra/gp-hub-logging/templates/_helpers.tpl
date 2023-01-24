@@ -1,7 +1,17 @@
 {{/*
+Add nodeselector definition. Be aware about the indent.
+*/}}
+{{- define "infranodes.enabled" -}}
+{{- if .Values.infranodes.enabled -}}
+nodeSelector:
+  node-role.kubernetes.io/infra: ""
+{{- end -}}
+{{- end -}}
+
+{{/*
 Expand the name of the chart.
 */}}
-{{- define "gp-cicd-apache.name" -}}
+{{- define "gp-hub-logging.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +20,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "gp-cicd-apache.fullname" -}}
+{{- define "gp-hub-logging.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +36,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "gp-cicd-apache.chart" -}}
+{{- define "gp-hub-logging.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "gp-cicd-apache.labels" -}}
-helm.sh/chart: {{ include "gp-cicd-apache.chart" . }}
-{{ include "gp-cicd-apache.selectorLabels" . }}
+{{- define "gp-hub-logging.labels" -}}
+helm.sh/chart: {{ include "gp-hub-logging.chart" . }}
+{{ include "gp-hub-logging.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,11 +55,22 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "gp-cicd-apache.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "gp-cicd-apache.name" . }}
+{{- define "gp-hub-logging.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "gp-hub-logging.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "gp-cicd-apache.session_secret" -}}
+{{/*
+Create the name of the service account to use
+*/}}
+{{- define "gp-hub-logging.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create }}
+{{- default (include "gp-hub-logging.fullname" .) .Values.serviceAccount.name }}
+{{- else }}
+{{- default "default" .Values.serviceAccount.name }}
+{{- end }}
+{{- end }}
+
+{{- define "gp-hub-logging.session_secret" -}}
 {{ randAlphaNum 32 }}
 {{- end }}

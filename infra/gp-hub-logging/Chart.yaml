@@ -1,0 +1,13 @@
+apiVersion: v2
+name: gp-hub-logging
+description: A Helm chart for deploying the Prometheus Monitoring Stack on our Hub-Cluster
+
+type: application
+
+version: 0.1.1
+appVersion: "2.7.0"
+
+dependencies:
+  - name: loki
+    version: 3.8.0
+    repository: https://grafana.github.io/helm-charts

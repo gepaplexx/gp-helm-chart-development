@@ -1,3 +1,4 @@
+# ACHTUNG: Änderungen triggern das Drainen aller Master Nodes!!!
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
@@ -28,9 +29,10 @@ spec:
       imagefs.inodesFree: "5%"
     evictionPressureTransitionPeriod: 0s
     imageMinimumGCAge: 5m
-    imageGCHighThresholdPercent: 80
-    imageGCLowThresholdPercent: 75
+    imageGCHighThresholdPercent: 70
+    imageGCLowThresholdPercent: 45
 ---
+# ACHTUNG: Änderungen triggern das Drainen aller Worker und Infra Nodes!!!
 apiVersion: machineconfiguration.openshift.io/v1
 kind: KubeletConfig
 metadata:
@@ -61,5 +63,5 @@ spec:
       imagefs.inodesFree: "5%"
     evictionPressureTransitionPeriod: 0s
     imageMinimumGCAge: 5m
-    imageGCHighThresholdPercent: 80
-    imageGCLowThresholdPercent: 75
+    imageGCHighThresholdPercent: 70
+    imageGCLowThresholdPercent: 45

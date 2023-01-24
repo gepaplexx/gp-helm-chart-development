@@ -129,6 +129,31 @@ argo_workflows:
       spec:
         ttlStrategy:
             secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+        metrics:
+          prometheus:
+            - name: duration_gauge
+              help: "Duration gauge by name"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+                - key: status
+                  value: "{{ workflow.status }}"
+              gauge:
+                realtime: true                  # This metric will be emitted in real time. For more info see: docs/metrics.md
+                value: "{{workflow.duration}}"  # Use {{workflow.duration}} in workflow-level and {{duration}} in template-level
+            - name: result_count
+              help: "Workflow Result Counter"
+              labels:
+                - key: application
+                  value: "{{ workflow.parameters.reponame }}"
+                - key: branch
+                  value: "{{ workflow.parameters.branch }}"
+                - key: status
+                  value: "{{ workflow.status }}"
+              counter:
+                value: 1
     workflowRestrictions:
       templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
@@ -141,6 +166,7 @@ argo_workflows:
 
     metricsConfig:
       enabled: true
+      metricsTTL: 2h # Metriken werden nach 2 Stunden vom Workflow Controller Endpunkt gelöscht.
     serviceMonitor:
       enabled: true
 
@@ -186,9 +212,8 @@ argo_workflows:
 ## Workflows Minio ##
 #####################
 minio:
-  existingSecret: "minio-artifact-repository"
-  securityContext:
-    runAsUser: 0
+  auth:
+    existingSecret: "minio-artifact-repository"
   fullnameOverride: minio-artifact-repository
   replicas: 1
   persistence:
@@ -196,16 +221,16 @@ minio:
   resources:
     requests:
       memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
-  buckets:
-  - name: argo-workflows
-    purge: false
-    policy: none
-  makeBucketJob:
-    securityContext:
-      enabled: true
-      runAsUser: 0
+  provisioning:
+    enabled: true
+    buckets:
+    - name: argo-workflows
+      purge: false
+      policy: none
   serviceAccount:
     name: minio
+
+
 
 ####################
 ##    ARGO  CD    ##

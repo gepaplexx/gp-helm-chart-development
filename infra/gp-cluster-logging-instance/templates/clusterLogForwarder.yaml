@@ -1,0 +1,24 @@
+apiVersion: logging.openshift.io/v1
+kind: ClusterLogForwarder
+metadata:
+  name: instance
+  namespace: openshift-logging
+  labels:
+    {{- include "gp-clusterlogging-instance.labels" . | nindent 4 }}
+spec:
+  outputs:
+    - name: hub-central-logging
+      secret:
+        name: loki-hub-secret
+      type: loki
+      url: 'https://loki.infra.gepaplexx.com'
+  pipelines:
+    - inputRefs:
+        - application
+        - infrastructure
+      labels:
+        cluster_discriminator: {{ .Values.clusterlogforwarder.clusterName }}
+      name: cluster-logs
+      outputRefs:
+        - hub-central-logging
+        - default
