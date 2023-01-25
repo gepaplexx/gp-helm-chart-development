@@ -4,7 +4,7 @@ metadata:
   labels:
     {{- include "gp-hub-logging.labels" . | nindent 4 }}
     instance: primary
-  name: clusterpodlogs
+  name: clusterPodLogs
   namespace: {{ .Release.Namespace }}
 spec:
   namespaceSelector:
