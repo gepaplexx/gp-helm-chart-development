@@ -10,7 +10,7 @@ loki:
     storage:
       s3:
         endpoint: loki-backend-storage:9000
-        secretAccessKey: "changes-with-inventory"
+        secretAccessKey: "changes-via-inventory"
         accessKeyId: admin
         s3ForcePathStyle: true
         insecure: true
@@ -50,7 +50,7 @@ minio:
   fullnameOverride: loki-backend-storage
   replicas: 1
   persistence:
-    size: 500Gi
+    size: 200Gi
   auth:
     rootPassword: "changes-via-inventory"
   resources:
