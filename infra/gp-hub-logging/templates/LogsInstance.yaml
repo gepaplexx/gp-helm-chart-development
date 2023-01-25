@@ -1,7 +1,7 @@
 apiVersion: monitoring.grafana.com/v1alpha1
 kind: LogsInstance
 metadata:
-  name: hubLogsInstance
+  name: hublogsinstance
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "gp-hub-logging.labels" . | nindent 4 }}
