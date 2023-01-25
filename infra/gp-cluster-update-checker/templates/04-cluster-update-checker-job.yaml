@@ -124,7 +124,7 @@ spec:
                 CONDITIONAL_UPDATES=$(oc get clusterversion version -o jsonpath='{.status.conditionalUpdates}{"\n"}');
                 if [[ ! -z $CONDITIONAL_UPDATES ]];
                 then
-                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Supported but not recommended updates auf Cluster {{ .Values.clustername }} verfügbar. Bitte um manuelle kontrolle unter {{ .Values.consoleUrl }}/settings/cluster"} und gegebenfalls starten des Updates' $SLACK_TARGET_CHANNEL;
+                  curl -X POST -H 'Content-type&#58; application/json' --data '{"text":"ACHTUNG! Supported but not recommended updates auf Cluster {{ .Values.clustername }} verfügbar. Bitte um manuelle Kontrolle unter {{ .Values.consoleUrl }}/settings/cluster"} und gegebenenfalls starten des Updates' $SLACK_TARGET_CHANNEL;
                 else
                   echo "keine conditional Updates gefunden"
                 fi;
