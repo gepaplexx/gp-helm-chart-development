@@ -11,7 +11,7 @@ mimir:
         ingestion_rate: 200000
         ingestion_burst_size: 500000
         compactor_blocks_retention_period: 15d  # initial test to find out storage requirements
-        out_of_order_time_window: 12h
+        out_of_order_time_window: 72h
   alertmanager:
     persistentVolume:
       size: 1Gi
