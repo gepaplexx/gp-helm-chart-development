@@ -26,11 +26,11 @@ spec:
       value: '{{ .Values.postgresql.fullnameOverride }}'
     - name: db-username
       secret:
-        name: '{{ .Values.postgresql.fullnameOverride }}'
+        name: 'keycloak-config'
         key: username
     - name: db-password
       secret:
-        name: '{{ .Values.postgresql.fullnameOverride }}'
+        name: 'keycloak-config'
         key: password
   {{- end }}
   tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
