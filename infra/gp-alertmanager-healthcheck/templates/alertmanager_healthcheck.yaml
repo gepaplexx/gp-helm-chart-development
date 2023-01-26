@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - image: ghcr.io/gepaplexx/alertmanager-healthcheck:main
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           name: {{ .Release.Name }}
           ports:
             - containerPort: {{ .Values.networking.port }}
