@@ -16,6 +16,10 @@ data:
       {{- if .Values.clusterMonitoring.prometheusK8s.remoteWrite.enabled }}
       remoteWrite:
         - url: {{ .Values.clusterMonitoring.prometheusK8s.remoteWrite.url }}
+          remoteTimeout: 60s
+          queueConfig:
+            maxSamplesPerSend: 8000
+            maxShards: 30
           basicAuth:
             username:
               name: hub-remote-write-authentication
@@ -23,6 +27,11 @@ data:
             password:
               name: hub-remote-write-authentication
               key: password
+          writeRelabelConfigs:
+            - sourceLabels:
+                - "__name__"
+              regex: "apiserver_request_slo_duration_seconds_bucket|apiserver_request_duration_seconds_bucket|etcd_request_duration_seconds_bucket|apiserver_response_sizes_bucket|rest_client_request_duration_seconds_bucket|rest_client_rate_limiter_duration_seconds_bucket"
+              action: "drop"
       {{- end }}
       retention: {{ .Values.clusterMonitoring.prometheusK8s.retention }}
       resources:
