@@ -12,13 +12,48 @@ spec:
         name: loki-hub-secret
       type: loki
       url: 'https://loki.infra.gepaplexx.com'
+    - loki:
+        labelKeys:
+          - level
+          - kubernetes.namespace_name
+          - kubernetes.pod_name
+          - kubernetes.pod_ip
+      name: internal_infrastructure
+      type: loki
+      url: >-
+        https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/infrastructure
+    - loki:
+        labelKeys:
+          - level
+          - kubernetes.namespace_name
+          - kubernetes.pod_name
+          - kubernetes.pod_ip
+      name: internal_application
+      type: loki
+      url: >-
+        https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application
   pipelines:
+    - inputRefs:
+        - infrastructure
+      labels:
+        cluster_discriminator: {{ .Values.clusterlogforwarder.clusterName }}
+      name: infrastructure_pipeline
+      outputRefs:
+        - internal_infrastructure
+    - inputRefs:
+        - application
+      labels:
+        cluster_discriminator: {{ .Values.clusterlogforwarder.clusterName }}
+      name: application_pipeline
+      outputRefs:
+        - internal_application
+    {{if .Values.clusterlogforwarder.forwardToHub}}
     - inputRefs:
         - application
         - infrastructure
       labels:
         cluster_discriminator: {{ .Values.clusterlogforwarder.clusterName }}
-      name: cluster-logs
+      name: hub-forwarding_pipeline
       outputRefs:
         - hub-central-logging
-        - default
+    {{end}}
