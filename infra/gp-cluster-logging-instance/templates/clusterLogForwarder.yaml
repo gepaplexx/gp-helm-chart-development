@@ -47,6 +47,7 @@ spec:
       name: application_pipeline
       outputRefs:
         - internal_application
+    {{if .Values.clusterlogforwarder.forwardToHub}}
     - inputRefs:
         - application
         - infrastructure
@@ -55,3 +56,4 @@ spec:
       name: hub-forwarding_pipeline
       outputRefs:
         - hub-central-logging
+    {{end}}

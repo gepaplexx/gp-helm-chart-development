@@ -4,6 +4,7 @@ clusterlogging:
   managementState: "Managed"
 clusterlogforwarder:
   clusterName: "not-set"
+  forwardToHub: false
 lokistack:
   # Aktiviert die Ruler Komponente um aufgrund von Logfiles Alerts abschicken zu können.
   rules:
