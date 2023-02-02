@@ -45,10 +45,6 @@ spec:
             - name: UPSTREAM_URL
               value: {{ .Values.multena.upstreamUrl | default "http://localhost:9095" }}
           image: {{.Values.image.name}}:{{.Values.image.tag}}
-          {{- if .Values.resources }}
-          resources:
-          {{- toYaml .Values.resources | nindent 10 }}
-          {{- end }}
           imagePullPolicy: IfNotPresent
           name: ns-proxy
           ports:
@@ -65,10 +61,6 @@ spec:
             - --enable-label-apis
             - --error-on-replace
           image: ghcr.io/lucostus/prom-label-proxy:multi-value-regex-v0.0.4
-          {{- if .Values.resources }}
-          resources:
-          {{- toYaml .Values.resources | nindent 10 }}
-          {{- end }}
           imagePullPolicy: IfNotPresent
           name: prom-label-proxy
           ports:
