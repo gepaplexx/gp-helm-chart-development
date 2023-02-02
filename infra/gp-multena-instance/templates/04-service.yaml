@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "Chart.name" . }}
+  labels:
+    {{- include "Chart.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: multena-proxy-http
+      port: 8080
+      targetPort: 8080
+    - name: prom-label-proxy-http
+      port: 9095
+      targetPort: 9095
+  selector:
+    name: {{ include "Chart.name" . }}
+  type: ClusterIP
