@@ -27,7 +27,7 @@ spec:
                   optional: false
               value: {{ .Values.multena.keycloakClientSecret | default "ClientSecret" }}
             - name: DEV
-              value: {{ .Values.multena.dev | default "false" }}
+              value: {{ .Values.multena.dev | default "False" }}
             - name: KEYCLOAK_CERT_URL
               value: {{ .Values.multena.keycloakCertUrl | default "https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs" }}
             - name: LOG_LEVEL
@@ -37,7 +37,7 @@ spec:
             - name: TENANT_LABEL
               value: {{ .Values.multena.tenantLabel | default "namespace" }}
             - name: TOKEN_EXCHANGE
-              value: {{ .Values.multena.tokenExchange | default "false" }}
+              value: {{ .Values.multena.tokenExchange | default "False" }}
             - name: TOKEN_EXCHANGE_URL
               value: {{ .Values.multena.tokenExchangeUrl | default "https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/token" }}
             - name: UPSTREAM_BYPASS_URL
