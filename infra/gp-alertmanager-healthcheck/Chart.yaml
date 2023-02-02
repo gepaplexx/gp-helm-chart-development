@@ -3,4 +3,4 @@ name: gp-alertmanager-healthcheck
 description: A chart for deploying a simple GO Service that accepts POST Calls from Alertmanagers in order to track their health.
 
 type: application
-version: 0.0.3
+version: 0.0.5
