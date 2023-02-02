@@ -3,12 +3,12 @@ global:
 replicas: 1
 multena:
   adminGroup: Gepaplexx
-  dev: false
+  dev: "false"
   keycloakCertUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs
   logLevel: info
   provider: openshift
   tenantLabel: namespace
-  tokenExchange: false
+  tokenExchange: "false"
   tokenExchangeUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/token
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
 image:
