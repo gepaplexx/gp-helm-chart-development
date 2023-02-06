@@ -31,7 +31,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-        - env:
+          env:
             - name: ADMIN_GROUP
               value: "{{ .Values.multena.adminGroup }}"
             - name: CLIENT_SECRET
