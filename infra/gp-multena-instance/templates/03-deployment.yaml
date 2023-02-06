@@ -1,63 +1,87 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "Chart.name" . }}
+  name: {{ include "gp-multena-instance.fullname" . }}
   labels:
-    {{- include "Chart.labels" . | nindent 4 }}
+    {{- include "gp-multena-instance.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicas }}
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
-      {{- include "Chart.selectorLabels" . | nindent 6 }}
+      {{- include "gp-multena-instance.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
-        {{- include "Chart.labels" . | nindent 8 }}
+        {{- include "gp-multena-instance.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "Chart.name" . }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: dev-admin-sa
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
         - env:
             - name: ADMIN_GROUP
-              value: {{ .Values.multena.adminGroup | default "Gepaplexx" }}
+              value: "{{ .Values.multena.adminGroup }}"
             - name: CLIENT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "Chart.name" . }}-secret
+                  name: "{{ include "gp-multena-instance.name" . }}-secret"
                   key: keycloakClientSecret
                   optional: false
-              value: {{ .Values.multena.keycloakClientSecret | default "ClientSecret" }}
             - name: DEV
-              value: {{ .Values.multena.dev | default "False" }}
+              value: "{{ .Values.multena.dev }}"
             - name: KEYCLOAK_CERT_URL
-              value: {{ .Values.multena.keycloakCertUrl | default "https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs" }}
+              value: "{{ .Values.multena.keycloakCertUrl }}"
             - name: LOG_LEVEL
-              value: {{ .Values.multena.logLevel | default "info" }}
+              value: "{{ .Values.multena.logLevel }}"
             - name: PROVIDER
-              value: {{ .Values.multena.provider | default "openshift" }}
+              value: "{{ .Values.multena.provider }}"
             - name: TENANT_LABEL
-              value: {{ .Values.multena.tenantLabel | default "namespace" }}
+              value: "{{ .Values.multena.tenantLabel }}"
             - name: TOKEN_EXCHANGE
-              value: {{ .Values.multena.tokenExchange | default "False" }}
+              value: "{{ .Values.multena.tokenExchange }}"
             - name: TOKEN_EXCHANGE_URL
-              value: {{ .Values.multena.tokenExchangeUrl | default "https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/token" }}
+              value: "{{ .Values.multena.tokenExchangeUrl }}"
             - name: UPSTREAM_BYPASS_URL
-              value: {{ .Values.multena.thanosUrl | default "https://thanos-querier.openshift-monitoring.svc.cluster.local:9091" }}
+              value: "{{ .Values.multena.thanosUrl }}"
             - name: UPSTREAM_URL
-              value: {{ .Values.multena.upstreamUrl | default "http://localhost:9095" }}
-          image: {{.Values.image.name}}:{{.Values.image.tag}}
-          imagePullPolicy: IfNotPresent
-          name: ns-proxy
+              value: "{{ .Values.multena.upstreamUrl }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: 8080
-              name: http
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /etc/ssl/certs/
               name: openshift-service-ca
         - args:
             - --insecure-listen-address=0.0.0.0:9095
-            - --upstream={{ .Values.multena.thanosUrl | default "https://thanos-querier.openshift-monitoring.svc.cluster.local:9091" }}
-            - --label={{ .Values.multena.tenantLabel | default "namespace" }}
-            - --query-param={{ .Values.multena.tenantLabel | default "namespace" }}
+            - --upstream={{ .Values.multena.thanosUrl }}
+            - --label={{ .Values.multena.tenantLabel }}
+            - --query-param={{ .Values.multena.tenantLabel }}
             - --enable-label-apis
             - --error-on-replace
           image: ghcr.io/lucostus/prom-label-proxy:multi-value-regex-v0.0.4
@@ -73,3 +97,15 @@ spec:
         - configMap:
             name: openshift-service-ca.crt
           name: openshift-service-ca
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

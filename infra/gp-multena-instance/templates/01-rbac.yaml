@@ -1,7 +1,7 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: {{ include "Chart.name" . }}
+  name: {{ include "gp-multena-instance.name" . }}
   namespace: {{ .Release.Namespace }}
 ---
 kind: ServiceAccount
@@ -13,10 +13,10 @@ metadata:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ include "Chart.name" . }}
+  name: {{ include "gp-multena-instance.name" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "Chart.name" . }}-monitoring-view
+    name: {{ include "gp-multena-instance.name" . }}-monitoring-view
     namespace: {{.Release.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -26,10 +26,10 @@ roleRef:
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: {{ include "Chart.name" . }}-rolebindings-access
+  name: {{ include "gp-multena-instance.name" . }}-rolebindings-access
 subjects:
   - kind: ServiceAccount
-    name: {{ include "Chart.name" . }}
+    name: {{ include "gp-multena-instance.name" . }}
     namespace: {{.Release.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

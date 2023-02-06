@@ -1,25 +1,63 @@
-global:
-  nameOverride:
-replicas: 1
+
+replicaCount: 1
+
+
 multena:
   adminGroup: Gepaplexx
-  dev: 'false'
+  dev: 'False'
   keycloakCertUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs
   logLevel: info
   provider: openshift
   tenantLabel: namespace
-  tokenExchange: 'false'
+  tokenExchange: 'False'
   tokenExchangeUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/token
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+  upstreamUrl: http://localhost:9095
 image:
-  name: ghcr.io/gepaplexx/multena-proxy
-  tag: latest
-resources:
-  limits:
-    cpu: 25m
-    memory: 256Mi
-  requests:
-    cpu: 10m
-    memory: 128Mi
+  repository: ghcr.io/gepaplexx/multena-proxy
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
 
-  
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: "dev-admin-sa"
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8080
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
