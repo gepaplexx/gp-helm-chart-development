@@ -1,7 +1,7 @@
 kind: ServiceAccount
 apiVersion: v1
 metadata:
-  name: {{ include "gp-multena-instance.name" . }}
+  name: {{ include "gp-multena-instance.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}
 ---
 kind: ServiceAccount
