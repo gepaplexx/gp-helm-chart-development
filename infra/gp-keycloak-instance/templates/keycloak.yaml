@@ -4,6 +4,8 @@ metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}'
   labels:
     {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   hostname: {{  .Values.ingress.hostname }}
   instances: {{ .Values.replicas }}
