@@ -49,12 +49,12 @@ spec:
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
-                  name: gattma-keycloak-config-initial-admin #dynamic but from operator
+                  name: {{ include "gp-keycloak-configuration.fullname" . }}-initial-admin
                   key: username
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: gattma-keycloak-config-initial-admin #dynamic but from operator
+                  name: {{ include "gp-keycloak-configuration.fullname" . }}-initial-admin
                   key: password
           volumeMounts:
             - name: config-data
