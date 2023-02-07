@@ -41,7 +41,7 @@ argo_events:
       # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
       # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
         - version: "2.9.5"
-          natsImage: nats:2.9.5
+          natsImage: nats:2.9.14
           metricsExporterImage: natsio/prometheus-nats-exporter:0.10.1
           configReloaderImage: natsio/nats-server-config-reloader:0.7.4
           startCommand: /nats-server
