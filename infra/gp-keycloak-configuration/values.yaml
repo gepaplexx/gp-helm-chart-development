@@ -1,0 +1,59 @@
+cluster: play
+namespace: gp-sso
+clientProperties: "SET ME"
+
+identityProvider:
+  openshift:
+    baseUrl: https://api.{{ .Values.cluster }}.gepaplexx.com:6443
+    clientId: "keycloak"
+
+argoWorkflows:
+  enabled: true
+  rootUrl: https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com
+  redirectUris:
+    - https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com/*
+  webOrigins:
+    - https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com
+
+grafana:
+  enabled: true
+  rootUrl: https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
+  adminUrl: https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
+  redirectUris:
+    - https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com/login/generic_oauth
+  webOrigins:
+    - https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
+
+sonarqube:
+  enabled: true
+  redirectUris:
+    - "*"
+    - https://sonarqube.apps.{{ .Values.cluster}}.gepaplexx.com/oauth2/callback/saml
+
+vault:
+  enabled: true
+  rootUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
+  adminUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
+  redirectUris:
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com/ui/vault/auth/oidc/oidc/callback
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com//oidc/oidc/callback
+    - http://localhost:8250/oidc/callback
+  webOrigins:
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
+
+testresultpublisher:
+  enabled: true
+  redirectUris:
+    - http://localhost:4200/*
+  webOrigins:
+    - http://localhost:4200/*
+    - "*"
+
+keycloak:
+  fullnameOverride: gp-sso
+  persistence:
+    auth:
+      password: "SET ME"
+  provider:
+    openshift:
+      clientSecret: "SET ME"

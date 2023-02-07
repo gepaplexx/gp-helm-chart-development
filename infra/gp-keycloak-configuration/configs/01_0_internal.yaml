@@ -1,0 +1,134 @@
+realm: internal
+displayName: gepardec-run internal realm
+enabled: true
+userManagedAccessAllowed: true
+
+roles:
+  realm:
+    - name: gepaplexx-realm-admin
+      description: ''
+      composite: true
+      composites:
+        client:
+          realm-management:
+            - query-users
+            - view-authorization
+            - realm-admin
+            - uma_protection
+            - view-users
+            - manage-identity-providers
+            - create-client
+            - manage-authorization
+            - impersonation
+            - manage-users
+            - query-realms
+            - view-events
+            - manage-realm
+            - query-clients
+            - view-realm
+            - manage-events
+            - view-clients
+            - manage-clients
+            - query-groups
+            - view-identity-providers
+      clientRole: false
+      containerId: internal
+
+groups:
+  - name: gepaplexx-admins
+    path: "/gepaplexx-admins"
+    attributes: {}
+    realmRoles:
+      - gepaplexx-realm-admin
+    clientRoles:
+      realm-management:
+        - query-users
+        - view-authorization
+        - realm-admin
+        - view-users
+        - manage-identity-providers
+        - create-client
+        - manage-authorization
+        - impersonation
+        - manage-users
+        - query-realms
+        - view-events
+        - manage-realm
+        - query-clients
+        - view-realm
+        - manage-events
+        - view-clients
+        - manage-clients
+        - query-groups
+        - view-identity-providers
+
+identityProviders:
+  - alias: openshift
+    displayName: Login with OpenShift
+    providerId: openshift-v4
+    enabled: true
+    updateProfileFirstLoginMode: 'on'
+    trustEmail: false
+    storeToken: true
+    addReadTokenRoleOnCreate: true
+    authenticateByDefault: false
+    linkOnly: false
+    firstBrokerLoginFlowAlias: first broker login
+    config:
+      hideOnLoginPage: 'false'
+      baseUrl: {{ tpl .Values.identityProvider.openshift.baseUrl . }}
+      acceptsPromptNoneForwardFromClient: 'false'
+      clientId: {{ .Values.identityProvider.openshift.clientId }}
+      disableUserInfo: 'false'
+      syncMode: FORCE
+      clientSecret: '$(properties:/secrets/secrets.properties::OCP_IP_CLIENT_SECRET)'
+      defaultScope: user:full
+
+identityProviderMappers:
+  - name: group-mapper
+    identityProviderAlias: openshift
+    identityProviderMapper: openshift-v4-user-attribute-mapper
+    config:
+      template: "${ALIAS}.${CLAIM.preferred_username}"
+      jsonField: groups
+      userAttribute: groups
+      claims: "[]"
+      syncMode: FORCE
+      attributes: "[]"
+      target: LOCAL
+
+clientScopes:
+  - name: openshift-groups
+    protocol: openid-connect
+    attributes:
+      include.in.token.scope: 'true'
+      display.on.consent.screen: 'true'
+      consent.screen.text: Groups
+    protocolMappers:
+      - name: group-attribute-mapper
+        protocol: openid-connect
+        protocolMapper: oidc-usermodel-attribute-mapper
+        consentRequired: false
+        config:
+          aggregate.attrs: 'false'
+          multivalued: 'true'
+          userinfo.token.claim: 'true'
+          user.attribute: groups
+          id.token.claim: 'true'
+          access.token.claim: 'true'
+          claim.name: groups
+          jsonType.label: String
+
+  - name: web-origins
+    description: OpenID Connect scope for add allowed web origins to the access token
+    protocol: openid-connect
+    attributes:
+      include.in.token.scope: 'false'
+      display.on.consent.screen: 'false'
+      consent.screen.text: ''
+    protocolMappers:
+      - name: allowed web origins
+        protocol: openid-connect
+        protocolMapper: oidc-allowed-origins-mapper
+        consentRequired: false
+        config: {}
