@@ -4,5 +4,8 @@
     "config:base"
   ],
   "prHourlyLimit": 0,
-  "bumpVersion": "minor"
+  "bumpVersion": "minor",
+  "ignoreDeps": [
+    "rook-ceph"
+  ]
 }
