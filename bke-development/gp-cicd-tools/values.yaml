@@ -43,7 +43,7 @@ argo_events:
         - version: "2.9.5"
           natsImage: nats:2.9.5
           metricsExporterImage: natsio/prometheus-nats-exporter:0.10.1
-          configReloaderImage: natsio/nats-server-config-reloader:0.7.4
+          configReloaderImage: natsio/nats-server-config-reloader:0.9.3
           startCommand: /nats-server
       # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
         - version: "latest"
