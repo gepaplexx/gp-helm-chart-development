@@ -8,7 +8,6 @@ name: Release Helm Charts in Development
         description: directory with helm charts to release
         type: Choice
         options:
-        - bke-runtime
         - bke-development
         - infra
         - gp-apps
