@@ -2,6 +2,9 @@ cluster: play
 namespace: gp-sso
 clientProperties: "SET ME"
 
+importer:
+  image: 'docker.io/adorsys/keycloak-config-cli:5.3.1-19.0.1'
+
 identityProvider:
   openshift:
     baseUrl: https://api.{{ .Values.cluster }}.gepaplexx.com:6443
@@ -50,7 +53,7 @@ testresultpublisher:
     - "*"
 
 keycloak:
-  fullnameOverride: gp-sso
+  fullnameOverride: "gp-sso"
   persistence:
     auth:
       password: "SET ME"

@@ -1,7 +1,7 @@
 kind: Job
 apiVersion: batch/v1
 metadata:
-  name: kc-config-importer #dynamic
+  name: kc-config-importer
   namespace: {{ .Values.namespace }}
   annotations:
     argocd.argoproj.io/hook: PostSync
@@ -21,7 +21,7 @@ spec:
             secretName: client-secrets
       containers:
         - name: keycloak-config-cli
-          image: 'docker.io/adorsys/keycloak-config-cli:5.3.1-19.0.1'
+          image: {{ .Values.importer.image }}
           imagePullPolicy: IfNotPresent
           terminationMessagePolicy: File
           terminationMessagePath: /log/termination-log
@@ -45,16 +45,16 @@ spec:
             - name: IMPORT_CACHE_ENABLED
               value: "false"
             - name: KEYCLOAK_URL
-              value: "https://{{ .Values.keycloak.fullnameOverride }}-service:8443" #dynamic
+              value: "{{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-service:8443"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-configuration.fullname" . }}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-initial-admin
                   key: username
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-configuration.fullname" . }}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-initial-admin
                   key: password
           volumeMounts:
             - name: config-data
