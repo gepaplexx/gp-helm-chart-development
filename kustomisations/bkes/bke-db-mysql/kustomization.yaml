@@ -8,7 +8,7 @@ helmCharts:
   valuesInline:
     db:
   releaseName: postgrestestapp
-  version: 0.1.1
+  version: 0.2.0
   repo: https://gepaplexx.github.io/gp-helm-charts/
 
 transformers:
