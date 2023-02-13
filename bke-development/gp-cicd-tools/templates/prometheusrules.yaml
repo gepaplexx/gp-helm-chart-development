@@ -226,7 +226,7 @@ spec:
             rate(argo_workflows_result_task_counter{status!="Succeeded"}[1m]) !=
             0
           labels:
-            type: fail
+            type: argo-workflows-fail
             severity: critical
 ---
 {{- end }}
