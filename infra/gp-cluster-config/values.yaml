@@ -42,6 +42,8 @@ argocd:
     defaultPolicy: ''
     policies:
       - 'g, Gepaplexx, role:admin'
+  notifications:
+    enabled: true
 
 patchOperator:
   namespace: gp-infrastructure

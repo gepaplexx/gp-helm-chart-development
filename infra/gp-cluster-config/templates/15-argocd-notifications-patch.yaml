@@ -1,0 +1,19 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: patch-argocd-notifications
+spec:
+  serviceAccountRef:
+    name: patch-operator-sa
+  patches:
+    patch-argocd-notifications:
+      targetObjectRef:
+        apiVersion: argoproj.io/v1alpha1
+        kind: ArgoCD
+        name: {{ .Values.argocd.name }}
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+        spec:
+          notifications:
+            enabled: {{ .Values.argocd.notifications.enabled }}
+      patchType: application/merge-patch+json
