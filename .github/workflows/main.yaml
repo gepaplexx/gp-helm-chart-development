@@ -31,7 +31,6 @@ jobs:
       - name: Lint Helm
         run: |
           helm lint \
-             ./bke-runtime/*/. \
              ./bke-development/*/. \
              ./infra/*/. \
              ./gp-workload/*/. \
@@ -44,15 +43,6 @@ jobs:
       - lint-helm
     steps:
       - uses: actions/checkout@v2
-      - name: Publish bke-runtime Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./bke-runtime
-          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-          owner: gepaplexx
-          repository: gp-helm-charts
-          branch: main
       - name: Publish infra Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:

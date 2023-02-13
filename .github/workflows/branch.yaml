@@ -30,7 +30,6 @@ jobs:
       - name: Lint Helm
         run: |
           helm lint \
-             ./bke-runtime/*/. \
              ./bke-development/*/. \
              ./infra/*/. \
              ./gp-workload/*/. \

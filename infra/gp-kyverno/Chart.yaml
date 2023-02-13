@@ -3,7 +3,7 @@ name: gp-kyverno
 description: A Helm chart for deploying kyverno on gepaplexx openshift clusters
 
 type: application
-version: 0.2.0
+version: 0.2.2
 
 appVersion: "2.5.3"
 dependencies:

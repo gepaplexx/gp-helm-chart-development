@@ -434,6 +434,32 @@ spec:
             type: "internal"
 ---
 apiVersion: monitoring.coreos.com/v1
+kind: PometheusRule
+metadata:
+  name: argo-workflows-builds
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-cicd-tools.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: argo-workflows-builds.rule
+      rules:
+        - alert: workflow_failed
+          annotations:
+            description: |-
+              Applikation: {{`{{ $labels.application }}`}}
+              Branch: {{`{{ $labels.branch }}`}}
+              Commiter: {{`{{ $labels.commit_user }} <{{ $labels.commit_email }}>`}}
+            summary: 'Workflow "{{`{{ $labels.task_name }}`}}" Status: {{`{{ $labels.status }}`}}'
+          expr: >-
+            rate(argo_workflows_result_task_counter{status!="Succeeded"}[1m]) !=
+            0
+          labels:
+            type: fail
+            severity: critical
+
+---
+apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: argo-cd-server
