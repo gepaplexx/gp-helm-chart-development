@@ -445,7 +445,7 @@ data:
       title: Application {{.app.metadata.name}} has been successfully synced
   context: >
     argocdUrl:
-    https://openshift-gitops-server-openshift-gitops.apps.play.gepaplexx.com
+    {{ .Values.argocd.notifications.argocdURL }}
   trigger.on-created: |-
     - description: Application is created.
       oncePer: app.metadata.name

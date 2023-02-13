@@ -44,6 +44,7 @@ argocd:
       - 'g, Gepaplexx, role:admin'
   notifications:
     enabled: true
+    argocdURL: https://openshift-gitops-server-openshift-gitops.apps.play.gepaplexx.com
 
 patchOperator:
   namespace: gp-infrastructure
