@@ -4,7 +4,7 @@ description: A Helm chart for deploying the Loki Stack on our Hub-Cluster
 
 type: application
 
-version: 0.2.2
+version: 0.3.0
 appVersion: "2.7.0"
 
 dependencies:
@@ -12,5 +12,5 @@ dependencies:
     repository: "https://charts.bitnami.com/bitnami"
     version: 12.0.0
   - name: loki
-    version: 3.8.0
+    version: 4.6.1
     repository: https://grafana.github.io/helm-charts
