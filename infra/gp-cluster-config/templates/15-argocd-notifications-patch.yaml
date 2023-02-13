@@ -17,3 +17,28 @@ spec:
           notifications:
             enabled: {{ .Values.argocd.notifications.enabled }}
       patchType: application/merge-patch+json
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: patch-argocd-notifications-configmap
+spec:
+  serviceAccountRef:
+    name: patch-operator-sa
+  patches:
+    patch-argocd-notifications:
+      targetObjectRef:
+        apiVersion: v1
+        kind: ConfigMap
+        name: argocd-notifications-cm
+        namespace: {{ .Values.argocd.namespace }}
+      patchTemplate: |
+        data:
+          service.grafana: >
+            apiUrl:
+            http://grafana-service.grafana-operator-system.svc.cluster.local:3000/api/
+            apiKey: $grafana-api-key
+          context: >
+            argocdUrl:
+            {{.Values.argocd.notifications.argocdURL}}
+      patchType: application/merge-patch+json
