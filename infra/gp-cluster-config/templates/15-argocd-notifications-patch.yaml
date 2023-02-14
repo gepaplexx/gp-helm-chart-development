@@ -26,7 +26,7 @@ spec:
   serviceAccountRef:
     name: patch-operator-sa
   patches:
-    patch-argocd-notifications:
+    patch-argocd-notifications-configmap:
       targetObjectRef:
         apiVersion: v1
         kind: ConfigMap
@@ -37,6 +37,7 @@ spec:
           service.grafana: >
             apiUrl:
             http://grafana-service.grafana-operator-system.svc.cluster.local:3000/api/
+
             apiKey: $grafana-api-key
           context: >
             argocdUrl:
