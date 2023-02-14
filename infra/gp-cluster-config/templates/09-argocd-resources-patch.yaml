@@ -22,9 +22,6 @@ spec:
               limits:
                 cpu: {{ .Values.argocd.controller.limits.cpu }}
                 memory: {{ .Values.argocd.controller.limits.memory }}
-          ha:
-            enabled: {{ .Values.argocd.ha.enabled }}
-            replicas: {{ .Values.argocd.ha.replicas }}
           repo:
             resources:
               limits:
