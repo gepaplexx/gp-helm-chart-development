@@ -26,9 +26,6 @@ argocd:
     limits:
       cpu: "1"
       memory: "4Gi"
-  ha:
-    enabled: true
-    replicas: 3
   repo:
     limits:
       cpu: "500m"
