@@ -443,7 +443,6 @@ spec:
             argo_workflows_result_task_counter{status="Failed"} ==1 or rate(argo_workflows_result_task_counter{status="Failed"}[5m]) > 0
           labels:
             type: argo-workflows-fail
-            severity: critical
 
 ---
 apiVersion: monitoring.coreos.com/v1
