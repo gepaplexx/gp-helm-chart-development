@@ -45,6 +45,3 @@ userWorkloadMonitoring:
 patchOperator:
   serviceAccount: patch-operator-sa
   namespace: gp-infrastructure
-
-alertmanager:
-  config:
