@@ -19,7 +19,6 @@ vault:
         cpu: '100m'
       limits:
         memory: '150Mi'
-        cpu: '150m'
   server:
     dataStorage:
       size: '500Mi'

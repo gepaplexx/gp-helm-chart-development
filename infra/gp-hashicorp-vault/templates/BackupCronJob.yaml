@@ -27,9 +27,11 @@ spec:
                   && ln -sf ${BACKUP_NAME} latest
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
               resources:
+                requests:
+                  memory: '100Mi'
+                  cpu: '100m'
                 limits:
-                  memory: "128Mi"
-                  cpu: "500m"
+                  memory: "600Mi"
               env:
                 - name: VAULT_ADDR
                   value: 'http://vault-active:8200'
