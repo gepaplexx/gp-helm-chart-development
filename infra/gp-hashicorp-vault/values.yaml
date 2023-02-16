@@ -5,7 +5,7 @@ backup:
   schedule: '0 0 * * *'
   size: 2Gi
   retain:
-    days: 31 # need to +1, so 7 days = 8
+    days: 31 # need to +1, so 30 days = 31
 vault:
   global:
     openshift: true
