@@ -1,0 +1,51 @@
+{{- if .Values.backup.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: 'gp-vault-backup'
+  namespace: {{ .Release.Namespace }}
+spec:
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  schedule: '{{ .Values.backup.schedule }}'
+  jobTemplate:
+    spec:
+      backoffLimit: 3
+      template:
+        spec:
+          containers:
+            - name: "vault-raft-backup"
+              image: 'hashicorp/vault:1.12.1'
+              command: ["/bin/sh", "-ec"]
+              args:
+                - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
+                  && export BACKUP_NAME="vault-backup-${TIMESTAMP}.snap"
+                  && cd /backup
+                  && export VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="backup-creator" jwt=$(cat /run/secrets/kubernetes.io/serviceaccount/token))
+                  && vault operator raft snapshot save ${BACKUP_NAME}
+                  && vault token revoke ${VAULT_TOKEN}
+                  && ln -sf ${BACKUP_NAME} latest
+                  && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
+              resources:
+                limits:
+                  memory: "128Mi"
+                  cpu: "500m"
+              env:
+                - name: VAULT_ADDR
+                  value: 'http://vault-active:8200'
+              volumeMounts:
+                - name: "backup-volume"
+                  mountPath: /backup
+          volumes:
+            - name: "backup-volume"
+              persistentVolumeClaim:
+                claimName: 'gp-vault-backup-pvc'
+          restartPolicy: Never
+          serviceAccountName: vault-backup-sa
+{{- end }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vault-backup-sa
+  namespace: {{ .Release.Namespace }}

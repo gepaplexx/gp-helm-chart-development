@@ -237,6 +237,11 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         {
           capabilities = [\"read\", \"create\", \"update\", \"list\"]
         }'
+
+        path \"sys/storage/raft/*\"
+        {
+          capabilities = [\"read\", \"create\", \"update\", \"list\", \"delete\", \"sudo\"]
+        }
       )"
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
