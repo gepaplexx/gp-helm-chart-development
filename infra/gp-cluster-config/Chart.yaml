@@ -2,5 +2,4 @@ apiVersion: v2
 name: gp-cluster-config
 description: A gepaplexx Helm chart setup an Openshift-Cluster with gepaplexx specific configs
 type: application
-version: 1.7.0
-appVersion: 1.0.0
+version: 1.7.1
