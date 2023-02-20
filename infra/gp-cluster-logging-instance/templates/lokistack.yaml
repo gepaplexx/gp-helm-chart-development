@@ -43,7 +43,7 @@ spec:
       type: s3
   storageClassName: {{ .Values.lokistack.configuration.storageClassName }}
   template:
-    compactor:
+    compactor:awrawra
       {{- include "infranodes.enabled" .  | nindent 6 }}
       replicas: {{ .Values.lokistack.configuration.compactor.replicas }}
     distributor:
