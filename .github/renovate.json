@@ -7,6 +7,7 @@
   "prHourlyLimit": 0,
   "bumpVersion": "minor",
   "ignoreDeps": [
-    "rook-ceph"
+    "rook-ceph",
+    "rook-ceph-cluster"
   ]
 }
