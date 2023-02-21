@@ -78,6 +78,4 @@ spec:
               {{if eq .serviceType "slack"}}:exclamation:{{end}} Application {{.app.metadata.name}} has degraded.
               Application details: <a href="{{.context.argocdUrl}}/applications/{{.app.metadata.name}}" target="_blank"> ArgoCD</a>.
               `}}
-
-
       patchType: application/merge-patch+json
