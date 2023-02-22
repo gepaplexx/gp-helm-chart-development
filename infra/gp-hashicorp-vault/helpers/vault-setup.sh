@@ -163,6 +163,17 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         '
       )"
 
+# BACKUP-CREATOR
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault policy write backup-creator \
+      <(echo '
+        path \"/sys/storage/raft/snapshot\"
+        {
+          capabilities = [\"read\"]
+        }
+        '
+      )"
+
 # ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write admin \
@@ -237,6 +248,11 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         {
           capabilities = [\"read\", \"create\", \"update\", \"list\"]
         }'
+
+        path \"sys/storage/raft/*\"
+        {
+          capabilities = [\"read\", \"create\", \"update\", \"list\", \"delete\", \"sudo\"]
+        }
       )"
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
@@ -252,6 +268,12 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       bound_service_account_namespaces='gepaplexx-cicd-tools' \
       policies=cicd-admin-readonly \
       ttl=24h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/backup-creator \
+      bound_service_account_names=vault-backup-sa \
+      bound_service_account_namespaces='gp-vault' \
+      policies=backup-creator \
+      ttl=1h"
 
 # ENABLE & CONFIGURE OIDC AUTH INTEGRATION
 if [ "${skip_non_repeatable}" = false ]; then
