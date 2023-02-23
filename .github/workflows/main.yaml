@@ -15,12 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
       - name: Set up Helm
-        uses: azure/setup-helm@v1
+        uses: azure/setup-helm@v3
         with:
           version: v3.8.0
 
@@ -31,7 +31,6 @@ jobs:
       - name: Lint Helm
         run: |
           helm lint \
-             ./bke-runtime/*/. \
              ./bke-development/*/. \
              ./infra/*/. \
              ./gp-workload/*/. \
@@ -43,16 +42,7 @@ jobs:
     needs:
       - lint-helm
     steps:
-      - uses: actions/checkout@v2
-      - name: Publish bke-runtime Helm charts
-        uses: stefanprodan/helm-gh-pages@master
-        with:
-          token: ${{ secrets.PAT }}
-          charts_dir: ./bke-runtime
-          charts_url: https://gepaplexx.github.io/gp-helm-charts/
-          owner: gepaplexx
-          repository: gp-helm-charts
-          branch: main
+      - uses: actions/checkout@v3
       - name: Publish infra Helm charts
         uses: stefanprodan/helm-gh-pages@master
         with:
