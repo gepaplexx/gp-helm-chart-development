@@ -23,7 +23,7 @@ spec:
                   && cd /backup
                   && export VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="backup-creator" jwt=$(cat /run/secrets/kubernetes.io/serviceaccount/token))
                   && vault operator raft snapshot save ${BACKUP_NAME}
-                  && vault token revoke ${VAULT_TOKEN}
+                  && vault token revoke -self
                   && ln -sf ${BACKUP_NAME} latest
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
               resources:
