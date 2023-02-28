@@ -8,5 +8,5 @@ version: 0.6.0
 dependencies:
   - name: postgresql
     repository: "https://charts.bitnami.com/bitnami"
-    version: ~12.1.0
+    version: ~12.2.0
     condition: persistence.enabled
