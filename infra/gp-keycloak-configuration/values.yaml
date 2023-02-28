@@ -3,7 +3,7 @@ namespace: gp-sso
 clientProperties: "SET ME"
 
 importer:
-  image: 'docker.io/adorsys/keycloak-config-cli:5.3.1-19.0.1'
+  image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
 
 identityProvider:
   openshift:
