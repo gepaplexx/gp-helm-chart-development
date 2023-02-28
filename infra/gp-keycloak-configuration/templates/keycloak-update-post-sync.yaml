@@ -45,7 +45,7 @@ spec:
             - name: IMPORT_CACHE_ENABLED
               value: "false"
             - name: KEYCLOAK_URL
-              value: "{{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-service:8443"
+              value: "https://{{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-service:8443"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
