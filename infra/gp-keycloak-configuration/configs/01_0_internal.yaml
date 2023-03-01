@@ -3,6 +3,15 @@ displayName: gepardec-run internal realm
 enabled: true
 userManagedAccessAllowed: true
 
+defaultDefaultClientScopes:
+- role_list
+- profile
+- email
+- roles
+- web-origins
+- acr
+- openshift-groups
+
 roles:
   realm:
     - name: gepaplexx-realm-admin
@@ -178,7 +187,7 @@ identityProviders:
     providerId: openshift-v4
     enabled: true
     updateProfileFirstLoginMode: 'on'
-    trustEmail: false
+    trustEmail: true
     storeToken: true
     addReadTokenRoleOnCreate: true
     authenticateByDefault: false

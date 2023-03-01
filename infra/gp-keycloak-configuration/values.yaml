@@ -44,14 +44,6 @@ vault:
   webOrigins:
     - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
 
-testresultpublisher:
-  enabled: true
-  redirectUris:
-    - http://localhost:4200/*
-  webOrigins:
-    - http://localhost:4200/*
-    - "*"
-
 keycloak:
   fullnameOverride: "gp-sso"
   persistence:
