@@ -15,65 +15,19 @@ clients:
     publicClient: false
     protocol: openid-connect
     attributes:
-      saml.force.post.binding: 'false'
-      saml.multivalued.roles: 'false'
       frontchannel.logout.session.required: 'false'
       post.logout.redirect.uris: "+"
       oauth2.device.authorization.grant.enabled: 'false'
-      saml.server.signature.keyinfo.ext: 'false'
       use.refresh.tokens: 'true'
       oidc.ciba.grant.enabled: 'false'
       client_credentials.use_refresh_token: 'false'
       require.pushed.authorization.requests: 'false'
-      saml.client.signature: 'false'
-      saml.allow.ecp.flow: 'false'
       id.token.as.detached.signature: 'false'
-      saml.assertion.signature: 'false'
-      saml.encrypt: 'false'
-      saml.server.signature: 'false'
       exclude.session.state.from.auth.response: 'false'
-      saml.artifact.binding: 'false'
-      saml_force_name_id_format: 'false'
       acr.loa.map: "{}"
       tls.client.certificate.bound.access.tokens: 'false'
-      saml.authnstatement: 'false'
       display.on.consent.screen: 'false'
       token.response.type.bearer.lower-case: 'false'
-      saml.onetimeuse.condition: 'false'
-    protocolMappers:
-      - name: Client Host
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientHost
-          userinfo.token.claim: 'true'
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientHost
-          jsonType.label: String
-      - name: Client ID
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientId
-          userinfo.token.claim: 'true'
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientId
-          jsonType.label: String
-      - name: Client IP Address
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientAddress
-          userinfo.token.claim: 'true'
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientAddress
-          jsonType.label: String
 {{- end }}
 {{- if .Values.grafana.enabled }}
   - clientId: grafana
@@ -93,61 +47,18 @@ clients:
     publicClient: false
     protocol: openid-connect
     attributes:
-      saml.multivalued.roles: 'false'
-      saml.force.post.binding: 'false'
       frontchannel.logout.session.required: 'false'
       oauth2.device.authorization.grant.enabled: 'true'
-      saml.server.signature.keyinfo.ext: 'false'
       use.refresh.tokens: 'true'
       oidc.ciba.grant.enabled: 'false'
       client_credentials.use_refresh_token: 'false'
-      saml.client.signature: 'false'
       require.pushed.authorization.requests: 'false'
-      saml.allow.ecp.flow: 'false'
-      saml.assertion.signature: 'false'
       id.token.as.detached.signature: 'false'
-      saml.encrypt: 'false'
-      saml.server.signature: 'false'
       exclude.session.state.from.auth.response: 'false'
-      saml.artifact.binding: 'false'
-      saml_force_name_id_format: 'false'
       tls.client.certificate.bound.access.tokens: 'false'
       acr.loa.map: "{}"
-      saml.authnstatement: 'false'
       display.on.consent.screen: 'false'
       token.response.type.bearer.lower-case: 'false'
-      saml.onetimeuse.condition: 'false'
-    protocolMappers:
-      - name: Client Host
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientHost
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientHost
-          jsonType.label: String
-      - name: Client IP Address
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientAddress
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientAddress
-          jsonType.label: String
-      - name: Client ID
-        protocol: openid-connect
-        protocolMapper: oidc-usersessionmodel-note-mapper
-        consentRequired: false
-        config:
-          user.session.note: clientId
-          id.token.claim: 'true'
-          access.token.claim: 'true'
-          claim.name: clientId
-          jsonType.label: String
 {{- end }}
 {{- if .Values.sonarqube.enabled }}
   - clientId: sonarqube
@@ -239,28 +150,16 @@ clients:
     publicClient: false
     protocol: openid-connect
     attributes:
-      saml.multivalued.roles: 'false'
-      saml.force.post.binding: 'false'
       frontchannel.logout.session.required: 'false'
       oauth2.device.authorization.grant.enabled: 'false'
-      saml.server.signature.keyinfo.ext: 'false'
       use.refresh.tokens: 'true'
       oidc.ciba.grant.enabled: 'false'
       client_credentials.use_refresh_token: 'false'
-      saml.client.signature: 'false'
       require.pushed.authorization.requests: 'false'
-      saml.allow.ecp.flow: 'false'
-      saml.assertion.signature: 'false'
       id.token.as.detached.signature: 'false'
-      saml.encrypt: 'false'
-      saml.server.signature: 'false'
       exclude.session.state.from.auth.response: 'false'
-      saml.artifact.binding: 'false'
-      saml_force_name_id_format: 'false'
       tls.client.certificate.bound.access.tokens: 'false'
       acr.loa.map: "{}"
-      saml.authnstatement: 'false'
       display.on.consent.screen: 'false'
       token.response.type.bearer.lower-case: 'false'
-      saml.onetimeuse.condition: 'false'
 {{- end }}
