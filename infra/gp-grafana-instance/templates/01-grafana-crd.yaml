@@ -9,7 +9,7 @@ spec:
   dataStorage:
     accessModes:
       - ReadWriteMany
-    size: 10Gi
+    size: 256Mi
     class: rook-ceph-fs
   baseImage: {{ .Values.grafana.version}}
   ingress:
