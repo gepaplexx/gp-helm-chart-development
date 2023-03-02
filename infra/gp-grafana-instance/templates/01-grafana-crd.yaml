@@ -37,7 +37,7 @@ spec:
         '{{ .Values.auth.editorGroups }}') && 'Editor' || 'Viewer'
       auth_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
-      scopes: profile
+      scopes: openid profile
     auth.anonymous:
       enabled: false
     log:
