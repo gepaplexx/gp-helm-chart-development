@@ -4,10 +4,10 @@ metadata:
   name: label-gp-infrastructure-for-monitoring
 spec:
   serviceAccountRef:
-    name: patch-operator-sa
+    name: {{ .Values.patchOperator.serviceAccount }}
   patches:
   {{- range $v := .Values.internalInfrastructureNamespaces }}
-    label-default-ns-patch:
+    label-infra-namespace-{{ $v.name }}:
       targetObjectRef:
         apiVersion: v1
         kind: Namespace

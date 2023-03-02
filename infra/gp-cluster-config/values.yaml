@@ -43,14 +43,6 @@ argocd:
     enabled: true
     argocdURL: "To be set"
 
-internalInfrastructureNamespaces:
-  - name: gepaplexx-cicd-eventbus
-  - name: gp-cluster-policies
-  - name: gp-external-secrets
-  - name: gp-sso
-  - name: grafana-operator-system
-
-
 patchOperator:
   namespace: gp-infrastructure
   serviceAccount: patch-operator-sa
