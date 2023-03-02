@@ -80,23 +80,8 @@ minio:
     enabled: true
     buckets:
        - name: loki
-         versioning: false
-         # Versioning is automatically enabled if withLock is true
-         # ref: https://docs.min.io/docs/minio-bucket-versioning-guide.html
-         withLock: false
-         # Only when mode is 'distributed'
-         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
-         lifecycle:
-           - id: Loki30dRetention
-             prefix: Loki
-             disabled: false
-             expiry:
-               days: 30
-               # Days !OR! date
-               # date: "2021-11-11T00:00:00Z"
-               nonconcurrentDays: 3
-         # Only when mode is 'distributed'
-         # ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
+         purge: false
+         policy: none
 
 loki_hub_secret:
   password: ""
