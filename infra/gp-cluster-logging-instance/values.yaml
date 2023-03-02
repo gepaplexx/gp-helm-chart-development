@@ -14,6 +14,8 @@ lokistack:
   configuration:
     storageClassName: rook-ceph-fs
     limits:
+      global:
+        retention: 30
       ingestion:
         # not entirely clear what does values do, but apparently they fix the ingestionRateLimit error inside of the log
         # collectors
