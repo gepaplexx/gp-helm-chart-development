@@ -1,7 +1,7 @@
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
-  name: label-gp-infrastructure-for-monitoring+
+  name: label-gp-infrastructure-for-monitoring
   namespace: {{ .Values.patchOperator.namespace }}
 spec:
   serviceAccountRef:
