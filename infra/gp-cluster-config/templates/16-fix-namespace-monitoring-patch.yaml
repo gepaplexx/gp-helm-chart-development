@@ -1,0 +1,20 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: label-gp-infrastructure-for-monitoring
+spec:
+  serviceAccountRef:
+    name: patch-operator-sa
+  patches:
+  {{- range $v := .Values.internalInfrastructureNamespaces }}
+    label-default-ns-patch:
+      targetObjectRef:
+        apiVersion: v1
+        kind: Namespace
+        name: {{ $v.name }}
+      patchTemplate: |
+        metadata:
+          labels:
+            openshift.io/cluster-monitoring: 'true'
+      patchType: application/merge-patch+json
+  {{- end }}
