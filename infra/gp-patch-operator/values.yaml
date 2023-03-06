@@ -1,7 +1,3 @@
-rl:
-  rbac:
-    namespace: gp-infrastructure
-
 subscription:
   channel: alpha
   installPlanApproval: Automatic
