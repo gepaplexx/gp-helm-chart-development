@@ -4,7 +4,7 @@ description: A Helm chart for deploying a Metrics Monitoring Stack on our Hub-Cl
 
 type: application
 
-version: 0.6.0
+version: 0.7.0
 
 dependencies:
   - name: mimir-distributed
@@ -12,7 +12,7 @@ dependencies:
     version: 4.2.0
     repository: https://grafana.github.io/helm-charts
   - name: grafana
-    version: 6.50.8
+    version: 6.51.5
     repository: https://grafana.github.io/helm-charts
   - name: kube-state-metrics
     version: 4.28.0
