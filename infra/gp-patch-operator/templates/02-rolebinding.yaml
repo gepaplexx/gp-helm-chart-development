@@ -5,7 +5,7 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: patch-operator-sa
-    namespace: {{ .Release.Namespace }}
+    namespace: {{ .Values.patches.namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole

@@ -1,3 +1,6 @@
 subscription:
   channel: alpha
   installPlanApproval: Automatic
+patches:
+  namespace: gp-infrastructure  # Currently all patches are in the namespace "gp-inrastructure" therefore the serviceaccount
+  # also need to be in this namespace. This will be changed in the future.
