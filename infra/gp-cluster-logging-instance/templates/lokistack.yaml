@@ -25,6 +25,8 @@ spec:
             - 'true'
   limits:
     global:
+      retention:
+        days: {{ .Values.lokistack.configuration.limits.global.retention}}
       ingestion:
         ingestionRate: {{ .Values.lokistack.configuration.limits.ingestion.ingestionRate }}
         ingestionBurstSize: {{ .Values.lokistack.configuration.limits.ingestion.ingestionBurstSize }}

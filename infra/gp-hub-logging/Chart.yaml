@@ -4,13 +4,13 @@ description: A Helm chart for deploying the Loki Stack on our Hub-Cluster
 
 type: application
 
-version: 0.3.0
+version: 0.4.0
 appVersion: "2.7.0"
 
 dependencies:
   - name: minio
     repository: "https://charts.bitnami.com/bitnami"
-    version: 12.1.5
+    version: 12.1.10
   - name: loki
-    version: 4.6.1
+    version: 4.8.0
     repository: https://grafana.github.io/helm-charts

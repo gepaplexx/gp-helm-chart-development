@@ -1,5 +1,11 @@
 autoUnseal:
   creds:  #REPLACE ME
+backup:
+  enabled: true
+  schedule: '0 0 * * *'
+  size: 2Gi
+  retain:
+    days: 31 # need to +1, so 30 days = 31
 vault:
   global:
     openshift: true
@@ -13,7 +19,6 @@ vault:
         cpu: '100m'
       limits:
         memory: '150Mi'
-        cpu: '150m'
   server:
     dataStorage:
       size: '500Mi'

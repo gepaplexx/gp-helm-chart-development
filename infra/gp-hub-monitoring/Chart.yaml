@@ -4,16 +4,16 @@ description: A Helm chart for deploying a Metrics Monitoring Stack on our Hub-Cl
 
 type: application
 
-version: 0.4.0
+version: 0.7.0
 
 dependencies:
   - name: mimir-distributed
     alias: mimir
-    version: 4.1.0
+    version: 4.2.0
     repository: https://grafana.github.io/helm-charts
   - name: grafana
-    version: 6.50.7
+    version: 6.51.5
     repository: https://grafana.github.io/helm-charts
   - name: kube-state-metrics
-    version: 4.28.0
+    version: 4.32.0
     repository: https://prometheus-community.github.io/helm-charts
