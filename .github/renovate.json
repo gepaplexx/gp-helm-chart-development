@@ -9,5 +9,6 @@
   "ignoreDeps": [
     "rook-ceph",
     "rook-ceph-cluster"
-  ]
+  ],
+  "rebaseWhen": "behind-base-branch"
 }
