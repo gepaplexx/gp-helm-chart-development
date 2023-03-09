@@ -1,0 +1,11 @@
+cache:
+  storageClassName: rook-ceph-fs
+  size: 5Gi
+  accessModes:
+    - ReadWriteMany
+
+repositories:
+  - name: demo-microservice
+    url: https://github.com/sgartner03/demo-microservice
+  - name: deleteme
+    url: deleteme-url

@@ -1,0 +1,35 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cluster-update-checker
+  namespace: openshift-monitoring
+spec:
+  groups:
+    - name:
+      rules:
+        - alert: ClusterUpdateAvailable
+          annotations:
+            summary: ACHTUNG! Neues Update am Cluster {{ .Values.clustername }} verfügbar.
+            description: >
+              Update von Version "{{ "{{" }} $labels.from_version {{ "}}" }}" auf neue Version "{{ "{{" }} $labels.version {{ "}}" }}".
+              Wird am '"$updateDate"' um {{ .Values.checker.updateTime }}:00 Uhr UTC durchgeführt. # TODO
+              Übersicht: {{ .Values.consoleUrl }}/settings/cluster"
+          expr: |
+            cluster_version{type="desired"}
+          labels:
+            severity:    "info"
+            type: "internal"
+    - name:
+      rules:
+        - alert: ClusterUpdateAvailable
+          annotations:
+            summary: ACHTUNG! Neues Update am Cluster {{ .Values.clustername }} verfügbar.
+            description: >
+              Update von Version "{{ "{{" }} $labels.from_version {{ "}}" }}" auf neue Version "{{ "{{" }} $labels.version {{ "}}" }}".
+              Wird am '"$updateDate"' um {{ .Values.checker.updateTime }}:00 Uhr UTC durchgeführt. # TODO
+              Übersicht: {{ .Values.consoleUrl }}/settings/cluster"
+          expr: |
+            cluster_version{type="desired"}
+          labels:
+            severity: "info"
+            type: "internal"

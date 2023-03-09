@@ -14,7 +14,7 @@ spec:
         spec:
           serviceAccountName: gp-cluster-updater
           containers:
-            - name: operator-update-checker
+            - name: operator-update-
               image: quay.io/appuio/oc:v4.6
               resources:
                 limits:

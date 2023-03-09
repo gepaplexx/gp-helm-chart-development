@@ -1,0 +1,11 @@
+{{- $last := sub (len .Values.repositories) 1 }}
+{{- $index, $repo := range .Values.repositories }}
+apiVersion: pipelinesascode.tekton.dev/v1alpha1
+kind: Repository
+metadata:
+  name: {{ $repo.name }}
+  namespace: gp-pipelines
+spec:
+  url: {{ $repo.url }}
+{{- if ne $index $last }}---{{ end }}
+{{- end }}

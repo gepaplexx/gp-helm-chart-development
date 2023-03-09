@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  namespace: {{.Release.Namespace}}
+  name: maven-build
+  labels:
+    {{- include "gp-pipelines.labels" . | nindent 4 }}
+spec:
+  workspaces:
+    - name: code
+  tasks:
+    - name: fetch-source
+      taskRef:
+        name: git-clone
+      workspaces:
+        - name: output
+          workspace: code
+      params:
+        - name: url
+          value: https://github.com/sgartner03/demo-microservice
+        - name: subdirectory
+          value: /app
+    - name: maven-build
+      runAfter:
+        - fetch-source
+      taskRef:
+        name: maven-build
+      workspaces:
+        - name: input
+          workspace: code
