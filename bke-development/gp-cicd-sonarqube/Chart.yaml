@@ -3,10 +3,10 @@ name: gp-cicd-sonarqube
 description: A Helm chart for deploying SonarQube Nexus for static code analysis.
 
 type: application
-version: 0.3.0
+version: 0.4.0
 appVersion: 9.4.0
 
 dependencies:
 - name: sonarqube
-  version: 2.1.2
+  version: 2.1.3
   repository: "https://charts.bitnami.com/bitnami"
