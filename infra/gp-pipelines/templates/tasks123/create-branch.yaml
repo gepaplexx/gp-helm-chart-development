@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: create-repository
+  namespace: gp-pipelines
+spec:
+  params:
+    - name: repo
+      type: string
+    - name: branch
+      type: string
+  steps:
+    - image: docker.io/bitnami/kubectl
+      script: |-
+        #!/usr/bin/env sh
+        #kubectl create namespace $(params.repo)-$(params.branch)
+        kubectl auth can-i --list

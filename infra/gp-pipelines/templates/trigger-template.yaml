@@ -1,0 +1,60 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: create-template
+spec:
+  params:
+    - name: repo
+      description: The git repo
+    - name: branch
+      description: The git branch
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        annotations:
+          pipelinesascode.tekton.dev/on-event: "[create]"
+          pipelinesascode.tekton.dev/max-keep-runs: "5"
+        name: "git-demo-microservice"
+      spec:
+        pipelineSpec:
+          tasks:
+            - name: fetch-source
+              taskRef:
+                resolver: cluster
+                params:
+                  - name: repo
+                    value: $(tt.params.repo)
+                  - name: branch
+                    value: $(tt.params.branch)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerBinding
+metadata:
+  name: create-trigger
+spec:
+  params:
+    - name: repo
+      value: $(body.repository.name)
+    - name: branch
+      value: $(body.ref)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: create-eventlistener
+spec:
+  triggers:
+    - name: create-workflow
+      bindings:
+        - ref: create-trigger
+      template:
+        ref: create-template
+      interceptors:
+        - ref:
+            name: "github"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+            - name: "eventTypes"
+              value: [ "create" ]
