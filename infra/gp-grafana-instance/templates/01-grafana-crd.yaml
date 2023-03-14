@@ -9,7 +9,7 @@ spec:
   dataStorage:
     accessModes:
       - ReadWriteMany
-    size: 10Gi
+    size: 256Mi
     class: rook-ceph-fs
   baseImage: {{ .Values.grafana.version}}
   ingress:
@@ -37,7 +37,7 @@ spec:
         '{{ .Values.auth.editorGroups }}') && 'Editor' || 'Viewer'
       auth_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
-      scopes: profile
+      scopes: openid profile
     auth.anonymous:
       enabled: false
     log:

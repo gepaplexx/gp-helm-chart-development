@@ -40,16 +40,16 @@ argo_events:
       versions:
       # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
       # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
-        - version: "2.9.5"
-          natsImage: nats:2.9.5
-          metricsExporterImage: natsio/prometheus-nats-exporter:0.10.1
-          configReloaderImage: natsio/nats-server-config-reloader:0.7.4
+        - version: "2.9.15"
+          natsImage: docker.io/nats:2.9.15
+          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.10.1
+          configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.10.1
           startCommand: /nats-server
       # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
         - version: "latest"
-          natsImage: nats:latest
-          metricsExporterImage: natsio/prometheus-nats-exporter:latest
-          configReloaderImage: natsio/nats-server-config-reloader:latest
+          natsImage: docker.io/nats:latest
+          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:latest
+          configReloaderImage: docker.io/natsio/nats-server-config-reloader:latest
           startCommand: /nats-server
 
 ####################
@@ -129,40 +129,14 @@ argo_workflows:
       spec:
         ttlStrategy:
             secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
-        metrics:
-          prometheus:
-            - name: duration_gauge
-              help: "Duration gauge by name"
-              labels:
-                - key: application
-                  value: "{{ workflow.parameters.reponame }}"
-                - key: branch
-                  value: "{{ workflow.parameters.branch }}"
-                - key: status
-                  value: "{{ workflow.status }}"
-              gauge:
-                realtime: true                  # This metric will be emitted in real time. For more info see: docs/metrics.md
-                value: "{{workflow.duration}}"  # Use {{workflow.duration}} in workflow-level and {{duration}} in template-level
-            - name: result_count
-              help: "Workflow Result Counter"
-              labels:
-                - key: application
-                  value: "{{ workflow.parameters.reponame }}"
-                - key: branch
-                  value: "{{ workflow.parameters.branch }}"
-                - key: status
-                  value: "{{ workflow.status }}"
-              counter:
-                value: 1
     workflowRestrictions:
       templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
       limits:
+        memory: 512Mi
+      requests:
         cpu: 500m
         memory: 256Mi
-      requests:
-        cpu: 250m
-        memory: 128Mi
 
     metricsConfig:
       enabled: true
@@ -174,6 +148,8 @@ argo_workflows:
       archive: true
       nodeStatusOffLoad: true # if true node status is only saved to the persistence DB to avoid the 1MB limit in etcd
       archiveTTL: 120d
+      connectionPool:
+        maxIdleConns: 50
       postgresql:
         host: *argo_workflows_db_host
         port: 5432

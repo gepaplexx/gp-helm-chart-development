@@ -4,7 +4,7 @@ metadata:
   labels:
     operators.coreos.com/patch-operator.openshift-operators: ""
   name: patch-operator
-  namespace: openshift-operators
+  namespace: {{ .Release.Namespace }}
 spec:
   channel: "{{ .Values.subscription.channel }}"
   installPlanApproval: "{{ .Values.subscription.installPlanApproval }}"

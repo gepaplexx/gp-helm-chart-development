@@ -25,6 +25,7 @@ argocd:
   controller:
     limits:
       cpu: "1"
+      memory: "4Gi"
   repo:
     limits:
       cpu: "500m"
@@ -38,6 +39,9 @@ argocd:
     defaultPolicy: ''
     policies:
       - 'g, Gepaplexx, role:admin'
+  notifications:
+    enabled: true
+    argocdURL: "To be set"
 
 patchOperator:
   namespace: gp-infrastructure

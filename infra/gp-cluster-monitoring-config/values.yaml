@@ -46,5 +46,9 @@ patchOperator:
   serviceAccount: patch-operator-sa
   namespace: gp-infrastructure
 
-alertmanager:
-  config:
+clusterMonitoringNamespaces:
+  - name: gepaplexx-cicd-eventbus
+  - name: gp-cluster-policies
+  - name: gp-external-secrets
+  - name: gp-sso
+  - name: grafana-operator-system

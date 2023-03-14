@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 grafana:
-  version: docker.io/grafana/grafana:9.3.1
+  version: docker.io/grafana/grafana:9.4.3-ubuntu
 ingress:
   hostname: grafana.apps.example.gepaplexx.com
 auth:

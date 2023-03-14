@@ -8,7 +8,7 @@ config:
 
 registry:
   name: gp-registry-cache
-  image: registry:2.7
+  image: registry:2.8
 
 svc:
   name: gp-registry-cache

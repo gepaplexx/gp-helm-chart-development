@@ -135,26 +135,6 @@ spec:
           labels:
             severity: "critical"
             type: "internal"
-        - alert: argo-workflows-controller_memory_saturation
-          annotations:
-            summary: Argo Workflows Controller Manager Memory Issue
-            description: |
-              Argo Workflows Controller Manager hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
-          expr: |
-            (sum(
-                avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
-              * on(namespace,pod)
-                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "argo-workflows.controller.fullname" .Subcharts.argo_workflows  }}", workload_type="deployment"}
-            ) by (pod)
-            /sum(
-                kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
-              * on(namespace,pod)
-                group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "argo-workflows.controller.fullname" .Subcharts.argo_workflows  }}",workload_type="deployment"}
-            ) by (pod)) > 1.5
-          for: 10m
-          labels:
-            severity: "warning"
-            type: "internal"
         - alert: argo-workflows-controller_memory_limit
           annotations:
             summary: Argo Workflows Controller Manager Memory Issue
@@ -215,6 +195,7 @@ spec:
           labels:
             severity: "warning"
             type: "internal"
+
 ---
 {{- end }}
 {{- if .Values.argocd.enabled }} # ArgoCD wird über den OpenShift-Gitops Operator deployed. Dieser deployed standardmößig 3 Servicemonitor für ArgoCD Server, Repo Server und ArgoCD selbst mit.
@@ -419,6 +400,30 @@ spec:
           labels:
             severity: "warning"
             type: "internal"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: argo-workflows-builds
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-cicd-tools.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: argo-workflows-builds.rule
+      rules:
+        - alert: workflow_failed
+          annotations:
+            description: |-
+              Applikation: {{`{{ $labels.application }}`}}
+              Branch: {{`{{ $labels.branch }}`}}
+              Commiter: {{`{{ $labels.commit_user }} <{{ $labels.commit_email }}>`}}
+            summary: 'Workflow "{{`{{ $labels.task_name }}`}}" Status: {{`{{ $labels.status }}`}}'
+          expr: >-
+            argo_workflows_result_task_counter{status="Failed"} ==1 or rate(argo_workflows_result_task_counter{status="Failed"}[5m]) > 0
+          labels:
+            type: argo-workflows-fail
+
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule

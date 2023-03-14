@@ -15,24 +15,24 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.8.0
+version: 0.16.0
 
 dependencies:
 - name: argo-events
   alias: argo_events
   repository: "https://argoproj.github.io/argo-helm"
-  version: ~2.0.6
+  version: ~2.1.0
   condition: argo_events.enabled
 - name: argo-workflows
   alias: argo_workflows
   repository: "https://argoproj.github.io/argo-helm"
-  version: ~0.22.0
+  version: ~0.20.12 # rollback version due to bug in workflow archiving https://github.com/argoproj/argo-workflows/issues/10498
   condition: argo_workflows.enabled
 - name: postgresql
   repository: "https://charts.bitnami.com/bitnami"
-  version: ~11.6.14
+  version: ~12.2.0
   condition: argo_workflows.persistence
 - name: minio
   repository: "https://charts.bitnami.com/bitnami"
-  version: 11.10.23
+  version: 12.1.10
   condition: argo_workflows.archive.enabled

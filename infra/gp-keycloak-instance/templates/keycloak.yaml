@@ -4,33 +4,31 @@ metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}'
   labels:
     {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  hostname: {{  .Values.ingress.hostname }}
+  hostname:
+    hostname: {{  .Values.ingress.hostname }}
   instances: {{ .Values.replicas }}
   {{- if .Values.image }}
   image: {{ .Values.image }}
   {{- end }}
-  serverConfiguration:
-    - name: features-disabled
-      value: "{{ .Values.features.disabled }}"
-    - name: features
-      value: "{{ .Values.features.enabled }}"
+  additionalOptions:
     - name: health-enabled
       value: 'true'
     - name: metrics-enabled
       value: 'true'
   {{- if .Values.persistence.enabled }}
-    - name: db
-      value: postgres
-    - name: db-url-host
-      value: '{{ .Values.postgresql.fullnameOverride }}'
-    - name: db-username
-      secret:
-        name: 'keycloak-config'
-        key: username
-    - name: db-password
-      secret:
-        name: 'keycloak-config'
-        key: password
+  db:
+    vendor: postgres
+    host: '{{ .Values.postgresql.fullnameOverride }}'
+    passwordSecret:
+      key: password
+      name: keycloak-config
+    port: 5432
+    usernameSecret:
+      key: username
+      name: keycloak-config
   {{- end }}
-  tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
+  http:    
+    tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
