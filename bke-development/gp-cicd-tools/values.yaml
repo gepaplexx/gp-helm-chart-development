@@ -126,6 +126,10 @@ argo_workflows:
       limits:
         cpu: 1
         memory: 4Gi
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 0
+      runAsNonRoot: true
 
   controller:
     parallelism: 10 # 10 workflows can be executed at the same time cluster-wide
