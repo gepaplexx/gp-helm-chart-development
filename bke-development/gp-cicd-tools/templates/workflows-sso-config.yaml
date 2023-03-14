@@ -46,21 +46,21 @@ rules:
     - "list"
     - "watch"
   resources:
-  - analysisruns
-  - analysistemplates
-  - clusteranalysistemplates
-  - clusterworkflowtemplates
-  - cronworkflows
-  - eventbus
-  - eventsources
-  - experiments
-  - sensors
-  - workfloweventbindings
-  - workflows
-  - workflowtaskresults
-  - workflowtasksets
-  - workflowtemplates
-  - pipelines
+    - analysisruns
+    - analysistemplates
+    - clusteranalysistemplates
+    - clusterworkflowtemplates
+    - cronworkflows
+    - eventbus
+    - eventsources
+    - experiments
+    - sensors
+    - workfloweventbindings
+    - workflows
+    - workflowtaskresults
+    - workflowtasksets
+    - workflowtemplates
+    - pipelines
 # damit Logs der Workflows auf der UI ausgelesen werden können.
 - apiGroups:
     - ""
@@ -152,17 +152,17 @@ rules:
       - "patch"
     resources:
       - analysisruns
-    - analysistemplates
-    - clusteranalysistemplates
-    - clusterworkflowtemplates
-    - cronworkflows
-    - eventbus
-    - eventsources
-    - experiments
-    - sensors
-    - workfloweventbindings
-    - workflows
-    - workflowtaskresults
+      - analysistemplates
+      - clusteranalysistemplates
+      - clusterworkflowtemplates
+      - cronworkflows
+      - eventbus
+      - eventsources
+      - experiments
+      - sensors
+      - workfloweventbindings
+      - workflows
+      - workflowtaskresults
       - workflowtasksets
       - workflowtemplates
       - pipelines
