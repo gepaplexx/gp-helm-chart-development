@@ -77,8 +77,8 @@ argo_workflows:
   executor:
     securityContext:
       runAsUser: 1000
-      runAsGroup: 1000
-      fsGroup: 1000
+      runAsGroup: 0
+      runAsNonRoot: true
 
   server:
     extraArgs:
