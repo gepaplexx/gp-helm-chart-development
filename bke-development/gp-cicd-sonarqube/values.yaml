@@ -1,6 +1,8 @@
 sonarqube:
   sonarqubeUsername: "admin"
   sonarqubePassword: "admin"
+  updateStrategy:
+    type: OnDelete
   service:
     type: ClusterIP
   ingress:
