@@ -151,7 +151,7 @@ rules:
       - "delete"
       - "patch"
     resources:
-    - analysisruns
+      - analysisruns
     - analysistemplates
     - clusteranalysistemplates
     - clusterworkflowtemplates
@@ -163,9 +163,9 @@ rules:
     - workfloweventbindings
     - workflows
     - workflowtaskresults
-    - workflowtasksets
-    - workflowtemplates
-    - pipelines
+      - workflowtasksets
+      - workflowtemplates
+      - pipelines
   # damit Logs der Workflows auf der UI ausgelesen werden können.
   - apiGroups:
       - ""
@@ -173,6 +173,7 @@ rules:
       - get
       - list
       - watch
+      - delete
     resources:
       - pods/log
       - pods/status
