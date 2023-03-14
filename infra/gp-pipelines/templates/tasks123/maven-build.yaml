@@ -1,0 +1,41 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: maven-build
+  namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-pipelines.labels" . | nindent 4 }}
+spec:
+  steps:
+    - name: build
+      image: ghcr.io/gepaplexx/maven:0.1.5
+      script: |-
+        #!/usr/bin/env sh
+        /usr/bin/mvn-wrapper.sh clean install \
+          -f /app/pom.xml \
+          -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
+  workspaces:
+    - name: input
+      description: Image with source code
+      mountPath: /app
+    - name: cache
+      description: Cache for maven dependencies
+      mountPath: /cache
+  params:
+    - name: repo
+      type: string
+    - name: branch
+      type: string
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: maven-cache
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes: {{ .Values.cache.accessModes }}
+  resources:
+    requests:
+      storage: {{ .Values.cache.size }}
+  storageClassName: {{ .Values.cache.storageClassName }}
+

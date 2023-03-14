@@ -12,21 +12,17 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        annotations:
-          pipelinesascode.tekton.dev/on-event: "[create]"
-          pipelinesascode.tekton.dev/max-keep-runs: "5"
         name: "git-demo-microservice"
       spec:
         pipelineSpec:
           tasks:
-            - name: fetch-source
-              taskRef:
-                resolver: cluster
-                params:
-                  - name: repo
-                    value: $(tt.params.repo)
-                  - name: branch
-                    value: $(tt.params.branch)
+            - name: hello-world
+              taskSpec:
+                steps:
+                  - name: hello-world
+                    image: registry.access.redhat.com/ubi9/ubi-micro
+                    script: |
+                      echo "Branch $(tt.params.branch) created in $(tt.params.repo)"
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
@@ -44,12 +40,10 @@ kind: EventListener
 metadata:
   name: create-eventlistener
 spec:
+#TODO add a service account
+  serviceAccountName: change-me-pls
   triggers:
     - name: create-workflow
-      bindings:
-        - ref: create-trigger
-      template:
-        ref: create-template
       interceptors:
         - ref:
             name: "github"
@@ -58,3 +52,7 @@ spec:
           params:
             - name: "eventTypes"
               value: [ "create" ]
+      bindings:
+        - ref: create-trigger
+      template:
+        ref: create-template
