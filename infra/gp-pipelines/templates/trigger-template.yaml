@@ -20,7 +20,7 @@ spec:
               taskSpec:
                 steps:
                   - name: hello-world
-                    image: registry.access.redhat.com/ubi9/ubi-micro
+                    image: ubuntu
                     script: |
                       echo "Branch $(tt.params.branch) created in $(tt.params.repo)"
 ---
@@ -40,8 +40,7 @@ kind: EventListener
 metadata:
   name: create-eventlistener
 spec:
-#TODO add a service account
-  serviceAccountName: change-me-pls
+  serviceAccountName: tekton-triggers-example-sa
   triggers:
     - name: create-workflow
       interceptors:
