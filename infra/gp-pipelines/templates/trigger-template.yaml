@@ -12,7 +12,7 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        name: "git-demo-microservice"
+        generateName: "git-demo-microservice-"
       spec:
         pipelineSpec:
           tasks:
@@ -40,14 +40,13 @@ kind: EventListener
 metadata:
   name: create-eventlistener
 spec:
-  serviceAccountName: tekton-triggers-example-sa
   triggers:
-    - name: create-workflow
+    - serviceAccountName: tekton-triggers-example-sa
+      name: create-workflow
       interceptors:
-        - ref:
+        - name: "validate GitHub payload and filter on eventType"
+          ref:
             name: "github"
-            kind: ClusterInterceptor
-            apiVersion: triggers.tekton.dev
           params:
             - name: "eventTypes"
               value: [ "create" ]
