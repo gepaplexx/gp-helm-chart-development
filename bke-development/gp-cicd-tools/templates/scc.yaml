@@ -20,6 +20,10 @@ allowedCapabilities:
   - FOWNER
   - DAC_OVERRIDE
   - SETFCAP
+  - FSETID
+  - SETPCAP
+  - SYS_CHROOT
+  - SYS_PTRACE
 fsGroup:
   type: RunAsAny
 groups: [ ]
@@ -32,7 +36,7 @@ runAsUser:
 seLinuxContext:
   type: MustRunAs
 seccompProfiles:
-  - runtime/default
+  - Unconfined
 supplementalGroups:
   type: RunAsAny
 users: [ ]
