@@ -40,6 +40,6 @@ spec:
             severity: "warning"
             type: "internal"
           annotations:
-            description: {{ printf "Patch-Operator wirft Fehler. Prüfe Pod logs in {{$labels.namespace}}. Error Metric kommt von Pod {{$labels.pod}}. Problem liegt potential bei {{$labels.scontroller}}" }}
+            description: {{ printf "Patch-Operator wirft Fehler. Prüfe Pod logs in {{$labels.namespace}}. Error Metric kommt von Pod {{$labels.pod}}. Problem liegt potential bei {{$labels.controller}}" }}
             summary: "Patch-Operator wirft Fehler"
 ---
