@@ -12,7 +12,7 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        generateName: "git-demo-microservice-"
+        name: "git-demo-microservice"
       spec:
         pipelineSpec:
           tasks:
@@ -20,7 +20,7 @@ spec:
               taskSpec:
                 steps:
                   - name: hello-world
-                    image: ubuntu
+                    image: registry.access.redhat.com/ubi9/ubi-micro
                     script: |
                       echo "Branch $(tt.params.branch) created in $(tt.params.repo)"
 ---
@@ -40,13 +40,15 @@ kind: EventListener
 metadata:
   name: create-eventlistener
 spec:
+#TODO add a service account
+  serviceAccountName: change-me-pls
   triggers:
-    - serviceAccountName: tekton-triggers-example-sa
-      name: create-workflow
+    - name: create-workflow
       interceptors:
-        - name: "validate GitHub payload and filter on eventType"
-          ref:
+        - ref:
             name: "github"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
           params:
             - name: "eventTypes"
               value: [ "create" ]
