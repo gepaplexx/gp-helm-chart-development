@@ -11,7 +11,7 @@ spec:
       resources: { }
       script: |-
         #!/usr/bin/env sh
-        buildah bud -t tag /input
-        buildah tag tag ghcr.io/gepaplexx/newTag:v1.0
-        buildah push ghcr.io/gepaplexx/newTag:v1.0
-        id
+        echo 'FROM ubuntu' > Containerfile
+        buildah bud -t blub -f Containerfile .
+
+
