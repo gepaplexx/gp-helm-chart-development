@@ -16,7 +16,6 @@ allowedCapabilities:
   - SETUID
   - SETGID
   - DAC_OVERRIDE
-  - CHOWN
 defaultAddCapabilities: null
 fsGroup:
   type: RunAsAny
