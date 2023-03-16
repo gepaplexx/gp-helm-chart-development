@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: pipelines-sa-userid-1000
   namespace: tekton-demo-microservice-cicd
-secrets:
+imagePullSecrets:
   - name: ghcr-pat
 ---
 apiVersion: v1
@@ -25,7 +25,7 @@ spec:
         key: tekton-demo-microservice-cicd/ghcr-pat
         property: config.json
       secretKey: mysecret
-  refreshInterval: 12h
+  refreshInterval: 10h
   secretStoreRef:
     kind: ClusterSecretStore
     name: cicd-development-store
@@ -48,7 +48,7 @@ allowHostIPC: false
 allowHostNetwork: false
 allowHostPID: false
 allowHostPorts: false
-allowPrivilegeEscalation: false
+allowPrivilegeEscalation: true
 allowPrivilegedContainer: false
 allowedCapabilities: null
 apiVersion: security.openshift.io/v1

@@ -6,7 +6,7 @@ metadata:
 spec:
   params:
   steps:
-    - image: quay.io/buildah/stable
+    - image: ghcr.io/tomeindl/buildahimage:latest
       name: build
       resources: { }
       script: |-
