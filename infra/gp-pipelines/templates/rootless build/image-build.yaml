@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: buildah-as-user
+  namespace: tekton-demo-microservice-cicd
+spec:
+  params:
+  steps:
+    - image: quay.io/buildah/stable
+      name: build
+      resources: { }
+      script: |-
+        #!/usr/bin/env sh
+        buildah bud -t tag /input
+        buildah tag tag ghcr.io/gepaplexx/newTag:v1.0
+        buildah push ghcr.io/gepaplexx/newTag:v1.0
+        id
