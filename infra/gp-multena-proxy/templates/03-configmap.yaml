@@ -6,7 +6,6 @@ metadata:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:
   config.yaml: |-
-    {{- .Values.config | nindent 4 }}
       proxy:
         version: 1
         log_level: {{ .Values.multena.logLevel}}

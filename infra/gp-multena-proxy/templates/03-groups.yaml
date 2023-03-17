@@ -6,7 +6,6 @@ metadata:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:
   groups.yaml: |-
-    {{- .Values.config | nindent 4 }}
       groups:
         - gepaplexx: [gepaplexx]
         - gepardec: [Uff, blubb]

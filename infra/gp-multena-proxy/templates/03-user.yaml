@@ -6,7 +6,6 @@ metadata:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:
   user.yaml: |-
-    {{- .Values.config | nindent 4 }}
       users:
         - lucostus: [lucostus]
         - uff: [dev,dev2]
