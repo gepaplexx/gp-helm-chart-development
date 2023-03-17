@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gp-multena-instance.fullname" . }}-config
+  labels:
+    {{- include "gp-multena-instance.labels" . | nindent 4 }}
+data:
+  config.yaml: |-
+    {{- .Values.config | nindent 4 }}
+      proxy:
+        version: 1
+        log_level: {{ .Values.multena.logLevel}}
+        provider: {{ .Values.multena.provider}}
+        upstream_url: {{ .Values.multena.upstreamUrl }}
+        upstream_bypass_url: {{ .Values.multena.datasourceUrl}}
+        jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
+        tenant_label:  {{ .Values.multena.tenantLabel}}
+        admin_group:  {{ .Values.multena.adminGroup}}

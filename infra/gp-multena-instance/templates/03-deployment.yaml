@@ -31,33 +31,6 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          env:
-            - name: ADMIN_GROUP
-              value: "{{ .Values.multena.adminGroup }}"
-            - name: CLIENT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: "{{ include "gp-multena-instance.name" . }}-secret"
-                  key: keycloakClientSecret
-                  optional: false
-            - name: DEV
-              value: "{{ .Values.multena.dev }}"
-            - name: KEYCLOAK_CERT_URL
-              value: "{{ .Values.multena.keycloakCertUrl }}"
-            - name: LOG_LEVEL
-              value: "{{ .Values.multena.logLevel }}"
-            - name: PROVIDER
-              value: "{{ .Values.multena.provider }}"
-            - name: TENANT_LABEL
-              value: "{{ .Values.multena.tenantLabel }}"
-            - name: TOKEN_EXCHANGE
-              value: "{{ .Values.multena.tokenExchange }}"
-            - name: TOKEN_EXCHANGE_URL
-              value: "{{ .Values.multena.tokenExchangeUrl }}"
-            - name: UPSTREAM_BYPASS_URL
-              value: "{{ .Values.multena.thanosUrl }}"
-            - name: UPSTREAM_URL
-              value: "{{ .Values.multena.upstreamUrl }}"
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -77,9 +50,15 @@ spec:
           volumeMounts:
             - mountPath: /etc/ssl/certs/
               name: openshift-service-ca
+            - mountPath: /etc/config/
+              name: multena-config
+            - mountPath: /etc/config/
+              name: multena-user
+            - mountPath: /etc/config/
+              name: multena-groups
         - args:
             - --insecure-listen-address=0.0.0.0:9095
-            - --upstream={{ .Values.multena.thanosUrl }}
+            - --upstream={{ .Values.multena.datasourceUrl }}
             - --label={{ .Values.multena.tenantLabel }}
             - --query-param={{ .Values.multena.tenantLabel }}
             - --enable-label-apis
@@ -97,6 +76,15 @@ spec:
         - configMap:
             name: openshift-service-ca.crt
           name: openshift-service-ca
+        - configMap:
+            name: {{ include "gp-multena-instance.fullname" . }}-config
+          name: multena-config
+        - configMap:
+            name: {{ include "gp-multena-instance.fullname" . }}-user
+          name: multena-user
+        - configMap:
+            name: {{ include "gp-multena-instance.fullname" . }}-groups
+          name: multena-groups
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
