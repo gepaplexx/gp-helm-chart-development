@@ -4,9 +4,8 @@ metadata:
   name: maven-cache
   namespace: gp-pipelines
 spec:
-  accessModes:
-    - ReadWriteMany
+  accessModes: {{ .Values.cache.accessModes}}
   resources:
     requests:
-      storage: 5Gi
-  storageClassName: rook-ceph-fs
+      storage: {{ .Values.cache.size }}
+  storageClassName: {{ .Values.cache.storageClassName }}
