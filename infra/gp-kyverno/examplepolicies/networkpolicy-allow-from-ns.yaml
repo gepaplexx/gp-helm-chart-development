@@ -1,0 +1,37 @@
+---
+##############################################################################
+# ClusterPolicy die einen Zugriff aus einem anderen Namespace (über Annotation 
+# network.gepardec.run/allowed-from konfigurierbar) auf den zu erstellenden 
+# Namespace erlaubt.
+##############################################################################
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: allow-from-ns
+spec:
+  rules: 
+  - name: allow-from-ns
+    match:
+      all:
+      - resources:
+          kinds:
+          - Namespace
+    preconditions:
+      any:
+      - key: "{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" || '' }}"
+        operator: NotEquals
+        value: ""
+    generate:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      name: "allow-from-{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" }}"
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          podSelector: {}
+          ingress:
+          - from:
+            - namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: "{{request.object.metadata.annotations.\"network.gepardec.run/allowed-from\"}}"
