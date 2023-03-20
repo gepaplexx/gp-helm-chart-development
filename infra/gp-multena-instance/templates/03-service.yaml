@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "gp-multena-instance.name" . }}-proxy
+  labels:
+    {{- include "gp-multena-instance.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: {{ .Values.proxyService.port }}
+      targetPort: http
+      protocol: TCP
+      name: {{ include "gp-multena-instance.name" . }}-proxy
+    - port: {{ .Values.proxyService.port }}
+      targetPort: http
+      protocol: TCP
+      name: {{ include "gp-multena-instance.name" . }}-proxy-healthz
+  selector:
+    {{- include "gp-multena-instance.selectorLabels" . | nindent 4 }}
+  type: ClusterIP

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gp-multena-instance.fullname" . }}
+  name: {{ include "gp-multena-instance.name" . }}-proxy
   labels:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 spec:
@@ -28,14 +28,14 @@ spec:
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: multena-proxy
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.proxyService.port }}
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -77,13 +77,13 @@ spec:
             name: openshift-service-ca.crt
           name: openshift-service-ca
         - configMap:
-            name: {{ include "gp-multena-instance.fullname" . }}-config
+            name: {{ include "gp-multena-instance.name" . }}-proxy-config
           name: multena-config
         - configMap:
-            name: {{ include "gp-multena-instance.fullname" . }}-users
+            name: {{ include "gp-multena-instance.name" . }}-proxy-users
           name: multena-users
         - configMap:
-            name: {{ include "gp-multena-instance.fullname" . }}-groups
+            name: {{ include "gp-multena-instance.name" . }}-proxy-groups
           name: multena-groups
       {{- with .Values.nodeSelector }}
       nodeSelector:

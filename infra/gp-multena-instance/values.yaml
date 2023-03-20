@@ -40,7 +40,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-service:
+proxyService:
   type: ClusterIP
   port: 8080
 
@@ -56,3 +56,26 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+
+grafana:
+  image: docker.io/grafana/grafana:9.4.3-ubuntu
+ingress:
+  hostname: grafana.apps.example.gepaplexx.com
+auth:
+  admin:
+    user: "admin"
+  adminGroups: "Gepaplexx"
+  editorGroups: "Editor"
+sso:
+  keycloak:
+    clientSecret: ""
+    clientId: "grafana"
+    realmUrl: "https://sso.apps.clustername.basedomain.com/realms/realmname"
+resources:
+  requests:
+    cpu: 100m
+    memory: 256m
+  limits:
+    cpu: 500m
+    memory: 1Gi

@@ -1,6 +1,6 @@
 apiVersion: v2
 name: gp-multena-instance
-description: A Helm chart for Multena-Proxy
+description: A Helm chart for Multena
 
 # A chart can be either an 'application' or a 'library' chart.
 #
