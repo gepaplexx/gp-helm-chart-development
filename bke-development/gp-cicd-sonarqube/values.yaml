@@ -24,6 +24,8 @@ sonarqube:
         enabled: false
     volumePermissions:
       enabled: false
+  sysctl:
+    enabled: false
   rbac:
     create: true
   serviceAccount:
