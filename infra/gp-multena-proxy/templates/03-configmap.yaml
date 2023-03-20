@@ -14,4 +14,7 @@ data:
         upstream_bypass_url: {{ .Values.multena.datasourceUrl}}
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
         tenant_label:  {{ .Values.multena.tenantLabel}}
-        admin_group:  {{ .Values.multena.adminGroup}}
+        admin_group:  {{ .Values.multena.adminGroup }}
+        port: {{.Values.service.port}}
+      dev:
+        enabled: {{ .Values.multena.dev }}

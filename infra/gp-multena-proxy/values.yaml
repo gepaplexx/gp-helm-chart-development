@@ -1,15 +1,13 @@
 replicaCount: 1
 multena:
+  dev: false
+  logLevel: INFO
   adminGroup: Gepaplexx
-  dev: 'False'
   jwksCertUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs
-  logLevel: info
+  upstreamUrl: http://localhost:9095
+  datasourceUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   provider: configmap
   tenantLabel: namespace
-  tokenExchange: 'False'
-  tokenExchangeUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/token
-  datasourceUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-  upstreamUrl: http://localhost:9095
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: Always
