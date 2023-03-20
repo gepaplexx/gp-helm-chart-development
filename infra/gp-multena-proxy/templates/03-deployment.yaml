@@ -53,7 +53,7 @@ spec:
             - mountPath: /etc/config/config/
               name: multena-config
             - mountPath: /etc/config/users/
-              name: multena-user
+              name: multena-users
             - mountPath: /etc/config/groups/
               name: multena-groups
         - args:
@@ -80,8 +80,8 @@ spec:
             name: {{ include "gp-multena-instance.fullname" . }}-config
           name: multena-config
         - configMap:
-            name: {{ include "gp-multena-instance.fullname" . }}-user
-          name: multena-user
+            name: {{ include "gp-multena-instance.fullname" . }}-users
+          name: multena-users
         - configMap:
             name: {{ include "gp-multena-instance.fullname" . }}-groups
           name: multena-groups
