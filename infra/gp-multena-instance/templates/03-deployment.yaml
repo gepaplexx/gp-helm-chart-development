@@ -24,7 +24,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "gp-multena-instance.serviceAccountName" . }}
+      serviceAccountName: {{ include "gp-multena-instance.name" . }}-proxy
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
