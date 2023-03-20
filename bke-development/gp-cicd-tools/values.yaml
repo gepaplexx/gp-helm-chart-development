@@ -74,6 +74,12 @@ argo_workflows:
     clientSecret: "" # SealedsecretEncrypted ClientSecret
     clientId: "argo-workflows"
 
+  executor:
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 0
+      runAsNonRoot: true
+
   server:
     extraArgs:
       - "--auth-mode=sso"
@@ -120,6 +126,10 @@ argo_workflows:
       limits:
         cpu: 1
         memory: 4Gi
+    securityContext:
+      runAsUser: 1000
+      runAsGroup: 0
+      runAsNonRoot: true
 
   controller:
     parallelism: 10 # 10 workflows can be executed at the same time cluster-wide

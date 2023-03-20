@@ -43,6 +43,7 @@ rules:
       - get
       - list
       - watch
+      - delete
     resources:
       - pods/log
       - pods/status
