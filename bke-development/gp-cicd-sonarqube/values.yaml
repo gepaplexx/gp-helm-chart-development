@@ -2,7 +2,7 @@ sonarqube:
   sonarqubeUsername: "admin"
   sonarqubePassword: "admin"
   updateStrategy:
-    type: OnDelete
+    type: Recreate  # use recreate because of RWO PVC
   service:
     type: ClusterIP
   ingress:
