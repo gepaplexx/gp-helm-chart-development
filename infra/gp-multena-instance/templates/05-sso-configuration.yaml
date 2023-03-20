@@ -26,7 +26,7 @@ spec:
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
-  name: grafana-sso-patch
+  name: {{ include "gp-multena-instance.name" . }}-grafana-sso-patch
   namespace: gp-infrastructure
 spec:
   serviceAccountRef:
