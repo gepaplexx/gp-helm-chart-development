@@ -12,17 +12,22 @@ spec:
     - apiVersion: tekton.dev/v1beta1
       kind: PipelineRun
       metadata:
-        name: "git-demo-microservice"
+        generateName: "git-demo-microservice-"
       spec:
-        pipelineSpec:
-          tasks:
-            - name: hello-world
-              taskSpec:
-                steps:
-                  - name: hello-world
-                    image: registry.access.redhat.com/ubi9/ubi-micro
-                    script: |
-                      echo "Branch $(tt.params.branch) created in $(tt.params.repo)"
+        taskRunSpecs:
+          - pipelineTaskName: hello-world # ...your git-clone PipelineTask name...
+            taskPodTemplate:
+              securityContext:
+                runAsNonRoot: true
+        serviceAccountName: new-repo-sa
+        pipelineRef:
+          name: create-pipeline
+        params:
+          - name: branch
+            value: $(tt.params.branch)
+          - name: repo
+            value: $(tt.params.repo)
+
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
@@ -40,8 +45,6 @@ kind: EventListener
 metadata:
   name: create-eventlistener
 spec:
-#TODO add a service account
-  serviceAccountName: change-me-pls
   triggers:
     - name: create-workflow
       interceptors:
@@ -56,3 +59,24 @@ spec:
         - ref: create-trigger
       template:
         ref: create-template
+---
+kind: Pipeline
+apiVersion: tekton.dev/v1beta1
+metadata:
+  name: create-pipeline
+  namespace: gp-pipelines
+spec:
+  params:
+    - name: repo
+      type: string
+    - name: branch
+      type: string
+  tasks:
+    - name: hello-world
+      taskRef:
+        name: create-repository
+      params:
+        - name: repo
+          value: $(params.repo)
+        - name: branch
+          value: $(params.branch)

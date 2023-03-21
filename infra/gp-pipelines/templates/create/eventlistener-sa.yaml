@@ -1,3 +1,4 @@
+# this sa is used to run the event listener
 #template from https://github.com/tektoncd/triggers/blob/release-v0.23.x/examples/rbac.yaml
 apiVersion: v1
 kind: ServiceAccount
