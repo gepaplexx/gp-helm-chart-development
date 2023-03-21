@@ -4,8 +4,7 @@ kind: Subscription
 metadata:
   labels:
     operators.coreos.com/openshift-pipelines-operator-rh.openshift-operators: ""
-    {{- include "gp-pipelines.labels" . | nindent 4 }}
-  name: subscription-{{ include "gp-pipelines.name" . }}
+  name: openshift-pipelines-subscription
   namespace: openshift-operators
 spec:
   channel: latest

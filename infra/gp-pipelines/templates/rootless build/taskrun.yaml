@@ -1,9 +1,0 @@
-apiVersion: tekton.dev/v1beta1
-kind: TaskRun
-metadata:
-  generateName: build-task-
-  namespace: tekton-demo-microservice-cicd
-spec:
-  serviceAccountName: pipelines-sa-userid-1000
-  taskRef:
-    name: buildah-as-user

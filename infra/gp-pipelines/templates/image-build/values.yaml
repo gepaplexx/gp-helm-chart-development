@@ -1,0 +1,3 @@
+secretStoreRef:
+  kind: ClusterSecretStore
+  name: cicd-development-store

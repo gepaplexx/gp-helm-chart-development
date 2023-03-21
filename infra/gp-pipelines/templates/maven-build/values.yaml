@@ -1,0 +1,5 @@
+cache:
+  storageClassName: rook-ceph-fs
+  size: 1Gi
+  accessModes:
+    - ReadWriteMany

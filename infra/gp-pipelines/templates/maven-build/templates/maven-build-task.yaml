@@ -2,9 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: maven-build
-  namespace: tekton-demo-microservice-cicd
-  labels:
-#      {{- include "gp-pipelines.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
 spec:
   steps:
     - name: build
@@ -26,17 +24,3 @@ spec:
       type: string
     - name: branch
       type: string
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  name: maven-cache
-  namespace: tekton-demo-microservice-cicd
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 5Gi
-  storageClassName: rook-ceph-fs
-

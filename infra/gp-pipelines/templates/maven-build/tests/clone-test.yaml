@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: fetch-source-
+  namespace: gp-pipelines
+spec:
+  taskRef:
+    name: git-clone
+  workspaces:
+    - name: output
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 300Mi
+          volumeMode: Filesystem
+  params:
+    - name: url
+      value: https://github.com/sgartner03/demo-microservice
+  podTemplate:
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 65532
+

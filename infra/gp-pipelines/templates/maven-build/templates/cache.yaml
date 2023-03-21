@@ -2,7 +2,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: maven-cache
-  namespace: gp-pipelines
+  namespace: {{ .Release.Namespace }}
 spec:
   accessModes: {{ .Values.cache.accessModes}}
   resources:

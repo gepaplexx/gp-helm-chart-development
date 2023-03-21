@@ -2,7 +2,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: buildah-as-user
-  namespace: tekton-demo-microservice-cicd
+  namespace: {{ .Release.Namespace }}
 spec:
   params:
   steps:
@@ -13,5 +13,3 @@ spec:
         #!/usr/bin/env sh
         echo 'FROM ubuntu' > Containerfile
         buildah bud -t blub -f Containerfile .
-
-

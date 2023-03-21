@@ -1,0 +1,78 @@
+apiVersion: operator.tekton.dev/v1alpha1
+kind: TektonConfig
+metadata:
+  finalizers:
+    - tektonconfigs.operator.tekton.dev
+  labels:
+    openshift-pipelines.tekton.dev/sa-created: 'true'
+    operator.tekton.dev/release-version: 1.9.2
+  name: config
+spec:
+  addon:
+    params:
+      - name: clusterTasks
+        value: 'true'
+      - name: pipelineTemplates
+        value: 'true'
+      - name: communityClusterTasks
+        value: 'true'
+  platforms:
+    openshift:
+      pipelinesAsCode:
+        enable: true
+        settings:
+          bitbucket-cloud-check-source-ip: 'true'
+          remote-tasks: 'true'
+          application-name: Pipelines as Code CI
+          auto-configure-new-github-repo: 'false'
+          error-log-snippet: 'true'
+          error-detection-from-container-logs: 'false'
+          hub-url: 'https://api.hub.tekton.dev/v1'
+          hub-catalog-name: tekton
+          error-detection-max-number-of-lines: '50'
+          error-detection-simple-regexp: >-
+            ^(?P<filename>[^:]*):(?P<line>[0-9]+):(?P<column>[0-9]+):([
+            ]*)?(?P<error>.*)
+          secret-auto-create: 'true'
+          secret-github-app-token-scoped: 'true'
+  pipeline:
+    running-in-environment-with-injected-sidecars: true
+    metrics.taskrun.duration-type: histogram
+    enable-cluster-resolver: true
+    metrics.pipelinerun.duration-type: histogram
+    await-sidecar-readiness: true
+    params:
+      - name: enableMetrics
+        value: 'true'
+    enable-hub-resolver: true
+    default-service-account: pipeline
+    enable-git-resolver: true
+    enable-bundles-resolver: true
+    require-git-ssh-secret-known-hosts: false
+    enable-tekton-oci-bundles: false
+    send-cloudevents-for-runs: false
+    metrics.taskrun.level: task
+    metrics.pipelinerun.level: pipeline
+    embedded-status: full
+    enable-api-fields: stable
+    enable-custom-tasks: false
+    disable-creds-init: false
+    disable-affinity-assistant: true
+  config: {}
+  params:
+    - name: createRbacResource
+      value: 'true'
+  pruner:
+    keep: 50
+    resources:
+      - pipelinerun
+      - taskrun
+    schedule: '* 2 * * *'
+  profile: all
+  targetNamespace: openshift-pipelines
+  dashboard:
+    readonly: false
+  hub: {}
+  trigger:
+    default-service-account: pipeline
+    enable-api-fields: stable
