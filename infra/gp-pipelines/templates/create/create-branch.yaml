@@ -9,6 +9,9 @@ spec:
       type: string
     - name: branch
       type: string
+  results:
+    - name: namespace
+      description: Name of the created namespace
   steps:
     - name: create-ns
       image: docker.io/bitnami/kubectl
@@ -21,3 +24,11 @@ spec:
           labels:
             argocd.argoproj.io/managed-by: gepaplexx-cicd-tools
         EOF
+
+    - name: add-image-puller-to-default-sa
+      image: docker.io/bitnami/kubectl
+      script: >
+        kubectl create rolebinding default-pull-images
+        --role system:image-puller
+        --serviceaccount abc123:default
+        -n abc123
