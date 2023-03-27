@@ -9,5 +9,12 @@
   "ignoreDeps": [
     "rook-ceph",
     "rook-ceph-cluster"
+  ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "matchPaths": ["infra/gp-hub-monitoring/Chart.yaml"],
+      "enabled": false
+    }
   ]
 }
