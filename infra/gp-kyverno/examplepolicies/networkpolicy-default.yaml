@@ -1,0 +1,94 @@
+
+---
+##############################################################################
+# ClusterPolicy die in jedem neuen Namespace Default Networkpolicies 
+# erstellt. openshift-* und kube-* Namespaces sind ausgenommen.
+##############################################################################
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: apply-default-networkpolicies
+spec:
+  rules:
+  - name: allow-from-openshift-ingress
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - "openshift*"
+          - "kube-*"
+    generate:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      name: allow-from-openshift-ingress
+      namespace: "{{request.object.metadata.name}}"
+      synchronize: true
+      data:
+        spec:
+          podSelector: {}
+          ingress:
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    network.openshift.io/policy-group: ingress
+          policyTypes:
+            - Ingress
+
+  - name: allow-from-openshift-monitoring
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - "openshift*"
+          - "kube-*"
+    generate:
+      apiVersion: networking.k8s.io/v1
+      kind: NetworkPolicy
+      name: allow-from-openshift-monitoring
+      namespace: "{{request.object.metadata.name}}"
+      data:
+        spec:
+          podSelector: {}
+          ingress:
+            - from:
+              - namespaceSelector:
+                  matchLabels:
+                    network.openshift.io/policy-group: monitoring
+          policyTypes:
+            - Ingress
+
+  - name: allow-same-namespace
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+          - "openshift*"
+          - "kube-*"
+    generate:
+      kind: NetworkPolicy
+      apiVersion: networking.k8s.io/v1
+      name: allow-same-namespace
+      namespace: "{{request.object.metadata.name}}"
+      data:
+        spec:
+          podSelector: {}
+          ingress:
+            - from:
+              - podSelector: {}
+          policyTypes:
+            - Ingress

@@ -1,0 +1,60 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-quotas-and-limitranges
+spec:
+  background: false
+  rules:
+  - name: resourcequota
+    match:
+      any: 
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+            - "openshift*"
+            - "kube-*"
+    generate:
+      apiVersion: v1
+      kind: ResourceQuota
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          hard:
+            requests.cpu: '5'
+            requests.memory: 5Gi
+            limits.cpu: '7'
+            limits.memory: 15Gi
+  - name: limitrange
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    exclude:
+      any:
+      - resources:
+          namespaces:
+            - "openshift*"
+            - "kube-*"
+    generate:
+      apiVersion: v1
+      kind: LimitRange
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          limits:
+          - type: Container
+            default:
+              cpu: 250m
+              memory: 512Mi
+            defaultRequest:
+              cpu: 50m
+              memory: 128Mi

@@ -1,0 +1,117 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-quotas-and-limitranges-small
+spec:
+  background: false
+  rules:
+  - name: resourcequota
+    match:
+      all:
+      - resources:
+          kinds:
+          - Namespace
+    preconditions:
+      any:
+      - key: "{{ request.object.metadata.annotations.\"quota.gepardec.run/size\" || '' }}"
+        operator: Equals
+        value: "small"
+    generate:
+      apiVersion: v1
+      kind: ResourceQuota
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          hard:
+            # TODO anpassen
+            requests.cpu: '1'
+            requests.memory: 2Gi
+            limits.cpu: '3'
+            limits.memory: 5Gi
+  - name: limitrange
+    match:
+      all:
+      - resources:
+          kinds:
+          - Namespace
+        subjects:
+          - kind: Group
+            name: gepardec
+    generate:
+      apiVersion: v1
+      kind: LimitRange
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          limits:
+          # TODO anpassen
+          - type: Container
+            default:
+              cpu: 250m
+              memory: 512Mi
+            defaultRequest:
+              cpu: 50m
+              memory: 128Mi
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-quotas-and-limitranges-large
+spec:
+  background: false
+  rules:
+  - name: resourcequota
+    match:
+      all:
+      - resources:
+          kinds:
+          - Namespace
+    preconditions:
+      any:
+      - key: "{{ request.object.metadata.annotations.\"quota.gepardec.run/size\" || '' }}"
+        operator: Equals
+        value: "large"
+    generate:
+      apiVersion: v1
+      kind: ResourceQuota
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          hard:
+            # TODO anpassen
+            requests.cpu: '10'
+            requests.memory: 15Gi
+            limits.cpu: '25'
+            limits.memory: 30Gi
+  - name: limitrange
+    match:
+      all:
+      - resources:
+          kinds:
+          - Namespace
+        subjects:
+          - kind: Group
+            name: gepardec
+    generate:
+      apiVersion: v1
+      kind: LimitRange
+      name: compute
+      namespace: "{{ request.object.metadata.name }}"
+      synchronize: true
+      data:
+        spec:
+          limits:
+          # TODO anpassen
+          - type: Container
+            default:
+              cpu: 250m
+              memory: 512Mi
+            defaultRequest:
+              cpu: 50m
+              memory: 128Mi

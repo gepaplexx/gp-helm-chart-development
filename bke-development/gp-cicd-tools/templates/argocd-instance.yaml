@@ -16,7 +16,7 @@ spec:
         cpu: {{ .Values.argocd.applicationset.resources.requests.cpu }}
         memory: {{ .Values.argocd.applicationset.resources.requests.memory }}
   controller:
-    processors: {}
+    processors: { }
     resources:
       limits:
         cpu: {{ .Values.argocd.controller.resources.limits.cpu }}
@@ -24,21 +24,23 @@ spec:
       requests:
         cpu: {{ .Values.argocd.controller.resources.requests.cpu }}
         memory: {{ .Values.argocd.controller.resources.requests.memory }}
-    sharding: {}
-  dex:
-    openShiftOAuth: true
-    resources:
-      limits:
-        cpu: {{ .Values.argocd.dex.resources.limits.cpu }}
-        memory: {{ .Values.argocd.dex.resources.limits.memory }}
-      requests:
-        cpu: {{ .Values.argocd.dex.resources.requests.cpu }}
-        memory: {{ .Values.argocd.dex.resources.requests.memory }}
+    sharding: { }
+  sso:
+    provider: dex
+    dex:
+      openShiftOAuth: true
+      resources:
+        limits:
+          cpu: {{ .Values.argocd.dex.resources.limits.cpu }}
+          memory: {{ .Values.argocd.dex.resources.limits.memory }}
+        requests:
+          cpu: {{ .Values.argocd.dex.resources.requests.cpu }}
+          memory: {{ .Values.argocd.dex.resources.requests.memory }}
   grafana:
     enabled: false
   ha:
     enabled: false
-  initialSSHKnownHosts: {}
+  initialSSHKnownHosts: { }
   prometheus:
     enabled: false
   rbac:

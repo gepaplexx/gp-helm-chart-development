@@ -1,6 +1,8 @@
 sonarqube:
   sonarqubeUsername: "admin"
   sonarqubePassword: "admin"
+  updateStrategy:
+    type: Recreate  # use recreate because of RWO PVC
   service:
     type: ClusterIP
   ingress:
@@ -22,6 +24,8 @@ sonarqube:
         enabled: false
     volumePermissions:
       enabled: false
+  sysctl:
+    enabled: false
   rbac:
     create: true
   serviceAccount:
