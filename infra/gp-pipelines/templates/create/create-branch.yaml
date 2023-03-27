@@ -9,9 +9,9 @@ spec:
       type: string
     - name: branch
       type: string
-  results:
-    - name: namespace
-      description: Name of the created namespace
+  ##results:
+  ##  - name: namespace
+  ##    description: Name of the created namespace
   steps:
     - name: create-ns
       image: docker.io/bitnami/kubectl
@@ -30,5 +30,5 @@ spec:
       script: >
         kubectl create rolebinding default-pull-images
         --role system:image-puller
-        --serviceaccount abc123:default
-        -n abc123
+        --serviceaccount $(params.repo)-$(params.branch):default
+        -n $(params.repo)-$(params.branch)

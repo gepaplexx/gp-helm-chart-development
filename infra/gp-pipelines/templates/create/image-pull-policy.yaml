@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: image-pull-rolebinding
+spec:
+  rules:
+    - name: image-pull-rolebinding
+      match:
+        all:
+          - resources:
+              kinds:
+                - Namespace
+              selector:
+                matchLabels:
+                  tekton-created: ""
+      generate:
+        kind: RoleBinding
+        apiVersion: rbac.authorization.k8s.io/v1
+        name: image-pull-rolebinding
+        namespace: "{{request.object.metadata.name}}"
+        data:
+          subjects:
+            - kind: ServiceAccount
+              name: default
+              apiGroup: rbac.authorization.k8s.io
+              namespace: "{{request.object.metadata.name}}"
+          roleRef:
+            kind: Role
+            name: system:image-puller
+            apiGroup: rbac.authorization.k8s.io
