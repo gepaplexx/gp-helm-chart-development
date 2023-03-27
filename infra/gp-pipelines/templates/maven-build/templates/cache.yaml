@@ -9,3 +9,15 @@ spec:
     requests:
       storage: {{ .Values.cache.size }}
   storageClassName: {{ .Values.cache.storageClassName }}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: sonar-cache
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes: {{ .Values.cache.accessModes}}
+  resources:
+    requests:
+      storage: {{ .Values.cache.size }}
+  storageClassName: {{ .Values.cache.storageClassName }}

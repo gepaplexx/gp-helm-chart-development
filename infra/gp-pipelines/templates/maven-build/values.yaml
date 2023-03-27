@@ -3,3 +3,6 @@ cache:
   size: 1Gi
   accessModes:
     - ReadWriteMany
+secretStoreRef:
+  kind: ClusterSecretStore
+  name: cicd-development-store

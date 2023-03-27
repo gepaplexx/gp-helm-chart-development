@@ -12,6 +12,30 @@ spec:
         /usr/bin/mvn-wrapper.sh clean install \
           -f /app/pom.xml \
           -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
+    - name: junit
+      image: ghcr.io/gepaplexx/maven:0.1.5
+      script: |-
+        #!/usr/bin/env sh
+        /usr/bin/mvn-wrapper.sh \
+          surefire-report:report-only site -DgenerateReports=false -DoutputName=index \
+          -f /app/pom.xml \
+          -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
+    - name: sonar
+      image: ghcr.io/gepaplexx/maven:0.1.5
+      script: |-
+        #!/usr/bin/env sh
+        echo ${SONAR_TOKEN}
+        /usr/bin/mvn-wrapper.sh
+          -Dsonar.login=${SONAR_TOKEN}
+          -f /app/pom.xml \
+          -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
+      env:
+        - name: SONAR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: token
+              name: sonar-login
+
   workspaces:
     - name: input
       description: Image with source code
@@ -19,8 +43,13 @@ spec:
     - name: cache
       description: Cache for maven dependencies
       mountPath: /cache
+    - name: sonar-cache
+      description: Cache for sonarqube
+      mountPath: /sonar
   params:
     - name: repo
       type: string
     - name: branch
       type: string
+
+

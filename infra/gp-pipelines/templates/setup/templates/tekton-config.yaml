@@ -63,7 +63,7 @@ spec:
     - name: createRbacResource
       value: 'true'
   pruner:
-    keep: 50
+    keep: 3
     resources:
       - pipelinerun
       - taskrun
