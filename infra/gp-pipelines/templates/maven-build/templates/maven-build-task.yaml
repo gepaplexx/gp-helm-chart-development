@@ -24,9 +24,11 @@ spec:
       image: ghcr.io/gepaplexx/maven:0.1.5
       script: |-
         #!/usr/bin/env sh
-        echo ${SONAR_TOKEN}
-        /usr/bin/mvn-wrapper.sh
-          -Dsonar.login=${SONAR_TOKEN}
+        echo ${SONAR_TOKEN} \
+        /usr/bin/mvn-wrapper.sh \
+          sonar:sonar
+          -Dsonar.login=${SONAR_TOKEN} \
+          -Dsonar.host.url=$(params.sonar-host) \
           -f /app/pom.xml \
           -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
       env:
@@ -51,5 +53,8 @@ spec:
       type: string
     - name: branch
       type: string
+    - name: sonar-host
+      type: string
+      default: https://cluster-nexus.gepaplexx-cicd-tools
 
 

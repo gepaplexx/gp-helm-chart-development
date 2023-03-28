@@ -3,8 +3,6 @@ kind: Pipeline
 metadata:
   namespace: {{ .Release.Namespace }}
   name: maven-build
-  labels:
-    {{- include "gp-pipelines.labels" . | nindent 4 }}
 spec:
   workspaces:
     - name: code
