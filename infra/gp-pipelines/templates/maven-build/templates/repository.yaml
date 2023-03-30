@@ -4,7 +4,7 @@ apiVersion: pipelinesascode.tekton.dev/v1alpha1
 kind: Repository
 metadata:
   name: {{ $repo.name }}
-  namespace: gp-pipelines
+  namespace: {{ $.Release.Namespace }}
 spec:
   url: {{ $repo.url }}
 {{ end }}

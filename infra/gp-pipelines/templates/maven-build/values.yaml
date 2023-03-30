@@ -6,3 +6,6 @@ cache:
 secretStoreRef:
   kind: ClusterSecretStore
   name: cicd-development-store
+repositories:
+  - name: demo-microservice
+    url: "https://github.com/sgartner03/demo-microservice"

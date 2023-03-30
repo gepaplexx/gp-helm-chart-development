@@ -25,8 +25,11 @@ spec:
       script: |-
         #!/usr/bin/env sh
         echo ${SONAR_TOKEN}
-        /usr/bin/mvn-wrapper.sh
-          -Dsonar.login=${SONAR_TOKEN}
+        /usr/bin/mvn-wrapper.sh \
+          sonar:sonar \
+          -Dsonar.login=${SONAR_TOKEN} \
+          -Dsonar.host.url=$(params.sonar-host) \
+          -Dsonar.verbose=true \
           -f /app/pom.xml \
           -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
       env:
@@ -45,11 +48,14 @@ spec:
       mountPath: /cache
     - name: sonar-cache
       description: Cache for sonarqube
-      mountPath: /sonar
+      mountPath: /.sonar
   params:
     - name: repo
       type: string
     - name: branch
       type: string
+    - name: sonar-host
+      type: string
+      default: http://cluster-sonarqube.gepaplexx-cicd-tools.svc.cluster.local
 
 
