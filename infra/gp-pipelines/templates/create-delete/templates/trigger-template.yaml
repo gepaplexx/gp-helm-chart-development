@@ -2,6 +2,40 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
 metadata:
   name: create-template
+  namespace: {{ .Release.Namespace }}
+
+spec:
+  params:
+    - name: repo
+      description: The git repo
+    - name: branch
+      description: The git branch
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: "git-demo-microservice-"
+      spec:
+        taskRunSpecs:
+          - pipelineTaskName: create-task # ...your git-clone PipelineTask name...
+            taskPodTemplate:
+              securityContext:
+                runAsNonRoot: true
+        serviceAccountName: new-repo-sa
+        pipelineRef:
+          name: create-pipeline
+        params:
+          - name: branch
+            value: $(tt.params.branch)
+          - name: repo
+            value: $(tt.params.repo)
+---
+apiVersion: triggers.tekton.dev/v1beta1
+kind: TriggerTemplate
+metadata:
+  name: delete-template
+  namespace: {{ .Release.Namespace }}
+
 spec:
   params:
     - name: repo
@@ -32,7 +66,9 @@ spec:
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerBinding
 metadata:
-  name: create-trigger
+  name: create-delete-trigger
+  namespace: {{ .Release.Namespace }}
+
 spec:
   params:
     - name: repo
@@ -44,6 +80,8 @@ apiVersion: triggers.tekton.dev/v1beta1
 kind: EventListener
 metadata:
   name: create-eventlistener
+  namespace: {{ .Release.Namespace }}
+
 spec:
   triggers:
     - name: create-workflow
@@ -56,15 +94,28 @@ spec:
             - name: "eventTypes"
               value: [ "create" ]
       bindings:
-        - ref: create-trigger
+        - ref: create-delete-trigger
       template:
         ref: create-template
+    - name: delete-workflow
+      interceptors:
+        - ref:
+            name: "github"
+            kind: ClusterInterceptor
+            apiVersion: triggers.tekton.dev
+          params:
+            - name: "eventTypes"
+              value: [ "delete" ]
+      bindings:
+        - ref: create-delete-trigger
+      template:
+        ref: delete-template
 ---
 kind: Pipeline
 apiVersion: tekton.dev/v1beta1
 metadata:
   name: create-pipeline
-  namespace: gp-pipelines
+  namespace: {{ .Release.Namespace }}
 spec:
   params:
     - name: repo
@@ -72,7 +123,7 @@ spec:
     - name: branch
       type: string
   tasks:
-    - name: hello-world
+    - name: create-task
       taskRef:
         name: create-repository
       params:

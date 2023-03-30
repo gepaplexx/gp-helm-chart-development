@@ -2,13 +2,17 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: create-repository
-  namespace: gp-pipelines
+  namespace: {{ .Release.Namespace }}
+
 spec:
   params:
     - name: repo
       type: string
     - name: branch
       type: string
+    - name: user
+      type: string
+      default: "tomeindl"
   results:
     - name: namespace
       description: Name of the created namespace
@@ -26,3 +30,12 @@ spec:
             argocd.argoproj.io/managed-by: gepaplexx-cicd-tools
             tekton-created: 'true'
         EOF
+    - name: git-workflow
+      image: ghcr.io/gepaplexx/go-git-workflows:latest
+      command: ["git-workflows", ]
+      args:
+        - argo-create
+        - --url="https://github.com/tomeindl/demo-microservice-ci/"
+        - --branch=$(params.branch)
+        - --name=$(params.repo)
+        - --commit-user=$(params.user)

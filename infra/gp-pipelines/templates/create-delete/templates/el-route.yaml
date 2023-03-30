@@ -1,0 +1,18 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: el-create-eventlistener
+  namespace: {{ .Release.Namespace }}
+spec:
+  host: >-
+    el-create-eventlistener-tekton-demo-microservice-cicd.apps.play.gepaplexx.com
+  to:
+    kind: Service
+    name: el-create-eventlistener
+    weight: 100
+  port:
+    targetPort: http-listener
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None

@@ -1,3 +1,4 @@
+{{- if not (lookup "kyverno.io/v1" "ClusterPolicy" "" "image-pull-rolebinding") }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -12,19 +13,19 @@ spec:
                 - Namespace
               selector:
                 matchLabels:
-                  tekton-created: ""
+                  tekton-created: "true"
       generate:
         kind: RoleBinding
         apiVersion: rbac.authorization.k8s.io/v1
         name: image-pull-rolebinding
-        namespace: "{{request.object.metadata.name}}"
+        namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
         data:
           subjects:
             - kind: ServiceAccount
               name: default
-              apiGroup: rbac.authorization.k8s.io
-              namespace: "{{request.object.metadata.name}}"
+              namespace: "{{ "}}" }} request.object.metadata.name {{ "}}" }}"
           roleRef:
-            kind: Role
+            kind: ClusterRole
             name: system:image-puller
             apiGroup: rbac.authorization.k8s.io
+{{- end }}
