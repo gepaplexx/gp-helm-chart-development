@@ -9,12 +9,13 @@ spec:
       type: string
     - name: branch
       type: string
-  ##results:
-  ##  - name: namespace
-  ##    description: Name of the created namespace
+  results:
+    - name: namespace
+      description: Name of the created namespace
   steps:
     - name: create-ns
       image: docker.io/bitnami/kubectl
+      # tekton-created: true -> system:image-puller wird über Kyverno zu default SA hinzugefügt
       script: |
         cat <<EOF | kubectl create -f -
         kind: Namespace
@@ -23,12 +24,5 @@ spec:
           name: $(params.repo)-$(params.branch)
           labels:
             argocd.argoproj.io/managed-by: gepaplexx-cicd-tools
+            tekton-created: 'true'
         EOF
-
-    - name: add-image-puller-to-default-sa
-      image: docker.io/bitnami/kubectl
-      script: >
-        kubectl create rolebinding default-pull-images
-        --role system:image-puller
-        --serviceaccount $(params.repo)-$(params.branch):default
-        -n $(params.repo)-$(params.branch)
