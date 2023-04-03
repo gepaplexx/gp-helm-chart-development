@@ -29,6 +29,19 @@ spec:
             value: $(tt.params.branch)
           - name: repo
             value: $(tt.params.repo)
+        workspaces:
+          - name: mnt
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 300Mi
+                volumeMode: Filesystem
+          - name: ssh-key
+            secret:
+              secretName: tomeindl-ssh
 ---
 apiVersion: triggers.tekton.dev/v1beta1
 kind: TriggerTemplate
@@ -122,6 +135,9 @@ spec:
       type: string
     - name: branch
       type: string
+  workspaces:
+    - name: ssh-key
+    - name: mnt
   tasks:
     - name: create-task
       taskRef:
@@ -131,3 +147,10 @@ spec:
           value: $(params.repo)
         - name: branch
           value: $(params.branch)
+      workspaces:
+        - name: ssh-key
+          workspace: ssh-key
+        - name: mnt
+          workspace: mnt
+
+

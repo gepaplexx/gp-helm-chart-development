@@ -3,19 +3,27 @@ kind: Task
 metadata:
   name: create-repository
   namespace: {{ .Release.Namespace }}
-
 spec:
   params:
     - name: repo
       type: string
+      #default: demo-microservice
     - name: branch
       type: string
+      #default: montag3
     - name: user
       type: string
-      default: "tomeindl"
+      default: tomeindl
   results:
     - name: namespace
       description: Name of the created namespace
+  workspaces:
+    - name: ssh-key
+      description: Github ssh key
+      mountPath: /workflow/.ssh/
+    - name: mnt
+      description: output
+      mountPath: /mnt/out/
   steps:
     - name: create-ns
       image: docker.io/bitnami/kubectl
@@ -35,7 +43,7 @@ spec:
       command: ["git-workflows", ]
       args:
         - argo-create
-        - --url="https://github.com/tomeindl/demo-microservice-ci/"
+        - --url=git@github.com:tomeindl/demo-microservice.git
         - --branch=$(params.branch)
         - --name=$(params.repo)
         - --commit-user=$(params.user)

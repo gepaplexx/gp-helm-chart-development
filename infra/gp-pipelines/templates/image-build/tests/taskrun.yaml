@@ -27,3 +27,26 @@ spec:
   serviceAccountName:
   taskRef:
     name: buildah-as-user
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: craete-task-
+  namespace: tekton-demo-microservice-cicd
+spec:
+  serviceAccountName: new-repo-sa
+  taskRef:
+    name: create-repository
+  workspaces:
+    - name: mnt
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 300Mi
+          volumeMode: Filesystem
+    - name: ssh-key
+      secret:
+        secretName: tomeindl-ssh
