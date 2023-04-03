@@ -50,3 +50,13 @@ spec:
     - name: ssh-key
       secret:
         secretName: tomeindl-ssh
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: craete-task-
+  namespace: gp-pipelines
+spec:
+  serviceAccountName:
+  taskRef:
+    name: buildah-as-user

@@ -110,8 +110,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: pipelines-sa-userid-1000
-  - kind: ServiceAccount
-    name: new-repo-sa
+
 
 
 

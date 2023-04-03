@@ -1,16 +1,14 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: create-repository
+  name: delete-repository
   namespace: {{ .Release.Namespace }}
 spec:
   params:
     - name: repo
       type: string
-      #default: demo-microservice
     - name: branch
       type: string
-      #default: montag3
     - name: user
       type: string
       default: tomeindl
@@ -25,6 +23,15 @@ spec:
       description: output
       mountPath: /mnt/out/
   steps:
+    - name: git-workflow
+      image: ghcr.io/gepaplexx/go-git-workflows:latest
+      command: ["git-workflows", ]
+      args:
+        - argo-delete
+        - --url=git@github.com:tomeindl/demo-microservice.git
+        - --branch=$(params.branch)
+        - --name=$(params.repo)
+        - --commit-user=$(params.user)
     - name: create-ns
       image: docker.io/bitnami/kubectl
       # tekton-created: true -> system:image-puller wird über Kyverno zu default SA hinzugefügt
@@ -37,14 +44,4 @@ spec:
           labels:
             argocd.argoproj.io/managed-by: gepaplexx-cicd-tools
             tekton-created: 'true'
-            tekton-deletable: 'true'
         EOF
-    - name: git-workflow
-      image: ghcr.io/gepaplexx/go-git-workflows:latest
-      command: ["git-workflows", ]
-      args:
-        - argo-create
-        - --url=git@github.com:tomeindl/demo-microservice.git
-        - --branch=$(params.branch)
-        - --name=$(params.repo)
-        - --commit-user=$(params.user)
