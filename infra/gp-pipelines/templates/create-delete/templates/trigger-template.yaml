@@ -48,7 +48,6 @@ kind: TriggerTemplate
 metadata:
   name: delete-template
   namespace: {{ .Release.Namespace }}
-
 spec:
   params:
     - name: repo
@@ -61,19 +60,27 @@ spec:
       metadata:
         generateName: "git-demo-microservice-"
       spec:
-        taskRunSpecs:
-          - pipelineTaskName: hello-world # ...your git-clone PipelineTask name...
-            taskPodTemplate:
-              securityContext:
-                runAsNonRoot: true
         serviceAccountName: new-repo-sa
         pipelineRef:
-          name: create-pipeline
+          name: delete-pipeline
         params:
           - name: branch
             value: $(tt.params.branch)
           - name: repo
             value: $(tt.params.repo)
+        workspaces:
+          - name: mnt
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 300Mi
+                volumeMode: Filesystem
+          - name: ssh-key
+            secret:
+              secretName: tomeindl-ssh
 
 ---
 apiVersion: triggers.tekton.dev/v1beta1
@@ -104,6 +111,10 @@ spec:
             kind: ClusterInterceptor
             apiVersion: triggers.tekton.dev
           params:
+            - name: "secretRef"
+              value:
+                secretName: create-workflow-ssh
+                secretKey: git-hook
             - name: "eventTypes"
               value: [ "create" ]
       bindings:
@@ -117,6 +128,10 @@ spec:
             kind: ClusterInterceptor
             apiVersion: triggers.tekton.dev
           params:
+            - name: "secretRef"
+              value:
+                secretName: create-workflow-ssh
+                secretKey: git-hook
             - name: "eventTypes"
               value: [ "delete" ]
       bindings:
@@ -142,6 +157,35 @@ spec:
     - name: create-task
       taskRef:
         name: create-repository
+      params:
+        - name: repo
+          value: $(params.repo)
+        - name: branch
+          value: $(params.branch)
+      workspaces:
+        - name: ssh-key
+          workspace: ssh-key
+        - name: mnt
+          workspace: mnt
+---
+kind: Pipeline
+apiVersion: tekton.dev/v1beta1
+metadata:
+  name: delete-pipeline
+  namespace: {{ .Release.Namespace }}
+spec:
+  params:
+    - name: repo
+      type: string
+    - name: branch
+      type: string
+  workspaces:
+    - name: ssh-key
+    - name: mnt
+  tasks:
+    - name: delete-task
+      taskRef:
+        name: delete-branch
       params:
         - name: repo
           value: $(params.repo)

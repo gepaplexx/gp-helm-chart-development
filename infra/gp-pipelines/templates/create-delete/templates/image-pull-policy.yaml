@@ -27,38 +27,6 @@ spec:
             kind: ClusterRole
             name: system:image-puller
             apiGroup: rbac.authorization.k8s.io
----
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: delete-ns-rolebinding
-spec:
-  rules:
-    - name: delete-ns-rolebinding
-      match:
-        all:
-          - resources:
-              kinds:
-                - Namespace
-              selector:
-                matchLabels:
-                  tekton-deletable: "true"
-      generate:
-        kind: RoleBinding
-        apiVersion: rbac.authorization.k8s.io/v1
-        name: delete-ns-rolebinding
-        namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
-        data:
-          subjects:
-            - kind: ServiceAccount
-              name: default
-              namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
-          roleRef:
-            apiGroup: rbac.authorization.k8s.io
-            kind: ClusterRole
-            name: delete-ns
-
-
 
 
 

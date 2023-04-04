@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: delete-repository
+  name: delete-branch
   namespace: {{ .Release.Namespace }}
 spec:
   params:
@@ -12,9 +12,6 @@ spec:
     - name: user
       type: string
       default: tomeindl
-  results:
-    - name: namespace
-      description: Name of the created namespace
   workspaces:
     - name: ssh-key
       description: Github ssh key
@@ -25,23 +22,15 @@ spec:
   steps:
     - name: git-workflow
       image: ghcr.io/gepaplexx/go-git-workflows:latest
-      command: ["git-workflows", ]
+      command: [ "git-workflows", ]
       args:
         - argo-delete
         - --url=git@github.com:tomeindl/demo-microservice.git
         - --branch=$(params.branch)
         - --name=$(params.repo)
         - --commit-user=$(params.user)
-    - name: create-ns
+    - name: delete-ns
       image: docker.io/bitnami/kubectl
-      # tekton-created: true -> system:image-puller wird über Kyverno zu default SA hinzugefügt
-      script: |
-        cat <<EOF | kubectl create -f -
-        kind: Namespace
-        apiVersion: v1
-        metadata:
-          name: $(params.repo)-$(params.branch)
-          labels:
-            argocd.argoproj.io/managed-by: gepaplexx-cicd-tools
-            tekton-created: 'true'
-        EOF
+      script: |-
+        #!/usr/bin/env sh
+        kubectl delete project $(params.repo)-$(params.branch)
