@@ -5,11 +5,19 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   params:
+  workspaces:
+    - name: code
+      description: the sourcecode from prev. steps
+      mountPath: /app
   steps:
     - image: ghcr.io/tomeindl/buildahimage:latest
       name: build
       resources: { }
       script: |-
         #!/usr/bin/env sh
+        id
+        ls -a
+        pwd
+        cat app/Containerfile
         echo 'FROM ubuntu' > Containerfile
         buildah bud -t blub -f Containerfile .

@@ -38,7 +38,6 @@ spec:
       type: kubernetes.io/dockerconfigjson
 
 ---
-{{- if not (lookup "security.openshift.io/v1" "SecurityContextConstraints" "" "pipelines-scc-userid-1000") }}
 kind: SecurityContextConstraints
 metadata:
   name: pipelines-scc-userid-1000
@@ -78,9 +77,8 @@ volumes:
   - persistentVolumeClaim
   - projected
   - secret
-{{- end }}
+
 ---
-{{- if not (lookup "rbac.authorization.k8s.io/v1" "ClusterRole" "" "pipelines-scc-userid-1000-clusterrole") }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -96,7 +94,6 @@ rules:
       - securitycontextconstraints
     verbs:
       - use
-{{- end}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
