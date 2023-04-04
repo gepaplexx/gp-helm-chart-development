@@ -1,10 +1,7 @@
-{{- range $repo := .Values.repositories }}
----
 apiVersion: pipelinesascode.tekton.dev/v1alpha1
 kind: Repository
 metadata:
-  name: {{ $repo.name }}
-  namespace: {{ $.Release.Namespace }}
+  name: git-demo-microservice
+  namespace: {{ .Release.Namespace }}
 spec:
-  url: {{ $repo.url }}
-{{ end }}
+  url: 'https://github.com/tomeindl/demo-microservice'

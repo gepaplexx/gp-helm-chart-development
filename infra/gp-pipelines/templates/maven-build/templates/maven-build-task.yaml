@@ -36,7 +36,7 @@ spec:
         - name: SONAR_TOKEN
           valueFrom:
             secretKeyRef:
-              key: token
+              key: sonar-token
               name: sonar-login
 
   workspaces:
