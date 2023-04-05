@@ -24,7 +24,7 @@ spec:
         decodingStrategy: None
         key: {{ .Release.Namespace }}/ghcr-pat # Add this to vault manually
         property: config.json
-      secretKey: mysecret
+      secretKey: config.json
   refreshInterval: 10h
   secretStoreRef:
     {{- toYaml .Values.secretStoreRef | nindent 4 }}
@@ -32,10 +32,6 @@ spec:
     creationPolicy: Owner
     deletionPolicy: Retain
     name: ghcr-pat
-    template:
-      data:
-        .dockerconfigjson: "{{ "{{" }} .mysecret | toString {{ "}}" }}"
-      type: kubernetes.io/dockerconfigjson
 
 ---
 kind: SecurityContextConstraints

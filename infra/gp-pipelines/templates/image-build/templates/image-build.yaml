@@ -8,16 +8,46 @@ spec:
   workspaces:
     - name: code
       description: the sourcecode from prev. steps
-      mountPath: /app
+      mountPath: /home/build/app
+    - name: ghcr-pat
+      description: secret to push to image repo
+      mountPath: /home/build/.docker/
   steps:
-    - image: ghcr.io/tomeindl/buildahimage:latest
+    - image: ghcr.io/gepaplexx/buildah:latest
       name: build
       resources: { }
       script: |-
         #!/usr/bin/env sh
-        id
         ls -a
-        pwd
-        cat app/Containerfile
-        echo 'FROM ubuntu' > Containerfile
-        buildah bud -t blub -f Containerfile .
+        cat .docker/config.json
+        buildah build -t ghcr.io/tomeindl/testimagebuild:latest -f Containerfile app/
+        buildah push ghcr.io/tomeindl/testimagebuild:latest
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: scan-image-trivy
+  namespace: {{ .Release.Namespace }}
+spec:
+  params:
+  workspaces:
+    - name: workspace
+      description: output report here
+      mountPath: /mnt/out/
+    - name: cache
+      description: Cache for maven dependencies
+      mountPath: /cache
+    - name: ghcr-pat
+      description: secret to pull from image repo
+      mountPath: .docker/
+  steps:
+    - image: docker.io/aquasec/trivy:latest
+      name: scan
+      script: |-
+        #!/usr/bin/env sh
+        ls -a
+        cat .docker/config.json
+        trivy image ghcr.io/tomeindl/testimagebuild:latest \
+          --output=/mnt/out/trivy.html \
+          --cache-dir=cache/
+

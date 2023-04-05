@@ -7,6 +7,53 @@ spec:
   serviceAccountName: pipelines-sa-userid-1000
   taskRef:
     name: buildah-as-user
+  workspaces:
+    - name: code
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 300Mi
+          volumeMode: Filesystem
+    - name: ghcr-pat
+      secret:
+        secretName: ghcr-pat
+
+---
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: build-task-
+  namespace: tekton-demo-microservice-cicd
+spec:
+  serviceAccountName: pipelines-sa-userid-1000
+  taskRef:
+    name: scan-image-trivy
+  workspaces:
+    - name: workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 300Mi
+          volumeMode: Filesystem
+    - name: ghcr-pat
+      secret:
+        secretName: ghcr-pat
+    - name: cache
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 5Gi
+          volumeMode: Filesystem
+
 ---
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
