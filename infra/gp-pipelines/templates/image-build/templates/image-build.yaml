@@ -45,8 +45,6 @@ spec:
       name: scan
       script: |-
         #!/usr/bin/env sh
-        ls -a
-        cat .docker/config.json
         trivy image ghcr.io/tomeindl/testimagebuild:latest \
           --output=/mnt/out/trivy.html \
           --cache-dir=cache/
