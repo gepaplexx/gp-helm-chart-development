@@ -24,6 +24,9 @@ spec:
     - name: skip-image-scan
       type: string
       default: false
+    - name: tasks-namespace
+      type: string
+      default: tekton-demo-microservice-cicd
 
   tasks:
     # Clone the source code into the output workspace
@@ -50,14 +53,22 @@ spec:
       runAfter:
         - fetch-source
       taskRef:
-        resolver: cluster
+        resolver: git
         params:
-          - name: kind
-            value: task
-          - name: name
-            value: maven-build
-          - name: namespace
-            value: tekton-demo-microservice-cicd
+          - name: url
+            value: $(params.repository-url)
+          - name: revision
+            value: main
+          - name: pathInRepo
+            value: .tekton/custom-task.yaml
+{{/*        resolver: cluster*/}}
+{{/*        params:*/}}
+{{/*          - name: kind*/}}
+{{/*            value: task*/}}
+{{/*          - name: name*/}}
+{{/*            value: maven-build*/}}
+{{/*          - name: namespace*/}}
+{{/*            value: tekton-demo-microservice-cicd*/}}
       workspaces:
         - name: input
           workspace: code
@@ -77,6 +88,10 @@ spec:
     - name: image-build
       runAfter:
         - maven-build
+      when:
+        - input: "$(params.skip-image-build)"
+          operator: notin
+          values: [ "true" ]
       taskRef:
         resolver: cluster
         params:
