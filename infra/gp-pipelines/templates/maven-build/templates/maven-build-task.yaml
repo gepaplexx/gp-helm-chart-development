@@ -6,14 +6,15 @@ metadata:
 spec:
   steps:
     - name: build
-      image: ghcr.io/gepaplexx/maven:0.1.5
+      image: ghcr.io/gepaplexx/maven:$(params.maven-version)
       script: |-
         #!/usr/bin/env sh
+        mvn -v
         /usr/bin/mvn-wrapper.sh clean install \
           -f /app/pom.xml \
           -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
     - name: junit
-      image: ghcr.io/gepaplexx/maven:0.1.5
+      image: ghcr.io/gepaplexx/maven:$(params.maven-version)
       script: |-
         #!/usr/bin/env sh
         /usr/bin/mvn-wrapper.sh \
@@ -21,7 +22,7 @@ spec:
           -f /app/pom.xml \
           -Dmaven.repo.local=/cache/$(params.repo)/$(params.branch)
     - name: sonar
-      image: ghcr.io/gepaplexx/maven:0.1.5
+      image: ghcr.io/gepaplexx/maven:$(params.maven-version)
       script: |-
         #!/usr/bin/env sh
         echo ${SONAR_TOKEN}
@@ -57,5 +58,8 @@ spec:
     - name: sonar-host
       type: string
       default: http://cluster-sonarqube.gepaplexx-cicd-tools.svc.cluster.local
+    - name: maven-version
+      type: string
+      default: latest
 
 

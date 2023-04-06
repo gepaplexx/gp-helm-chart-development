@@ -21,6 +21,10 @@ spec:
     - name: maven-version
       type: string
       default: latest
+    - name: skip-image-scan
+      type: string
+      default: false
+
   tasks:
     # Clone the source code into the output workspace
     # Source: Tekton Hub -- using hub resolver
@@ -39,7 +43,7 @@ spec:
           workspace: code
       params:
         - name: url
-          value: repository-url
+          value: $(params.repository-url)
     # Maven build and test
     # Source: Cluster
     - name: maven-build
@@ -63,11 +67,11 @@ spec:
           workspace: sonar-cache
       params:
         - name: repo
-          value: repository-name
+          value: $(params.repository-name)
         - name: branch
-          value: repository-branch
+          value: $(params.repository-branch)
         - name: maven-version
-          value: maven-version
+          value: $(params.maven-version)
     # Build the image using builder
     # Source: Cluster
     - name: image-build
@@ -92,6 +96,10 @@ spec:
     - name: image-scan
       runAfter:
         - image-build
+      when:
+        - input: "$(params.skip-image-scan)"
+          operator: notin
+          values: [ "true" ]
       taskRef:
         resolver: cluster
         params:
