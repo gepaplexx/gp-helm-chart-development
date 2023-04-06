@@ -1,0 +1,110 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: push-pipeline
+  namespace: {{ .Release.Namespace }}
+spec:
+  workspaces:
+    - name: code
+    - name: maven-cache
+    - name: sonar-cache
+    - name: trivy-cache
+    - name: ghcr-pat
+
+  params:
+    - name: repository-url
+      type: string
+    - name: repository-name
+      type: string
+    - name: repository-branch
+      type: string
+    - name: maven-version
+      type: string
+      default: latest
+  tasks:
+    # Clone the source code into the output workspace
+    # Source: Tekton Hub -- using hub resolver
+    - name: fetch-source
+      taskRef:
+        resolver: hub
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: git-clone
+          - name: version
+            value: "0.9"
+      workspaces:
+        - name: output
+          workspace: code
+      params:
+        - name: url
+          value: repository-url
+    # Maven build and test
+    # Source: Cluster
+    - name: maven-build
+      runAfter:
+        - fetch-source
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: maven-build
+          - name: namespace
+            value: tekton-demo-microservice-cicd
+      workspaces:
+        - name: input
+          workspace: code
+        - name: cache
+          workspace: maven-cache
+        - name: sonar-cache
+          workspace: sonar-cache
+      params:
+        - name: repo
+          value: repository-name
+        - name: branch
+          value: repository-branch
+        - name: maven-version
+          value: maven-version
+    # Build the image using builder
+    # Source: Cluster
+    - name: image-build
+      runAfter:
+        - maven-build
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: buildah-as-user
+          - name: namespace
+            value: tekton-demo-microservice-cicd
+      workspaces:
+        - name: code
+          workspace: code
+        - name: ghcr-pat
+          workspace: ghcr-pat
+    # Scan the image using trivy
+    # Source: Cluster
+    - name: image-scan
+      runAfter:
+        - image-build
+      taskRef:
+        resolver: cluster
+        params:
+          - name: kind
+            value: task
+          - name: name
+            value: scan-image-trivy
+          - name: namespace
+            value: tekton-demo-microservice-cicd
+      workspaces:
+        - name: workspace
+          workspace: code
+        - name: ghcr-pat
+          workspace: ghcr-pat
+        - name: cache
+          workspace: trivy-cache
