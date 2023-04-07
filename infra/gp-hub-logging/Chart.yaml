@@ -10,7 +10,7 @@ appVersion: "2.7.0"
 dependencies:
   - name: minio
     repository: "https://charts.bitnami.com/bitnami"
-    version: 12.1.12
+    version: 12.2.4
   - name: loki
     version: 5.0.0
     repository: https://grafana.github.io/helm-charts
