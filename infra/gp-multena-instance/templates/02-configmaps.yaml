@@ -28,6 +28,7 @@ data:
       dev:
         enabled: {{ .Values.multena.dev }}
 ---
+{{ if .Values.dev }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -53,3 +54,5 @@ data:
     users:
       - lucostus: [lucostus]
       - uff: [dev,dev2]
+
+{{ end }}
