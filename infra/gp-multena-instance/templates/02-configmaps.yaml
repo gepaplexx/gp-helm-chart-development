@@ -2,6 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "gp-multena-instance.name" . }}-proxy-config
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:
@@ -16,6 +17,14 @@ data:
         tenant_label:  {{ .Values.multena.tenantLabel}}
         admin_group:  {{ .Values.multena.adminGroup }}
         port: {{.Values.proxyService.port}}
+      db:
+        enabled: {{ .Values.db.enabled }}
+        user: {{ .Values.db.user }}
+        password_path: {{ .Values.db.passwordPath }}
+        host: {{ .Values.db.host }}
+        port: {{ .Values.db.port }}
+        db_name: {{ .Values.db.dbName }}
+        query: {{ .Values.db.query }}
       dev:
         enabled: {{ .Values.multena.dev }}
 ---
@@ -23,6 +32,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "gp-multena-instance.name" . }}-proxy-groups
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:
@@ -35,6 +45,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "gp-multena-instance.name" . }}-proxy-users
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 data:

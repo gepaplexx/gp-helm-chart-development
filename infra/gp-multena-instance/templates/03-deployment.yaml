@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "gp-multena-instance.name" . }}-proxy
+  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena-instance.labels" . | nindent 4 }}
 spec:

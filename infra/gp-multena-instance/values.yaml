@@ -1,4 +1,5 @@
 replicaCount: 1
+dev: false
 multena:
   dev: false
   logLevel: INFO
@@ -8,6 +9,14 @@ multena:
   datasourceUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   provider: configmap
   tenantLabel: namespace
+db:
+  enabled: false
+  user: multitenant
+  passwordPath: /etc/secrets/db_secret
+  host: localhost
+  port: 3306
+  dbName: blubb
+  query: "SELECT * FROM users WHERE username = ?"
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: Always

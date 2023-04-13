@@ -1,3 +1,4 @@
+{{ if .Values.dev }}
 # TODO: values für clientSecret und urls setzen in values-play.yaml. Testen.
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
@@ -49,3 +50,5 @@ spec:
           namespace: {{ .Release.Namespace }}
           name: "grafana-sso-config"
       patchType: application/merge-patch+json
+{{ end }}
+
