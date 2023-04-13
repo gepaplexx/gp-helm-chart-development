@@ -22,7 +22,7 @@ image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "main"
 
 imagePullSecrets: []
 nameOverride: ""
