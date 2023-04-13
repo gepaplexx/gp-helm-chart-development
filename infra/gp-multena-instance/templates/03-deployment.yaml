@@ -57,6 +57,8 @@ spec:
               name: multena-users
             - mountPath: /etc/config/groups/
               name: multena-groups
+            - mountPath: /etc/secret/db/
+              name: multena-db-secret
         - args:
             - --insecure-listen-address=0.0.0.0:9095
             - --upstream={{ .Values.multena.datasourceUrl }}
@@ -86,6 +88,9 @@ spec:
         - configMap:
             name: {{ include "gp-multena-instance.name" . }}-proxy-groups
           name: multena-groups
+        - name: multena-db-secret
+          secret:
+            secretName: {{ .Values.db.secretName }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

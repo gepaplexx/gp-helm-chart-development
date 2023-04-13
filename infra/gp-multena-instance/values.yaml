@@ -12,7 +12,8 @@ multena:
 db:
   enabled: false
   user: multitenant
-  passwordPath: /etc/secrets/db_secret
+  secretName: db-secret
+  passwordPath: /etc/secret/db/password
   host: localhost
   port: 3306
   dbName: blubb
@@ -59,14 +60,9 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
-
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
-
-
 grafana:
   image: docker.io/grafana/grafana:9.4.3-ubuntu
 ingress:
