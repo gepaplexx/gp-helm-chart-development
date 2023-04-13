@@ -55,12 +55,16 @@ spec:
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
+              {{ if eq .Values.multena.provider "configmap" }}
             - mountPath: /etc/config/users/
               name: multena-users
             - mountPath: /etc/config/groups/
               name: multena-groups
+              {{ end }}
+              {{ if .Values.db.enabled }}
             - mountPath: /etc/secret/db/
               name: multena-db-secret
+              {{ end }}
         - args:
             - --insecure-listen-address=0.0.0.0:9095
             - --upstream={{ .Values.multena.datasourceUrl }}
@@ -84,15 +88,19 @@ spec:
         - configMap:
             name: {{ include "gp-multena-instance.name" . }}-proxy-config
           name: multena-config
+          {{ if eq .Values.multena.provider "configmap" }}
         - configMap:
             name: {{ include "gp-multena-instance.name" . }}-proxy-users
           name: multena-users
         - configMap:
             name: {{ include "gp-multena-instance.name" . }}-proxy-groups
           name: multena-groups
+          {{ end }}
+          {{ if .Values.db.enabled }}
         - name: multena-db-secret
           secret:
             secretName: {{ .Values.db.secretName }}
+          {{ end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
