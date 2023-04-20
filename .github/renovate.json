@@ -18,4 +18,5 @@
       "enabled": false
     }
   ]
+  "rebaseWhen": "behind-base-branch"
 }
