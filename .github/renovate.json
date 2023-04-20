@@ -10,5 +10,13 @@
     "rook-ceph",
     "rook-ceph-cluster"
   ],
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["patch"],
+      "matchPaths": ["infra/gp-hub-monitoring/Chart.yaml"],
+      "matchDepNames": ["kube-state-metrics"],
+      "enabled": false
+    }
+  ],
   "rebaseWhen": "behind-base-branch"
 }
