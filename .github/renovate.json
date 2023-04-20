@@ -17,6 +17,6 @@
       "matchDepNames": ["kube-state-metrics"],
       "enabled": false
     }
-  ]
+  ],
   "rebaseWhen": "behind-base-branch"
 }
