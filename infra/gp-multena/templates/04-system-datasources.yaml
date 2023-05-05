@@ -1,0 +1,38 @@
+apiVersion: integreatly.org/v1alpha1
+kind: GrafanaDataSource
+metadata:
+  name: {{ include "gp-multena.name" . }}-proxy-datasource
+  namespace: {{ .Release.Namespace }}
+spec:
+  name: system-datasources.yaml
+  datasources:
+    - name: thanos-multena
+      uid: thanos-multena
+      type: thanos
+      url: "http://{{ include "gp-multena.name" . }}:8080"
+      access: proxy
+      editable: false
+      isDefault: true
+      jsonData:
+        httpMethod: POST
+        httpHeaderName1: Accept-Encoding
+        oauthPassThru: true
+      secureJsonData:
+        httpHeaderValue1: "*/*"
+    - name: loki-multena
+      uid: loki-multena
+      type: loki
+      url: "http://{{ include "gp-multena.name" . }}:8080"
+      access: proxy
+      editable: false
+      isDefault: true
+      jsonData:
+        httpMethod: POST
+        httpHeaderName1: Accept-Encoding
+        oauthPassThru: true
+      secureJsonData:
+        httpHeaderValue1: "*/*"
+
+
+
+

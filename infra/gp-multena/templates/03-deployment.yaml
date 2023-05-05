@@ -1,17 +1,15 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "gp-multena-instance.name" . }}-proxy
+  name: {{ include "gp-multena.name" . }}-proxy
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "gp-multena-instance.labels" . | nindent 4 }}
+    {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "gp-multena-instance.selectorLabels" . | nindent 6 }}
+      {{- include "gp-multena.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -19,14 +17,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "gp-multena-instance.selectorLabels" . | nindent 8 }}
+        {{- include "gp-multena.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{ if .Values.dev }}
-      serviceAccountName: {{ include "gp-multena-instance.name" . }}-proxy
+      serviceAccountName: {{ include "gp-multena.name" . }}-proxy
       {{ end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -38,7 +36,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: {{ .Values.proxyService.port }}
+              containerPort: 8080
               protocol: TCP
           livenessProbe:
             httpGet:
@@ -61,7 +59,7 @@ spec:
             - mountPath: /etc/config/groups/
               name: multena-groups
               {{ end }}
-              {{ if .Values.db.enabled }}
+              {{ if .Values.multena.db.enabled }}
             - mountPath: /etc/secret/db/
               name: multena-db-secret
               {{ end }}
@@ -86,17 +84,17 @@ spec:
             name: openshift-service-ca.crt
           name: openshift-service-ca
         - configMap:
-            name: {{ include "gp-multena-instance.name" . }}-proxy-config
+            name: {{ include "gp-multena.name" . }}-config
           name: multena-config
           {{ if eq .Values.multena.provider "configmap" }}
         - configMap:
-            name: {{ include "gp-multena-instance.name" . }}-proxy-users
+            name: {{ include "gp-multena.name" . }}-users
           name: multena-users
         - configMap:
-            name: {{ include "gp-multena-instance.name" . }}-proxy-groups
+            name: {{ include "gp-multena.name" . }}-groups
           name: multena-groups
           {{ end }}
-          {{ if .Values.db.enabled }}
+          {{ if .Values.multena.db.enabled }}
         - name: multena-db-secret
           secret:
             secretName: {{ .Values.db.secretName }}
