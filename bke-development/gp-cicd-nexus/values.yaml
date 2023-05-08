@@ -27,4 +27,4 @@ nexus:
   persistence:
     enabled: true
     storageSize: "20Gi"
-    storageClass: "rook-ceph-block"
+    storageClass: "rbd-storagepool-cluster"

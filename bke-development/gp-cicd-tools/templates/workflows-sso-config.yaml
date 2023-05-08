@@ -1,15 +1,28 @@
-apiVersion: bitnami.com/v1alpha1
-kind: SealedSecret
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
 metadata:
   name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
   namespace: {{ .Release.Namespace }}
 spec:
-  encryptedData:
-    {{ .Values.argo_workflows.server.sso.clientSecret.key }}: {{ .Values.argo_workflows.rbac.clientSecret }}
-  template:
-    data:
-      {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ .Values.argo_workflows.rbac.clientId }}
-    metadata: {}
+  # benötigte Values: client-id, client-secret (in dieser Schreibweise!)
+  dataFrom:
+    - extract:
+        key: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
+        conversionStrategy: Default
+        decodingStrategy: None
+  refreshInterval: 12h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
+  target:
+    creationPolicy: Merge
+    deletionPolicy: Retain
+    name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          app.kubernetes.io/managed-by: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
 ---
 ### RBAC CONFIGURATION
 ## BEGINN DEFAULT READONLY USER
@@ -72,7 +85,7 @@ rules:
     - pods/log
     - pods/status
     - pods
-# erlaubt das Abrufen von Logs von Archived Workflows.
+  # erlaubt das Abrufen von Logs von Archived Workflows.
 - apiGroups:
     - ""
   verbs:
@@ -80,7 +93,7 @@ rules:
   resources:
     - secrets
   resourceNames:
-    - minio-artifact-repository
+    - workflows-artifact-repository
 ---
 {{- if .Values.argo_workflows.rbac.defaultRead }}
 apiVersion: rbac.authorization.k8s.io/v1
@@ -99,7 +112,7 @@ subjects:
 ## END DEFAULT READONLY USER
 ---
 {{- end }}
-## BEGIN GEPAPLEXX ARGO WORKFLOWS SUPER USER
+## BEGIN GEPARDEC RUN ARGO WORKFLOWS SUPER USER
 apiVersion: v1
 kind: Secret
 metadata:
@@ -132,7 +145,7 @@ subjects:
   - kind: ServiceAccount
     name: workflows-super-admin
     namespace: {{ .Release.Namespace }}
-## END GEPAPLEXX ARGO WORKFLOWS SUPER USER
+## END GEPARDEC RUN ARGO WORKFLOWS SUPER USER
 ---
 ## BEGINN ARGO WORKFLOWS DEVELOPER PERMISSIONS
 apiVersion: rbac.authorization.k8s.io/v1
@@ -186,7 +199,7 @@ rules:
     resources:
       - secrets
     resourceNames:
-      - minio-artifact-repository
+      - workflows-artifact-repository
 ---
 {{- if .Values.argo_workflows.rbac.clusterscoped.enabled }}
 # ServiceAccount und Clusterrolebinding nur anlegen, wenn es eine Gruppe gibt, die Clusterweit Workflows anlegen darf

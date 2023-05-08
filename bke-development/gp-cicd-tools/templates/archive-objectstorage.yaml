@@ -1,0 +1,60 @@
+{{- if .Values.argo_workflows.archive.enabled }}
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: workflows-artifact-repository
+  namespace: {{ .Release.Namespace }}
+spec:
+  dataFrom:
+    # Benötigt: accesskey, secretkey
+    - extract:
+        key: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
+        conversionStrategy: Default
+        decodingStrategy: None
+  refreshInterval: 12h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
+  target:
+    creationPolicy: Merge
+    deletionPolicy: Retain
+    name: workflows-artifact-repository
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          app.kubernetes.io/managed-by: workflows-artifact-repository
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: clone-workflows-artifact-repository-secret
+spec:
+  validationFailureAction: enforce
+  rules:
+    - name: Clone Argo Workflows Artifact Repository Secret
+      match:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - "*-cicd"
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - {{ .Release.Namespace }}
+      generate:
+        kind: Secret
+        apiVersion: v1
+        name: workflows-artifact-repository
+        # namespace for the generated resource
+        namespace: "{{`{{request.object.metadata.name}}`}}"
+        synchronize: true
+        clone:
+          namespace: {{ .Release.Namespace }}
+          name: workflows-artifact-repository
+{{- end }}
