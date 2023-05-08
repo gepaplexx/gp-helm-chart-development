@@ -10,7 +10,7 @@ sonarqube:
     ingressClassName: "openshift-default"
     hostname: "sonarqube.apps.cluster.example.com"
     annotations:
-      cert-manager.io/cluster-issuer: letsencrypt
+      cert-manager.io/cluster-issuer: letsencrypt-production
     tls: true
   persistence:
     enabled: true

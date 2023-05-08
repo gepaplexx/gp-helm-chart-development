@@ -5,7 +5,7 @@ eventbus:
   name: default
   persistence:
     enabled: false
-    storageClassName: rook-ceph-block
+    storageClassName: rbd-storagepool-cluster
     accessMode: ReadWriteOnce
     size: 5Gi
   jetstream:

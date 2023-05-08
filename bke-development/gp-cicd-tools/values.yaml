@@ -2,17 +2,8 @@
 #### VARIABLES #####
 ####################
 argo_workflows_db: &argo_workflows_db "argo_workflows"
-argo_workflows_db_secret: &argo_workflows_db_secret "gepaplexx-cicd-tools-postgresql"
+argo_workflows_db_secret: &argo_workflows_db_secret "gepardec-run-cicd-tools-postgresql"
 argo_workflows_db_host: &argo_workflows_db_host "argo-workflows-postgres"
-
-####################
-## SEALED SECRETS ##
-####################
-sealedSecret:
-  postgresql:
-    postgres-password: ""
-    password: ""
-    username: ""
 
 ####################
 ##  ARGO  EVENTS  ##
@@ -66,12 +57,11 @@ argo_workflows:
     pullPolicy: IfNotPresent
 
   rbac:
-    sudoGroup: Gepaplexx
+    sudoGroup: # TODO ersetzen mit Team Name in Github
     clusterscoped:
       developerGroup: Gepardec
       enabled: false
     defaultRead: true
-    clientSecret: "" # SealedsecretEncrypted ClientSecret
     clientId: "argo-workflows"
 
   executor:
@@ -105,7 +95,7 @@ argo_workflows:
         - workflows.example.com
       ingressClassName: "openshift-default"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt
+        cert-manager.io/cluster-issuer: letsencrypt-production
       tls:
         - hosts:
             - workflows.example.com
@@ -174,48 +164,24 @@ argo_workflows:
 
   archive:
     enabled: true
-    secretkey: ""
   useDefaultArtifactRepo: true
   artifactRepository:
     archiveLogs: true
     s3:
       accessKeySecret:
-        name: minio-artifact-repository
+        name: workflows-artifact-repository
         key: accesskey
       secretKeySecret:
-        name: minio-artifact-repository
+        name: workflows-artifact-repository
         key: secretkey
       insecure: true
       bucket: argo-workflows
-      endpoint: minio-artifact-repository.gepaplexx-cicd-tools:9000
+      endpoint: #TODO S3 Bucket von Exoscale location
 
   workflow:
     serviceAccount:
       create: true
       name: operate-workflow-sa
-
-#####################
-## Workflows Minio ##
-#####################
-minio:
-  auth:
-    existingSecret: "minio-artifact-repository"
-  fullnameOverride: minio-artifact-repository
-  replicas: 1
-  persistence:
-    size: 25Gi
-  resources:
-    requests:
-      memory: 2Gi #default 4Gi bei 500Gi persistent storage. Sollte mit weniger auch auskommen.
-  provisioning:
-    enabled: true
-    buckets:
-    - name: argo-workflows
-      purge: false
-      policy: none
-  serviceAccount:
-    name: minio
-
 
 
 ####################
@@ -275,7 +241,7 @@ argocd:
         memory: 128Mi
   rbac:
     defaultPolicy: ''
-    policies:
+    policies: #TODO Anpassen, sobald Gruppennamen bekannt sind.
       - 'p, role:gepardec-admin, applications, *, *, allow'
       - 'p, role:gepardec-admin, repositories, *, *, allow'
       - 'p, role:gepardec-admin, projects, *, *, allow'
@@ -294,7 +260,6 @@ postgresql:
   auth:
     username: argo_workflow
     database: *argo_workflows_db
-    password: ""
     existingSecret: *argo_workflows_db_secret
   primary:
     podSecurityContext:
