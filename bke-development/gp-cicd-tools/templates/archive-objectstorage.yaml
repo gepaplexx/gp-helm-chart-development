@@ -16,7 +16,7 @@ spec:
     kind: ClusterSecretStore
     name: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
   target:
-    creationPolicy: Merge
+    creationPolicy: Owner
     deletionPolicy: Retain
     name: workflows-artifact-repository
     template:
