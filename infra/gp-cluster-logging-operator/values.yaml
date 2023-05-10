@@ -1,8 +1,0 @@
-clusterlogging:
-  subscription:
-    channel: "stable"
-    installPlanApproval: "automatic"
-loki:
-  subscription:
-    channel: "stable"
-    installPlanApproval: "automatic"
