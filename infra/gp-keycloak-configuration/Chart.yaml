@@ -8,4 +8,4 @@ dependencies:
   - name: gp-keycloak-instance
     alias: keycloak
     repository: "https://gepaplexx.github.io/gp-helm-charts/"
-    version: *
+    version: "*"
