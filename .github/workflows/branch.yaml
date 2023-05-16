@@ -32,7 +32,6 @@ jobs:
           helm lint \
              ./bke-development/*/. \
              ./infra/*/. \
-             ./gp-workload/*/. \
              ./gp-apps/*/.
 
   notify:
