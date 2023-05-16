@@ -1,6 +1,6 @@
 patch:
-  namespace: gp-infrastructure
-  serviceAccount: patch-operator-sa
+  namespace: syn-patch-operator
+  serviceAccount: patch-sa
 ingress:
   hostname: sso.apps.cluster.example.com
 realm:
