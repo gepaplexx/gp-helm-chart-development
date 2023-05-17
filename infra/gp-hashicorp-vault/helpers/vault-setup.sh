@@ -87,7 +87,7 @@ if [ -z "${ACCESS_TOKEN}" ]; then
   ACCESS_TOKEN=$(cat "${DIR}"/vault-init-"${CLUSTER}".json | jq -r .root_token)
 fi
 
-# DEFAULT SECRET STORE FOR CICD
+# DEFAULT SECRET STORES
 if [ "${skip_non_repeatable}" = false ]; then
   # Enable Audit Logging
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault audit enable file file_path=stdout"
@@ -95,9 +95,12 @@ if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/cicd kv-v2"
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/admin kv-v2"
   # Prefill development/admin with required secrets for workflows.
-  ARGOCD_URL=$(kubectl -n gepaplexx-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
-  ARGOCD_PASSWORD=$(kubectl -n gepaplexx-cicd-tools get secret gepaplexx-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
+  ARGOCD_URL=$(kubectl -n gepardec-run-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
+  ARGOCD_PASSWORD=$(kubectl -n gepardec-run-cicd-tools get secret gepardec-run-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
+
+  # Configuration Secret Stores for Cluster Administration Secrets
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=cluster/config kv-v2"
 fi
 
 # ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
@@ -144,19 +147,27 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         '
       )"
 
-# CICD-ADMIN-READONLY
+# CLUSTER CONFIG ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-    vault policy write cicd-admin-readonly \
+    vault policy write cluster-config-admin \
       <(echo '
-        # This policy allows access to all cicd resources on development/*,
-        # make sure it is only given to admins and SAs that are restricted to
-        # GPX-only namespaces
+        # This policy allows all access to cluster-configuration resources on cluster/config/*,
+        # make sure it is only given to people responsible for configuring clusters, i.e. gepardec-run team members
 
-        path \"development/cicd/*\"
+        path \"cluster/config/*\"
         {
-          capabilities = [\"read\", \"list\"]
+          capabilities = [\"read\", \"list\", \"create\", \"update\", \"delete\"]
         }
-        path \"development/admin/*\"
+        '
+      )"
+
+# CLUSTER CONFIG READER
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault policy write cluster-config-reader \
+      <(echo '
+        # This policy allows read-only access to all cluster-configuration resources on cluster/config/*,
+        # make sure it is only given to admins and SAs that are required to read initial secrets for configuration
+        path \"cluster/config/*\"
         {
           capabilities = [\"read\", \"list\"]
         }
@@ -247,12 +258,13 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         path \"sys/identity/group\"
         {
           capabilities = [\"read\", \"create\", \"update\", \"list\"]
-        }'
+        }
 
         path \"sys/storage/raft/*\"
         {
           capabilities = [\"read\", \"create\", \"update\", \"list\", \"delete\", \"sudo\"]
         }
+        '
       )"
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
@@ -262,16 +274,15 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       policies=cicd-reader \
       ttl=24h"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-    vault write auth/kubernetes/role/cicd-admin-reader \
-      bound_service_account_names=operate-workflow-sa \
-      bound_service_account_namespaces='gepaplexx-cicd-eventbus' \
-      bound_service_account_namespaces='gepaplexx-cicd-tools' \
-      policies=cicd-admin-readonly \
-      ttl=24h"
-kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/backup-creator \
       bound_service_account_names=vault-backup-sa \
       bound_service_account_namespaces='gp-vault' \
+      policies=backup-creator \
+      ttl=1h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/cluster-config-reader \
+      bound_service_account_names=admin-config-reader \
+      bound_service_account_namespaces='*' \
       policies=backup-creator \
       ttl=1h"
 
@@ -284,8 +295,8 @@ fi
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/role/default \
        bound_audiences='vault' \
-       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepaplexx.com/ui/vault/auth/oidc/oidc/callback' \
-       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepaplexx.com/oidc/callback' \
+       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepa.vshnmanaged.net/ui/vault/auth/oidc/oidc/callback' \
+       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepa.vshnmanaged.net/oidc/callback' \
        user_claim='sub' \
        policies='default' \
        groups_claim='groups'"
@@ -293,7 +304,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/config \
       oidc_client_id='vault' \
-      oidc_discovery_url='https://sso.apps.${CLUSTER}.gepaplexx.com/realms/internal' \
+      oidc_discovery_url='https://sso.apps.${CLUSTER}.gepa.vshnmanaged.net/realms/internal' \
       oidc_client_secret=${CLIENT_SECRET} \
       default_role=default"
 
@@ -305,35 +316,36 @@ OIDC_AUTH_ACCESSOR=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault logi
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write identity/group \
-      name='Gepaplexx' \
+      name='gepa-cluster-admin' \
       type='external' \
-      policies='admin,cicd-admin' \
+      policies='admin,cicd-admin,cluster-config-admin' \
       metadata=responsibility='Vault Admin'" 1> /dev/null
-echo "Success! Data written to: identity/group/name/Gepaplexx"
+echo "Success! Data written to: identity/group/name/gepa-cluster-admin"
 
 if [ "${skip_non_repeatable}" = false ]; then
   GROUP_ID=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault read -field=id identity/group/name/Gepaplexx")
+        vault read -field=id identity/group/name/gepa-cluster-admin")
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault write identity/group-alias name='Gepaplexx' \
+        vault write identity/group-alias name='gepa-cluster-admin' \
            mount_accessor=${OIDC_AUTH_ACCESSOR} \
            canonical_id=${GROUP_ID}" 1> /dev/null
   echo "Success! Data written to: identity/group-alias/"
 fi
 
+#TODO sollen entwickler wirklich standardmäßig auf alles unter development/ Zugriff haben? Dadurch würden sie Secrets von anderen Projekten sehen können
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write identity/group \
-      name='Gepardec' \
+      name='Developers' \
       type='external' \
       policies='cicd-admin' \
       metadata=responsibility='Vault CICD Admin'" 1> /dev/null
-echo "Success! Data written to: identity/group/name/Gepardec"
+echo "Success! Data written to: identity/group/name/Developers"
 
 if [ "${skip_non_repeatable}" = false ]; then
   GROUP_ID=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault read -field=id identity/group/name/Gepardec")
+        vault read -field=id identity/group/name/Developers")
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault write identity/group-alias name='Gepardec' \
+        vault write identity/group-alias name='Developers' \
            mount_accessor=${OIDC_AUTH_ACCESSOR} \
            canonical_id=${GROUP_ID}" 1> /dev/null
   echo "Success! Data written to: identity/group-alias/"
