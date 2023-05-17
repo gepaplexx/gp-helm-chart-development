@@ -8,7 +8,7 @@ spec:
       auth:
         kubernetes:
           mountPath: kubernetes
-          role: admin-config-reader
+          role: cluster-config-reader
           serviceAccountRef:
             name: admin-config-reader
       path: cluster/config/
