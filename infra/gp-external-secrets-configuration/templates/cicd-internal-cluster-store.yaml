@@ -8,9 +8,9 @@ spec:
       auth:
         kubernetes:
           mountPath: kubernetes
-          role: cicd-admin-reader
+          role: admin-config-reader
           serviceAccountRef:
-            name: operate-workflow-sa
-      path: development/cicd/
+            name: admin-config-reader
+      path: cluster/config/
       server: 'http://vault-active.gp-vault.svc.cluster.local:8200'
       version: v2
