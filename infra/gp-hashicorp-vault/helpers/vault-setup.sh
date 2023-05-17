@@ -283,7 +283,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
     vault write auth/kubernetes/role/cluster-config-reader \
       bound_service_account_names=admin-config-reader \
       bound_service_account_namespaces='*' \
-      policies=backup-creator \
+      policies=cluster-config-reader \
       ttl=1h"
 
 # ENABLE & CONFIGURE OIDC AUTH INTEGRATION
