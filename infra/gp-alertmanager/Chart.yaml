@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gp-alertmanager
+description: A Helm chart for deploying external secrets used by the alertmanager
+
+type: application
+
+version: 0.1.0
