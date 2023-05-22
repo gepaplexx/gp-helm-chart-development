@@ -73,10 +73,10 @@ entries:
     version: 0.1.1
   gp-alertmanager-healthcheck:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.95873388Z"
+    created: "2023-05-22T14:15:11.74026514Z"
     description: A chart for deploying a simple GO Service that accepts POST Calls
       from Alertmanagers in order to track their health.
-    digest: 99cf810bbba44b6e529ad0d0ac446525782b944b61bec1d3c9bac0a8fc303e31
+    digest: 52d0256a140045766d5b4f53052e79bc1c960fe0be2cd62da79547eb38758dc8
     name: gp-alertmanager-healthcheck
     type: application
     urls:
@@ -94,10 +94,10 @@ entries:
     version: 0.0.3
   gp-awx-monitoring:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.95921948Z"
+    created: "2023-05-22T14:15:11.740603148Z"
     description: A Helm Chart for deploying Monitoring and Alerting Resources for
       AWX Installation
-    digest: 63b86626eedda4d7d4001c3034125ad60b5f3ac97d2c2681a527d32459f39908
+    digest: d0429491fb71a4ef3f9689d2fbd2a4a9bb60f85c002af328f8442edf70132aff
     name: gp-awx-monitoring
     type: application
     urls:
@@ -167,9 +167,9 @@ entries:
   gp-bke-argocd-application:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:36.959954481Z"
+    created: "2023-05-22T14:15:11.740922755Z"
     description: A Helm chart to deploy an ArgoCD-Application
-    digest: 3d623d0878d4081c8c5fcab981b006288cde64654db93565fe689a4b0a90ef87
+    digest: fbbb4234276d29dd7d0d117276f18f78b2f0dad2fdcb2604aeeff5de43ea02a0
     name: gp-bke-argocd-application
     type: application
     urls:
@@ -282,13 +282,13 @@ entries:
   gp-cert-manager:
   - apiVersion: v2
     appVersion: v1.7.1
-    created: "2023-05-22T13:44:36.965072484Z"
+    created: "2023-05-22T14:15:11.744778245Z"
     dependencies:
     - name: cert-manager
       repository: https://charts.jetstack.io
       version: v1.11.0
     description: A Helm chart for Kubernetes
-    digest: c456f7f7fd8aa39a0819848ceeb33a3589adff8cf81e178b01f4aab1eb50a4fb
+    digest: 21fff0d939d1c3ea28e48b7d079734348d51aae7eaf8eec7b083c7e9e28b04b1
     name: gp-cert-manager
     type: application
     urls:
@@ -311,9 +311,9 @@ entries:
   gp-certificates-patches:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:36.965255285Z"
+    created: "2023-05-22T14:15:11.745050151Z"
     description: A Helm chart for Kubernetes
-    digest: c2f105363ce68e5f291ea546a58da50390ae10a9d4100c5beac5a4b24bdd56b5
+    digest: dc1f4fcc0a24890b4497388c6231f680c0181cd92c190b76e8f3d214b6b4d73b
     name: gp-certificates-patches
     type: application
     urls:
@@ -1724,10 +1724,10 @@ entries:
   gp-cluster-config:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:36.965850285Z"
+    created: "2023-05-22T14:15:11.745772368Z"
     description: A gepaplexx Helm chart setup an Openshift-Cluster with gepaplexx
       specific configs
-    digest: 5ec2211954fd992dbee33550ee6000b6565ca650c411070c6bb73b0e21c404d6
+    digest: bc16420e71c28a4d8fe4b13491cdc7067c6a2091593c042a7196b482a12a4ad7
     name: gp-cluster-config
     type: application
     urls:
@@ -1868,9 +1868,9 @@ entries:
   gp-cluster-issuer:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-05-22T13:44:36.966102085Z"
+    created: "2023-05-22T14:15:11.746025174Z"
     description: A Helm chart for Kubernetes
-    digest: c07da569d103c0c1257b3635053e0a8569bc4ac062792f02116c3ec69bd8a9ea
+    digest: 5f568afb40d5645ec6cd431cc5d3a1ea40af01211f85dfa5b42aee9c2640f4c1
     name: gp-cluster-issuer
     type: application
     urls:
@@ -1889,9 +1889,9 @@ entries:
   gp-cluster-logging-eventrouter:
   - apiVersion: v2
     appVersion: v0.3
-    created: "2023-05-22T13:44:36.966331785Z"
+    created: "2023-05-22T14:15:11.746776991Z"
     description: Adds a Pod which logs all events from all projects. See https://docs.openshift.com/container-platform/4.10/logging/cluster-logging-eventrouter.html
-    digest: 390667f2ce9f150014f0cb762b4e38fefed70d896c4348b2c40abaa7094542fc
+    digest: 29fbd7430223ff01d72b445b66a924e714ea69ac4f084f5645dcd28c35b1c1c1
     name: gp-cluster-logging-eventrouter
     type: application
     urls:
@@ -1899,14 +1899,14 @@ entries:
     version: 0.1.1
   gp-cluster-logging-instance:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.971504289Z"
+    created: "2023-05-22T14:15:11.752096515Z"
     dependencies:
     - condition: lokistack.minio.enabled
       name: minio
       repository: https://charts.bitnami.com/bitnami
       version: 12.1.10
     description: A Helm chart for Kubernetes
-    digest: 57e81756ae851a67dff803d20194d2c1d0908ae556ab881da5fd5ddcc27462cb
+    digest: bcef28805aa3f23383a44880d1f72b7b0029e5691a200b416407a91c7e26f7f2
     name: gp-cluster-logging-instance
     type: application
     urls:
@@ -2472,9 +2472,9 @@ entries:
     version: 1.1.3
   gp-cluster-logging-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.971721589Z"
+    created: "2023-05-22T14:15:11.752402622Z"
     description: A Helm chart for Kubernetes
-    digest: 39bc09c64b07c3d2800470746ef80a20366736c25b026e932415bf2132804e26
+    digest: 4648e94f12b3e3e04f07ac18f560908dba7a33b32a66291693d32ce8805bcd4a
     name: gp-cluster-logging-operator
     type: application
     urls:
@@ -2562,9 +2562,9 @@ entries:
     version: 1.5.4
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:36.97220439Z"
+    created: "2023-05-22T14:15:11.752859932Z"
     description: A Helm chart to conigure openshift-monitoring stack.
-    digest: 9c8f1569f2211ea0700d0561c7b067b6de68745d4da90a010f6f1d953fbb6ef4
+    digest: 92b955c03a81358875a0e7546ac7369b801fbe07709e4c7239f213621c0aef52
     name: gp-cluster-monitoring-config
     type: application
     urls:
@@ -2693,10 +2693,10 @@ entries:
   gp-cluster-update-checker:
   - apiVersion: v2
     appVersion: 1.16.1
-    created: "2023-05-22T13:44:36.97268019Z"
+    created: "2023-05-22T14:15:11.753300342Z"
     description: A Helm Chart to deploy a cron job which automatically checks for
       new cluster updates.
-    digest: a4d198ec2eec94236a4e0d74f88ae0843f05790fe29af7309c265dfa48b3ba3b
+    digest: 16cd2d55dc53fab6f02c34d26004c0550abf3c0b3e53208ff4e9f262be44555c
     name: gp-cluster-update-checker
     type: application
     urls:
@@ -2738,9 +2738,9 @@ entries:
   gp-cluster-update-updater:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:36.97288359Z"
+    created: "2023-05-22T14:15:11.753531848Z"
     description: A Helm chart for Kubernetes
-    digest: 8593b58d525ce70fd900b9188915282cd2141c73b8e7ef07e38b9e598d2937c3
+    digest: f2bf7e7e7067d36241634eb1ba287098ab56732871dd71f29583ef77bba05578
     name: gp-cluster-update-updater
     type: application
     urls:
@@ -2759,9 +2759,9 @@ entries:
   gp-console-patches:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2023-05-22T13:44:36.97322529Z"
+    created: "2023-05-22T14:15:11.75405816Z"
     description: A Helm chart for Kubernetes
-    digest: 8040764588a4203d5f7132bad3859e8cd95bf950991ba7b0e6c1a7d384739cd5
+    digest: 5b157a762f9ad5cb16c6237361a6907f34c94574c06d509c1dc356acd050d8fa
     name: gp-console-patches
     type: application
     urls:
@@ -2779,10 +2779,10 @@ entries:
     version: 0.3.2
   gp-external-secrets-configuration:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.97340699Z"
+    created: "2023-05-22T14:15:11.754234964Z"
     description: A Helm chart for Kubernetes containing configuration for the External
       Secrets Operator
-    digest: 2436db2f96e349350cddae982299423c64e133392d15118ff8f0a541b471b614
+    digest: 9a7dd97db9a581aaf5d13447edd22799517eb981c8802780ee7eab96c9d458fe
     name: gp-external-secrets-configuration
     type: application
     urls:
@@ -2820,10 +2820,10 @@ entries:
     version: 0.1.0
   gp-external-secrets-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.973598591Z"
+    created: "2023-05-22T14:15:11.75448997Z"
     description: A Helm chart for installing External Secrets Operator on OpenShift
       https://github.com/external-secrets/external-secrets/
-    digest: dec3513c89f3aa3e87920de79178f7a265c871fda66773631dddb0f0cf818ce1
+    digest: 2e83fabcc3c009a7241ad3f3874811bb47e5be8d397bcc4966494cb947e447f1
     name: gp-external-secrets-operator
     type: application
     urls:
@@ -2841,9 +2841,9 @@ entries:
     version: 0.1.3
   gp-grafana-instance:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.973929191Z"
+    created: "2023-05-22T14:15:11.75492988Z"
     description: A Helm chart for deploying Grafana on OpenShift
-    digest: 92ffb8fcbe42ac0360edc6e81effec1ef44b8ae663d970ed33390c3ab87fa895
+    digest: 301195d6bb855fe5e48d21fae6ed864ac8b1d1c42618725df1b3bc379500519e
     name: gp-grafana-instance
     type: application
     urls:
@@ -2977,9 +2977,9 @@ entries:
     version: 0.0.2
   gp-grafana-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.974103391Z"
+    created: "2023-05-22T14:15:11.755115085Z"
     description: A Helm chart for installing Grafana operator on OpenShift https://github.com/grafana-operator/grafana-operator
-    digest: 98ba674949df4413f0412dbf8fc5ef051d954d699f20e4e211092870689b35bd
+    digest: c07753afa297b7a40d8bdaeb559fc084ea9727a4edad2925bf4f4094964251a7
     name: gp-grafana-operator
     type: application
     urls:
@@ -3005,13 +3005,13 @@ entries:
     version: 0.0.1
   gp-hashicorp-vault:
   - apiVersion: v2
-    created: "2023-05-22T13:44:36.978697494Z"
+    created: "2023-05-22T14:15:11.759050376Z"
     dependencies:
     - name: vault
       repository: https://helm.releases.hashicorp.com
       version: 0.23.0
     description: A Helm chart for Kubernetes, extending the base HC Vault Helm Chart
-    digest: 6ff1142b682467144cb81f47eb0469eed2ea7192e3e858f7a18f97e86facd7bf
+    digest: cde38689d45b23cd737a5644e741eb9a890de6f6b57f8f9b31c38e4d5cf660aa
     name: gp-hashicorp-vault
     type: application
     urls:
@@ -3101,9 +3101,9 @@ entries:
   gp-http-mirror:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-05-22T13:44:36.979753595Z"
+    created: "2023-05-22T14:15:11.760009198Z"
     description: A Helm chart for Kubernetes
-    digest: 707a06d50dab60aeaf3bf839e234ff8f0b9dd8a101f3e9544b861e1aa9c1d2c4
+    digest: ee0d89492aed3fe0e3453b224c26f633a4ecf4aa67e200c3ba612e7109f07654
     name: gp-http-mirror
     type: application
     urls:
@@ -3127,7 +3127,7 @@ entries:
     version: 0.1.0
   gp-hub-monitoring:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.00082351Z"
+    created: "2023-05-22T14:15:11.78074188Z"
     dependencies:
     - alias: mimir
       name: mimir-distributed
@@ -3140,7 +3140,7 @@ entries:
       repository: https://prometheus-community.github.io/helm-charts
       version: 5.0.0
     description: A Helm chart for deploying a Metrics Monitoring Stack on our Hub-Cluster
-    digest: 93e39aea07f0b58c94e521a57fd53bb4bc6a5703136df83586416a217c6a63f4
+    digest: 8c013ec8a038541bf0bfd791d372b5bd5dbaa88e86401f13eb1b212d4a94fa77
     name: gp-hub-monitoring
     type: application
     urls:
@@ -3289,9 +3289,9 @@ entries:
   gp-identity-provider:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:37.00123291Z"
+    created: "2023-05-22T14:15:11.781099588Z"
     description: A Helm Chart to deploy the identity providers.
-    digest: 96b5b060330900c12b4397ef0af7be32a2238426238166226a393b83124f9038
+    digest: 4398237a4be488c4110853939d14954a1b02d7318cd25761dc8da711d4c2eeeb
     name: gp-identity-provider
     type: application
     urls:
@@ -3448,9 +3448,9 @@ entries:
     version: 1.0.0
   gp-kasten-instance:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.001703411Z"
+    created: "2023-05-22T14:15:11.781387295Z"
     description: A Helm chart for deploying Kasten on OpenShift
-    digest: adf67beffdfb8d34fdae5687b29c1e574751ddd68db0064a06949c9c92d2c0fa
+    digest: 185c38b97466e31f09898e5cb4c8224a72d3b403c9c5886ecd1b9c4807603a7d
     name: gp-kasten-instance
     type: application
     urls:
@@ -3467,9 +3467,9 @@ entries:
     version: 0.0.3
   gp-kasten-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.001941311Z"
+    created: "2023-05-22T14:15:11.781569599Z"
     description: A Helm chart for installing kasten k10 operator on OpenShift
-    digest: 18e1149bef80b3eece1b40d7f5e2b362fcdbf01a56a6edb10e37f4be42f4f0e7
+    digest: 1ed960213c1dd336478a5d76fdd1a1ee288224e8bd9b89bfb6ef873575b9ca63
     name: gp-kasten-operator
     type: application
     urls:
@@ -3486,14 +3486,14 @@ entries:
     version: 0.0.3
   gp-keycloak-configuration:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.008127115Z"
+    created: "2023-05-22T14:15:11.788142051Z"
     dependencies:
     - alias: keycloak
       name: gp-keycloak-instance
       repository: https://gepaplexx.github.io/gp-helm-charts/
       version: 0.8.0
     description: A Helm chart for Kubernetes
-    digest: 53aef647fd2e964a8f218f09a86d93ccb498c62d97eb38ca4eb3ce9875721fe3
+    digest: 4b6ee959972ed3b957b59955b60efa7b73ced83ffb5e282213ae4efeefb8cc6d
     name: gp-keycloak-configuration
     type: application
     urls:
@@ -3572,7 +3572,7 @@ entries:
     - https://gepaplexx.github.io/gp-helm-chart-development/gp-keycloak-instance-0.9.0.tgz
     version: 0.9.0
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.016697621Z"
+    created: "2023-05-22T14:15:11.792974564Z"
     dependencies:
     - condition: persistence.enabled
       name: postgresql
@@ -3580,7 +3580,7 @@ entries:
       version: ~12.2.0
     description: A Helm chart for deploying Keycloak on OpenShift using the Keycloak-X
       Operator
-    digest: 325dd0b45585411f191e93f860e99e6648ffb8c595ead64f010b87a5bb804845
+    digest: 1dd0b500dc2703ce5f79373a9aa00be408c0e31e721b5aadf60f120daed52501
     name: gp-keycloak-instance
     type: application
     urls:
@@ -3663,9 +3663,9 @@ entries:
     version: 0.3.0
   gp-keycloak-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.016899021Z"
+    created: "2023-05-22T14:15:11.79326677Z"
     description: A Helm chart for deploying the keycloak-x operator on OpenShift
-    digest: c704634897e1be86bcdcb56e541e60f46a2035fbfa9c6fff242be4dd27038043
+    digest: 6c7efcb2a49ad6ccc2c8d5dd1bbab04ca50095d3e5871222019e248cbec8016e
     name: gp-keycloak-operator
     type: application
     urls:
@@ -3703,13 +3703,13 @@ entries:
   gp-kyverno:
   - apiVersion: v2
     appVersion: 2.5.3
-    created: "2023-05-22T13:44:37.026631328Z"
+    created: "2023-05-22T14:15:11.804253125Z"
     dependencies:
     - name: kyverno
       repository: https://kyverno.github.io/kyverno/
       version: 2.7.0
     description: A Helm chart for deploying kyverno on gepaplexx openshift clusters
-    digest: 528d116dabf5d9ec255686fe8dad5b0bb82df26320143703b47b67eb88d998b1
+    digest: ddf2f87ef8de5b16cec0b91657030c1860c45e40048be79bf20ec20a7375bff8
     name: gp-kyverno
     type: application
     urls:
@@ -3760,9 +3760,9 @@ entries:
   gp-multena:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:37.026996428Z"
+    created: "2023-05-22T14:15:11.804642135Z"
     description: A Helm chart for Multena
-    digest: 654721c5bc07ab92dda1b1b33c44fdbb35ceb98cc3b6f41fe4a8efe9b08a01d6
+    digest: 23471c7512e02b7f6d125e117a2a9162720f696dcf5b8657239d48aa3521a128
     name: gp-multena
     type: application
     urls:
@@ -3938,9 +3938,9 @@ entries:
   gp-oauth-group-sync:
   - apiVersion: v2
     appVersion: 1.23.0
-    created: "2023-05-22T13:44:37.027200029Z"
+    created: "2023-05-22T14:15:11.804844839Z"
     description: A Helm chart for Kubernetes
-    digest: 2035473189a564938da353d907d18715c8990c44b4a5d69bc4c4f6bb50ef860f
+    digest: d42b7d5454ad91e6038706491599700018b6b76aea1f19208384c644576e29cb
     name: gp-oauth-group-sync
     type: application
     urls:
@@ -3979,9 +3979,9 @@ entries:
   gp-ocp-internal-registry:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:37.027374329Z"
+    created: "2023-05-22T14:15:11.805016943Z"
     description: A Helm chart for Kubernetes
-    digest: e61d470bea42937024946020cc63a36e2dccca0e81b44427fe3bfc9467b71024
+    digest: d00de314eff8a675450ac6a9f08316e3d021759617e963b206268cdea845d46b
     name: gp-ocp-internal-registry
     type: application
     urls:
@@ -4031,9 +4031,9 @@ entries:
   gp-openshift-gitops:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:37.027629629Z"
+    created: "2023-05-22T14:15:11.805267049Z"
     description: A Helm chart for Kubernetes
-    digest: ba26ccf0840b3749184859a120f1c5b48f48c163eb0636f63159ec20150da348
+    digest: e6c767a8cbf127cfd52e431d5ea991133e87c758c27b18d09cb7d22a0e67b471
     name: gp-openshift-gitops
     type: application
     urls:
@@ -4101,9 +4101,9 @@ entries:
     version: 1.0.1
   gp-patch-operator:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.027827029Z"
+    created: "2023-05-22T14:15:11.805463254Z"
     description: A Helm chart for deploying the patch operator on Openshift 4.x
-    digest: 2b8f148d62cc7c325038e7744257f04213f66227305394006c9ee808b034f592
+    digest: e4faefef044645546cbadef0b958e0fa2dfd4dacf95890ef102bdd0ccd309f35
     name: gp-patch-operator
     type: application
     urls:
@@ -4157,9 +4157,9 @@ entries:
   gp-pipelines:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2023-05-22T13:44:37.027984129Z"
+    created: "2023-05-22T14:15:11.805639358Z"
     description: A Helm chart deploying various Tekton and PipelinesAsCode manifests
-    digest: bc0fd840565e7672c1b48ce5f7b1442f0e89e1d4b708ea96c33c960b449d2119
+    digest: 89230126c21f265e652e4b1ec9776395560c16626310ec5583c4cc863eaebd65
     name: gp-pipelines
     type: application
     urls:
@@ -4168,9 +4168,9 @@ entries:
   gp-pull-through-cache:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-05-22T13:44:37.028124629Z"
+    created: "2023-05-22T14:15:11.805779161Z"
     description: A Helm chart for Kubernetes
-    digest: a053757e3a3776abf3252e857452d2d103507d340ebed11fcd8d0e9896f1c184
+    digest: 99f590a51e95c44f5b18098e8a883503665240c98550ce07e0a889673476d768
     name: gp-pull-through-cache
     type: application
     urls:
@@ -4178,9 +4178,9 @@ entries:
     version: 1.0.0
   gp-pull-through-cache-registry:
   - apiVersion: v2
-    created: "2023-05-22T13:44:37.028335229Z"
+    created: "2023-05-22T14:15:11.805999166Z"
     description: A Helm chart for Kubernetes
-    digest: e2499f3db05b00a86fa98ec40017fdcd195a60c436c3ee960d1004722ea65f68
+    digest: d81395a61fec2da82438164e36a294f924c3382d0aad48946e1df4f0412624c0
     name: gp-pull-through-cache-registry
     type: application
     urls:
@@ -4214,14 +4214,14 @@ entries:
   gp-rook-ceph-operator:
   - apiVersion: v2
     appVersion: v1.9.3
-    created: "2023-05-22T13:44:37.032710233Z"
+    created: "2023-05-22T14:15:11.810119562Z"
     dependencies:
     - alias: rook
       name: rook-ceph
       repository: https://charts.rook.io/release
       version: v1.9.3
     description: A Helm chart for Deploying the Rook-Ceph-Operator on OpenShift
-    digest: 0e28720cc2348e8f31bb6ab2b3f493dc875cd08376432c71e12f39db4a6fad4d
+    digest: 0d68cf7dbf5e2770445c0af67bfd106f5a9f62f7aa99386663c829d446d27b65
     name: gp-rook-ceph-operator
     type: application
     urls:
@@ -4318,14 +4318,14 @@ entries:
   gp-storage-cephcluster:
   - apiVersion: v2
     appVersion: v1.9.3
-    created: "2023-05-22T13:44:37.036303335Z"
+    created: "2023-05-22T14:15:11.814302559Z"
     dependencies:
     - alias: cephcluster
       name: rook-ceph-cluster
       repository: https://charts.rook.io/release
       version: v1.9.3
     description: A Helm chart for Kubernetes
-    digest: 7d4e73fa23d64e077de715d20e34f67068c4668055874a5f17131f76e3f6a7f0
+    digest: 8d26d4e9a8e097cc675a86fa5d830eac0ff30edbc3a016d1193bb43135c12e6a
     name: gp-storage-cephcluster
     type: application
     urls:
@@ -4622,7 +4622,7 @@ entries:
   loki:
   - apiVersion: v2
     appVersion: 2.7.0
-    created: "2023-05-22T13:44:37.052210346Z"
+    created: "2023-05-22T14:15:11.829631015Z"
     dependencies:
     - name: minio
       repository: https://charts.bitnami.com/bitnami
@@ -4631,7 +4631,7 @@ entries:
       repository: https://grafana.github.io/helm-charts
       version: 4.8.0
     description: A Helm chart for deploying the Loki Stack on our Hub-Cluster
-    digest: 73e4171087d69b64a7c9035f25980eff87e780f7b43b121c33f2cc97334eea32
+    digest: 7c5f285d3846ae2bc10d58e8f465e89460b9bb55fca88ff2661c01092307c05f
     name: loki
     type: application
     urls:
@@ -4671,4 +4671,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-chart-development/loki-0.2.2.tgz
     version: 0.2.2
-generated: "2023-05-22T13:44:36.957958379Z"
+generated: "2023-05-22T14:15:11.739746328Z"
