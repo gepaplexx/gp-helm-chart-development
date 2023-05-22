@@ -7,7 +7,7 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 data:
   config.yaml: |-
-      version: 1
+      version: 2
       proxy:
         log_level: {{ .Values.multena.logLevel }}
         provider: {{ .Values.multena.provider}}
@@ -40,8 +40,7 @@ metadata:
 data:
   groups.yaml: |-
     groups:
-      - gepaplexx: [gepaplexx]
-      - gepardec: [Uff, blubb]
+      - example_group: ["example_namespace"]
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -53,7 +52,5 @@ metadata:
 data:
   users.yaml: |-
     users:
-      - lucostus: [lucostus]
-      - uff: [dev,dev2]
-
+      - example_user: ["example_namespace"]
 {{ end }}

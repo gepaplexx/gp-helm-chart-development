@@ -23,8 +23,8 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{ if .Values.dev }}
-      serviceAccountName: {{ include "gp-multena.name" . }}-proxy
+      {{ if .Values.serviceAccount.create }}
+      serviceAccountName: {{ include "gp-multena.name" . }}
       {{ end }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
@@ -65,7 +65,7 @@ spec:
               {{ end }}
         - args:
             - --insecure-listen-address=0.0.0.0:9095
-            - --upstream={{ .Values.multena.datasourceUrl }}
+            - --upstream={{ .Values.multena.thanosUrl }}
             - --label={{ .Values.multena.tenantLabel }}
             - --query-param={{ .Values.multena.tenantLabel }}
             - --enable-label-apis

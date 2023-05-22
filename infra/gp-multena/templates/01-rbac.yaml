@@ -10,7 +10,7 @@ metadata:
   name: {{ include "gp-multena.name" . }}-role-binding-monitoring-view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "gp-multena.name" . }}-monitoring-view
+    name: {{ include "gp-multena.name" . }}
     namespace: {{.Release.Namespace}}
 roleRef:
   apiGroup: rbac.authorization.k8s.io

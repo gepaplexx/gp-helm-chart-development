@@ -1,11 +1,11 @@
 multena:
   dev: false
-  logLevel: INFO
+  logLevel: DEBUG
   adminGroup: Gepardec
-  jwksCertUrl: https://sso.apps.play.gepaplexx.com/realms/internal/protocol/openid-connect/certs
+  jwksCertUrl: https://sso.apps.c-gepa-play.gepa.vshnmanaged.net/realms/internal/protocol/openid-connect/certs
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-  lokiUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-  promLabelUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+  lokiUrl: https://loki-querier-http.openshift-logging.svc.cluster.local:3100
+  promLabelUrl: http://localhost:9095
   provider: configmap
   tenantLabel: namespace
   db:
@@ -20,7 +20,7 @@ multena:
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: Always
-  tag: "main"
+  tag: "feature-loki"
 
 serviceAccount:
   create: true

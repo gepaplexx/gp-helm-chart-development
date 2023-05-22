@@ -8,30 +8,34 @@ spec:
   datasources:
     - name: thanos-multena
       uid: thanos-multena
-      type: thanos
+      type: prometheus
       url: "http://{{ include "gp-multena.name" . }}:8080"
       access: proxy
-      editable: false
-      isDefault: true
+      editable: true
+      isDefault: false
       jsonData:
         httpMethod: POST
         httpHeaderName1: Accept-Encoding
+        httpHeaderName2: X-Plugin-Id
         oauthPassThru: true
       secureJsonData:
         httpHeaderValue1: "*/*"
+        httpHeaderValue2: "thanos"
     - name: loki-multena
       uid: loki-multena
       type: loki
       url: "http://{{ include "gp-multena.name" . }}:8080"
       access: proxy
-      editable: false
-      isDefault: true
+      editable: true
+      isDefault: false
       jsonData:
         httpMethod: POST
         httpHeaderName1: Accept-Encoding
+        httpHeaderName2: X-Plugin-Id
         oauthPassThru: true
       secureJsonData:
         httpHeaderValue1: "*/*"
+        httpHeaderValue2: "loki"
 
 
 
