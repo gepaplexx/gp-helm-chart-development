@@ -19,6 +19,10 @@ spec:
       labels:
         {{- include "gp-multena.selectorLabels" . | nindent 8 }}
     spec:
+      securityContext:
+        runAsNonRoot: true
+        seccompProfile:
+          type: RuntimeDefault
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -28,6 +32,10 @@ spec:
       {{- end }}
       containers:
         - name: multena-proxy
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ "ALL" ]
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "main" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
@@ -60,6 +68,10 @@ spec:
               name: multena-db-secret
               {{- end }}
         - name: prom-label-proxy
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: [ "ALL" ]
           args:
             - --insecure-listen-address=0.0.0.0:9095
             - --upstream={{ .Values.multena.thanosUrl }}
@@ -77,20 +89,20 @@ spec:
             name: openshift-service-ca.crt
           name: openshift-service-ca
         - configMap:
-            name: {{- include "gp-multena.name" . }}-config
+            name: {{ include "gp-multena.name" . }}-config
           name: multena-config
           {{- if eq .Values.multena.provider "configmap" }}
         - configMap:
-            name: {{- include "gp-multena.name" . }}-users
+            name: {{ include "gp-multena.name" . }}-users
           name: multena-users
         - configMap:
-            name: {{- include "gp-multena.name" . }}-groups
+            name: {{ include "gp-multena.name" . }}-groups
           name: multena-groups
           {{- end }}
           {{- if eq .Values.multena.provider "mysql" }}
         - name: multena-db-secret
           secret:
-            secretName: {{- include "gp-multena.name" . }}-db-secret
+            secretName: {{ include "gp-multena.name" . }}-db-secret
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -25,7 +25,7 @@ spec:
     - name: loki-multena
       uid: loki-multena
       type: loki
-      url: "http://{{ include "gp-multena.name" . }}:8080"
+      url: "http://{{ include "gp-multena.name" . }}:8080/api/logs/v1/application/"
       access: proxy
       editable: true
       isDefault: false
@@ -37,4 +37,4 @@ spec:
       secureJsonData:
         httpHeaderValue1: "*/*"
         httpHeaderValue2: "loki"
-  {{- end }}
+{{- end }}
