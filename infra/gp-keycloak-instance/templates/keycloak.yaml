@@ -7,8 +7,6 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
-  features:
-    enabled: [ 'token-exchange', 'admin-fine-grained-authz']
   hostname:
     hostname: {{  .Values.ingress.hostname }}
   instances: {{ .Values.replicas }}
