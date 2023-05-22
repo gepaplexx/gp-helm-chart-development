@@ -1,3 +1,4 @@
+{{- if .Values.GrafanaOperatorDatasources }}
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
@@ -36,7 +37,4 @@ spec:
       secureJsonData:
         httpHeaderValue1: "*/*"
         httpHeaderValue2: "loki"
-
-
-
-
+  {{- end }}

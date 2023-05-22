@@ -15,17 +15,19 @@ data:
         loki_url: {{ .Values.multena.lokiUrl }}
         prom_label_url: {{ .Values.multena.promLabelUrl }}
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
-        tenant_label:  {{ .Values.multena.tenantLabel}}
-        admin_group:  {{ .Values.multena.adminGroup }}
+        tenant_label: {{ .Values.multena.tenantLabel}}
+        admin_group: {{ .Values.multena.adminGroup }}
         port: 8080
+      {{- if eq .Values.multena.provider "mysql" }}
       db:
-        enabled: {{ .Values.multena.db.enabled }}
+        enabled: true
         user: {{ .Values.multena.db.user }}
-        password_path: {{ .Values.multena.db.passwordPath }}
+        password_path: /etc/secrets/db/password
         host: {{ .Values.multena.db.host }}
         port: {{ .Values.multena.db.port }}
         db_name: {{ .Values.multena.db.dbName }}
         query: {{ .Values.multena.db.query }}
+      {{- end }}
       dev:
         enabled: {{ .Values.multena.dev }}
 ---
@@ -53,4 +55,4 @@ data:
   users.yaml: |-
     users:
       - example_user: ["example_namespace"]
-{{ end }}
+{{- end }}

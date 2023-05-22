@@ -23,16 +23,12 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{ if .Values.serviceAccount.create }}
+      {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ include "gp-multena.name" . }}
-      {{ end }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
         - name: multena-proxy
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "main" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -53,17 +49,18 @@ spec:
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
-              {{ if eq .Values.multena.provider "configmap" }}
+              {{- if eq .Values.multena.provider "configmap" }}
             - mountPath: /etc/config/users/
               name: multena-users
             - mountPath: /etc/config/groups/
               name: multena-groups
-              {{ end }}
-              {{ if .Values.multena.db.enabled }}
+              {{- end }}
+              {{- if eq .Values.multena.provider "mysql" }}
             - mountPath: /etc/secret/db/
               name: multena-db-secret
-              {{ end }}
-        - args:
+              {{- end }}
+        - name: prom-label-proxy
+          args:
             - --insecure-listen-address=0.0.0.0:9095
             - --upstream={{ .Values.multena.thanosUrl }}
             - --label={{ .Values.multena.tenantLabel }}
@@ -72,10 +69,6 @@ spec:
             - --error-on-replace
           image: ghcr.io/lucostus/prom-label-proxy:multi-value-regex-v0.0.4
           imagePullPolicy: IfNotPresent
-          name: prom-label-proxy
-          ports:
-            - containerPort: 9095
-              name: http
           volumeMounts:
             - mountPath: /etc/ssl/certs/
               name: openshift-service-ca
@@ -84,21 +77,21 @@ spec:
             name: openshift-service-ca.crt
           name: openshift-service-ca
         - configMap:
-            name: {{ include "gp-multena.name" . }}-config
+            name: {{- include "gp-multena.name" . }}-config
           name: multena-config
-          {{ if eq .Values.multena.provider "configmap" }}
+          {{- if eq .Values.multena.provider "configmap" }}
         - configMap:
-            name: {{ include "gp-multena.name" . }}-users
+            name: {{- include "gp-multena.name" . }}-users
           name: multena-users
         - configMap:
-            name: {{ include "gp-multena.name" . }}-groups
+            name: {{- include "gp-multena.name" . }}-groups
           name: multena-groups
-          {{ end }}
-          {{ if .Values.multena.db.enabled }}
+          {{- end }}
+          {{- if eq .Values.multena.provider "mysql" }}
         - name: multena-db-secret
           secret:
-            secretName: {{ .Values.db.secretName }}
-          {{ end }}
+            secretName: {{- include "gp-multena.name" . }}-db-secret
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
