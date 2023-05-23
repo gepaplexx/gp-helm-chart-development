@@ -1,7 +1,7 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: cicd-internal-cluster-store
+  name: internal-cluster-store
 spec:
   provider:
     vault:
