@@ -1,28 +1,39 @@
 multena:
   dev: false
-  logLevel: DEBUG
-  adminGroup: Gepardec
-  jwksCertUrl: https://sso.apps.c-gepa-play.gepa.vshnmanaged.net/realms/internal/protocol/openid-connect/certs
+  logLevel: INFO
+  adminGroup: gepardec-run-admins
+  jwksCertUrl: https://gp-sso-service.gp-sso.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080
-  promLabelUrl: http://localhost:9095
-  provider: configmap
+  provider: mysql
   tenantLabel: namespace
   db:
     user: multitenant
-    password: SafePassword1234!
+    existingPasswordSecretName: ""
     host: localhost
     port: 3306
     dbName: blubb
     query: "SELECT * FROM users WHERE username = ?"
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
-  pullPolicy: Always
-  tag: "feature-loki"
+  pullPolicy: IfNotPresent
+  tag: "1.2.0"
+replicas: 1
+probes:
+  enabled: true
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 1
+    periodSeconds: 5
+    timeoutSeconds: 10
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 1
+    periodSeconds: 10
+    timeoutSeconds: 10
 
 serviceAccount:
   create: true
-  annotations: {}
   name: ""
 
 GrafanaOperatorDatasources: true

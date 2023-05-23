@@ -13,7 +13,7 @@ data:
         provider: {{ .Values.multena.provider}}
         thanos_url: {{ .Values.multena.thanosUrl }}
         loki_url: {{ .Values.multena.lokiUrl }}
-        prom_label_url: {{ .Values.multena.promLabelUrl }}
+        prom_label_url: http://localhost:9095
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
         tenant_label: {{ .Values.multena.tenantLabel}}
         admin_group: {{ .Values.multena.adminGroup }}
@@ -35,24 +35,14 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "gp-multena.name" . }}-groups
+  name: {{ include "gp-multena.name" . }}-labels
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena.labels" . | nindent 4 }}
 data:
-  groups.yaml: |-
+  labels.yaml: |-
     groups:
       - example_group: ["example_namespace"]
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "gp-multena.name" . }}-users
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "gp-multena.labels" . | nindent 4 }}
-data:
-  users.yaml: |-
     users:
-      - example_user: ["example_namespace"]
+      - example_user: [ "example_namespace" ]
 {{- end }}
