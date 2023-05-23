@@ -23,9 +23,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.serviceAccount.create }}
       serviceAccountName: {{ include "gp-multena.serviceAccountName" . }}
-      {{- end }}
       containers:
         - name: multena-proxy
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -93,7 +91,7 @@ spec:
           {{- if eq .Values.multena.provider "mysql" }}
         - name: multena-db-secret
           secret:
-            secretName: {{ .Values.multena.db.existingSecret | default (printf "%s-db-external-secret" (include "gp-multena.name" .)) }}
+            secretName: {{ include "gp-multena.secretName" . }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

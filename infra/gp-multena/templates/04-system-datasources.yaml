@@ -23,7 +23,7 @@ spec:
         httpHeaderValue1: "*/*"
         httpHeaderValue2: "thanos"
     - name: loki-multena (Application)
-      uid: loki-multena
+      uid: loki-multena-application
       type: loki
       url: "http://{{ include "gp-multena.name" . }}:8080/api/logs/v1/application/"
       access: proxy

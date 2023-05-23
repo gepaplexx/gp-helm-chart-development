@@ -5,7 +5,6 @@ image:
   tag: "1.2.0"
 GrafanaOperatorDatasources: true
 probes:
-  enabled: true
   readinessProbe:
     enabled: true
     initialDelaySeconds: 1
@@ -23,7 +22,7 @@ multena:
   dev: false
   logLevel: INFO
   adminGroup: gepardec-run-admins
-  jwksCertUrl: https://gp-sso-service.gp-sso.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
+  jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080
   provider: configmap
@@ -33,7 +32,7 @@ multena:
     existingSecret: ""
     host: localhost
     port: 3306
-    dbName: blubb
+    dbName: example
     query: "SELECT * FROM users WHERE username = ?"
 
 
