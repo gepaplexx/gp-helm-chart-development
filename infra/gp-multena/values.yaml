@@ -1,0 +1,38 @@
+replicas: 1
+image:
+  repository: ghcr.io/gepaplexx/multena-proxy
+  pullPolicy: IfNotPresent
+  tag: "1.2.0"
+GrafanaOperatorDatasources: true
+probes:
+  readinessProbe:
+    enabled: true
+    initialDelaySeconds: 1
+    periodSeconds: 5
+    timeoutSeconds: 10
+  livenessProbe:
+    enabled: true
+    initialDelaySeconds: 1
+    periodSeconds: 10
+    timeoutSeconds: 10
+serviceAccount:
+  create: true
+  name: ""
+multena:
+  dev: false
+  logLevel: INFO
+  adminGroup: gepardec-run-admins
+  jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
+  thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+  lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080
+  provider: configmap
+  tenantLabel: namespace
+  db:
+    user: multitenant
+    existingSecret: ""
+    host: localhost
+    port: 3306
+    dbName: example
+    query: "SELECT * FROM users WHERE username = ?"
+
+

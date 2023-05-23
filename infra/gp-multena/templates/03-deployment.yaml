@@ -1,0 +1,107 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gp-multena.name" . }}-proxy
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      {{- include "gp-multena.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "gp-multena.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "gp-multena.serviceAccountName" . }}
+      containers:
+        - name: multena-proxy
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent"  }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          {{- if .Values.probes.readinessProbe.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds | default 1 }}
+            periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds | default 10}}
+            timeoutSeconds: {{ .Values.probes.readinessProbe.timeoutSeconds | default 10}}
+          {{- end }}
+          {{- if .Values.probes.livenessProbe.enabled }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds | default 1}}
+            periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds | default 20 }}
+            timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds | default 10}}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /etc/ssl/certs/
+              name: openshift-service-ca
+            - mountPath: /etc/config/config/
+              name: multena-config
+              {{- if eq .Values.multena.provider "configmap" }}
+            - mountPath: /etc/config/labels/
+              name: multena-labels
+              {{- end }}
+              {{- if eq .Values.multena.provider "mysql" }}
+            - mountPath: /etc/secret/db/
+              name: multena-db-secret
+              {{- end }}
+        - name: prom-label-proxy
+          args:
+            - --insecure-listen-address=0.0.0.0:9095
+            - --upstream={{ .Values.multena.thanosUrl }}
+            - --label={{ .Values.multena.tenantLabel }}
+            - --query-param={{ .Values.multena.tenantLabel }}
+            - --enable-label-apis
+            - --error-on-replace
+          image: ghcr.io/gepaplexx/prom-label-proxy:0.5.0-regex
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - mountPath: /etc/ssl/certs/
+              name: openshift-service-ca
+      volumes:
+        - configMap:
+            name: openshift-service-ca.crt
+          name: openshift-service-ca
+        - configMap:
+            name: {{ include "gp-multena.name" . }}-config
+          name: multena-config
+          {{- if eq .Values.multena.provider "configmap" }}
+        - configMap:
+            name: {{ include "gp-multena.name" . }}-labels
+          name: multena-labels
+          {{- end }}
+          {{- if eq .Values.multena.provider "mysql" }}
+        - name: multena-db-secret
+          secret:
+            secretName: {{ include "gp-multena.secretName" . }}
+          {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

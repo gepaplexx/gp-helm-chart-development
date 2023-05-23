@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gp-multena.name" . }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+data:
+  config.yaml: |-
+      version: 2
+      proxy:
+        log_level: {{ .Values.multena.logLevel }}
+        provider: {{ .Values.multena.provider}}
+        thanos_url: {{ .Values.multena.thanosUrl }}
+        loki_url: {{ .Values.multena.lokiUrl }}
+        prom_label_url: http://localhost:9095
+        jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
+        tenant_label: {{ .Values.multena.tenantLabel}}
+        admin_group: {{ .Values.multena.adminGroup }}
+        port: 8080
+      {{- if eq .Values.multena.provider "mysql" }}
+      db:
+        enabled: true
+        user: {{ .Values.multena.db.user }}
+        password_path: /etc/secrets/db/password
+        host: {{ .Values.multena.db.host }}
+        port: {{ .Values.multena.db.port }}
+        db_name: {{ .Values.multena.db.dbName }}
+        query: {{ .Values.multena.db.query }}
+      {{- end }}
+      dev:
+        enabled: {{ .Values.multena.dev }}
+---
+{{- if eq .Values.multena.provider "configmap" }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "gp-multena.name" . }}-labels
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+data:
+  labels.yaml: |-
+    groups:
+      - example_group: ["example_namespace"]
+    users:
+      - example_user: [ "example_namespace" ]
+{{- end }}

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "gp-multena.name" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: {{ include "gp-multena.name" . }}
+  selector:
+    {{- include "gp-multena.selectorLabels" . | nindent 4 }}
+  type: ClusterIP
