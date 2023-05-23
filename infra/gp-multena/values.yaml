@@ -26,7 +26,7 @@ multena:
   jwksCertUrl: https://gp-sso-service.gp-sso.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080
-  provider: mysql
+  provider: configmap
   tenantLabel: namespace
   db:
     user: multitenant
