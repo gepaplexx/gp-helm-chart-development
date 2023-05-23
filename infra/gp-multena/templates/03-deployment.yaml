@@ -93,7 +93,7 @@ spec:
           {{- if eq .Values.multena.provider "mysql" }}
         - name: multena-db-secret
           secret:
-            secretName: {{ .Values.multena.db.existingPasswordSecretName | default (printf "%s-db-external-secret" (include "gp-multena.name" .)) }}
+            secretName: {{ .Values.multena.db.existingSecret | default (printf "%s-db-external-secret" (include "gp-multena.name" .)) }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

@@ -30,7 +30,7 @@ multena:
   tenantLabel: namespace
   db:
     user: multitenant
-    existingPasswordSecretName: ""
+    existingSecret: ""
     host: localhost
     port: 3306
     dbName: blubb
