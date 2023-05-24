@@ -9,8 +9,8 @@ spec:
   dataStorage:
     accessModes:
       - ReadWriteMany
-    size: 256Mi
-    class: rook-ceph-fs
+    size: 1Gi
+    class: cephfs-fspool-cluster
   baseImage: {{ .Values.grafana.version}}
   ingress:
     enabled: true
@@ -62,7 +62,7 @@ spec:
             key: service-ca.crt
             name: openshift-service-ca.crt
       - name: LOKI_GATEWAY_ADDRESS
-        value: 'https://logging-loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1'
+        value: 'https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1'
       - name: THANOS_QUERIER_ADDRESS
         value: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
       - name: BEARER_TOKEN
@@ -70,25 +70,5 @@ spec:
           secretKeyRef:
             key: token
             name: grafana-serviceaccount-token
-  containers:
-    - args:
-        - /opt/bitnami/nginx/conf/shells/nginx.sh
-      command:
-        - bash
-      image: 'bitnami/nginx:1.23.2-debian-11-r2'
-      name: bearer-alertmanager-proxy
-      ports:
-        - containerPort: 8080
-          name: http
-          protocol: TCP
-      volumeMounts:
-        - mountPath: /opt/bitnami/nginx/conf/shells
-          name: configmap-nginx-config
-          readOnly: false
-        - mountPath: /app/nginx/bearer
-          name: secret-grafana-serviceaccount-token
-          readOnly: true
   secrets:
     - grafana-serviceaccount-token
-  configMaps:
-    - nginx-config

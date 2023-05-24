@@ -51,14 +51,3 @@ spec:
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
-    - name: Alertmanager
-      uid: alertmanager
-      type: alertmanager
-      url: http://localhost:8080
-      access: proxy
-      editable: true
-      isDefault: false
-      customJsonData:
-        handleGrafanaManagedAlerts: true
-        implementation: prometheus
-

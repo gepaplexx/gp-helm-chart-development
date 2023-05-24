@@ -3,4 +3,4 @@ name: gp-grafana-instance
 description: A Helm chart for deploying Grafana on OpenShift
 
 type: application
-version: 0.3.1
+version: 0.4.0
