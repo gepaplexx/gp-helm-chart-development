@@ -4,7 +4,7 @@ metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}'
 spec:
   endpoints:
-    - interval: 5s
+    - interval: 2m
       port: metrics
       scheme: https
       tlsConfig:
