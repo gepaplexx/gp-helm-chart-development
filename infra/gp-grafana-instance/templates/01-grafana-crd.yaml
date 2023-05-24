@@ -9,8 +9,8 @@ spec:
   dataStorage:
     accessModes:
       - ReadWriteMany
-    size: 256Mi
-    class: rook-ceph-fs
+    size: 1Gi
+    class: cephfs-fspool-cluster
   baseImage: {{ .Values.grafana.version}}
   ingress:
     enabled: true
