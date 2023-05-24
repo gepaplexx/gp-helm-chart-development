@@ -4,4 +4,4 @@ description: A Helm chart for deploying external secrets used by the alertmanage
 
 type: application
 
-version: 0.1.0
+version: 0.1.1
