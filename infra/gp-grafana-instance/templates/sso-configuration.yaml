@@ -1,21 +1,41 @@
-# TODO: values für clientSecret und urls setzen in values-play.yaml. Testen.
-apiVersion: bitnami.com/v1alpha1
-kind: SealedSecret
+kind: ServiceAccount
+apiVersion: v1
 metadata:
-  name: "grafana-sso-config"
+  name: admin-config-reader
+  namespace: {{ .Release.Namespace }}
+
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: grafana-client-secret
   namespace: {{ .Release.Namespace }}
 spec:
-  encryptedData:
-    clientsecret: {{ .Values.sso.keycloak.clientSecret }}
+  data:
+    - remoteRef:
+        conversionStrategy: Default
+        decodingStrategy: None
+        key: keycloak
+        property: client-secret-grafana
+      secretKey: clientsecret
+  refreshInterval: 10h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: internal-cluster-store
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    name: grafana-client-secret
+
 ---
 apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
-  name: grafana-sso-patch
-  namespace: gp-infrastructure
+  name: grafana-client-secret-patch
+  namespace: syn-patch-operator
 spec:
   serviceAccountRef:
-    name: patch-operator-sa
+    name: patch-sa
   patches:
     grafana-sso-patch:
       patchTemplate: |
@@ -32,5 +52,5 @@ spec:
         - apiVersion: v1
           kind: Secret
           namespace: {{ .Release.Namespace }}
-          name: "grafana-sso-config"
+          name: grafana-client-secret
       patchType: application/merge-patch+json
