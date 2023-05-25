@@ -4,11 +4,12 @@ backup:
   size: 2Gi
   retain:
     days: 31 # need to +1, so 30 days = 31
+  storageClass: cephfs-fspool-cluster
 ingress:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
     route.openshift.io/termination: edge
-    letsencrypt.org/issuer: letsencrypt-production
+    cert-manager.io/cluster-issuer: letsencrypt-production
   hostname: sso.apps.cluster.example.com
   className: "openshift-default"
 
