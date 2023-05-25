@@ -12,5 +12,5 @@ spec:
           serviceAccountRef:
             name: dev-admin-sa
       path: development/admin/
-      server: 'https://vault-ui-gp-vault.apps.c-gepa-play.gepa.vshnmanaged.net/'
+      server: 'https://vault.play.run.gepardec.com/'
       version: v2
