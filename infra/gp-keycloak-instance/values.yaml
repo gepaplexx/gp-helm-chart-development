@@ -40,7 +40,7 @@ postgresql:
     persistence:
       size: 8Gi
   backup:
-    enabled: false
+    enabled: true
     # default values if backu is enabled
     size: 10Gi
     schedule: '0 0 * * *'

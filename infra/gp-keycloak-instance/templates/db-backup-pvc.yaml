@@ -10,5 +10,5 @@ spec:
     requests:
       storage: "{{ .Values.postgresql.backup.size }}"
   volumeMode: Filesystem
-  storageClassName: rook-ceph-fs
+  storageClassName: cephfs-fspool-cluster
 {{- end }}
