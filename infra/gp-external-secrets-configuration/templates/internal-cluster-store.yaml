@@ -12,5 +12,5 @@ spec:
           serviceAccountRef:
             name: admin-config-reader
       path: cluster/config/
-      server: 'https://vault-ui-gp-vault.apps.c-gepa-play.gepa.vshnmanaged.net/'
+      server: 'https://vault.play.run.gepardec.com/'
       version: v2
