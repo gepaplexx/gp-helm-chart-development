@@ -12,5 +12,5 @@ spec:
           serviceAccountRef:
             name: admin-config-reader
       path: cluster/config/
-      server: 'http://vault-active.gp-vault.svc.cluster.local:8200'
+      server: 'https://vault-ui-gp-vault.apps.c-gepa-play.gepa.vshnmanaged.net/'
       version: v2
