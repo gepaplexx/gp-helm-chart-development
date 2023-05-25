@@ -10,7 +10,7 @@ ingress:
     route.openshift.io/termination: edge
     letsencrypt.org/issuer: letsencrypt-production
   hostname: sso.apps.cluster.example.com
-
+  className: "openshift-default"
 
 
 vault:
