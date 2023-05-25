@@ -2,7 +2,7 @@ replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "1.2.0"
+  tag: "0.0.58"
 GrafanaOperatorDatasources: true
 probes:
   readinessProbe:
