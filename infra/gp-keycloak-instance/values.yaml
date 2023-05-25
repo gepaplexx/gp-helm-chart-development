@@ -10,8 +10,6 @@ replicas: 1
 image: "" # empty => use default image from operator
 persistence:
   enabled: true
-  auth:
-    password: ""
 features:
   # Comma separeted list of features to be disabled
   disabled: "admin2"
@@ -21,7 +19,6 @@ features:
 provider:
   openshift:
     enabled: true
-    clientSecret: ""
 
 ######################
 ##    Postgresql    ##
