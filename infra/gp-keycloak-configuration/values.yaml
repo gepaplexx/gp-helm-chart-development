@@ -37,14 +37,14 @@ sonarqube:
 
 vault:
   enabled: true
-  rootUrl: https://vault.{{ .Values.Cluster }}.run.gepardec.com
-  adminUrl: https://vault.{{ .Values.Cluster }}.run.gepardec.com
+  rootUrl: https://vault.{{ .Values.cluster }}.run.gepardec.com
+  adminUrl: https://vault.{{ .Values.cluster }}.run.gepardec.com
   redirectUris:
-    - https://vault.{{ .Values.Cluster }}.run.gepardec.com/ui/vault/auth/oidc/oidc/callback
-    - https://vault.{{ .Values.Cluster }}.run.gepardec.com//oidc/oidc/callback
+    - https://vault.{{ .Values.cluster }}.run.gepardec.com/ui/vault/auth/oidc/oidc/callback
+    - https://vault.{{ .Values.cluster }}.run.gepardec.com//oidc/oidc/callback
     - http://localhost:8250/oidc/callback
   webOrigins:
-    - https://vault.{{ .Values.Cluster }}.run.gepardec.com
+    - https://vault.{{ .Values.cluster }}.run.gepardec.com
 
 keycloak:
   fullnameOverride: "gp-sso"
