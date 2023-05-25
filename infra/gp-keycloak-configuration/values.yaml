@@ -1,48 +1,50 @@
-cluster: play
+# TODO: anpassen an die richtigen hostname: "workflow.play.run.gepardec.com zB."
+
+cluster: dev #c-gepa-play
+host: example.com #gepa.vshnmanaged.net
 namespace: gp-sso
-clientProperties: "SET ME"
 
 importer:
   image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
 
 identityProvider:
   openshift:
-    baseUrl: https://api.{{ .Values.cluster }}.gepaplexx.com:6443
+    baseUrl: https://api.{{ .Values.cluster }}.{{ .Values.host }}:6443
     clientId: "keycloak"
 
 argoWorkflows:
   enabled: true
-  rootUrl: https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com
+  rootUrl: https://workflows.apps.{{ .Values.cluster }}.{{ .Values.host }}
   redirectUris:
-    - https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com/*
+    - https://workflows.apps.{{ .Values.cluster }}.{{ .Values.host }}/*
   webOrigins:
-    - https://workflows.apps.{{ .Values.cluster }}.gepaplexx.com
+    - https://workflows.apps.{{ .Values.cluster }}.{{ .Values.host }}
 
 grafana:
   enabled: true
-  rootUrl: https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
-  adminUrl: https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
+  rootUrl: https://grafana.apps.{{ .Values.cluster }}.{{ .Values.host }}
+  adminUrl: https://grafana.apps.{{ .Values.cluster }}.{{ .Values.host }}
   redirectUris:
-    - https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com/login/generic_oauth
+    - https://grafana.apps.{{ .Values.cluster }}.{{ .Values.host }}/login/generic_oauth
   webOrigins:
-    - https://grafana.apps.{{ .Values.cluster }}.gepaplexx.com
+    - https://grafana.apps.{{ .Values.cluster }}.{{ .Values.host }}
 
 sonarqube:
   enabled: true
   redirectUris:
     - "*"
-    - https://sonarqube.apps.{{ .Values.cluster}}.gepaplexx.com/oauth2/callback/saml
+    - https://sonarqube.apps.{{ .Values.cluster}}.{{ .Values.host }}/oauth2/callback/saml
 
 vault:
   enabled: true
-  rootUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
-  adminUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
+  rootUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.{{ .Values.host }}
+  adminUrl: https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.{{ .Values.host }}
   redirectUris:
-    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com/ui/vault/auth/oidc/oidc/callback
-    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com//oidc/oidc/callback
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.{{ .Values.host }}/ui/vault/auth/oidc/oidc/callback
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.{{ .Values.host }}//oidc/oidc/callback
     - http://localhost:8250/oidc/callback
   webOrigins:
-    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.gepaplexx.com
+    - https://vault-ui-gp-vault.apps.{{ .Values.cluster }}.{{ .Values.host }}
 
 keycloak:
   fullnameOverride: "gp-sso"
