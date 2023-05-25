@@ -3,7 +3,7 @@ name: gp-keycloak-instance
 description: A Helm chart for deploying Keycloak on OpenShift using the Keycloak-X Operator
 
 type: application
-version: 1.0.3
+version: 1.0.4
 
 dependencies:
   - name: postgresql

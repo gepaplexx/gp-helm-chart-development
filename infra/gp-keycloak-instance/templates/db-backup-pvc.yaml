@@ -3,6 +3,7 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
+  namespace: {{ .Release.Namespace }}
 spec:
   accessModes:
     - ReadWriteMany
