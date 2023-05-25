@@ -316,40 +316,22 @@ OIDC_AUTH_ACCESSOR=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault logi
 
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write identity/group \
-      name='gepa-cluster-admin' \
+      name='gepardec-run-admins' \
       type='external' \
       policies='admin,cicd-admin,cluster-config-admin' \
       metadata=responsibility='Vault Admin'" 1> /dev/null
-echo "Success! Data written to: identity/group/name/gepa-cluster-admin"
+echo "Success! Data written to: identity/group/name/gepardec-run-admins"
 
 if [ "${skip_non_repeatable}" = false ]; then
   GROUP_ID=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault read -field=id identity/group/name/gepa-cluster-admin")
+        vault read -field=id identity/group/name/gepardec-run-admins")
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault write identity/group-alias name='gepa-cluster-admin' \
+        vault write identity/group-alias name='gepardec-run-admins' \
            mount_accessor=${OIDC_AUTH_ACCESSOR} \
            canonical_id=${GROUP_ID}" 1> /dev/null
   echo "Success! Data written to: identity/group-alias/"
 fi
 
-#TODO sollen entwickler wirklich standardmäßig auf alles unter development/ Zugriff haben? Dadurch würden sie Secrets von anderen Projekten sehen können
-kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-    vault write identity/group \
-      name='Developers' \
-      type='external' \
-      policies='cicd-admin' \
-      metadata=responsibility='Vault CICD Admin'" 1> /dev/null
-echo "Success! Data written to: identity/group/name/Developers"
-
-if [ "${skip_non_repeatable}" = false ]; then
-  GROUP_ID=$(kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault read -field=id identity/group/name/Developers")
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
-        vault write identity/group-alias name='Developers' \
-           mount_accessor=${OIDC_AUTH_ACCESSOR} \
-           canonical_id=${GROUP_ID}" 1> /dev/null
-  echo "Success! Data written to: identity/group-alias/"
-fi
 
 echo "==============================================="
 echo "donesies. better have that cigarette finished."
