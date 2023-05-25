@@ -48,9 +48,3 @@ vault:
 
 keycloak:
   fullnameOverride: "gp-sso"
-  persistence:
-    auth:
-      password: "SET ME"
-  provider:
-    openshift:
-      clientSecret: "SET ME"
