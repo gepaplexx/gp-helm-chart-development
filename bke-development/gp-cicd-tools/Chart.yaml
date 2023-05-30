@@ -17,16 +17,16 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.0.0
 
-#dependencies:
-#  - name: argo-events
-#    alias: argo_events
-#    repository: "https://argoproj.github.io/argo-helm"
-#    version: ~2.3.3
+dependencies:
+  - name: argo-events
+    alias: argo_events
+    repository: "https://argoproj.github.io/argo-helm"
+    version: ~2.3.3
 #    condition: argo_events.enabled
 #  - name: argo-workflows
 #    alias: argo_workflows
 #    repository: "https://argoproj.github.io/argo-helm"
-#    version: ~0.27.0
+#    version: ~0.28.0
 #    condition: argo_workflows.enabled
 #  - name: postgresql
 #    repository: "https://charts.bitnami.com/bitnami"
