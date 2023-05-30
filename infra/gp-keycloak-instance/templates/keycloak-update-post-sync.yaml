@@ -1,3 +1,4 @@
+{{- if .Values.keycloakConfigCli.enabled }}
 kind: Job
 apiVersion: batch/v1
 metadata:
@@ -70,3 +71,4 @@ spec:
               memory: 1Gi
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
+{{- end }}
