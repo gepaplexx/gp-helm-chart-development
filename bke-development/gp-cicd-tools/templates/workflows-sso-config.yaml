@@ -1,8 +1,11 @@
+{{- if .Values.argo_workflows.enabled -}}
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
   name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-cicd-tools.labels" . | nindent 4 }}
 spec:
   # benötigte Values: client-id, client-secret (in dieser Schreibweise!)
   dataFrom:
@@ -254,3 +257,4 @@ rules:
       - clusteranalysistemplates
       - clusterworkflowtemplates
 ---
+{{- end }}

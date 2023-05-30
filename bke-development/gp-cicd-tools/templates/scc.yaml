@@ -1,3 +1,4 @@
+{{- if .Values.argo_workflows.enabled -}}
 kind: SecurityContextConstraints
 apiVersion: security.openshift.io/v1
 metadata:
@@ -55,4 +56,4 @@ rules:
       - securitycontextconstraints
     verbs:
       - use
-
+{{- end -}}

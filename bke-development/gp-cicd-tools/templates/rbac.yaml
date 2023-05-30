@@ -1,3 +1,4 @@
+{{- if .Values.argo_workflows.enabled -}}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -123,3 +124,4 @@ subjects:
     name: argo-workflows-server
     namespace: {{ .Release.Namespace }}
 ---
+{{- end -}}
