@@ -306,7 +306,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       oidc_client_id='vault' \
       oidc_discovery_url='https://sso.${CLUSTER}.play.run.gepardec.com/realms/internal' \
       oidc_client_secret=${CLIENT_SECRET} \
-      default_role=default"
+      default_role=default" || true # continue script even if keycloak is not accessible yet. configuration should get written correctly nonetheless
 
 # GROUP MAPPING
 # Standard output gets piped to /dev/null for more uniform responses
