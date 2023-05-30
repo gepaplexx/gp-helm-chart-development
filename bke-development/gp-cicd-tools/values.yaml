@@ -9,11 +9,12 @@ argo_workflows_db_host: &argo_workflows_db_host "argo-workflows-postgres"
 ##  ARGO  EVENTS  ##
 ####################
 argo_events:
-  enabled: false #TODO umstellen
+  enabled: true #TODO umstellen
   fullnameOverride: argo-events
   openshift: true
   crds:
-    install: false
+    install: true
+    keep: false
   controller:
     metrics:
       enabled: true
@@ -32,8 +33,8 @@ argo_events:
       # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
       # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
         - version: "2.9.15"
-          natsImage: docker.io/nats:2.9.15
-          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.10.1
+          natsImage: docker.io/nats:2.9.17
+          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.11.0
           configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.10.1
           startCommand: /nats-server
       # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
