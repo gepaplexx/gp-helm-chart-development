@@ -9,7 +9,7 @@ argo_workflows_db_host: &argo_workflows_db_host "argo-workflows-postgres"
 ##  ARGO  EVENTS  ##
 ####################
 argo_events:
-  enabled: true
+  enabled: false #TODO umstellen
   fullnameOverride: argo-events
   openshift: true
   crds:
@@ -47,7 +47,7 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
-  enabled: true
+  enabled: false
   fullnameOverride: argo-workflows
   crds:
     install: true
@@ -163,7 +163,7 @@ argo_workflows:
           key: password
 
   archive:
-    enabled: true
+    enabled: false #TODO umstellen
   useDefaultArtifactRepo: true
   artifactRepository:
     archiveLogs: true
@@ -189,8 +189,10 @@ argo_workflows:
 ####################
 argocd:
   enabled: true
-  route:
+  ingress:
     hostname: "argocd.example.com"
+    annotations:
+     cert-manager.io/cluster-issuer: letsencrypt-production
   applicationset:
     resources:
       limits:
@@ -252,7 +254,7 @@ argocd:
 ##    Postgresql    ##
 ######################
 postgresql:
-  enabled: true
+  enabled: false #TODO umstellen
   fullnameOverride: *argo_workflows_db_host
   service:
     ports:

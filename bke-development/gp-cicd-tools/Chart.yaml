@@ -17,22 +17,18 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 1.0.0
 
-# TODO:
-# * values mit Pfaden und ClusterSecretStore in Vault ausfüllen
-# * Kontrolle der Default-Storage Class. Eventuell ersetzen mit konkreten Werten, wenn diese nicht passen.
-
-dependencies:
-  - name: argo-events
-    alias: argo_events
-    repository: "https://argoproj.github.io/argo-helm"
-    version: ~2.1.0
-    condition: argo_events.enabled
-  - name: argo-workflows
-    alias: argo_workflows
-    repository: "https://argoproj.github.io/argo-helm"
-    version: ~0.25.0 # rollback version due to bug in workflow archiving https://github.com/argoproj/argo-workflows/issues/10498
-    condition: argo_workflows.enabled
-  - name: postgresql
-    repository: "https://charts.bitnami.com/bitnami"
-    version: ~12.2.0
-    condition: argo_workflows.persistence
+#dependencies:
+#  - name: argo-events
+#    alias: argo_events
+#    repository: "https://argoproj.github.io/argo-helm"
+#    version: ~2.3.3
+#    condition: argo_events.enabled
+#  - name: argo-workflows
+#    alias: argo_workflows
+#    repository: "https://argoproj.github.io/argo-helm"
+#    version: ~0.27.0
+#    condition: argo_workflows.enabled
+#  - name: postgresql
+#    repository: "https://charts.bitnami.com/bitnami"
+#    version: ~12.5.6
+#    condition: argo_workflows.persistence

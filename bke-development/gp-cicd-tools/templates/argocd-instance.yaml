@@ -6,6 +6,8 @@ metadata:
     - argoproj.io/finalizer
   name: {{ .Release.Name }}-argocd
   namespace: {{  .Release.Namespace }}
+  labels:
+    {{- include "gp-cicd-tools.labels" . | nindent 4 }}
 spec:
   applicationSet:
     resources:
@@ -74,9 +76,15 @@ spec:
       kinds:
       - TaskRun
       - PipelineRun
+    - apiGroups:
+      - cilium.io
+      kinds:
+      - CiliumIdentity
+      clusters:
+      - "*"
   server:
-    {{- if .Values.argocd.route.hostname }}
-    host: {{ .Values.argocd.route.hostname }}
+    {{- if .Values.argocd.ingress.hostname }}
+    host: {{ .Values.argocd.ingress.hostname }}
     {{- end }}
     autoscale:
       enabled: false
@@ -84,7 +92,15 @@ spec:
       ingress:
         enabled: false
     ingress:
-      enabled: false
+      enabled: true
+      tls:
+        - hosts:
+            - {{ .Values.argocd.ingress.hostname }}
+          secretName: {{ .Values.argocd.ingress.hostname }}-tls
+      annotations:
+        {{- range $key, $value := .Values.argocd.ingress.annotations }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
     insecure: true
     resources:
       limits:
@@ -94,10 +110,7 @@ spec:
         cpu: {{ .Values.argocd.server.resources.requests.cpu }}
         memory: {{ .Values.argocd.server.resources.requests.memory }}
     route:
-      enabled: true
-      tls:
-        insecureEdgeTerminationPolicy: Redirect
-        termination: edge
+      enabled: false
     service:
       type: ""
   tls:
