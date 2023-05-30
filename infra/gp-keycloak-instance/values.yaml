@@ -56,14 +56,13 @@ keycloakConfigCli:
   enabled: false
 
   cluster: dev #c-gepa-play
-  host: example.com #gepa.vshnmanaged.net
   
   importer:
     image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
   
   identityProvider:
     openshift:
-      baseUrl: https://api.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}:6443
+      baseUrl: https://api.example.com:6443
       clientId: "keycloak"
   
   argoWorkflows:
