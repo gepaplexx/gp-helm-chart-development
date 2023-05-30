@@ -2,7 +2,7 @@ patch:
   namespace: syn-patch-operator
   serviceAccount: patch-sa
 ingress:
-  hostname: sso.apps.cluster.example.com
+  hostname: sso.cluster.example.com
 realm:
   internalName: internal
 
@@ -48,3 +48,56 @@ postgresql:
       days: 8 # need to +1, so 7 days = 8
 serviceMonitor:
   name: sso
+
+######################
+##      Config      ##
+######################
+keycloakConfigCli:
+  enabled: false
+
+  cluster: dev #c-gepa-play
+  host: example.com #gepa.vshnmanaged.net
+  
+  importer:
+    image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
+  
+  identityProvider:
+    openshift:
+      baseUrl: https://api.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}:6443
+      clientId: "keycloak"
+  
+  argoWorkflows:
+    enabled: true
+    rootUrl: https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    redirectUris:
+      - https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/*
+    webOrigins:
+      - https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+  
+  grafana:
+    enabled: true
+    rootUrl: https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    adminUrl: https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    redirectUris:
+      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/login/generic_oauth
+    webOrigins:
+      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}..run.gepardec.com
+  sonarqube:
+    enabled: true
+    redirectUris:
+      - "*"
+      - https://sonarqube.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/oauth2/callback/saml
+  
+  vault:
+    enabled: true
+    rootUrl: https://vault.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    adminUrl: https://vault.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    redirectUris:
+      - https://vault.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/ui/vault/auth/oidc/oidc/callback
+      - https://vault.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com//oidc/oidc/callback
+      - http://localhost:8250/oidc/callback
+    webOrigins:
+      - https://vault.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+  
+  keycloak:
+    fullnameOverride: "gp-sso"

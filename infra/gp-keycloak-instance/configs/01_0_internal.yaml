@@ -195,9 +195,9 @@ identityProviders:
     firstBrokerLoginFlowAlias: first broker login
     config:
       hideOnLoginPage: 'false'
-      baseUrl: {{ tpl .Values.identityProvider.openshift.baseUrl . }}
+      baseUrl: {{ tpl .Values.keycloakConfigCli.identityProvider.openshift.baseUrl . }}
       acceptsPromptNoneForwardFromClient: 'false'
-      clientId: {{ .Values.identityProvider.openshift.clientId }}
+      clientId: {{ .Values.keycloakConfigCli.identityProvider.openshift.clientId }}
       disableUserInfo: 'false'
       syncMode: FORCE
       clientSecret: '$(properties:/secrets/secrets.properties::OCP_IP_CLIENT_SECRET)'

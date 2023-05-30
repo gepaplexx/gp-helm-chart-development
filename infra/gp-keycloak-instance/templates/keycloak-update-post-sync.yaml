@@ -1,11 +1,15 @@
+{{- if .Values.keycloakConfigCli.enabled }}
 kind: Job
 apiVersion: batch/v1
 metadata:
   name: kc-config-importer
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.Namespace }}
   annotations:
     argocd.argoproj.io/hook: PostSync
     argocd.argoproj.io/hook-delete-policy: HookSucceeded
+    helm.sh/hook: "post-install,post-upgrade,post-rollback"
+    helm.sh/hook-delete-policy: "hook-succeeded,before-hook-creation"
+    helm.sh/hook-weight: "5"
 spec:
   backoffLimit: 1
   parallelism: 1
@@ -21,7 +25,7 @@ spec:
             secretName: client-secrets
       containers:
         - name: keycloak-config-cli
-          image: {{ .Values.importer.image }}
+          image: {{ .Values.keycloakConfigCli.importer.image }}
           imagePullPolicy: IfNotPresent
           terminationMessagePolicy: File
           terminationMessagePath: /log/termination-log
@@ -45,16 +49,16 @@ spec:
             - name: IMPORT_CACHE_ENABLED
               value: "false"
             - name: KEYCLOAK_URL
-              value: "https://{{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-service:8443"
+              value: "https://{{ include "gp-keycloak-instance.fullname" . }}-service:8443"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" . }}-initial-admin
                   key: username
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-instance.fullname" .Subcharts.keycloak}}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" . }}-initial-admin
                   key: password
           volumeMounts:
             - name: config-data
@@ -67,3 +71,4 @@ spec:
               memory: 1Gi
       restartPolicy: Never
       terminationGracePeriodSeconds: 30
+{{- end }}

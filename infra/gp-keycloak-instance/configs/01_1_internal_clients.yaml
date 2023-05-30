@@ -1,16 +1,16 @@
 realm: internal
 clients:
-{{- if .Values.argoWorkflows.enabled }}
+{{- if .Values.keycloakConfigCli.argoWorkflows.enabled }}
   - clientId: argo-workflows
     name: Argo Workflows
-    rootUrl: {{ tpl .Values.argoWorkflows.rootUrl . }}
+    rootUrl: {{ tpl .Values.keycloakConfigCli.argoWorkflows.rootUrl . }}
     enabled: true
     clientAuthenticatorType: client-secret
     secret: '$(properties:/secrets/secrets.properties::ARGO_WF_CLIENT_SECRET)'
     redirectUris:
-      {{- tpl (.Values.argoWorkflows.redirectUris | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.argoWorkflows.redirectUris | toYaml) . | nindent 8 }}
     webOrigins:
-      {{ tpl (.Values.argoWorkflows.webOrigins | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.argoWorkflows.webOrigins | toYaml) . | nindent 8 }}
     implicitFlowEnabled: true
     publicClient: false
     protocol: openid-connect
@@ -29,19 +29,19 @@ clients:
       display.on.consent.screen: 'false'
       token.response.type.bearer.lower-case: 'false'
 {{- end }}
-{{- if .Values.grafana.enabled }}
+{{- if .Values.keycloakConfigCli.grafana.enabled }}
   - clientId: grafana
     name: Grafana
     description: Grafana OAuth Client
-    rootUrl: {{ tpl .Values.grafana.rootUrl . }}
-    adminUrl: {{ tpl .Values.grafana.adminUrl . }}
+    rootUrl: {{ tpl .Values.keycloakConfigCli.grafana.rootUrl . }}
+    adminUrl: {{ tpl .Values.keycloakConfigCli.grafana.adminUrl . }}
     enabled: true
     clientAuthenticatorType: client-secret
     secret: '$(properties:/secrets/secrets.properties::GRAFANA_CLIENT_SECRET)'
     redirectUris:
-      {{- tpl (.Values.grafana.redirectUris | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.grafana.redirectUris | toYaml) . | nindent 8 }}
     webOrigins:
-      {{ tpl (.Values.grafana.webOrigins | toYaml) . | nindent 8 }}
+      {{ tpl (.Values.keycloakConfigCli.grafana.webOrigins | toYaml) . | nindent 8 }}
     implicitFlowEnabled: true
     serviceAccountsEnabled: true
     publicClient: false
@@ -60,13 +60,13 @@ clients:
       display.on.consent.screen: 'false'
       token.response.type.bearer.lower-case: 'false'
 {{- end }}
-{{- if .Values.sonarqube.enabled }}
+{{- if .Values.keycloakConfigCli.sonarqube.enabled }}
   - clientId: sonarqube
     enabled: true
     clientAuthenticatorType: client-secret
     secret: '$(properties:/secrets/secrets.properties::GRAFANA_CLIENT_SECRET)'
     redirectUris:
-      {{- tpl (.Values.sonarqube.redirectUris | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.sonarqube.redirectUris | toYaml) . | nindent 8 }}
     directAccessGrantsEnabled: false
     publicClient: false
     frontchannelLogout: true
@@ -134,18 +134,18 @@ clients:
     defaultClientScopes: []
     optionalClientScopes: []
 {{- end }}
-{{- if .Values.vault.enabled }}
+{{- if .Values.keycloakConfigCli.vault.enabled }}
   - clientId: vault
     name: HashiCorp Vault
-    rootUrl: {{ tpl .Values.vault.rootUrl . }}
-    adminUrl: {{ tpl .Values.vault.adminUrl . }}
+    rootUrl: {{ tpl .Values.keycloakConfigCli.vault.rootUrl . }}
+    adminUrl: {{ tpl .Values.keycloakConfigCli.vault.adminUrl . }}
     enabled: true
     clientAuthenticatorType: client-secret
     secret: '$(properties:/secrets/secrets.properties::VAULT_CLIENT_SECRET)'
     redirectUris:
-      {{- tpl (.Values.vault.redirectUris | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.vault.redirectUris | toYaml) . | nindent 8 }}
     webOrigins:
-      {{- tpl (.Values.vault.webOrigins | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.vault.webOrigins | toYaml) . | nindent 8 }}
     implicitFlowEnabled: true
     publicClient: false
     protocol: openid-connect
