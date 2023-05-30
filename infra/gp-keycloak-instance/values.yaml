@@ -2,7 +2,7 @@ patch:
   namespace: syn-patch-operator
   serviceAccount: patch-sa
 ingress:
-  hostname: sso.apps.cluster.example.com
+  hostname: sso.cluster.example.com
 realm:
   internalName: internal
 
@@ -68,26 +68,25 @@ keycloakConfigCli:
   
   argoWorkflows:
     enabled: true
-    rootUrl: https://workflows.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}
+    rootUrl: https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
     redirectUris:
-      - https://workflows.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}/*
+      - https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/*
     webOrigins:
-      - https://workflows.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}
+      - https://workflows.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
   
   grafana:
     enabled: true
-    rootUrl: https://grafana.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}
-    adminUrl: https://grafana.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}
+    rootUrl: https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
+    adminUrl: https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
     redirectUris:
-      - https://grafana.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}/login/generic_oauth
+      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/login/generic_oauth
     webOrigins:
-      - https://grafana.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}
-  
+      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}..run.gepardec.com
   sonarqube:
     enabled: true
     redirectUris:
       - "*"
-      - https://sonarqube.apps.{{ .Values.keycloakConfigCli.cluster }}.{{ .Values.keycloakConfigCli.host }}/oauth2/callback/saml
+      - https://sonarqube.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/oauth2/callback/saml
   
   vault:
     enabled: true
