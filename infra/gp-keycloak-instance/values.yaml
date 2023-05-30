@@ -57,7 +57,6 @@ keycloakConfigCli:
 
   cluster: dev #c-gepa-play
   host: example.com #gepa.vshnmanaged.net
-  namespace: gp-sso
   
   importer:
     image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
