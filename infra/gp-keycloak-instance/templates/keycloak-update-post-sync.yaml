@@ -48,16 +48,16 @@ spec:
             - name: IMPORT_CACHE_ENABLED
               value: "false"
             - name: KEYCLOAK_URL
-              value: "https://{{ include "gp-keycloak-instance.fullname" }}-service:8443"
+              value: "https://{{ include "gp-keycloak-instance.fullname" . }}-service:8443"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-instance.fullname" }}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" . }}-initial-admin
                   key: username
             - name: KEYCLOAK_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "gp-keycloak-instance.fullname" }}-initial-admin
+                  name: {{ include "gp-keycloak-instance.fullname" . }}-initial-admin
                   key: password
           volumeMounts:
             - name: config-data

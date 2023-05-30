@@ -10,7 +10,7 @@ clients:
     redirectUris:
       {{- tpl (.Values.keycloakConfigCli.argoWorkflows.redirectUris | toYaml) . | nindent 8 }}
     webOrigins:
-      {{ tpl (.Values.keycloakConfigCli.argoWorkflows.webOrigins | toYaml) . | nindent 8 }}
+      {{- tpl (.Values.keycloakConfigCli.argoWorkflows.webOrigins | toYaml) . | nindent 8 }}
     implicitFlowEnabled: true
     publicClient: false
     protocol: openid-connect
