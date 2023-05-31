@@ -8,7 +8,7 @@ spec:
       auth:
         kubernetes:
           mountPath: kubernetes
-          role: internal-admin
+          role: cicd-reader
           serviceAccountRef:
             name: dev-admin-sa
       path: development/admin/
