@@ -126,25 +126,25 @@ if [ "${skip_non_repeatable}" = false ]; then
   # Prefill Argo Workflows + Workflows Repo for ArgoCD
 
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-workflows \
-    psql-password=\"${ARGO_WF_DB_PASSWORD}\" \
-    psql-user=\"${ARGO_WF_DB_USER}\" \
-    psql-postgres-password=\"${ARGO_WF_POSTGRES_PASSWORD}\""
+    psql_password=\"${ARGO_WF_DB_PASSWORD}\" \
+    psql_user=\"${ARGO_WF_DB_USER}\" \
+    psql_postgres_password=\"${ARGO_WF_POSTGRES_PASSWORD}\""
 
   # Configuration Secret Stores for Cluster Administration Secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=cluster/config kv-v2"
 
   # Prefill ArgoCD Repo Secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/argocd \
-    cicd-repo-username=\"${ARGO_CD_WFREPO_USER}\" \
-    cicd-repo-ssh-private-key=\"${ARGO_CD_WFREPO_SSH_PRIVATE_KEY}\""
+    cicd_repo_username=\"${ARGO_CD_WFREPO_USER}\" \
+    cicd_repo_ssh_private_key=\"${ARGO_CD_WFREPO_SSH_PRIVATE_KEY}\""
 
   # Prefill Keycloak secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/keycloak \
-    db-password=\"${KEYCLOAK_DB_PASSWORD}\" \
-    client-secret-grafana=\"${KEYCLOAK_CLIENT_SECRET_GRAFANA}\" \
-    client-secret-vault=\"${KEYCLOAK_CLIENT_SECRET_VAULT}\" \
-    client-secret-argo-workflows=\"${KEYCLOAK_CLIENT_SECRET_ARGO_WF}\" \
-    provider-secret-openshift=\"${KEYCLOAK_PROVIDER_SECRET_OPENSHIFT}\""
+    db_password=\"${KEYCLOAK_DB_PASSWORD}\" \
+    client_secret_grafana=\"${KEYCLOAK_CLIENT_SECRET_GRAFANA}\" \
+    client_secret_vault=\"${KEYCLOAK_CLIENT_SECRET_VAULT}\" \
+    client_secret_argo_workflows=\"${KEYCLOAK_CLIENT_SECRET_ARGO_WF}\" \
+    provider_secret_openshift=\"${KEYCLOAK_PROVIDER_SECRET_OPENSHIFT}\""
 
   # Prefill Alertmanager Config
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/alertmanager-config-global \
