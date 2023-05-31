@@ -21,7 +21,9 @@ workflows:
 ##  ARGO  EVENTS  ##
 ####################
 argo_events:
-  enabled: true #TODO umstellen
+  eventbus:
+    namespace: gp-cicd-eventbus
+  enabled: true
   fullnameOverride: argo-events
   openshift: true
   crds:
@@ -44,7 +46,7 @@ argo_events:
       versions:
       # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
       # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
-        - version: "2.9.15"
+        - version: "2.9.17"
           natsImage: docker.io/nats:2.9.17
           metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.11.0
           configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.10.1
@@ -133,7 +135,9 @@ argo_workflows:
     workflowDefaults:
       spec:
         ttlStrategy:
-            secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+          secondsAfterCompletion: 3600 # delete workflows after 1 hour. they are still available in the archive
+        securityContext:
+          fsGroup: 0 # required so workflows mount shared PVCs with correct volume permissions
     workflowRestrictions:
       templateReferencing: Strict # only workflows using workflowTemplateRef will be executed
     resources:
@@ -168,10 +172,10 @@ argo_workflows:
           key: password
 
   archive:
-    enabled: false
+    enabled: false # TODO Umstellen
   useDefaultArtifactRepo: true
   artifactRepository:
-    archiveLogs: true
+    archiveLogs: false # TODO Umstellen
     s3:
       accessKeySecret:
         name: workflows-artifact-repository
@@ -259,7 +263,7 @@ argocd:
 ##    Postgresql    ##
 ######################
 postgresql:
-  enabled: true #TODO umstellen
+  enabled: true
   fullnameOverride: *argo_workflows_db_host
   service:
     ports:

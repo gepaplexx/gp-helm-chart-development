@@ -1,6 +1,6 @@
 sonarqube:
   sonarqubeUsername: "admin"
-  sonarqubePassword: "admin"
+  existingSecret: "sonarqube-admin-password"
   updateStrategy:
     type: Recreate  # use recreate because of RWO PVC
   service:
@@ -16,7 +16,7 @@ sonarqube:
     enabled: true
   postgresql:
     auth:
-      password: "changeme"
+      existingSecret: sonarqube-postgresql
     primary:
       podSecurityContext:
         enabled: false
