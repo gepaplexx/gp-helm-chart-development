@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+  name: grafana-ingress
+  namespace: {{ .Release.Namespace }}
+spec:
+  defaultBackend:
+    service:
+      name: grafana-service
+      port:
+        name: grafana
+  ingressClassName: openshift-default
+  rules:
+    - host: grafana.play.run.gepardec.com
+      http:
+        paths:
+          - backend:
+              service:
+                name: grafana-service
+                port:
+                  name: grafana
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+        - grafana.play.run.gepardec.com
+      secretName: grafana-tls

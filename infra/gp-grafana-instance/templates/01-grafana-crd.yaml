@@ -13,7 +13,7 @@ spec:
     class: cephfs-fspool-cluster
   baseImage: {{ .Values.grafana.version}}
   ingress:
-    enabled: true
+    enabled: false
     pathType: Prefix
     path: "/"
     hostname: {{ .Values.ingress.hostname }}
