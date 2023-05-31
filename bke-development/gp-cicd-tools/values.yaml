@@ -5,6 +5,18 @@ argo_workflows_db: &argo_workflows_db "argo_workflows"
 argo_workflows_db_secret: &argo_workflows_db_secret "gepardec-run-cicd-tools-postgresql"
 argo_workflows_db_host: &argo_workflows_db_host "argo-workflows-postgres"
 
+clustername: dev
+domain: run.gepardec.com
+
+workflows:
+  ingress:
+    enabled: true
+    hostname: workflows.{{ .Values.clustername }}.{{ .Values.domain}}
+    ingressClassName: "openshift-default"
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+
+
 ####################
 ##  ARGO  EVENTS  ##
 ####################
@@ -48,7 +60,7 @@ argo_events:
 ## ARGO WORFKLOWS ##
 ####################
 argo_workflows:
-  enabled: false
+  enabled: true
   fullnameOverride: argo-workflows
   crds:
     install: true
@@ -58,9 +70,9 @@ argo_workflows:
     pullPolicy: IfNotPresent
 
   rbac:
-    sudoGroup: # TODO ersetzen mit Team Name in Github
+    sudoGroup: gepardec-run-admins
     clusterscoped:
-      developerGroup: Gepardec
+      developerGroup: Developers
       enabled: false
     defaultRead: true
     clientId: "argo-workflows"
@@ -80,8 +92,8 @@ argo_workflows:
         value: "true"
     # sso configuration:
     sso:
-      issuer: "https://sso.apps.clustername.example.com/realms/internal"
-      redirectUrl: "https://workflows.example.com/oauth2/callback"
+      issuer: https://sso.clustername.example.com/realms/internal
+      redirectUrl: https://workflows.clustername.example.com/oauth2/callback
       clientSecret:
         name: argo-workflows-sso
         key: client-secret
@@ -91,16 +103,8 @@ argo_workflows:
       rbac:
         enabled: true
     ingress:
-      enabled: true
-      hosts:
-        - workflows.example.com
-      ingressClassName: "openshift-default"
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-      tls:
-        - hosts:
-            - workflows.example.com
-          secretName: workflows.example.com-tls
+      enabled: false
+
     resources:
       limits:
         cpu: 500m
@@ -164,7 +168,7 @@ argo_workflows:
           key: password
 
   archive:
-    enabled: false #TODO umstellen
+    enabled: false
   useDefaultArtifactRepo: true
   artifactRepository:
     archiveLogs: true
@@ -191,7 +195,7 @@ argo_workflows:
 argocd:
   enabled: true
   ingress:
-    hostname: "argocd.example.com"
+    hostname: argocd.{{ .Values.clustername }}.{{ .Values.domain}}
     annotations:
      cert-manager.io/cluster-issuer: letsencrypt-production
   applicationset:
@@ -244,18 +248,18 @@ argocd:
         memory: 128Mi
   rbac:
     defaultPolicy: ''
-    policies: #TODO Anpassen, sobald Gruppennamen bekannt sind.
+    policies:
       - 'p, role:gepardec-admin, applications, *, *, allow'
       - 'p, role:gepardec-admin, repositories, *, *, allow'
       - 'p, role:gepardec-admin, projects, *, *, allow'
-      - 'g, Gepaplexx, role:admin'
-      - 'g, Gepardec, role:gepardec-admin'
+      - 'g, gepardec-run-admins, role:admin'
+      - 'g, Developers, role:gepardec-admin'
 
 ######################
 ##    Postgresql    ##
 ######################
 postgresql:
-  enabled: false #TODO umstellen
+  enabled: true #TODO umstellen
   fullnameOverride: *argo_workflows_db_host
   service:
     ports:

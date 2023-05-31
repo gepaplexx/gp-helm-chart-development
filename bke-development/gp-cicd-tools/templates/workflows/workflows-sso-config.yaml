@@ -1,0 +1,41 @@
+{{- if .Values.argo_workflows.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-config-reader
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+      {{- include "gp-cicd-tools.labels" . | nindent 4 }}
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-cicd-tools.labels" . | nindent 4 }}
+spec:
+  # benötigte Values: client-id, client-secret (in dieser Schreibweise!)
+  dataFrom:
+    - extract:
+        key: keycloak
+        conversionStrategy: Default
+        decodingStrategy: None
+  refreshInterval: 12h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: internal-cluster-store
+  target:
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
+    template:
+      engineVersion: v2
+      metadata:
+        labels:
+          app.kubernetes.io/managed-by: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
+      data:
+        {{ .Values.argo_workflows.server.sso.clientSecret.key }}: '{{`{{ .client_secret_argo_workflows }}`}}'
+        {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ "argo-workflows" }}
+---
+{{- end }}

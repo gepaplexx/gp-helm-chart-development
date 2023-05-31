@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: workflow-ingress
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-cicd-tools.labels" . | nindent 4 }}
+  annotations:
+    {{- range $key, $value := .Values.workflows.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ tpl .Values.workflows.ingress.hostname . }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: argo-workflows-server
+                port:
+                  number: 2746
+  tls:
+    - hosts:
+        - {{ tpl .Values.workflows.ingress.hostname . }}
+      secretName: {{ tpl .Values.workflows.ingress.hostname . }}

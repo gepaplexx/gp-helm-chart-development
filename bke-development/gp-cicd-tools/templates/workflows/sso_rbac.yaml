@@ -1,32 +1,4 @@
 {{- if .Values.argo_workflows.enabled -}}
-apiVersion: external-secrets.io/v1beta1
-kind: ExternalSecret
-metadata:
-  name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-      {{- include "gp-cicd-tools.labels" . | nindent 4 }}
-spec:
-  # benötigte Values: client-id, client-secret (in dieser Schreibweise!)
-  dataFrom:
-    - extract:
-        key: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
-        conversionStrategy: Default
-        decodingStrategy: None
-  refreshInterval: 12h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: #TODO in vault definieren und einfügen. Hier Pfad aktualisieren
-  target:
-    creationPolicy: Owner
-    deletionPolicy: Retain
-    name: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
-    template:
-      engineVersion: v2
-      metadata:
-        labels:
-          app.kubernetes.io/managed-by: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
----
 ### RBAC CONFIGURATION
 ## BEGINN DEFAULT READONLY USER
 # Default ReadOnly SA for OAuth authenticated users
@@ -55,48 +27,48 @@ kind: ClusterRole
 metadata:
   name: workflow-read-only-role
 rules:
-- apiGroups:
-    - argoproj.io
-  verbs:
-    - "get"
-    - "list"
-    - "watch"
-  resources:
-    - analysisruns
-    - analysistemplates
-    - clusteranalysistemplates
-    - clusterworkflowtemplates
-    - cronworkflows
-    - eventbus
-    - eventsources
-    - experiments
-    - sensors
-    - workfloweventbindings
-    - workflows
-    - workflowtaskresults
-    - workflowtasksets
-    - workflowtemplates
-    - pipelines
-# damit Logs der Workflows auf der UI ausgelesen werden können.
-- apiGroups:
-    - ""
-  verbs:
-    - get
-    - list
-    - watch
-  resources:
-    - pods/log
-    - pods/status
-    - pods
-  # erlaubt das Abrufen von Logs von Archived Workflows.
-- apiGroups:
-    - ""
-  verbs:
-    - get
-  resources:
-    - secrets
-  resourceNames:
-    - workflows-artifact-repository
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - "get"
+      - "list"
+      - "watch"
+    resources:
+      - analysisruns
+      - analysistemplates
+      - clusteranalysistemplates
+      - clusterworkflowtemplates
+      - cronworkflows
+      - eventbus
+      - eventsources
+      - experiments
+      - sensors
+      - workfloweventbindings
+      - workflows
+      - workflowtaskresults
+      - workflowtasksets
+      - workflowtemplates
+      - pipelines
+  # damit Logs der Workflows auf der UI ausgelesen werden können.
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+      - list
+      - watch
+    resources:
+      - pods/log
+      - pods/status
+      - pods
+    # erlaubt das Abrufen von Logs von Archived Workflows.
+  - apiGroups:
+      - ""
+    verbs:
+      - get
+    resources:
+      - secrets
+    resourceNames:
+      - workflows-artifact-repository
 ---
 {{- if .Values.argo_workflows.rbac.defaultRead }}
 apiVersion: rbac.authorization.k8s.io/v1

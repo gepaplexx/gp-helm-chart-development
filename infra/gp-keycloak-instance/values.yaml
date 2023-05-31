@@ -82,7 +82,7 @@ keycloakConfigCli:
     redirectUris:
       - https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com/login/generic_oauth
     webOrigins:
-      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}..run.gepardec.com
+      - https://grafana.{{ .Values.keycloakConfigCli.cluster }}.run.gepardec.com
   sonarqube:
     enabled: true
     redirectUris:
