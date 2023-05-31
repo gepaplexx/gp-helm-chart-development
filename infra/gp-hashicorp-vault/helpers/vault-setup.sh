@@ -38,6 +38,10 @@ help() {
   access_token      OPTIONAL: a sufficiently privileged Vault token to perform the setup with (skips initialization). Required with -s"""
 }
 
+randpw(){
+  < /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-32};echo;
+  }
+
 while getopts ":hs" option; do
    case $option in
       h)
@@ -78,9 +82,28 @@ set -e
 echo "Starting Vault setup..."
 echo "==============================================="
 
+# GENERATED SECRETS ENV
+
+ARGOCD_URL=""#$(kubectl -n gepardec-run-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
+ARGOCD_PASSWORD=""#$(kubectl -n gepardec-run-cicd-tools get secret gepardec-run-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
+SONARQUBE_PASSWORD=$(randpw)
+SONARQUBE_DB_PASSWORD=$(randpw)
+ARGO_WF_DB_PASSWORD=$(randpw)
+ARGO_WF_DB_USER="argo_workflows"
+ARGO_WF_POSTGRES_PASSWORD=$(randpw)
+ARGO_WF_REPO_USER="REPLACE ME"
+ARGO_WF_REPO_SSH_PRIVATE_KEY="REPLACE ME"
+KEYCLOAK_DB_PASSWORD="REPLACE ME"
+KEYCLOAK_CLIENT_SECRET_GRAFANA="REPLACE ME"
+KEYCLOAK_CLIENT_SECRET_VAULT="REPLACE ME"
+KEYCLOAK_CLIENT_SECRET_ARGO_WF="REPLACE ME"
+KEYCLOAK_PROVIDER_SECRET_OPENSHIFT="REPLACE ME"
+ALERTMANAGER_CONFIG="REPLACE ME"
 
 # INITIALIZE VAULT
 if [ -z "${ACCESS_TOKEN}" ]; then
+  kubectl delete pod vault-0 -n ${namespace}
+  sleep 10
   echo "initializing vault & waiting 10 seconds for initialization to be complete. don't worry. be happy. chill out. and grab a cigarette"
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault operator init -recovery-shares=3 -recovery-threshold=3 -format=json"  > "${DIR}"/vault-init-"${CLUSTER}".json
   sleep 10  # Required to ensure vault is correctly initialized and unsealed from GCP.
@@ -91,16 +114,38 @@ fi
 if [ "${skip_non_repeatable}" = false ]; then
   # Enable Audit Logging
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault audit enable file file_path=stdout"
-  
+
+  # Secret Store for User workload CICD secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/cicd kv-v2"
+  # Secret Store for our CICD infrastructure secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=development/admin kv-v2"
   # Prefill development/admin with required secrets for workflows.
-  ARGOCD_URL=$(kubectl -n gepardec-run-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
-  ARGOCD_PASSWORD=$(kubectl -n gepardec-run-cicd-tools get secret gepardec-run-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=${ARGOCD_URL} ARGOCD_PASSWORD=${ARGOCD_PASSWORD}"
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=\"${ARGOCD_URL}\" ARGOCD_PASSWORD=\"${ARGOCD_PASSWORD}\""
+  # Generate Sonarqube passwords
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/sonarqube password=\"${SONARQUBE_PASSWORD}\" db-password=\"${SONARQUBE_DB_PASSWORD}\""
+  # Prefill Argo Workflows + Workflows Repo for ArgoCD
+
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-workflows \
+    psql-password=\"${ARGO_WF_DB_PASSWORD}\" \
+    psql-user=\"${ARGO_WF_DB_USER}\" \
+    psql-postgres-password=\"${ARGO_WF_POSTGRES_PASSWORD}\" \
+    repo-user=\"${ARGO_WF_REPO_USER}\" \
+    repo-ssh-private-key=\"${ARGO_WF_REPO_SSH_PRIVATE_KEY}\""
 
   # Configuration Secret Stores for Cluster Administration Secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=cluster/config kv-v2"
+
+  # Prefill Keycloak secrets
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/keycloak \
+    db-password=\"${KEYCLOAK_DB_PASSWORD}\" \
+    client-secret-grafana=\"${KEYCLOAK_CLIENT_SECRET_GRAFANA}\" \
+    client-secret-vault=\"${KEYCLOAK_CLIENT_SECRET_VAULT}\" \
+    client-secret-argo-workflows=\"${KEYCLOAK_CLIENT_SECRET_ARGO_WF}\" \
+    provider-secret-openshift=\"${KEYCLOAK_PROVIDER_SECRET_OPENSHIFT}\""
+
+  # Prefill Alertmanager Config
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/alertmanager-config-global \
+    alertmanager.yaml=\"${ALERTMANAGER_CONFIG}\""
 fi
 
 # ENABLE & CONFIGURE KUBERNETES AUTH INTEGRATION
@@ -250,12 +295,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
           capabilities = [\"read\"]
         }
         # identity
-        path \"sys/identity/*\"
-        {
-          capabilities = [\"read\", \"create\", \"update\", \"list\"]
-        }
-        # identity
-        path \"sys/identity/group\"
+        path \"identity/*\"
         {
           capabilities = [\"read\", \"create\", \"update\", \"list\"]
         }
@@ -295,8 +335,8 @@ fi
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/role/default \
        bound_audiences='vault' \
-       allowed_redirect_uris='https://vault.${CLUSTER}.play.gepardec.com/ui/vault/auth/oidc/oidc/callback' \
-       allowed_redirect_uris='https://vault.${CLUSTER}.play.gepardec.com/oidc/callback' \
+       allowed_redirect_uris='https://vault.${CLUSTER}.run.gepardec.com/ui/vault/auth/oidc/oidc/callback' \
+       allowed_redirect_uris='https://vault.${CLUSTER}.run.gepardec.com/oidc/callback' \
        user_claim='sub' \
        policies='default' \
        groups_claim='groups'"
@@ -304,7 +344,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/config \
       oidc_client_id='vault' \
-      oidc_discovery_url='https://sso.${CLUSTER}.play.run.gepardec.com/realms/internal' \
+      oidc_discovery_url='https://sso.${CLUSTER}.run.gepardec.com/realms/internal' \
       oidc_client_secret=${CLIENT_SECRET} \
       default_role=default" || true # continue script even if keycloak is not accessible yet. configuration should get written correctly nonetheless
 
@@ -332,7 +372,6 @@ if [ "${skip_non_repeatable}" = false ]; then
   echo "Success! Data written to: identity/group-alias/"
 fi
 
-
 echo "==============================================="
 echo "donesies. better have that cigarette finished."
-echo "don't forget to save the vault-init.json file somewhere save. it contains the root token and the recovery keys"
+echo "don't forget to save the vault-init.json file somewhere safe. it contains the root token and the recovery keys"
