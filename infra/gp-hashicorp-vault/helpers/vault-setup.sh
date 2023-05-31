@@ -95,7 +95,7 @@ ARGO_CD_WFREPO_USER="REPLACE ME"
 ARGO_CD_WFREPO_SSH_PRIVATE_KEY="REPLACE ME"
 KEYCLOAK_DB_PASSWORD="REPLACE ME"
 KEYCLOAK_CLIENT_SECRET_GRAFANA="REPLACE ME"
-KEYCLOAK_CLIENT_SECRET_VAULT="REPLACE ME"
+KEYCLOAK_CLIENT_SECRET_VAULT="${CLIENT_SECRET}"
 KEYCLOAK_CLIENT_SECRET_ARGO_WF="REPLACE ME"
 KEYCLOAK_PROVIDER_SECRET_OPENSHIFT="REPLACE ME"
 ALERTMANAGER_CONFIG="REPLACE ME"
@@ -313,6 +313,7 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/cicd-reader \
       bound_service_account_names=operate-workflow-sa \
+      bound_service_account_names=dev-admin-sa \
       bound_service_account_namespaces='*' \
       policies=cicd-reader \
       ttl=24h"
