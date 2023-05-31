@@ -16,7 +16,7 @@ spec:
         conversionStrategy: Default
         decodingStrategy: None
         key: keycloak
-        property: client-secret-grafana
+        property: client_secret_grafana
       secretKey: clientsecret
   refreshInterval: 10h
   secretStoreRef:
