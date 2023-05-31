@@ -3,5 +3,8 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-route:
-  hostname: ""
+ingress:
+  hostname: "secret.$clustername.run.gepardec.com"
+  ingressClassName: "openshift-default"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
