@@ -295,8 +295,8 @@ fi
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/role/default \
        bound_audiences='vault' \
-       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepa.vshnmanaged.net/ui/vault/auth/oidc/oidc/callback' \
-       allowed_redirect_uris='https://vault-ui-gp-vault.apps.${CLUSTER}.gepa.vshnmanaged.net/oidc/callback' \
+       allowed_redirect_uris='https://vault.${CLUSTER}.play.gepardec.com/ui/vault/auth/oidc/oidc/callback' \
+       allowed_redirect_uris='https://vault.${CLUSTER}.play.gepardec.com/oidc/callback' \
        user_claim='sub' \
        policies='default' \
        groups_claim='groups'"
@@ -304,9 +304,9 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/oidc/config \
       oidc_client_id='vault' \
-      oidc_discovery_url='https://sso.apps.${CLUSTER}.gepa.vshnmanaged.net/realms/internal' \
+      oidc_discovery_url='https://sso.${CLUSTER}.play.run.gepardec.com/realms/internal' \
       oidc_client_secret=${CLIENT_SECRET} \
-      default_role=default"
+      default_role=default" || true # continue script even if keycloak is not accessible yet. configuration should get written correctly nonetheless
 
 # GROUP MAPPING
 # Standard output gets piped to /dev/null for more uniform responses
