@@ -44,7 +44,7 @@ spec:
     enabled: false
   initialSSHKnownHosts: { }
   prometheus:
-    enabled: false
+    enabled: true
   rbac:
     defaultPolicy: '{{ .Values.argocd.rbac.defaultPolicy }}'
     policy: |
@@ -84,7 +84,7 @@ spec:
       - "*"
   server:
     {{- if .Values.argocd.ingress.hostname }}
-    host: {{ .Values.argocd.ingress.hostname }}
+    host: {{ tpl .Values.argocd.ingress.hostname . }}
     {{- end }}
     autoscale:
       enabled: false
@@ -95,8 +95,8 @@ spec:
       enabled: true
       tls:
         - hosts:
-            - {{ .Values.argocd.ingress.hostname }}
-          secretName: {{ .Values.argocd.ingress.hostname }}-tls
+            - {{ tpl .Values.argocd.ingress.hostname . }}
+          secretName: {{ tpl .Values.argocd.ingress.hostname . }}-tls
       annotations:
         {{- range $key, $value := .Values.argocd.ingress.annotations }}
         {{ $key }}: {{ $value }}
