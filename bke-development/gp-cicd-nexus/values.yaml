@@ -10,17 +10,22 @@ nexus:
         cpu: "2000m" # According to UI 4 CPUs is recommended. Keep an eye on this.
         memory: "3072Mi"
   route:
+    enabled: false
+  ingress:
     enabled: true
-    name: nexus
-    path: "nexus.apps.$clustername.gepaplexx.com"
+    ingressClassName: openshift-default
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-production
+    hostPath: /
+    hostRepo: nexus.clustername.example.com
+    tls:
+      - secretName: nexus-local-tls
+        hosts:
+          - nexus.clustername.example.com
   service:
     enabled: true
     portName: nexus-ui
     name: cluster-nexus
-  config:
-    enabled: false # todo: create config and deploy
-    data: nil
-    mountPath: ""
   serviceAccount:
     create: true
     name: "nexus"
