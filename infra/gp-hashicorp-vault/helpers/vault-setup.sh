@@ -122,7 +122,7 @@ if [ "${skip_non_repeatable}" = false ]; then
   # Prefill development/admin with required secrets for workflows.
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-access ARGOCD_URL=\"${ARGOCD_URL}\" ARGOCD_PASSWORD=\"${ARGOCD_PASSWORD}\""
   # Generate Sonarqube passwords
-  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/sonarqube password=\"${SONARQUBE_PASSWORD}\" db-password=\"${SONARQUBE_DB_PASSWORD}\""
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/sonarqube password=\"${SONARQUBE_PASSWORD}\" db_password=\"${SONARQUBE_DB_PASSWORD}\""
   # Prefill Argo Workflows + Workflows Repo for ArgoCD
 
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-workflows \
