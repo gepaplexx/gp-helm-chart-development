@@ -84,15 +84,15 @@ echo "==============================================="
 
 # GENERATED SECRETS ENV
 
-ARGOCD_URL=""#$(kubectl -n gepardec-run-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
-ARGOCD_PASSWORD=""#$(kubectl -n gepardec-run-cicd-tools get secret gepardec-run-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
+ARGOCD_URL=$(kubectl -n gepardec-run-cicd-tools get cm argocd-cm -o jsonpath='{.data.url}' | awk '{ print substr( $0, 9 )}')
+ARGOCD_PASSWORD=$(kubectl -n gepardec-run-cicd-tools get secret gepardec-run-cicd-tools-argocd-cluster -o jsonpath='{.data.admin\.password}' | base64 -d )
 SONARQUBE_PASSWORD=$(randpw)
 SONARQUBE_DB_PASSWORD=$(randpw)
 ARGO_WF_DB_PASSWORD=$(randpw)
 ARGO_WF_DB_USER="argo_workflows"
 ARGO_WF_POSTGRES_PASSWORD=$(randpw)
-ARGO_WF_REPO_USER="REPLACE ME"
-ARGO_WF_REPO_SSH_PRIVATE_KEY="REPLACE ME"
+ARGO_CD_WFREPO_USER="REPLACE ME"
+ARGO_CD_WFREPO_SSH_PRIVATE_KEY="REPLACE ME"
 KEYCLOAK_DB_PASSWORD="REPLACE ME"
 KEYCLOAK_CLIENT_SECRET_GRAFANA="REPLACE ME"
 KEYCLOAK_CLIENT_SECRET_VAULT="REPLACE ME"
@@ -128,12 +128,15 @@ if [ "${skip_non_repeatable}" = false ]; then
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put development/admin/argo-workflows \
     psql-password=\"${ARGO_WF_DB_PASSWORD}\" \
     psql-user=\"${ARGO_WF_DB_USER}\" \
-    psql-postgres-password=\"${ARGO_WF_POSTGRES_PASSWORD}\" \
-    repo-user=\"${ARGO_WF_REPO_USER}\" \
-    repo-ssh-private-key=\"${ARGO_WF_REPO_SSH_PRIVATE_KEY}\""
+    psql-postgres-password=\"${ARGO_WF_POSTGRES_PASSWORD}\""
 
   # Configuration Secret Stores for Cluster Administration Secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault secrets enable -path=cluster/config kv-v2"
+
+  # Prefill ArgoCD Repo Secrets
+  kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/argocd \
+    cicd-repo-username=\"${ARGO_CD_WFREPO_USER}\" \
+    cicd-repo-ssh-private-key=\"${ARGO_CD_WFREPO_SSH_PRIVATE_KEY}\""
 
   # Prefill Keycloak secrets
   kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && vault kv put cluster/config/keycloak \
