@@ -21,9 +21,7 @@ kyverno:
   config:
     resourceFilters:
       - '[*,openshift-*,*]'
-      - '[*,rook-ceph,*]'
-      - '[*,gepaplexx-*,*]'
-      - '[*,gp-infrastructure,*]'
+      - '[*,gp-*,*]'
       # The following are the default values for the kyverno-configmap
       - '[Event,*,*]'
       - '[*,kube-system,*]'
