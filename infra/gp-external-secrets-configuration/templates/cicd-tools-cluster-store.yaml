@@ -1,0 +1,20 @@
+apiVersion: external-secrets.io/v1beta1
+kind: ClusterSecretStore
+metadata:
+  name: cicd-tools-cluster-store
+spec:
+  provider:
+    vault:
+      auth:
+        kubernetes:
+          mountPath: kubernetes
+          role: cicd-admin
+          serviceAccountRef:
+            name: operate-workflow-sa
+      path: development/cicd/
+      server: 'https://vault.play.run.gepardec.com/'
+      version: v2
+  conditions:
+    - namespaces:
+      - "gp-cicd-eventbus"
+      - "gp-cicd-tools"
