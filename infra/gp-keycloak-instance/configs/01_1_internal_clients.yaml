@@ -63,8 +63,6 @@ clients:
 {{- if .Values.keycloakConfigCli.sonarqube.enabled }}
   - clientId: sonarqube
     enabled: true
-    clientAuthenticatorType: client-secret
-    secret: '$(properties:/secrets/secrets.properties::GRAFANA_CLIENT_SECRET)'
     redirectUris:
       {{- tpl (.Values.keycloakConfigCli.sonarqube.redirectUris | toYaml) . | nindent 8 }}
     directAccessGrantsEnabled: false
