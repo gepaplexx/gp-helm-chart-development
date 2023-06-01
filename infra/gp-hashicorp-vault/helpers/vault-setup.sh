@@ -318,6 +318,13 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
       policies=cicd-reader \
       ttl=24h"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/cicd-admin \
+      bound_service_account_names=operate-workflow-sa \
+      bound_service_account_namespaces=gp-cicd-eventbus \
+      bound_service_account_namespaces=gp-cicd-tools \
+      policies=cicd-admin \
+      ttl=1h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/backup-creator \
       bound_service_account_names=vault-backup-sa \
       bound_service_account_namespaces='gp-vault' \
