@@ -36,6 +36,6 @@ spec:
           app.kubernetes.io/managed-by: {{ .Values.argo_workflows.server.sso.clientSecret.name }}
       data:
         {{ .Values.argo_workflows.server.sso.clientSecret.key }}: '{{`{{ .client_secret_argo_workflows }}`}}'
-        {{ .Values.argo_workflows.server.sso.clientId.key }}: {{ "argo-workflows" }}
+        {{ .Values.argo_workflows.server.sso.clientId.key }}: "argo-workflows"
 ---
 {{- end }}
