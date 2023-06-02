@@ -18,14 +18,14 @@ spec:
           - Namespace
     preconditions:
       any:
-      - key: "{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" || '' }}"
+      - key: "{{`{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" || '' }}`}}"
         operator: NotEquals
         value: ""
     generate:
       apiVersion: networking.k8s.io/v1
       kind: NetworkPolicy
-      name: "allow-from-{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" }}"
-      namespace: "{{ request.object.metadata.name }}"
+      name: "allow-from-{{`{{ request.object.metadata.annotations.\"network.gepardec.run/allowed-from\" }}`}}"
+      namespace: "{{`{{ request.object.metadata.name }}`}}"
       synchronize: true
       data:
         spec:
@@ -34,4 +34,4 @@ spec:
           - from:
             - namespaceSelector:
                 matchLabels:
-                  kubernetes.io/metadata.name: "{{request.object.metadata.annotations.\"network.gepardec.run/allowed-from\"}}"
+                  kubernetes.io/metadata.name: "{{`{{request.object.metadata.annotations.\"network.gepardec.run/allowed-from\"}}`}}"
