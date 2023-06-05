@@ -1,2 +1,0 @@
-storageclass: "cephfs-fspool-cluster"
-size: 1Gi
