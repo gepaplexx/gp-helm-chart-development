@@ -1,0 +1,30 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: pvc-mounter-
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 60
+  template:
+    metadata:
+      labels:
+        {{- include "pvc-bug-reproduction.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: pvc-mounter
+          image: alpine:3.18
+          command: ["/bin/sh"]
+          args: ["-c", "echo 'Mounting PVC for VolumeBinding'"]
+          volumeMounts:
+            - mountPath: /mnt
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: demo-pvc
+
+---
