@@ -110,6 +110,7 @@ spec:
           image: "ghcr.io/cert-manager/cert-manager-openshift-routes:{{ .Chart.AppVersion }}"
           args:
             - -v=5
+            - --leader-election-namespace={{ .Release.Namespace }}
           ports:
             - containerPort: 6060
               name: readiness
