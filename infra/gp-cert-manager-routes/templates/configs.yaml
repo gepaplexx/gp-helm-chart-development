@@ -101,7 +101,7 @@ spec:
   template:
     metadata:
       labels:
-      {{- include "gp-cert-manager-routes.selectorLabels" . | nindent 6 }}
+      {{- include "gp-cert-manager-routes.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: cert-manager-openshift-routes
       automountServiceAccountToken: true
