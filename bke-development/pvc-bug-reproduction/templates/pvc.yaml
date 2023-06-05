@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    {{- include "pvc-bug-reproduction.labels" . | nindent 4 }}
+  name: demo-pvc
+  namespace: {{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.size }}
+  storageClassName: {{ .Values.storageclass}}
+  volumeMode: Filesystem
