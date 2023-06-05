@@ -85,8 +85,6 @@ subjects:
   - kind: ServiceAccount
     name: cert-manager-openshift-routes
     namespace: {{ .Release.Namespace }}
-  - kind: ServiceAccount
-    name:
 ---
 apiVersion: apps/v1
 kind: Deployment
