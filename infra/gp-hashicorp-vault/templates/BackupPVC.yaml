@@ -4,6 +4,8 @@ apiVersion: v1
 metadata:
   name: 'gp-vault-backup-pvc'
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteOnce
@@ -12,4 +14,36 @@ spec:
       storage: "{{ .Values.backup.size }}"
   volumeMode: Filesystem
   storageClassName: {{ .Values.backup.storageClass }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: pvc-mounter-
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  labels:
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 60
+  template:
+    metadata:
+      labels:
+        {{- include "gp-hashicorp-vault.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: pvc-mounter
+          image: alpine:3.18
+          command: ["/bin/sh"]
+          args: ["-c", "echo 'Mounting PVC gp-vault-backup-pvc for VolumeBinding'"]
+          volumeMounts:
+            - mountPath: /mnt
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: 'gp-vault-backup-pvc'
 {{- end }}
