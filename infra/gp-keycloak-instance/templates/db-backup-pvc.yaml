@@ -4,6 +4,8 @@ apiVersion: v1
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
 spec:
   accessModes:
     - ReadWriteMany
@@ -12,4 +14,36 @@ spec:
       storage: "{{ .Values.postgresql.backup.size }}"
   volumeMode: Filesystem
   storageClassName: cephfs-fspool-cluster
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: pvc-mounter-
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+  labels:
+    {{- include "gp-keycloak-instance.labels" . | nindent 4 }}
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 60
+  template:
+    metadata:
+      labels:
+        {{- include "gp-keycloak-instance.labels" . | nindent 8 }}
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: pvc-mounter
+          image: alpine:3.18
+          command: ["/bin/sh"]
+          args: ["-c", "echo 'Mounting PVC {{ include "gp-keycloak-instance.fullname" . }}-backup for VolumeBinding'"]
+          volumeMounts:
+            - mountPath: /mnt
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
 {{- end }}
