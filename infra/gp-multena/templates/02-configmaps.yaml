@@ -13,11 +13,12 @@ data:
         provider: {{ .Values.multena.provider}}
         thanos_url: {{ .Values.multena.thanosUrl }}
         loki_url: {{ .Values.multena.lokiUrl }}
-        prom_label_url: http://localhost:9095
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
-        tenant_label: {{ .Values.multena.tenantLabel}}
         admin_group: {{ .Values.multena.adminGroup }}
-        port: 8080
+        port: {{ .Values.multena.port }}
+        tenant_labels:
+          thanos: {{ .Values.multena.tenantLabels.thanos }}
+          loki: {{ .Values.multena.tenantLabels.loki }}
       {{- if eq .Values.multena.provider "mysql" }}
       db:
         enabled: true

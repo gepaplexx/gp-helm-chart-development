@@ -63,19 +63,6 @@ spec:
             - mountPath: /etc/secret/db/
               name: multena-db-secret
               {{- end }}
-        - name: prom-label-proxy
-          args:
-            - --insecure-listen-address=0.0.0.0:9095
-            - --upstream={{ .Values.multena.thanosUrl }}
-            - --label={{ .Values.multena.tenantLabel }}
-            - --query-param={{ .Values.multena.tenantLabel }}
-            - --enable-label-apis
-            - --error-on-replace
-          image: ghcr.io/lucostus/prom-label-proxy:multi-value-regex-v0.0.4
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - mountPath: /etc/ssl/certs/
-              name: openshift-service-ca
       volumes:
         - configMap:
             name: openshift-service-ca.crt

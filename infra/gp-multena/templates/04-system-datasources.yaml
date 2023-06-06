@@ -10,7 +10,7 @@ spec:
     - name: thanos-multena
       uid: thanos-multena
       type: prometheus
-      url: "http://{{ include "gp-multena.name" . }}:8080"
+      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}"
       access: proxy
       editable: true
       isDefault: false
@@ -26,7 +26,7 @@ spec:
     - name: loki-multena (Application)
       uid: loki-multena-application
       type: loki
-      url: "http://{{ include "gp-multena.name" . }}:8080/api/logs/v1/application/"
+      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}/api/logs/v1/application/"
       access: proxy
       editable: true
       isDefault: false
