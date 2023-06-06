@@ -51,8 +51,6 @@ spec:
             timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds | default 10}}
           {{- end }}
           volumeMounts:
-            - mountPath: /etc/ssl/certs/
-              name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
               {{- if eq .Values.multena.provider "configmap" }}
@@ -64,9 +62,6 @@ spec:
               name: multena-db-secret
               {{- end }}
       volumes:
-        - configMap:
-            name: openshift-service-ca.crt
-          name: openshift-service-ca
         - configMap:
             name: {{ include "gp-multena.name" . }}-config
           name: multena-config
