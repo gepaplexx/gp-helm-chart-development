@@ -16,6 +16,7 @@ data:
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
         admin_group: {{ .Values.multena.adminGroup }}
         port: {{ .Values.multena.port }}
+        host: 0.0.0.0
         tenant_labels:
           thanos: {{ .Values.multena.tenantLabels.thanos }}
           loki: {{ .Values.multena.tenantLabels.loki }}
