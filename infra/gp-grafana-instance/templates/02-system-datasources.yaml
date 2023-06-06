@@ -33,6 +33,7 @@ spec:
         httpHeaderName1: Authorization
         oauthPassThru: false
         tlsAuthWithCACert: true
+        manageAlerts: false
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
@@ -48,6 +49,7 @@ spec:
         httpHeaderName1: Authorization
         oauthPassThru: false
         tlsAuthWithCACert: true
+        manageAlerts: false
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
