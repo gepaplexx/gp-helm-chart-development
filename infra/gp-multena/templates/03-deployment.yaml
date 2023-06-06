@@ -51,7 +51,7 @@ spec:
             timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds | default 10}}
           {{- end }}
           volumeMounts:
-            - mountPath: /etc/ssl/certs/
+            - mountPath: /etc/pki/ca-trust/source/anchors/
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
