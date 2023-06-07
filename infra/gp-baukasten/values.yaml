@@ -1,0 +1,47 @@
+kubeconfig:
+  apiUrl: https://api.c-gepa-play.gepa.vshnmanaged.net:6443
+argocd:
+  name: baukasten-argocd
+  server:
+    host: "argocd-bk.play.run.gepardec.com"
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+  applicationSet:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  controller:
+    resources:
+      limits:
+        memory: 2Gi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  sso:
+    dex:
+      resources:
+        limits:
+          memory: 256Mi
+        requests:
+          cpu: 250m
+          memory: 128Mi
+  redis:
+    resources:
+      limits:
+        memory: 1Gi
+      requests:
+        cpu: 250m
+        memory: 128Mi
+
+vela-core:
+  admissionWebhooks:
+    enabled: false
+  multicluster:
+    enabled: false
