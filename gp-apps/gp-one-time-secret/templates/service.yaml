@@ -13,6 +13,6 @@ spec:
     targetPort: 3000
   selector:
     app: ots
-    {{- include "gp-one-time-secret.labels" . | nindent 4 }}
+    {{- include "gp-one-time-secret.selectorLabels" . | nindent 4 }}
   sessionAffinity: None
   type: ClusterIP
