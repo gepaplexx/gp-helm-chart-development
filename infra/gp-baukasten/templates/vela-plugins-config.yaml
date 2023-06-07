@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: vela-plugins-config
-  namespace: {{ .Release.Namespace }}
-data:
-{{ (tpl (.Files.Glob "plugins/*").AsConfig . | indent 2 )}}
