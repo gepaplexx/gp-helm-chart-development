@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cluster-nexus-metrics
+  namespace: {{.Release.Namespace}}
+spec:
+  endpoints:
+    - path: /service/metrics/prometheus
+      port: nexus-ui
+  namespaceSelector:
+    matchNames:
+      - {{.Release.Namespace}}
+  selector:
+    matchLabels:
+      {{- include "nexus.selectorLabels" .Subcharts.nexus  | nindent 6 }}
