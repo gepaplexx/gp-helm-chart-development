@@ -9,6 +9,7 @@ spec:
   destination:
     namespace: gp-cicd-tools
     server: 'https://kubernetes.default.svc'
+  project: default
   source:
     path: {{ .source.path }}
     repoURL: {{ .source.repoURL }}
