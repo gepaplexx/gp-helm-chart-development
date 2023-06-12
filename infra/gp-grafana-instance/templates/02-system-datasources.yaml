@@ -1,4 +1,4 @@
-{{-if .Values.systemDashboards }}
+{{- if .Values.systemDashboards }}
 apiVersion: integreatly.org/v1alpha1
 kind: GrafanaDataSource
 metadata:
