@@ -6,6 +6,13 @@ metadata:
   labels:
     {{- include "gp-grafana-instance.labels" . | nindent 4 }}
 spec:
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
   dataStorage:
     accessModes:
       - ReadWriteMany
@@ -14,9 +21,6 @@ spec:
   baseImage: {{ .Values.grafana.version}}
   ingress:
     enabled: false
-    pathType: Prefix
-    path: "/"
-    hostname: {{ .Values.ingress.hostname }}
   config:
     server:
       root_url: https://{{ .Values.ingress.hostname }}
