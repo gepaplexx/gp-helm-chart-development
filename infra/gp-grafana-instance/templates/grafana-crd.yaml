@@ -76,6 +76,12 @@ spec:
             key: token
             name: grafana-serviceaccount-token
       {{- end }}
-
   secrets:
     - grafana-serviceaccount-token
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
