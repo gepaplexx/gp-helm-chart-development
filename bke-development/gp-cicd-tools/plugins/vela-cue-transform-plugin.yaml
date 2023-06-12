@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ConfigManagementPlugin
 metadata:
   name: vela-cue-transform-plugin
+  namespace: "{{ .Release.Namespace }}"
 spec:
   version: v1.0
   generate:
