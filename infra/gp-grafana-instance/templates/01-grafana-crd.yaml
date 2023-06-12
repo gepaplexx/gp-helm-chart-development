@@ -65,7 +65,7 @@ spec:
         value: 'https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1'
       - name: THANOS_QUERIER_ADDRESS
         value: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
-      {{- if .Values.systemDashboards }}
+      {{- if .Values.systemDatasources }}
       - name: BEARER_TOKEN
         valueFrom:
           secretKeyRef:
