@@ -23,7 +23,7 @@ metadata:
 spec:
   project: baukasten
   destination:
-    namespace: gp-cicd-tools
+    namespace: {{ $.Release.Namespace }}
     server: 'https://kubernetes.default.svc'
   source:
     path: {{ .source.path }}
@@ -35,5 +35,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=false
+---
 {{- end }}
 {{- end }}
