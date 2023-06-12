@@ -61,6 +61,105 @@ spec:
         cpu: {{ .Values.argocd.redis.resources.requests.cpu }}
         memory: {{ .Values.argocd.redis.resources.requests.memory }}
   repo:
+    volumes:
+      - name: custom-tools
+        emptyDir: { }
+      - name: kubeconfig
+        emptyDir: { }
+      - name: vela-cli-dir
+        emptyDir: { }
+      - name: vela-cmp
+        configMap:
+          name: vela-plugins-config
+      - name: kubeconfig-template
+        configMap:
+          name: vela-kubeconfig
+      - name: argocd-vela-sa
+        secret:
+          secretName: argocd-vela-sa-secret
+    initContainers:
+      - name: kubeconfig
+        image: 'nginx'
+        command:
+          - bash
+          - '-c'
+          - |
+            echo "load api token..."
+            export API_TOKEN=$(cat /token)
+            echo "replacing api token in kubeconfig..."
+            envsubst < /kubeconfigtemplate/config.template > /kubeconfig/config
+        volumeMounts:
+          - name: kubeconfig-template
+            mountPath: /kubeconfigtemplate
+          - name: kubeconfig
+            mountPath: /kubeconfig
+          - name: argocd-vela-sa
+            mountPath: /token
+            subPath: token
+      - name: kubevela
+        command:
+          - bash
+          - '-c'
+          - |
+            #!/usr/bin/env bash
+            set -eo pipefail
+            curl -fsSl https://kubevela.io/script/install.sh | bash -s 1.8.2
+        env:
+          - name: VELA_INSTALL_DIR
+            value: /custom-tools
+        volumeMounts:
+          - name: custom-tools
+            mountPath: /custom-tools
+        image: 'nginx'
+    sidecarContainers:
+      - name: vela-application-plugin
+        image: nginx
+        command: [ "/var/run/argocd/argocd-cmp-server" ]
+        env:
+          - name: KUBECONFIG
+            value: /kubeconfig/config
+        volumeMounts:
+          - name: var-files
+            mountPath: /var/run/argocd
+          - name: vela-cli-dir
+            mountPath: /.vela
+          - name: kubeconfig
+            mountPath: /kubeconfig
+          - name: plugins
+            mountPath: /home/argocd/cmp-server/plugins
+          - name: vela-cmp
+            mountPath: /var/run/argocd/vela/vela-application-plugin-generate.sh
+            subPath: vela-application-plugin-generate.sh
+          - name: vela-cmp
+            mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: vela-application-plugin.yaml
+          - name: custom-tools
+            mountPath: /usr/local/bin/vela
+            subPath: vela
+      - name: vela-cue-transform-plugin
+        image: nginx
+        command: [ "/var/run/argocd/argocd-cmp-server" ]
+        env:
+          - name: KUBECONFIG
+            value: /kubeconfig/config
+        volumeMounts:
+          - name: var-files
+            mountPath: /var/run/argocd
+          - name: vela-cli-dir
+            mountPath: /.vela
+          - name: kubeconfig
+            mountPath: /kubeconfig
+          - name: plugins
+            mountPath: /home/argocd/cmp-server/plugins
+          - name: vela-cmp
+            mountPath: /var/run/argocd/vela/vela-cue-transform-plugin-generate.sh
+            subPath: vela-cue-transform-plugin-generate.sh
+          - name: vela-cmp
+            mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: vela-cue-transform-plugin.yaml
+          - name: custom-tools
+            mountPath: /usr/local/bin/vela
+            subPath: vela
     resources:
       limits:
         cpu: {{ .Values.argocd.repo.resources.limits.cpu }}

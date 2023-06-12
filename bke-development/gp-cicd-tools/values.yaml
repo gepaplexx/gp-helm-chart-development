@@ -16,6 +16,14 @@ workflows:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-production
 
+kubeconfig:
+  apiUrl: https://api.c-gepa-play.gepa.vshnmanaged.net:6443
+
+vela-core:
+  admissionWebhooks:
+    enabled: false
+  multicluster:
+    enabled: false
 
 ####################
 ##  ARGO  EVENTS  ##
