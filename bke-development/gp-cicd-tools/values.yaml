@@ -285,3 +285,20 @@ postgresql:
       enabled: false
     containerSecurityContext:
       enabled: false
+
+######################
+##    Baukasten     ##
+######################
+baukasten:
+  components:
+    name: "components"
+    source:
+      repoURL: "git@github.com:gepaplexx/baukasten.git"
+      path: "components"
+
+  traits:
+    name: "traits"
+    source:
+      repoURL: "git@github.com:gepaplexx/baukasten.git"
+      path: "traits"
+
