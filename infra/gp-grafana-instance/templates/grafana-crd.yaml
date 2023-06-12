@@ -8,11 +8,11 @@ metadata:
 spec:
   resources:
     requests:
+      cpu: "25m"
+      memory: "125Mi"
+    limits:
       cpu: "100m"
       memory: "256Mi"
-    limits:
-      cpu: "500m"
-      memory: "512Mi"
   dataStorage:
     accessModes:
       - ReadWriteMany
