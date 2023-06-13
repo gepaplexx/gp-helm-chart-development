@@ -7,8 +7,8 @@ metadata:
 spec:
   name: system-datasources.yaml
   datasources:
-    - name: thanos-multena
-      uid: thanos-multena
+    - name: metrics-multena (Thanos)
+      uid: metrics-multena
       type: prometheus
       url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}"
       access: proxy
@@ -23,8 +23,8 @@ spec:
       secureJsonData:
         httpHeaderValue1: "*/*"
         httpHeaderValue2: "thanos"
-    - name: loki-multena (Application)
-      uid: loki-multena-application
+    - name: logs-multena (Loki-Application)
+      uid: logs-multena
       type: loki
       url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}/api/logs/v1/application/"
       access: proxy

@@ -1,4 +1,4 @@
-## CLUSTERROLEBINDINGS
+{{- if .Values.systemDatasources }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -21,3 +21,5 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: grafana-serviceaccount
 type: kubernetes.io/service-account-token
+{{- end }}## CLUSTERROLEBINDINGS
+

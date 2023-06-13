@@ -6,6 +6,13 @@ metadata:
   labels:
     {{- include "gp-grafana-instance.labels" . | nindent 4 }}
 spec:
+  resources:
+    requests:
+      cpu: "25m"
+      memory: "125Mi"
+    limits:
+      cpu: "100m"
+      memory: "256Mi"
   dataStorage:
     accessModes:
       - ReadWriteMany
@@ -14,9 +21,6 @@ spec:
   baseImage: {{ .Values.grafana.version}}
   ingress:
     enabled: false
-    pathType: Prefix
-    path: "/"
-    hostname: {{ .Values.ingress.hostname }}
   config:
     server:
       root_url: https://{{ .Values.ingress.hostname }}
@@ -55,6 +59,7 @@ spec:
             - system
             - application
   deployment:
+    {{- if .Values.systemDatasources }}
     env:
       - name: SERVICE_CA
         valueFrom:
@@ -70,5 +75,6 @@ spec:
           secretKeyRef:
             key: token
             name: grafana-serviceaccount-token
+    {{- end }}
   secrets:
     - grafana-serviceaccount-token
