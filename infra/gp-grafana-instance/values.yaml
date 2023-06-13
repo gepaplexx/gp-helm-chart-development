@@ -22,4 +22,4 @@ resources:
   limits:
     cpu: 500m
     memory: 1Gi
-systemDatasources: false
+systemDatasources: true
