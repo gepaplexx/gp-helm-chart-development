@@ -60,6 +60,7 @@ spec:
             - application
   {{- if .Values.systemDatasources }}
   deployment:
+    {{- if .Values.systemDatasources }}
     env:
       - name: SERVICE_CA
         valueFrom:
@@ -75,6 +76,7 @@ spec:
           secretKeyRef:
             key: token
             name: grafana-serviceaccount-token
+    {{- end }}
   secrets:
     - grafana-serviceaccount-token
   {{- end }}
