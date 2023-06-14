@@ -58,6 +58,7 @@ spec:
           values:
             - system
             - application
+  {{- if .Values.systemDatasources }}
   deployment:
     {{- if .Values.systemDatasources }}
     env:
@@ -78,3 +79,4 @@ spec:
     {{- end }}
   secrets:
     - grafana-serviceaccount-token
+  {{- end }}
