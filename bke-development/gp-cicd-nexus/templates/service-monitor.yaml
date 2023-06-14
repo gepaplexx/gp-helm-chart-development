@@ -7,9 +7,6 @@ spec:
   endpoints:
     - path: /service/metrics/prometheus
       port: nexus-ui
-  namespaceSelector:
-    matchNames:
-      - {{.Release.Namespace}}
   selector:
     matchLabels:
       {{- include "nexus.selectorLabels" .Subcharts.nexus  | nindent 6 }}
