@@ -2,7 +2,7 @@ replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "0.1.0"
+  tag: "0.1.3"
 GrafanaOperatorDatasources: true
 probes:
   readinessProbe:
@@ -27,6 +27,7 @@ multena:
   thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
   lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080
   provider: configmap
+  insecureSkipVerify: false
   tenantLabels:
     thanos: namespace
     loki: kubernetes_namespace_name

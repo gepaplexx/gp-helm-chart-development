@@ -16,13 +16,11 @@ spec:
       isDefault: false
       jsonData:
         httpMethod: POST
-        httpHeaderName1: Accept-Encoding
-        httpHeaderName2: X-Plugin-Id
+        httpHeaderName1: X-Plugin-Id
         oauthPassThru: true
         manageAlerts: false
       secureJsonData:
-        httpHeaderValue1: "*/*"
-        httpHeaderValue2: "thanos"
+        httpHeaderValue1: "thanos"
     - name: logs-multena (Loki-Application)
       uid: logs-multena
       type: loki
@@ -32,11 +30,9 @@ spec:
       isDefault: false
       jsonData:
         httpMethod: POST
-        httpHeaderName1: Accept-Encoding
-        httpHeaderName2: X-Plugin-Id
+        httpHeaderName1: X-Plugin-Id
         oauthPassThru: true
         manageAlerts: false
       secureJsonData:
-        httpHeaderValue1: "*/*"
-        httpHeaderValue2: "loki"
+        httpHeaderValue1: "loki"
 {{- end }}
