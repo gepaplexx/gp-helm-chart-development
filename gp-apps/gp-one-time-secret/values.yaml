@@ -8,3 +8,7 @@ ingress:
   ingressClassName: "openshift-default"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production
+resources:
+  requests:
+    cpu: 5m
+    memory: 20Mi

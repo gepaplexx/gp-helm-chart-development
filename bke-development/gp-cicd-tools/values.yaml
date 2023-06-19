@@ -216,7 +216,7 @@ argocd:
         cpu: "1"
         memory: 1Gi
       requests:
-        cpu: 250m
+        cpu: 10m
         memory: 512Mi
   controller:
     resources:
@@ -224,39 +224,39 @@ argocd:
         cpu: "1"
         memory: 2Gi
       requests:
-        cpu: 250m
+        cpu: 20m
         memory: 512Mi
   dex:
     resources:
       limits:
-        cpu: 500m
+        cpu: 100m
         memory: 256Mi
       requests:
-        cpu: 250m
+        cpu: 10m
         memory: 128Mi
   redis:
     resources:
       limits:
-        cpu: 500m
+        cpu: 50m
         memory: 1Gi
       requests:
-        cpu: 250m
+        cpu: 5m
         memory: 128Mi
   repo:
     resources:
       limits:
-        cpu: 500m
+        cpu: 100m
         memory: 256Mi
       requests:
-        cpu: 250m
+        cpu: 20m
         memory: 128Mi
   server:
     resources:
       limits:
-        cpu: 500m
+        cpu: 100m
         memory: 256Mi
       requests:
-        cpu: 250m
+        cpu: 20m
         memory: 128Mi
   rbac:
     defaultPolicy: ''

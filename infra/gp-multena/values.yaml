@@ -18,6 +18,10 @@ probes:
 serviceAccount:
   create: true
   name: ""
+resources:
+  requests:
+    cpu: 10m
+    memory: 20M
 multena:
   dev: false
   port: 8080

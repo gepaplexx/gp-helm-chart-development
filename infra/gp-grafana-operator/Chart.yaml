@@ -2,4 +2,4 @@ apiVersion: v2
 name: gp-grafana-operator
 description: A Helm chart for installing Grafana operator on OpenShift https://github.com/grafana-operator/grafana-operator
 type: application
-version: 0.0.3
+version: 0.0.4

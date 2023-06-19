@@ -15,3 +15,6 @@ spec:
     env:
       - name: DASHBOARD_NAMESPACES_ALL
         value: "true"
+    resources:
+      requests:
+        cpu: 20m
