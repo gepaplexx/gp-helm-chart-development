@@ -24,7 +24,7 @@ vault:
     resources:
       requests:
         memory: '100Mi'
-        cpu: '100m'
+        cpu: '10m'
       limits:
         memory: '150Mi'
   server:
@@ -108,6 +108,7 @@ vault:
     resources:
       requests:
         memory: '100Mi'
+        cpu: '20m'
       limits:
         memory: '150Mi'
     volumes:

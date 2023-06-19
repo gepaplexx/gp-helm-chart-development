@@ -4,7 +4,7 @@ nexus:
       enabled: true
     resources:
       requests:
-        cpu: "500m"
+        cpu: "150m"
         memory: "2048Mi"
       limits:
         cpu: "2000m" # According to UI 4 CPUs is recommended. Keep an eye on this.
