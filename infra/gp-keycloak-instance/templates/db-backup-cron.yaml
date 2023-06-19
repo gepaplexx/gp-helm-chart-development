@@ -30,7 +30,8 @@ spec:
               resources:
                 limits:
                   memory: "128Mi"
-                  cpu: "500m"
+                requests:
+                  cpu: "100m"
               env:
                 - name: "HOSTNAME"
                   value: "{{ .Values.postgresql.fullnameOverride }}"
