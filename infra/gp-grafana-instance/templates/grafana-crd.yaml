@@ -41,7 +41,7 @@ spec:
         '{{ .Values.auth.editorGroups }}') && 'Editor' || 'Viewer'
       auth_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
-      scopes: openid profile
+      scopes: openid profile offline_access
     auth.anonymous:
       enabled: false
     log:
@@ -51,6 +51,8 @@ spec:
       enabled: true
     security:
       admin_user: {{ default "admin" .Values.auth.admin.user }}
+    feature_toggles:
+      enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders enableDatagridEditing
   dashboardLabelSelector:
     - matchExpressions:
         - key: dashboard
