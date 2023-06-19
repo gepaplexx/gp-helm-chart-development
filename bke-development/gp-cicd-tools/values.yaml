@@ -102,6 +102,7 @@ argo_workflows:
         value: "true"
     # sso configuration:
     sso:
+      enabled: true
       issuer: https://sso.clustername.example.com/realms/internal
       redirectUrl: https://workflows.clustername.example.com/oauth2/callback
       clientSecret:
