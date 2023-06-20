@@ -16,23 +16,17 @@ spec:
       isDefault: false
       jsonData:
         httpMethod: POST
-        httpHeaderName1: X-Plugin-Id
         oauthPassThru: true
         manageAlerts: false
-      secureJsonData:
-        httpHeaderValue1: "thanos"
     - name: logs-multena (Loki-Application)
       uid: logs-multena
       type: loki
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}/api/logs/v1/application/"
+      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.multena.port }}"
       access: proxy
       editable: true
       isDefault: false
       jsonData:
         httpMethod: POST
-        httpHeaderName1: X-Plugin-Id
         oauthPassThru: true
         manageAlerts: false
-      secureJsonData:
-        httpHeaderValue1: "loki"
 {{- end }}
