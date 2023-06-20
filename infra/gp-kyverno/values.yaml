@@ -7,20 +7,20 @@
 
 kyverno:
   replicaCount: 3
-  rbac:
-    serviceAccount:
-      name: kyverno
-  serviceMonitor:
-    enabled: true
   webhooksCleanup:
     enable: true
-  resources:
-    limits:
-      memory: 1.5Gi
-    requests:
-      cpu: 50m
   cleanupController:
     resources:
       requests:
         cpu: 20m
-
+    serviceMonitor:
+      enabled: true
+  admissionController:
+    serviceMonitor:
+      enabled: true
+  backgroundController:
+    serviceMonitor:
+      enabled: true
+  reportsController:
+    serviceMonitor:
+      enabled: true
