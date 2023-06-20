@@ -37,7 +37,7 @@ spec:
       api_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/userinfo
       role_attribute_path: >-
-        contains(groups[*], '{{ .Values.auth.adminGroups }}') && 'Admin' || contains(groups[*],
+        contains(groups[*], '{{ .Values.auth.adminGroups }}') && 'GrafanaAdmin' || contains(groups[*],
         '{{ .Values.auth.editorGroups }}') && 'Editor' || 'Viewer'
       auth_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
@@ -52,7 +52,7 @@ spec:
     security:
       admin_user: {{ default "admin" .Values.auth.admin.user }}
     feature_toggles:
-      enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders enableDatagridEditing
+      enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders
   dashboardLabelSelector:
     - matchExpressions:
         - key: dashboard
