@@ -23,17 +23,17 @@ metadata:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 data:
   config.hcl: |
+    disable_mlock = true
+    cluster_addr = "http://faketestingaddress:8200"
+    api_addr = "http://127.0.0.1:8200"
     storage "raft" {
       path = "/data"
     }
-      listener "tcp" {
+    listener "tcp" {
       address = "127.0.0.1:8200"
       tls_disable = true
     }
-      disable_mlock = true
-      cluster_addr = "http://faketestingaddress:8200"
-      api_addr = "http://127.0.0.1:8200"
-      seal "gcpckms" {
+    seal "gcpckms" {
       credentials = "/vault/userconfig/unseal-creds/creds.json"
       project = "gepaplexx"
       region = "europe-west6"
