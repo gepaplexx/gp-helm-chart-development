@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "gp-multena.name" . }}-service-monitor
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "gp-multena.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: {{ include "gp-multena.name" . }}-metrics
+      interval: 15s
+      path: /metrics

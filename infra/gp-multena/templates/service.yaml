@@ -11,6 +11,10 @@ spec:
       targetPort: http
       protocol: TCP
       name: {{ include "gp-multena.name" . }}
+    - port: 8081
+      targetPort: metrics
+      protocol: TCP
+      name: {{ include "gp-multena.name" . }}-metrics
   selector:
     {{- include "gp-multena.selectorLabels" . | nindent 4 }}
   type: ClusterIP

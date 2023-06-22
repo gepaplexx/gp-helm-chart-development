@@ -32,6 +32,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: metrics
+              containerPort: 8081
+              protocol: TCP
           {{- if .Values.probes.readinessProbe.enabled }}
           resources:
             requests:
@@ -40,7 +43,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: metrics
             initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds | default 1 }}
             periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds | default 10}}
             timeoutSeconds: {{ .Values.probes.readinessProbe.timeoutSeconds | default 10}}
@@ -49,7 +52,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: metrics
             initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds | default 1}}
             periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds | default 20 }}
             timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds | default 10}}
