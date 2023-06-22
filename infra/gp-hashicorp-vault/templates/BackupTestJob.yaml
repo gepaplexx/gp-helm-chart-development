@@ -68,7 +68,7 @@ spec:
                   value: /data
               command: ["/bin/sh", "-ec"]
               args:
-                - vault server -config=/vault/config/config.hcl -log-level=debug
+                - vault server -config=/vault/config/config.hcl
                   & sleep 10
                   && ROOT_TOKEN_FRAGMENT=$(vault operator init -format=json | grep root_token)
                   && ROOT_TOKEN=$(echo ${ROOT_TOKEN_FRAGMENT:17:-1})
