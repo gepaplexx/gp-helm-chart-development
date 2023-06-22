@@ -1,5 +1,5 @@
 #!/bin/sh
-
+### DEPRECATED. marked for removal once day-x-generator version gets its makeover
 #This script sets up HashiCorp Vault.
 #For this it:
 #  * enables kubernetes auth mode for serviceaccount authentication
@@ -233,6 +233,21 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
         '
       )"
 
+# BACKUP-TESTER
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault policy write backup-tester \
+      <(echo '
+        path \"/sys/auth\"
+        {
+        	capabilities = [\"read\"]
+        }
+
+        path \"sys/mounts\" {
+          capabilities = [\"read\"]
+        }
+        '
+      )"
+
 # ADMIN
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault policy write admin \
@@ -314,27 +329,38 @@ kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_
     vault write auth/kubernetes/role/cicd-reader \
       bound_service_account_names=operate-workflow-sa \
       bound_service_account_names=dev-admin-sa \
-      bound_service_account_namespaces='*' \
-      policies=cicd-reader \
-      ttl=24h"
+      bound_service_account_namespaces=gp-cicd-eventbus \
+      bound_service_account_namespaces=gp-cicd-tools \
+      token_policies=cicd-reader \
+      ttl=1h"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/cicd-admin \
       bound_service_account_names=operate-workflow-sa \
       bound_service_account_namespaces=gp-cicd-eventbus \
       bound_service_account_namespaces=gp-cicd-tools \
-      policies=cicd-admin \
+      token_policies=cicd-admin \
       ttl=1h"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/backup-creator \
       bound_service_account_names=vault-backup-sa \
       bound_service_account_namespaces='gp-vault' \
-      policies=backup-creator \
+      token_policies=backup-creator \
+      ttl=1h"
+kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
+    vault write auth/kubernetes/role/backup-tester \
+      bound_service_account_names=vault-backup-sa \
+      bound_service_account_namespaces='gp-vault' \
+      token_policies=backup-tester \
       ttl=1h"
 kubectl exec vault-0 -n "${namespace}" -- sh -c "vault login -no-print ${ACCESS_TOKEN} && \
     vault write auth/kubernetes/role/cluster-config-reader \
       bound_service_account_names=admin-config-reader \
-      bound_service_account_namespaces='*' \
-      policies=cluster-config-reader \
+      bound_service_account_namespaces=gepardec-run-gitops \
+      bound_service_account_namespaces=gp-cicd-tools \
+      bound_service_account_namespaces=gp-grafana \
+      bound_service_account_namespaces=gp-sso \
+      bound_service_account_namespaces=openshift-user-workload-monitoring \
+      token_policies=cluster-config-reader \
       ttl=1h"
 
 # ENABLE & CONFIGURE OIDC AUTH INTEGRATION

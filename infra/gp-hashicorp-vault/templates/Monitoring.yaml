@@ -17,3 +17,24 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: vault
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: vault-degraded
+  namespace: gepardec-run-gitops
+  labels:
+    {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: vault-degraded
+      rules:
+        - alert: vault-degraded
+          annotations:
+            description: Eventuell funktioniert Vault nicht korrekt oder die Integrität des letzten Backups konnte nicht verifiziert werden
+            summary: Die Vault ArgoCD Applikation ist seit 5 Minuten 'degraded'
+          expr: 'argocd_app_info{namespace="gepardec-run-gitops", name="vault", health_status="Degraded"} == 1'
+          for: 5m
+          labels:
+            severity: "critical"
+            type: "internal"
