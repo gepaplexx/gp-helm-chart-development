@@ -1,6 +1,7 @@
 backup:
   enabled: true
   schedule: '0 0 * * *'
+  testingSchedule: '0 3 * * *'
   size: 2Gi
   retain:
     days: 31 # need to +1, so 30 days = 31

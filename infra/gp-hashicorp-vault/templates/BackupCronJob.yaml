@@ -4,6 +4,8 @@ kind: CronJob
 metadata:
   name: 'gp-vault-backup'
   namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
@@ -15,7 +17,7 @@ spec:
         spec:
           containers:
             - name: "vault-raft-backup"
-              image: 'hashicorp/vault:1.12.1'
+              image: 'hashicorp/vault:1.13.1'
               command: ["/bin/sh", "-ec"]
               args:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
@@ -51,3 +53,5 @@ kind: ServiceAccount
 metadata:
   name: vault-backup-sa
   namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
