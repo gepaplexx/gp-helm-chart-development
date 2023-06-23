@@ -30,10 +30,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent"  }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
             - name: metrics
-              containerPort: 8081
+              containerPort: {{ .Values.service.metricsPort }}
               protocol: TCP
           {{- if .Values.probes.readinessProbe.enabled }}
           resources:

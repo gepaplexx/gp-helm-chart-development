@@ -24,7 +24,6 @@ resources:
     memory: 20M
 multena:
   dev: false
-  port: 8080
   logLevel: INFO
   adminGroup: gepardec-run-admins
   jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
@@ -43,5 +42,6 @@ multena:
     port: 3306
     dbName: example
     query: "SELECT * FROM users WHERE username = ?"
-
-
+service:
+  port: 8080
+  metricsPort: 8081
