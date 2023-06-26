@@ -15,6 +15,7 @@ data:
         jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
         admin_group: {{ .Values.multena.adminGroup }}
         insecure_skip_verify: {{ .Values.multena.insecureSkipVerify }}
+        trusted_ca_path: "/etc/secrets/ca/"
         log_tokens: {{ .Values.multena.logTokens }}
         port: {{ .Values.service.port }}
         metrics_port: {{ .Values.service.metricsPort }}
