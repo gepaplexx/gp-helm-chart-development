@@ -16,7 +16,8 @@ data:
         admin_group: {{ .Values.multena.adminGroup }}
         insecure_skip_verify: {{ .Values.multena.insecureSkipVerify }}
         log_tokens: {{ .Values.multena.logTokens }}
-        port: {{ .Values.multena.port }}
+        port: {{ .Values.service.port }}
+        metrics_port: {{ .Values.service.metricsPort }}
         host: 0.0.0.0
         tenant_labels:
           thanos: {{ .Values.multena.tenantLabels.thanos }}

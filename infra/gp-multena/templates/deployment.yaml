@@ -30,7 +30,10 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent"  }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+            - name: metrics
+              containerPort: {{ .Values.service.metricsPort }}
               protocol: TCP
           {{- if .Values.probes.readinessProbe.enabled }}
           resources:
@@ -40,19 +43,19 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: http
-            initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds | default 1 }}
-            periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds | default 10}}
-            timeoutSeconds: {{ .Values.probes.readinessProbe.timeoutSeconds | default 10}}
+              port: metrics
+            initialDelaySeconds: {{ .Values.probes.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.readinessProbe.timeoutSeconds  }}
           {{- end }}
           {{- if .Values.probes.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /healthz
-              port: http
-            initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds | default 1}}
-            periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds | default 20 }}
-            timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds | default 10}}
+              port: metrics
+            initialDelaySeconds: {{ .Values.probes.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds }}
           {{- end }}
           volumeMounts:
             - mountPath: /etc/pki/ca-trust/source/anchors/

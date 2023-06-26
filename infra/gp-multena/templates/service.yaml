@@ -7,10 +7,14 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
   ports:
-    - port: {{ .Values.multena.port }}
+    - port: {{ .Values.service.port }}
       targetPort: http
       protocol: TCP
       name: {{ include "gp-multena.name" . }}
+    - port: {{ .Values.service.metricsPort }}
+      targetPort: metrics
+      protocol: TCP
+      name: {{ include "gp-multena.name" . }}-metrics
   selector:
     {{- include "gp-multena.selectorLabels" . | nindent 4 }}
   type: ClusterIP
