@@ -1,3 +1,4 @@
+{{- if .Values.baukasten.enabled }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,3 +6,4 @@ metadata:
   namespace: {{ .Release.Namespace }}
 data:
 {{ (tpl (.Files.Glob "plugins/*").AsConfig . | indent 2 )}}
+{{- end }}

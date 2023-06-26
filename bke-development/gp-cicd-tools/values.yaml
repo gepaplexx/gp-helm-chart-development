@@ -25,6 +25,7 @@ vela-core:
   multicluster:
     enabled: false
 
+
 ####################
 ##  ARGO  EVENTS  ##
 ####################
@@ -291,6 +292,7 @@ postgresql:
 ##    Baukasten     ##
 ######################
 baukasten:
+  enabled: false
   components:
     name: "components"
     source:

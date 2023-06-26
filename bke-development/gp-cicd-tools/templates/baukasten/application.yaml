@@ -1,3 +1,4 @@
+{{- if .Values.baukasten.enabled }}
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -36,5 +37,6 @@ spec:
     syncOptions:
       - CreateNamespace=false
 ---
+{{- end }}
 {{- end }}
 {{- end }}
