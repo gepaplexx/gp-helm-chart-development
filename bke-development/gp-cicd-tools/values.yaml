@@ -246,10 +246,10 @@ argocd:
   repo:
     resources:
       limits:
-        cpu: 100m
+        cpu: 200m
         memory: 256Mi
       requests:
-        cpu: 20m
+        cpu: 50m
         memory: 128Mi
   server:
     resources:
@@ -257,7 +257,7 @@ argocd:
         cpu: 100m
         memory: 256Mi
       requests:
-        cpu: 20m
+        cpu: 50m
         memory: 128Mi
   rbac:
     defaultPolicy: ''
