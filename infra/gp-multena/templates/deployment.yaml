@@ -67,7 +67,7 @@ spec:
               name: multena-labels
               {{- end }}
               {{- if eq .Values.multena.provider "mysql" }}
-            - mountPath: /etc/secret/db/
+            - mountPath: /etc/secrets/db/
               name: multena-db-secret
               {{- end }}
       volumes:
