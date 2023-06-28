@@ -17,7 +17,7 @@ spec:
         spec:
           containers:
             - name: "vault-raft-backup"
-              image: 'hashicorp/vault:1.13.1'
+              image: 'hashicorp/vault:{{ .Chart.AppVersion }}'
               command: ["/bin/sh", "-ec"]
               args:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
