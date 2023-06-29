@@ -30,10 +30,10 @@ spec:
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
               resources:
                 requests:
-                  memory: '100Mi'
-                  cpu: '100m'
+                  memory: {{ .Values.backup.resources.requests.memory }}
+                  cpu: {{ .Values.backup.resources.requests.cpu }}
                 limits:
-                  memory: "600Mi"
+                  memory: {{ .Values.backup.resources.limits.memory }}
               env:
                 - name: VAULT_ADDR
                   value: 'http://vault-active:8200'

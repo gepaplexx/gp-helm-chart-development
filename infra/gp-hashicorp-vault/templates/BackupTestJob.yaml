@@ -23,24 +23,7 @@ metadata:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 data:
   config.hcl: |
-    disable_mlock = true
-    cluster_addr = "http://faketestingaddress:8200"
-    api_addr = "http://127.0.0.1:8200"
-    storage "raft" {
-      path = "/data"
-    }
-    listener "tcp" {
-      address = "127.0.0.1:8200"
-      tls_disable = true
-    }
-    seal "gcpckms" {
-      credentials = "/vault/userconfig/unseal-creds/creds.json"
-      project = "gepaplexx"
-      region = "europe-west6"
-      key_ring = "gepaplexx-keyring"
-      crypto_key = "vault-key"
-      disabled = "false"
-    }
+    {{ tpl .Values.backup.testingVaultConfig . | nindent 4 | trim }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -81,10 +64,10 @@ spec:
                   && if [ -z "$(vault secrets list | grep cluster/config/)" ]; then echo "cluster/config/ secret store not found in backup!"; exit 1; fi
               resources:
                 requests:
-                  memory: '100Mi'
-                  cpu: '100m'
+                  memory: {{ .Values.backup.testingResources.requests.memory }}
+                  cpu: {{ .Values.backup.testingResources.requests.cpu }}
                 limits:
-                  memory: "600Mi"
+                  memory: {{ .Values.backup.testingResources.limits.memory }}
               volumeMounts:
                 - name: backup-volume
                   mountPath: /backup
