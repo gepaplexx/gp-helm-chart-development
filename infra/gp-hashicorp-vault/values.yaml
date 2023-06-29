@@ -5,6 +5,39 @@ backup:
   retain:
     days: 31 # need to +1, so 30 days = 31
   storageClass: cephfs-fspool-cluster
+  resources:
+    requests:
+      memory: '100Mi'
+      cpu: '20m'
+    limits:
+      memory: '150Mi'
+  testingResources:
+    requests:
+      memory: '100Mi'
+      cpu: '20m'
+    limits:
+      memory: '150Mi'
+  testingSchedule: '0 3 * * *'
+  testingVaultConfig: |
+    disable_mlock = true
+    cluster_addr = "http://faketestingaddress:8200"
+    api_addr = "http://127.0.0.1:8200"
+    storage "raft" {
+      path = "/data"
+    }
+    listener "tcp" {
+      address = "127.0.0.1:8200"
+      tls_disable = true
+    }
+    seal "gcpckms" {
+      credentials = "/vault/userconfig/unseal-creds/creds.json"
+      project = "gepaplexx"
+      region = "europe-west6"
+      key_ring = "gepaplexx-keyring"
+      crypto_key = "vault-key"
+      disabled = "false"
+    }
+
 ingress:
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS
