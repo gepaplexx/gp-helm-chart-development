@@ -25,6 +25,7 @@ spec:
               command: ["/bin/sh", "-ec"]
               args:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
+                  && echo "Creating backup"
                   && export BACKUP_NAME="vault-backup-${TIMESTAMP}.snap"
                   && cd /backup
                   && export VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="backup-creator" jwt=$(cat /run/secrets/kubernetes.io/serviceaccount/token))
@@ -32,6 +33,7 @@ spec:
                   && vault token revoke -self
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
                   && ln -sf ${BACKUP_NAME} latest
+                  && echo "Backup created"
               resources:
                 requests:
                   memory: {{ .Values.backup.resources.requests.memory }}
