@@ -15,6 +15,9 @@ spec:
     spec:
       backoffLimit: 3
       template:
+        metadata:
+          labels:
+            {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
         spec:
           containers:
             - name: "vault-raft-backup"
