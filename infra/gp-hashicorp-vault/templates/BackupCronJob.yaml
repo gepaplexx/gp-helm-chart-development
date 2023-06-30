@@ -17,7 +17,7 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+              {{- include "gp-hashicorp-vault.labels" . | nindent 12 }}
         spec:
           containers:
             - name: "vault-raft-backup"
