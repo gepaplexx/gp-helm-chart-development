@@ -10,6 +10,7 @@ spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
   schedule: '{{ .Values.backup.schedule }}'
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       backoffLimit: 3

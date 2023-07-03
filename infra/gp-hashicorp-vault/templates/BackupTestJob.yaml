@@ -35,6 +35,7 @@ metadata:
 spec:
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
+  concurrencyPolicy: Forbid
   schedule: '{{ .Values.backup.testingSchedule }}'
   jobTemplate:
     spec:
