@@ -21,7 +21,7 @@ dependencies:
   - name: argo-events
     alias: argo_events
     repository: "https://argoproj.github.io/argo-helm"
-    version: ~2.3.3
+    version: ~2.4.0
     condition: argo_events.enabled
   - name: argo-workflows
     alias: argo_workflows
