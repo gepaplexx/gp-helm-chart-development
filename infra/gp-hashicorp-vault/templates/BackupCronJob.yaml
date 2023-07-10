@@ -2,12 +2,12 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: 'gp-vault-backup'
+  name: 'vault-backup'
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
-  successfulJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
   schedule: '{{ .Values.backup.schedule }}'
   concurrencyPolicy: Forbid

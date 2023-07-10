@@ -33,7 +33,7 @@ metadata:
   labels:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
-  successfulJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
   concurrencyPolicy: Forbid
   schedule: '{{ .Values.backup.testingSchedule }}'
