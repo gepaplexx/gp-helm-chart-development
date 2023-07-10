@@ -31,4 +31,16 @@ spec:
         clone:
           namespace: {{ .Release.Namespace }}
           name: workflows-artifact-repository
+---
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: workflows-artifact-repository-objectstore
+  namespace: {{ .Release.Namespace }}
+spec:
+  parameters:
+    bucketName: {{ .Values.argo_workflows.artifactRepository.s3.bucket }}
+    region: {{ .Values.argo_workflows.archive.region }}
+  writeConnectionSecretToRef:
+    name: workflows-artifact-repository
 {{- end }}
