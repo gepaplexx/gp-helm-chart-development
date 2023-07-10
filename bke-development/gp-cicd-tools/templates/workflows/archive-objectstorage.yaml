@@ -40,7 +40,7 @@ metadata:
 spec:
   parameters:
     bucketName: {{ .Values.argo_workflows.artifactRepository.s3.bucket }}
-    region: {{ .Values.argo_workflows.archive.region }}
+    region: {{ .Values.argo_workflows.artifactRepository.s3.region }}
   writeConnectionSecretToRef:
     name: workflows-artifact-repository
 {{- end }}
