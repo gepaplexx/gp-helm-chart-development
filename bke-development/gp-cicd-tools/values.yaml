@@ -182,20 +182,20 @@ argo_workflows:
           key: password
 
   archive:
-    enabled: false # TODO Umstellen
+    enabled: true
   useDefaultArtifactRepo: true
   artifactRepository:
-    archiveLogs: false # TODO Umstellen
+    archiveLogs: true
     s3:
       accessKeySecret:
         name: workflows-artifact-repository
-        key: accesskey
+        key: AWS_ACCESS_KEY_ID
       secretKeySecret:
         name: workflows-artifact-repository
-        key: secretkey
-      insecure: true
+        key: AWS_SECRET_ACCESS_KEY
+      insecure: false
       bucket: argo-workflows
-      endpoint: #TODO S3 Bucket von Exoscale location
+      endpoint: sos-at-vie-1.exo.io
 
   workflow:
     serviceAccount:
