@@ -195,7 +195,7 @@ argo_workflows:
         key: AWS_ACCESS_KEY_ID
       insecure: true
       bucket: argo-workflows
-      endpoint: https://sos-at-vie-1.exo.io
+      endpoint: sos-at-vie-1.exo.io
       region: at-vie-1
 
   workflow:
