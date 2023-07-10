@@ -196,6 +196,7 @@ argo_workflows:
       insecure: false
       bucket: argo-workflows
       endpoint: sos-at-vie-1.exo.io
+      region: at-vie-1
 
   workflow:
     serviceAccount:
