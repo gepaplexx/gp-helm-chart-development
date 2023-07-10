@@ -189,14 +189,13 @@ argo_workflows:
     s3:
       accessKeySecret:
         name: workflows-artifact-repository
-        key: AWS_SECRET_ACCESS_KEY
+        key: AWS_ACCESS_KEY_ID
       secretKeySecret:
         name: workflows-artifact-repository
-        key: AWS_ACCESS_KEY_ID
-      insecure: true
+        key: AWS_SECRET_ACCESS_KEY
+      insecure: false
       bucket: argo-workflows
       endpoint: sos-at-vie-1.exo.io
-      region: at-vie-1
 
   workflow:
     serviceAccount:
