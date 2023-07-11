@@ -22,7 +22,7 @@ spec:
           containers:
             - name: "vault-raft-backup"
               image: 'hashicorp/vault:{{ .Chart.AppVersion }}'
-              command: ["/bin/sh", "-ec"]
+              command: [ "/bin/sh", "-ec" ]
               args:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
                   && echo "Creating backup"
@@ -46,10 +46,54 @@ spec:
               volumeMounts:
                 - name: "backup-volume"
                   mountPath: /backup
+            {{- if .Values.backup.external.enabled}}
+            - name: minio-backup-mover
+              image: 'quay.io/minio/mc:latest'
+              env:
+                - name: ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: AWS_ACCESS_KEY_ID
+                - name: SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: AWS_SECRET_ACCESS_KEY
+                - name: HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: ENDPOINT_URL
+                - name: BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: BUCKET_NAME
+              command: [ "/bin/sh", "-ec" ]
+              args:
+                - echo "waiting for vault backup to be created"
+                  && sleep 10
+                  && mc --config-dir /root/.mc alias set minio-backup-mover $HOST $ACCESS_KEY_ID $SECRET_KEY
+                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET
+              resources:
+                requests:
+                  memory: 10Mi
+                  cpu: 10m
+              volumeMounts:
+                - name: "backup-volume"
+                  mountPath: /backup
+                - name: "mc-config"
+                  mountPath: /root/.mc
+            {{- end }}
           volumes:
             - name: "backup-volume"
               persistentVolumeClaim:
                 claimName: 'gp-vault-backup-pvc'
+            {{- if .Values.backup.external.enabled}}
+            - name: "mc-config"
+              emptyDir: {}
+            {{- end }}
           restartPolicy: Never
           serviceAccountName: vault-backup-sa
 {{- end }}
@@ -61,3 +105,17 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+---
+{{- if .Values.backup.external.enabled }}
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: vault-backup-bucket
+  namespace: {{ .Release.Namespace }}
+spec:
+  parameters:
+    bucketName: {{ .Values.backup.external.bucket }}
+    region: {{ .Values.backup.external.region }}
+  writeConnectionSecretToRef:
+    name: vault-backup-ext-credentials
+{{- end }}
