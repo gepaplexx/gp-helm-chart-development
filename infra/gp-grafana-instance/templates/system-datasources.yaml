@@ -2,14 +2,14 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: system-datasources
+  name: prometheus
   namespace: {{ .Release.Namespace }}
 spec:
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: "true"
   datasource:
-    - name: Prometheus
+      name: Prometheus
       uid: prometheus
       type: prometheus
       url: ${THANOS_QUERIER_ADDRESS}
@@ -24,7 +24,18 @@ spec:
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
-    - name: Loki (Application)
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: loki-application
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
+  datasource:
+      name: Loki (Application)
       uid: logging-application
       type: loki
       url: ${LOKI_GATEWAY_ADDRESS}/application/
@@ -40,7 +51,18 @@ spec:
       secureJsonData:
         httpHeaderValue1: Bearer ${BEARER_TOKEN}
         tlsCACert: ${SERVICE_CA}
-    - name: Loki (Infrastructure)
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: loki-infrastructure
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
+  datasource:
+      name: Loki (Infrastructure)
       uid: logging-infrastructure
       type: loki
       url: ${LOKI_GATEWAY_ADDRESS}/infrastructure/
