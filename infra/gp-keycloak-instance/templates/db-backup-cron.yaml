@@ -57,9 +57,53 @@ spec:
               volumeMounts:
                 - name: "backup-volume"
                   mountPath: /backup
+            {{- if .Values.postgresql.backup.external.enabled }}
+            - name: minio-backup-mover
+              image: 'quay.io/minio/mc:latest'
+              env:
+                - name: ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak-backup-ext-credentials
+                      key: AWS_ACCESS_KEY_ID
+                - name: SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak-backup-ext-credentials
+                      key: AWS_SECRET_ACCESS_KEY
+                - name: HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak-backup-ext-credentials
+                      key: ENDPOINT_URL
+                - name: BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: keycloak-backup-ext-credentials
+                      key: BUCKET_NAME
+              command: [ "/bin/sh", "-ec" ]
+              args:
+                - echo "waiting for keycloak backup to be created"
+                  && sleep 10
+                  && mc --config-dir /root/.mc alias set minio-backup-mover $HOST $ACCESS_KEY_ID $SECRET_KEY
+                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET
+              resources:
+                requests:
+                  memory: 10Mi
+                  cpu: 10m
+              volumeMounts:
+                - name: "backup-volume"
+                  mountPath: /backup
+                - name: "mc-config"
+                  mountPath: /root/.mc
+            {{- end }}
           volumes:
             - name: "backup-volume"
               persistentVolumeClaim:
                 claimName: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
+            {{- if .Values.postgresql.backup.external.enabled }}
+            - name: "mc-config"
+              emptyDir: {}
+            {{- end }}
           restartPolicy: Never
 {{- end }}
