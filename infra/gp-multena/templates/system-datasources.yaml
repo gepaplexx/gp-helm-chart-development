@@ -1,12 +1,11 @@
 {{- if .Values.GrafanaOperatorDatasources }}
-apiVersion: integreatly.org/v1alpha1
-kind: GrafanaDataSource
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
 metadata:
   name: {{ include "gp-multena.name" . }}-proxy-datasource
   namespace: {{ .Release.Namespace }}
 spec:
-  name: system-datasources.yaml
-  datasources:
+  datasource:
     - name: metrics-multena (Thanos)
       uid: metrics-multena
       type: prometheus
