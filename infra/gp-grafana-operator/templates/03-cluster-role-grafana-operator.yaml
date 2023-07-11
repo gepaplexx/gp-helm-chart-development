@@ -17,7 +17,7 @@ rules:
       - update
       - patch
   - apiGroups:
-      - integreatly.org
+      - grafana.integreatly.org
     resources:
       - grafanadashboards
       - grafanadatasources
