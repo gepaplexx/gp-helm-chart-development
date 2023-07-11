@@ -45,6 +45,10 @@ postgresql:
       size: 8Gi
   backup:
     enabled: true
+    external:
+      enabled: true
+      region: at-vie-1
+      bucket: keycloak-backup
     # default values if backu is enabled
     size: 10Gi
     schedule: '0 0 * * *'
