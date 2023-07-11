@@ -1,12 +1,14 @@
 {{- if .Values.systemDatasources }}
-apiVersion: integreatly.org/v1alpha1
-kind: GrafanaDataSource
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
 metadata:
   name: system-datasources
   namespace: {{ .Release.Namespace }}
 spec:
-  name: system-datasources.yaml
-  datasources:
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
+  datasource:
     - name: Prometheus
       uid: prometheus
       type: prometheus
