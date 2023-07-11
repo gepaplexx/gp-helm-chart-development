@@ -46,8 +46,8 @@ spec:
     server:
       root_url: https://{{ .Values.ingress.hostname }}
     auth:
-      disable_login_form: False
-      disable_signout_menu: False
+      disable_login_form: "False"
+      disable_signout_menu: "False"
     auth.generic_oauth:
       client_id: {{ .Values.sso.keycloak.clientId}}
       enabled: "true"
@@ -107,6 +107,4 @@ spec:
                       key: token
                       name: grafana-serviceaccount-token
               {{- end }}
-{{/*      secrets:*/}}
-{{/*        - grafana-serviceaccount-token*/}}
   {{- end }}
