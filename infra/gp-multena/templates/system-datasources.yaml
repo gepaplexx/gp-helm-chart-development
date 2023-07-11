@@ -2,11 +2,14 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: {{ include "gp-multena.name" . }}-proxy-datasource
+  name: multena-metrics-datasource
   namespace: {{ .Release.Namespace }}
 spec:
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
   datasource:
-    - name: metrics-multena (Thanos)
+      name: metrics-multena (Thanos)
       uid: metrics-multena
       type: prometheus
       url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
@@ -17,7 +20,18 @@ spec:
         httpMethod: POST
         oauthPassThru: true
         manageAlerts: false
-    - name: logs-multena (Loki-Application)
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: multena-application-logs-datasource
+  namespace: {{ .Release.Namespace }}
+spec:
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: "true"
+  datasource:
+      name: logs-multena (Loki-Application)
       uid: logs-multena
       type: loki
       url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
