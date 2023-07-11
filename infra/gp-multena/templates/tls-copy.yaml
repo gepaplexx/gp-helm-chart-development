@@ -1,0 +1,44 @@
+{{- if .Values.tlsCopy.loki.enabled }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: copy-secret-policy-loki
+spec:
+  rules:
+    - name: copy-loki-secret
+      match:
+        resources:
+          kinds:
+            - Namespace
+          names: ["{{ .Release.Namespace }}"]
+      generate:
+        kind: Secret
+        name: {{.Values.tlsCopy.loki.secretName}}
+        namespace: {{ .Release.Namespace }}
+        synchronize: true
+        clone:
+          namespace: {{.Values.tlsCopy.loki.secretNamespace}}
+          name: {{.Values.tlsCopy.loki.secretName}}
+{{- end }}
+{{- if .Values.tlsCopy.thanos.enabled }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: copy-secret-policy-thanos
+spec:
+  rules:
+    - name: copy-thanos-secret
+      match:
+        resources:
+          kinds:
+            - Namespace
+          names: ["{{ .Release.Namespace }}"]
+      generate:
+        kind: Secret
+        name: {{.Values.tlsCopy.thanos.secretName}}
+        namespace: {{ .Release.Namespace }}
+        synchronize: true
+        clone:
+          namespace: {{.Values.tlsCopy.thanos.secretNamespace}}
+          name: {{.Values.tlsCopy.thanos.secretName}}
+{{- end }}

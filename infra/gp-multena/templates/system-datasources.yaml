@@ -10,7 +10,7 @@ spec:
     - name: metrics-multena (Thanos)
       uid: metrics-multena
       type: prometheus
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
+      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
       access: proxy
       editable: true
       isDefault: false
@@ -21,7 +21,7 @@ spec:
     - name: logs-multena (Loki-Application)
       uid: logs-multena
       type: loki
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
+      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.metricsPort }}"
       access: proxy
       editable: true
       isDefault: false
