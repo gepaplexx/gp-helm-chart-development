@@ -24,7 +24,7 @@ spec:
     spec:
       defaultBackend:
         service:
-          name: grafana-service
+          name: grafana-instance-service
           port:
             name: grafana
       ingressClassName: openshift-default
@@ -105,6 +105,6 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: token
-                      name: grafana-serviceaccount-token
+                      name: grafana-instance-sa-token
               {{- end }}
   {{- end }}
