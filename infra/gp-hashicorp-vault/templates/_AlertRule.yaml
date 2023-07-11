@@ -1,0 +1,21 @@
+apiVersion: loki.grafana.com/v1
+kind: AlertingRule
+metadata:
+  name: vault-backup-alert
+  namespace: {{ .Release.Namespace }}
+spec:
+  tenantID: application
+  groups:
+    - interval: 10m
+      name: Vault Backup alerter
+      limit: 2
+      rules:
+        - alert: VaultBackupFailed
+          expr: |
+            count(rate({kubernetes_namespace_name="gp-vault", kubernetes_pod_name=~"vault-backup-.+"} |= `Creating backup` [$__range])) > count(rate({kubernetes_namespace_name="gp-vault", kubernetes_pod_name=~"vault-backup-.+"} |= `Backup created` [$__range]))
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Vault backup failed"
+            description: "Vault backup failed"
