@@ -1,5 +1,9 @@
 backup:
   enabled: true
+  external:
+    enabled: true
+    bucket: vault-backup
+    region: at-vie-1
   schedule: '0 0 * * *'
   size: 2Gi
   retain:
