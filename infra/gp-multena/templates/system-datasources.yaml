@@ -43,4 +43,4 @@ spec:
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: 'true'
-{{-end}}
+{{- end }}
