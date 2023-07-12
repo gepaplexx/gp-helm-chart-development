@@ -17,31 +17,6 @@ spec:
         requests:
           storage: 1Gi
       storageClassName: cephfs-fspool-cluster
-  ingress:
-    metadata:
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
-    spec:
-      defaultBackend:
-        service:
-          name: grafana-instance-service
-          port:
-            name: grafana
-      ingressClassName: openshift-default
-      rules:
-        - host: {{ .Values.ingress.hostname }}
-          http:
-            paths:
-              - backend:
-                  service:
-                    name: grafana-service
-                    port:
-                      name: grafana
-                pathType: ImplementationSpecific
-      tls:
-        - hosts:
-            - {{ .Values.ingress.hostname }}
-          secretName: grafana-tls
   config:
     server:
       root_url: https://{{ .Values.ingress.hostname }}
@@ -49,7 +24,7 @@ spec:
       disable_login_form: "False"
       disable_signout_menu: "False"
     auth.generic_oauth:
-      client_id: {{ .Values.sso.keycloak.clientId}}
+      client_id: {{ .Values.sso.keycloak.clientId }}
       enabled: "true"
       client_secret: ""
       allow_sign_up: "true"
@@ -74,7 +49,6 @@ spec:
       admin_user: {{ default "admin" .Values.auth.admin.user }}
     feature_toggles:
       enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders
-
   {{- if .Values.systemDatasources }}
   deployment:
     spec:
