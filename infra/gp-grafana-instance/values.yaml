@@ -27,3 +27,6 @@ resources:
     memory: 1Gi
 systemDatasources: true
 systemDashboards: true
+patch:
+  namespace: syn-patch-operator
+  serviceAccount: patch-sa
