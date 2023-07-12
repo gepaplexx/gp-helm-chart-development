@@ -5,6 +5,9 @@ grafana:
   version: docker.io/grafana/grafana:10.0.0-ubuntu
 ingress:
   hostname: grafana.apps.example.gepaplexx.com
+  annotations:
+    cert-manager.io/issuer-kind: ClusterIssuer
+    cert-manager.io/issuer-name: letsencrypt-production
 auth:
   admin:
     user: "admin"
