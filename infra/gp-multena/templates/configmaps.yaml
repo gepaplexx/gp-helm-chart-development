@@ -12,10 +12,10 @@ data:
       log_tokens: {{ .Values.multena.log.logTokens }}
     tenant_provider: {{ .Values.multena.provider }}
     web:
-      proxy_port: {{ .Values.multena.web.proxyPort }}
-      metrics_port: {{ .Values.multena.web.metricsPort }}
+      proxy_port: {{ .Values.service.webPort }}
+      metrics_port: {{ .Values.service.metricsPort }}
       host: {{ .Values.multena.web.host }}
-      insecure_skip_verify: {{ .Values.multena.insecureSkipVerify }}
+      insecure_skip_verify: false
       trusted_root_ca_path: {{ .Values.multena.web.trustedRootCaPath }}
       jwks_cert_url: {{ .Values.multena.jwksCertUrl }}
     admin:
@@ -45,8 +45,6 @@ data:
       tenant_label: {{ .Values.multena.loki.tenantLabel }}
       cert: "/etc/secrets/loki/cert.pem"
       key: "/etc/secrets/loki/key.pem"
-    users: {{ toYaml .Values.multena.users | nindent 4 }}
-    groups: {{ toYaml .Values.multena.groups | nindent 4 }}
 
 
 ---
