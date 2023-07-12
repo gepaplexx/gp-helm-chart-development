@@ -67,15 +67,15 @@ spec:
               name: multena-labels
               {{- end }}
               {{- if eq .Values.multena.provider "mysql" }}
-            - mountPath: /etc/secret/db/
+            - mountPath: /etc/secrets/db/
               name: multena-db-secret
               {{- end }}
               {{- if eq .Values.tlsCopy.loki.enabled true }}
-            - mountPath: /etc/secret/loki/
+            - mountPath: /etc/secrets/loki/
               name: multena-loki-tls-secret
               {{- end }}
               {{- if eq .Values.tlsCopy.thanos.enabled true }}
-            - mountPath: /etc/secret/thanos/
+            - mountPath: /etc/secrets/thanos/
               name: multena-thanos-tls-secret
               {{- end }}
       volumes:
