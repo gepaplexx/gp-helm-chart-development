@@ -4,6 +4,7 @@ kind: ClusterPolicy
 metadata:
   name: clone-workflows-artifact-repository-secret
 spec:
+  generateExisting: true
   validationFailureAction: enforce
   rules:
     - name: clone-argo-workflows-repository-credentials
