@@ -49,7 +49,6 @@ spec:
       admin_user: {{ default "admin" .Values.auth.admin.user }}
     feature_toggles:
       enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders
-  {{- if .Values.systemDatasources }}
   deployment:
     spec:
       template:
@@ -64,4 +63,10 @@ spec:
                 limits:
                   cpu: "100m"
                   memory: "256Mi"
-  {{- end }}
+              volumeMounts:
+                - mountPath: /var/lib/grafana
+                  name: grafana-data
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: {{ .Release.Name }}-pvc
