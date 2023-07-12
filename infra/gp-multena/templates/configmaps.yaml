@@ -38,13 +38,13 @@ data:
     thanos:
       url: {{ .Values.multena.thanos.url }}
       tenant_label: {{ .Values.multena.thanos.tenantLabel }}
-      cert: "/etc/secrets/thanos/cert.pem"
-      key: "/etc/secrets/thanos/key.pem"
+      cert: "/etc/secrets/loki/tls.crt"
+      key: "/etc/secrets/loki/tls.key"
     loki:
       url: {{ .Values.multena.loki.url }}
       tenant_label: {{ .Values.multena.loki.tenantLabel }}
-      cert: "/etc/secrets/loki/cert.pem"
-      key: "/etc/secrets/loki/key.pem"
+      cert: "/etc/secrets/loki/tls.crt"
+      key: "/etc/secrets/loki/tls.key"
 
 
 ---
