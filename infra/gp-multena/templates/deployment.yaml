@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent"  }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.webPort }}
               protocol: TCP
             - name: metrics
               containerPort: {{ .Values.service.metricsPort }}

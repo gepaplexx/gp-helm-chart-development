@@ -5,7 +5,7 @@ tlsCopy:
     secretName: loki-query-frontend-http
     secretNamespace: openshift-logging
   thanos:
-    enabled: true
+    enabled: false
     secretName: thanos-querier-tls
     secretNamespace: openshift-monitoring
 

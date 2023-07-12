@@ -7,7 +7,7 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
   ports:
-    - port: {{ .Values.service.port }}
+    - port: {{ .Values.service.webPort }}
       targetPort: http
       protocol: TCP
       name: {{ include "gp-multena.name" . }}

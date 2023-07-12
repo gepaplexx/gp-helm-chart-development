@@ -1,32 +1,46 @@
 {{- if .Values.GrafanaOperatorDatasources }}
-apiVersion: integreatly.org/v1alpha1
-kind: GrafanaDataSource
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
 metadata:
-  name: {{ include "gp-multena.name" . }}-proxy-datasource
+  name: {{ include "gp-multena.name" . }}-metrics-datasource
   namespace: {{ .Release.Namespace }}
 spec:
-  name: system-datasources.yaml
-  datasources:
-    - name: metrics-multena (Thanos)
-      uid: metrics-multena
-      type: prometheus
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
-      access: proxy
-      editable: true
-      isDefault: false
-      jsonData:
-        httpMethod: POST
-        oauthPassThru: true
-        manageAlerts: false
-    - name: logs-multena (Loki-Application)
-      uid: logs-multena
-      type: loki
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.metricsPort }}"
-      access: proxy
-      editable: true
-      isDefault: false
-      jsonData:
-        httpMethod: POST
-        oauthPassThru: true
-        manageAlerts: false
-{{- end }}
+  datasource:
+    name: metrics-multena (Thanos)
+    uid: metrics-multena
+    type: prometheus
+    url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
+    access: proxy
+    editable: true
+    isDefault: false
+    jsonData:
+      httpMethod: POST
+      oauthPassThru: true
+      manageAlerts: false
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: 'true'
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: {{ include "gp-multena.name" . }}-logs-datasource
+  namespace: {{ .Release.Namespace }}
+spec:
+  datasource:
+    name: logs-multena (Loki-Application)
+    uid: logs-multena
+    type: loki
+    url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
+    access: proxy
+    editable: true
+    isDefault: false
+    jsonData:
+      httpMethod: POST
+      oauthPassThru: true
+      manageAlerts: false
+  instanceSelector:
+    matchLabels:
+      monitoring.gepardec.com/system: 'true'
+{{-end}}
