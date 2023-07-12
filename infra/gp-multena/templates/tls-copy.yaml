@@ -4,17 +4,11 @@ kind: ClusterPolicy
 metadata:
   name: copy-secret-policy-loki
 spec:
+  generateExisting: true
   validationFailureAction: enforce
   rules:
     - name: clone-{{ .Values.tlsCopy.loki.secretName }}-tls
       match:
-        any:
-          - resources:
-              kinds:
-                - Namespace
-              names:
-                - {{ .Values.tlsCopy.loki.secretNamespace }}
-      exclude:
         any:
           - resources:
               kinds:
@@ -29,7 +23,7 @@ spec:
         namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{ .Release.Namespace }}
+          namespace: {{ .Values.tlsCopy.loki.secretNamespace }}
           name: {{ .Values.tlsCopy.loki.secretName }}
 {{- end }}
 {{- if .Values.tlsCopy.thanos.enabled }}
@@ -38,17 +32,11 @@ kind: ClusterPolicy
 metadata:
   name: copy-secret-policy-thanos
 spec:
+  generateExisting: true
   validationFailureAction: enforce
   rules:
     - name: clone-{{ .Values.tlsCopy.thanos.secretName }}-tls
       match:
-        any:
-          - resources:
-              kinds:
-                - Namespace
-              names:
-                - {{ .Values.tlsCopy.thanos.secretNamespace }}
-      exclude:
         any:
           - resources:
               kinds:
@@ -63,6 +51,6 @@ spec:
         namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{ .Release.Namespace }}
+          namespace: {{ .Values.tlsCopy.thanos.secretNamespace }}
           name: {{ .Values.tlsCopy.thanos.secretName }}
 {{- end }}
