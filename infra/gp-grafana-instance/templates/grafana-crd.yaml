@@ -64,21 +64,4 @@ spec:
                 limits:
                   cpu: "100m"
                   memory: "256Mi"
-              {{- if .Values.systemDatasources }}
-              env:
-                - name: SERVICE_CA
-                  valueFrom:
-                    configMapKeyRef:
-                      key: service-ca.crt
-                      name: openshift-service-ca.crt
-                - name: LOKI_GATEWAY_ADDRESS
-                  value: 'https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1'
-                - name: THANOS_QUERIER_ADDRESS
-                  value: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
-                - name: BEARER_TOKEN
-                  valueFrom:
-                    secretKeyRef:
-                      key: token
-                      name: grafana-instance-sa-token
-              {{- end }}
   {{- end }}

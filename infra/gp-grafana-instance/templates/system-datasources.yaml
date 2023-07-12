@@ -8,11 +8,17 @@ spec:
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: "true"
+  valuesFrom:
+    - targetPath: secureJsonData.tlsCACert
+      valueFrom:
+        configMapKeyRef:
+          key: service-ca.crt
+          name: openshift-service-ca.crt
   datasource:
       name: Prometheus
       uid: prometheus
       type: prometheus
-      url: ${THANOS_QUERIER_ADDRESS}
+      url: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
       access: proxy
       editable: true
       isDefault: true
@@ -22,8 +28,8 @@ spec:
         oauthPassThru: false
         tlsAuthWithCACert: true
       secureJsonData:
-        httpHeaderValue1: Bearer ${BEARER_TOKEN}
-        tlsCACert: ${SERVICE_CA}
+        httpHeaderValue1: ""
+        tlsCACert: ${service-ca.crt}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -34,11 +40,17 @@ spec:
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: "true"
+  valuesFrom:
+    - targetPath: secureJsonData.tlsCACert
+      valueFrom:
+        configMapKeyRef:
+          key: service-ca.crt
+          name: openshift-service-ca.crt
   datasource:
       name: Loki (Application)
       uid: logging-application
       type: loki
-      url: ${LOKI_GATEWAY_ADDRESS}/application/
+      url: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application/
       access: proxy
       editable: true
       isDefault: false
@@ -49,8 +61,8 @@ spec:
         tlsAuthWithCACert: true
         manageAlerts: false
       secureJsonData:
-        httpHeaderValue1: Bearer ${BEARER_TOKEN}
-        tlsCACert: ${SERVICE_CA}
+        httpHeaderValue1: ""
+        tlsCACert: ${service-ca.crt}
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
@@ -61,11 +73,17 @@ spec:
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: "true"
+  valuesFrom:
+    - targetPath: secureJsonData.tlsCACert
+      valueFrom:
+        configMapKeyRef:
+          key: service-ca.crt
+          name: openshift-service-ca.crt
   datasource:
       name: Loki (Infrastructure)
       uid: logging-infrastructure
       type: loki
-      url: ${LOKI_GATEWAY_ADDRESS}/infrastructure/
+      url: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/infrastructure/
       access: proxy
       editable: true
       isDefault: false
@@ -76,6 +94,69 @@ spec:
         tlsAuthWithCACert: true
         manageAlerts: false
       secureJsonData:
-        httpHeaderValue1: Bearer ${BEARER_TOKEN}
-        tlsCACert: ${SERVICE_CA}
+        httpHeaderValue1: ""
+        tlsCACert: ${service-ca.crt}
   {{- end }}
+---
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: grafana-datasource-bearer-workaround-patch
+  namespace: {{ .Values.patch.namespace }}
+  labels:
+    {{- include "gp-grafana-instance.labels" . | nindent 4 }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.patch.serviceAccount }}
+  patches:
+    patch-prometheus:
+      targetObjectRef:
+        apiVersion: grafana.integreatly.org/v1beta1
+        kind: GrafanaDatasource
+        name: prometheus
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          datasource:
+            secureJsonData:
+              httpHeaderValue1: Bearer {{`{{ (index . 1).data.token | b64dec }}`}}
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Release.Name }}-sa-token
+      patchType: application/merge-patch+json
+    patch-loki-application:
+      targetObjectRef:
+        apiVersion: grafana.integreatly.org/v1beta1
+        kind: GrafanaDatasource
+        name: loki-application
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          datasource:
+            secureJsonData:
+              httpHeaderValue1: Bearer {{`{{ (index . 1).data.token | b64dec }}`}}
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Release.Name }}-sa-token
+      patchType: application/merge-patch+json
+    patch-loki-infrastucture:
+      targetObjectRef:
+        apiVersion: grafana.integreatly.org/v1beta1
+        kind: GrafanaDatasource
+        name: loki-infrastructure
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          datasource:
+            secureJsonData:
+              httpHeaderValue1: Bearer {{`{{ (index . 1).data.token | b64dec }}`}}
+      sourceObjectRefs:
+        - apiVersion: v1
+          kind: Secret
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Release.Name }}-sa-token
+      patchType: application/merge-patch+json
