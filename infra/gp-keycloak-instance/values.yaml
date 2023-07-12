@@ -46,7 +46,7 @@ postgresql:
   backup:
     enabled: true
     external:
-      enabled: true
+      enabled: false
       region: at-vie-1
       bucket: keycloak-backup
     # default values if backu is enabled
