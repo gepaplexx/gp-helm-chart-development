@@ -14,17 +14,13 @@ data:
     web:
       proxy_port: {{ .Values.service.webPort }}
       metrics_port: {{ .Values.service.metricsPort }}
-      host: {{ .Values.multena.web.host }}
+      host: 0.0.0.0
       insecure_skip_verify: false
-      trusted_root_ca_path: {{ .Values.multena.web.trustedRootCaPath }}
+      trusted_root_ca_path: "/etc/secrets/ca"
       jwks_cert_url: {{ .Values.multena.jwksCertUrl }}
     admin:
       bypass: {{ .Values.multena.admin.bypass }}
       group: {{ .Values.multena.admin.group }}
-    dev:
-      enabled: false
-      username: ""
-      service_account_token: ""
     {{- if .Values.multena.db.enabled }}
     db:
       enabled: true
@@ -38,13 +34,13 @@ data:
     thanos:
       url: {{ .Values.multena.thanos.url }}
       tenant_label: {{ .Values.multena.thanos.tenantLabel }}
-      cert: "/etc/secrets/loki/tls.crt"
-      key: "/etc/secrets/loki/tls.key"
+      cert: "/etc/secrets/ca/thanos/tls.crt"
+      key: "/etc/secrets/ca/thanos/tls.key"
     loki:
       url: {{ .Values.multena.loki.url }}
       tenant_label: {{ .Values.multena.loki.tenantLabel }}
-      cert: "/etc/secrets/loki/tls.crt"
-      key: "/etc/secrets/loki/tls.key"
+      cert: "/etc/secrets/ca/loki/tls.crt"
+      key: "/etc/secrets/ca/loki/tls.key"
 
 
 ---

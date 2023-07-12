@@ -24,9 +24,6 @@ multena:
   loki:
     url: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application/
     tenantLabel: kubernetes_namespace_name
-  web:
-    host: 0.0.0.0
-    trustedRootCaPath: "/etc/secrets/ca"
   db:
     enabled: false
     user: multitenant

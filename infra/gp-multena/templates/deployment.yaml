@@ -71,11 +71,11 @@ spec:
               name: multena-db-secret
               {{- end }}
               {{- if eq .Values.tlsCopy.loki.enabled true }}
-            - mountPath: /etc/secrets/loki/
+            - mountPath: /etc/secrets/ca/loki/
               name: multena-loki-tls-secret
               {{- end }}
               {{- if eq .Values.tlsCopy.thanos.enabled true }}
-            - mountPath: /etc/secrets/thanos/
+            - mountPath: /etc/secrets/ca/thanos/
               name: multena-thanos-tls-secret
               {{- end }}
       volumes:
