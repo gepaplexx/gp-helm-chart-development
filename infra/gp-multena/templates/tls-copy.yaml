@@ -4,21 +4,33 @@ kind: ClusterPolicy
 metadata:
   name: copy-secret-policy-loki
 spec:
+  validationFailureAction: enforce
   rules:
-    - name: copy-loki-secret
+    - name: clone-{{ .Values.tlsCopy.loki.secretName }}-tls
       match:
-        resources:
-          kinds:
-            - Namespace
-          names: ["{{ .Release.Namespace }}"]
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - {{ .Values.tlsCopy.loki.secretNamespace }}
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - {{ .Release.Namespace }}
       generate:
         kind: Secret
-        name: {{.Values.tlsCopy.loki.secretName}}
-        namespace: {{ .Release.Namespace }}
+        apiVersion: v1
+        name: {{ .Values.tlsCopy.loki.secretName }}
+        # namespace for the generated resource
+        namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{.Values.tlsCopy.loki.secretNamespace}}
-          name: {{.Values.tlsCopy.loki.secretName}}
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Values.tlsCopy.loki.secretName }}
 {{- end }}
 {{- if .Values.tlsCopy.thanos.enabled }}
 apiVersion: kyverno.io/v1
@@ -26,19 +38,31 @@ kind: ClusterPolicy
 metadata:
   name: copy-secret-policy-thanos
 spec:
+  validationFailureAction: enforce
   rules:
-    - name: copy-thanos-secret
+    - name: clone-{{ .Values.tlsCopy.thanos.secretName }}-tls
       match:
-        resources:
-          kinds:
-            - Namespace
-          names: ["{{ .Release.Namespace }}"]
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - {{ .Values.tlsCopy.thanos.secretNamespace }}
+      exclude:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              names:
+                - {{ .Release.Namespace }}
       generate:
         kind: Secret
-        name: {{.Values.tlsCopy.thanos.secretName}}
-        namespace: {{ .Release.Namespace }}
+        apiVersion: v1
+        name: {{ .Values.tlsCopy.thanos.secretName }}
+        # namespace for the generated resource
+        namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{.Values.tlsCopy.thanos.secretNamespace}}
-          name: {{.Values.tlsCopy.thanos.secretName}}
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Values.tlsCopy.thanos.secretName }}
 {{- end }}
