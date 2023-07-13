@@ -4,5 +4,6 @@ metadata:
   name: {{ .Release.Namespace }}
   namespace: {{ .Release.Namespace }}
 spec:
-  targetNamespaces:
-  - {{ .Release.Namespace }}
+  selector:
+    matchLabels:
+      monitoring.gepardec.com/managed-ns: "true"
