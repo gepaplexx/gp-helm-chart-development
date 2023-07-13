@@ -22,7 +22,7 @@ multena:
     url: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
     tenantLabel: namespace
   loki:
-    url: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application/
+    url: https://loki-query-frontend-http.openshift-logging.svc.cluster.local:3100
     tenantLabel: kubernetes_namespace_name
   db:
     enabled: false

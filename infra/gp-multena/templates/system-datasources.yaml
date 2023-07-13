@@ -40,6 +40,9 @@ spec:
       httpMethod: POST
       oauthPassThru: true
       manageAlerts: false
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: "application"
   instanceSelector:
     matchLabels:
       monitoring.gepardec.com/system: 'true'
