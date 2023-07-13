@@ -1,37 +1,33 @@
-apiVersion: integreatly.org/v1alpha1
+apiVersion: grafana.integreatly.org/v1beta1
 kind: Grafana
 metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-grafana-instance.labels" . | nindent 4 }}
+    {{- if .Values.systemDashboards }}
+    monitoring.gepardec.com/system: "true"
+    {{- end }}
 spec:
-  resources:
-    requests:
-      cpu: "25m"
-      memory: "125Mi"
-    limits:
-      cpu: "100m"
-      memory: "256Mi"
-  dataStorage:
-    accessModes:
-      - ReadWriteMany
-    size: 1Gi
-    class: cephfs-fspool-cluster
-  baseImage: {{ .Values.grafana.version}}
-  ingress:
-    enabled: false
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteMany
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: cephfs-fspool-cluster
   config:
     server:
       root_url: https://{{ .Values.ingress.hostname }}
     auth:
-      disable_login_form: False
-      disable_signout_menu: False
+      disable_login_form: "False"
+      disable_signout_menu: "False"
     auth.generic_oauth:
-      client_id: {{ .Values.sso.keycloak.clientId}}
-      enabled: true
+      client_id: {{ .Values.sso.keycloak.clientId }}
+      enabled: "true"
       client_secret: ""
-      allow_sign_up: true
+      allow_sign_up: "true"
       token_url: >-
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/token
       api_url: >-
@@ -43,42 +39,34 @@ spec:
         {{ .Values.sso.keycloak.realmUrl }}/protocol/openid-connect/auth
       scopes: openid profile offline_access
     auth.anonymous:
-      enabled: false
+      enabled: "false"
     log:
       level: warn
       mode: console
     log.frontend:
-      enabled: true
+      enabled: "true"
     security:
       admin_user: {{ default "admin" .Values.auth.admin.user }}
     feature_toggles:
       enable: accessTokenExpirationCheck autoMigrateOldPanels correlations publicDashboards nestedFolders
-  dashboardLabelSelector:
-    - matchExpressions:
-        - key: dashboard
-          operator: In
-          values:
-            - system
-            - application
-  {{- if .Values.systemDatasources }}
   deployment:
-    {{- if .Values.systemDatasources }}
-    env:
-      - name: SERVICE_CA
-        valueFrom:
-          configMapKeyRef:
-            key: service-ca.crt
-            name: openshift-service-ca.crt
-      - name: LOKI_GATEWAY_ADDRESS
-        value: 'https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1'
-      - name: THANOS_QUERIER_ADDRESS
-        value: 'https://thanos-querier.openshift-monitoring.svc.cluster.local:9091'
-      - name: BEARER_TOKEN
-        valueFrom:
-          secretKeyRef:
-            key: token
-            name: grafana-serviceaccount-token
-    {{- end }}
-  secrets:
-    - grafana-serviceaccount-token
-  {{- end }}
+    spec:
+      template:
+        spec:
+          containers:
+            - name: grafana
+              image: {{ .Values.grafana.version }}
+              resources:
+                requests:
+                  cpu: "25m"
+                  memory: "125Mi"
+                limits:
+                  cpu: "100m"
+                  memory: "256Mi"
+              volumeMounts:
+                - mountPath: /var/lib/grafana
+                  name: grafana-data
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: {{ .Release.Name }}-pvc

@@ -9,6 +9,7 @@ kind: ClusterPolicy
 metadata:
   name: allow-from-ns
 spec:
+  generateExisting: true
   rules: 
   - name: allow-from-ns
     match:

@@ -2,9 +2,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 grafana:
-  version: docker.io/grafana/grafana:10.0.0-ubuntu
+  version: docker.io/grafana/grafana:10.0.2-ubuntu
 ingress:
   hostname: grafana.apps.example.gepaplexx.com
+  annotations:
+    cert-manager.io/issuer-kind: ClusterIssuer
+    cert-manager.io/issuer-name: letsencrypt-production
 auth:
   admin:
     user: "admin"
@@ -23,3 +26,7 @@ resources:
     cpu: 500m
     memory: 1Gi
 systemDatasources: true
+systemDashboards: true
+patch:
+  namespace: syn-patch-operator
+  serviceAccount: patch-sa

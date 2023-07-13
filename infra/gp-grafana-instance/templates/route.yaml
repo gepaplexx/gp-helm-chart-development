@@ -1,0 +1,20 @@
+# Operator does not pick up spec.ingress and with spec.route it is not allowed to set a custom hostname. Therefore we define the route ourselves.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Release.Name }}-route
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-grafana-instance.labels" . | nindent 4 }}
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+spec:
+  host: {{ .Values.ingress.hostname }}
+  to:
+    kind: Service
+    name: {{ .Release.Name }}-service
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  port:
+    targetPort: grafana

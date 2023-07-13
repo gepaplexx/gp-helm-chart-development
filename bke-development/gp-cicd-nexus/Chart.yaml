@@ -3,11 +3,11 @@ name: gp-cicd-nexus
 description: A Helm chart for deploying Sonartype Nexus on OpenShift using the certified operator
 
 type: application
-version: 1.0.3
-appVersion: "3.38.1"
+version: 1.0.4
+appVersion: "3.57.0"
 
 dependencies:
   - name: nexus-repository-manager
     alias: nexus
-    version: "~55.0.0"
+    version: "~57.0.0"
     repository: "https://sonatype.github.io/helm3-charts/"

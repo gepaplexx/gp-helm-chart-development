@@ -2,46 +2,98 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: 'gp-vault-backup'
+  name: 'vault-backup'
   namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
-  successfulJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 0
   failedJobsHistoryLimit: 1
   schedule: '{{ .Values.backup.schedule }}'
+  concurrencyPolicy: Forbid
   jobTemplate:
     spec:
       backoffLimit: 3
       template:
+        metadata:
+          labels:
+              {{- include "gp-hashicorp-vault.labels" . | nindent 12 }}
         spec:
           containers:
             - name: "vault-raft-backup"
-              image: 'hashicorp/vault:1.12.1'
-              command: ["/bin/sh", "-ec"]
+              image: 'hashicorp/vault:{{ .Chart.AppVersion }}'
+              command: [ "/bin/sh", "-ec" ]
               args:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
+                  && echo "Creating backup"
                   && export BACKUP_NAME="vault-backup-${TIMESTAMP}.snap"
                   && cd /backup
                   && export VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="backup-creator" jwt=$(cat /run/secrets/kubernetes.io/serviceaccount/token))
                   && vault operator raft snapshot save ${BACKUP_NAME}
                   && vault token revoke -self
-                  && ln -sf ${BACKUP_NAME} latest
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
+                  && ln -sf ${BACKUP_NAME} latest
+                  && echo "Backup created"
               resources:
                 requests:
-                  memory: '100Mi'
-                  cpu: '100m'
+                  memory: {{ .Values.backup.resources.requests.memory }}
+                  cpu: {{ .Values.backup.resources.requests.cpu }}
                 limits:
-                  memory: "600Mi"
+                  memory: {{ .Values.backup.resources.limits.memory }}
               env:
                 - name: VAULT_ADDR
                   value: 'http://vault-active:8200'
               volumeMounts:
                 - name: "backup-volume"
                   mountPath: /backup
+            {{- if .Values.backup.external.enabled}}
+            - name: minio-backup-mover
+              image: 'quay.io/minio/mc:latest'
+              env:
+                - name: ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: AWS_ACCESS_KEY_ID
+                - name: SECRET_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: AWS_SECRET_ACCESS_KEY
+                - name: HOST
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: ENDPOINT_URL
+                - name: BUCKET
+                  valueFrom:
+                    secretKeyRef:
+                      name: vault-backup-ext-credentials
+                      key: BUCKET_NAME
+              command: [ "/bin/sh", "-ec" ]
+              args:
+                - echo "waiting for vault backup to be created"
+                  && sleep 10
+                  && mc --config-dir /root/.mc alias set minio-backup-mover $HOST $ACCESS_KEY_ID $SECRET_KEY
+                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET
+              resources:
+                requests:
+                  memory: 10Mi
+                  cpu: 10m
+              volumeMounts:
+                - name: "backup-volume"
+                  mountPath: /backup
+                - name: "mc-config"
+                  mountPath: /root/.mc
+            {{- end }}
           volumes:
             - name: "backup-volume"
               persistentVolumeClaim:
                 claimName: 'gp-vault-backup-pvc'
+            {{- if .Values.backup.external.enabled}}
+            - name: "mc-config"
+              emptyDir: {}
+            {{- end }}
           restartPolicy: Never
           serviceAccountName: vault-backup-sa
 {{- end }}
@@ -51,3 +103,19 @@ kind: ServiceAccount
 metadata:
   name: vault-backup-sa
   namespace: {{ .Release.Namespace }}
+  labels:
+      {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
+---
+{{- if .Values.backup.external.enabled }}
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: vault-backup-bucket
+  namespace: {{ .Release.Namespace }}
+spec:
+  parameters:
+    bucketName: {{ .Values.backup.external.bucket }}
+    region: {{ .Values.backup.external.region }}
+  writeConnectionSecretToRef:
+    name: vault-backup-ext-credentials
+{{- end }}

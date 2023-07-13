@@ -61,6 +61,7 @@ spec:
         cpu: {{ .Values.argocd.redis.resources.requests.cpu }}
         memory: {{ .Values.argocd.redis.resources.requests.memory }}
   repo:
+    {{- if .Values.baukasten.enabled }}
     volumes:
       - name: custom-tools
         emptyDir: { }
@@ -77,6 +78,8 @@ spec:
       - name: argocd-vela-sa
         secret:
           secretName: argocd-vela-sa-secret
+    {{- end }}
+    {{- if .Values.baukasten.enabled }}
     initContainers:
       - name: kubeconfig
         image: 'nginx'
@@ -111,6 +114,8 @@ spec:
           - name: custom-tools
             mountPath: /custom-tools
         image: 'nginx'
+    {{- end }}
+    {{- if .Values.baukasten.enabled }}}}
     sidecarContainers:
       - name: vela-application-plugin
         image: nginx
@@ -159,7 +164,8 @@ spec:
             subPath: vela-cue-transform-plugin.yaml
           - name: custom-tools
             mountPath: /usr/local/bin/vela
-            subPath: vela
+            subPath: vela#
+    {{- end }}
     resources:
       limits:
         cpu: {{ .Values.argocd.repo.resources.limits.cpu }}

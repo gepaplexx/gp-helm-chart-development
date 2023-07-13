@@ -15,23 +15,24 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.1.8
+version: 1.2.4
 
 dependencies:
   - name: argo-events
     alias: argo_events
     repository: "https://argoproj.github.io/argo-helm"
-    version: ~2.3.3
+    version: ~2.4.0
     condition: argo_events.enabled
   - name: argo-workflows
     alias: argo_workflows
     repository: "https://argoproj.github.io/argo-helm"
-    version: ~0.29.0
+    version: ~0.30.0
     condition: argo_workflows.enabled
   - name: postgresql
     repository: "https://charts.bitnami.com/bitnami"
-    version: ~12.5.6
+    version: ~12.6.0
     condition: argo_workflows.persistence
   - name: vela-core
+    condition: baukasten.enabled
     version: ~1.8.2
     repository: "https://charts.kubevela.net/core"
