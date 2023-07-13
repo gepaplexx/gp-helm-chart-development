@@ -48,7 +48,7 @@ postgresql:
     external:
       enabled: false
       region: at-vie-1
-      bucket: keycloak-backup
+      bucket: ""
     # default values if backu is enabled
     size: 10Gi
     schedule: '0 0 * * *'

@@ -47,7 +47,7 @@ spec:
           persistentVolumeClaim:
             claimName: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
 ---
-{{- if .Values.postgresql.backup.external.enabled }}
+{{- if and .Values.postgresql.backup.external.enabled .Values.postgresql.backup.external.bucket }}
 apiVersion: appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:

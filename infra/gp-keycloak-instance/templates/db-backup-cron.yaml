@@ -57,7 +57,7 @@ spec:
               volumeMounts:
                 - name: "backup-volume"
                   mountPath: /backup
-            {{- if .Values.postgresql.backup.external.enabled }}
+            {{- if and .Values.postgresql.backup.external.enabled .Values.postgresql.backup.external.bucket }}
             - name: minio-backup-mover
               image: 'quay.io/minio/mc:latest'
               env:
