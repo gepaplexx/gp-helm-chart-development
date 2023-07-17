@@ -1,0 +1,14 @@
+apiVersion: kepler.system.sustainable.computing.io/v1alpha1
+kind: Kepler
+metadata:
+  name: kepler
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  collector:
+    image: quay.io/sustainable_computing_io/kepler:latest
+    collectorPort: 9103
+---

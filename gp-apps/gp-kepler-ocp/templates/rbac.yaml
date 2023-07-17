@@ -1,0 +1,29 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kepler-scc-binding
+  labels:
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:openshift:scc:kepler-scc
+subjects:
+  - kind: ServiceAccount
+    name: kepler-sa
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kepler-binding
+  labels:
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kepler-clusterrole
+subjects:
+  - kind: ServiceAccount
+    name: kepler-sa
+    namespace: {{ .Release.Namespace }}

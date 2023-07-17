@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: kepler
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
+spec:
+  endpoints:
+    - interval: 30s
+      port: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: exporter

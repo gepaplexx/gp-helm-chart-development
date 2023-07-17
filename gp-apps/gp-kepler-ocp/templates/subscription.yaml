@@ -1,0 +1,23 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: kepler-operator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
+spec:
+  channel: alpha
+  installPlanApproval: Automatic
+  name: kepler-operator
+  source: community-operators
+  sourceNamespace: openshift-marketplace
+---
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: kepler-og
+  namespace: {{ .Release.Namespace }}
+spec: { }
+---
+
+

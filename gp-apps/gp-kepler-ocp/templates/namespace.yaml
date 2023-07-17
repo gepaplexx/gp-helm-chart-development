@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+    openshift.io/node-selector: ""
+  labels:
+    monitoring.gepardec.com/managed-ns: "true"
+    {{- include "gp-kepler-ocp.labels" . | nindent 4 }}
