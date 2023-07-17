@@ -4177,6 +4177,20 @@ entries:
   gp-kepler-ocp:
   - apiVersion: v2
     appVersion: 0.5.1
+    created: "2023-07-17T09:21:06.097857293Z"
+    dependencies:
+    - name: kepler
+      repository: https://sustainable-computing-io.github.io/kepler-helm-chart
+      version: 0.4.4
+    description: A Helm chart for Kubernetes
+    digest: 86923682c1544424e20a784347d4f4deb6788fba7ad482226fc0a9f9cf511fcb
+    name: gp-kepler-ocp
+    type: application
+    urls:
+    - https://gepaplexx.github.io/gp-helm-chart-development/gp-kepler-ocp-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.5.1
     created: "2023-07-17T09:04:50.891644705Z"
     dependencies:
     - name: kepler
@@ -5024,9 +5038,9 @@ entries:
   gp-one-time-secret:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-17T09:04:50.892097726Z"
+    created: "2023-07-17T09:21:06.098134891Z"
     description: A Helm chart for Kubernetes
-    digest: 87cda1e5da4416be5b441cb8cf3f429a9fd3338c2e233e98bb95a654fb0c13da
+    digest: e0794ed5889d31a1b308d2966c06117370bee5c0de6362b1a4d9a5cd304d8368
     name: gp-one-time-secret
     type: application
     urls:
@@ -5706,4 +5720,4 @@ entries:
     urls:
     - https://gepaplexx.github.io/gp-helm-chart-development/pvc-bug-reproduction-0.1.0.tgz
     version: 0.1.0
-generated: "2023-07-17T09:04:50.889401802Z"
+generated: "2023-07-17T09:21:06.096359Z"
