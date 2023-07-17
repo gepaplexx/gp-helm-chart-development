@@ -1,0 +1,2 @@
+collector:
+  port: 9105 # needs to be different than 9103 because kepler needs hostport and 9103 is already take for kube-proxy

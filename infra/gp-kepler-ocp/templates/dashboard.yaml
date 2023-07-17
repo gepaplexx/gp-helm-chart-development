@@ -979,4 +979,9 @@ spec:
       "uid": "NhnADUW4z",
       "version": 2,
       "weekStart": ""
+      "tags": [
+        "Applikation: kepler",
+        "Ansprechperson: Felix Hochleitner",
+        "Themengebiet: Monitoring"
+      ],
     }

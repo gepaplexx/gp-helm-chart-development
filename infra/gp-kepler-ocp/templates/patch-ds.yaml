@@ -1,0 +1,51 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: Patch
+metadata:
+  name: kepler-patches
+  namespace: {{ .Values.patch.namespace }}
+spec:
+  serviceAccountRef:
+    name: {{ .Values.patch.serviceaccount }}
+  patches:
+    kepler-patch:
+      patchType: application/merge-patch+json
+      targetObjectRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: kepler
+        namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          template:
+            spec:
+              nodeSelector:
+                kubernetes.io/os: linux # default
+                node-role.kubernetes.io/app: "" # deploy only on worker nodes
+              containers:
+              - livenessProbe:
+                  httpGet:
+                    path: /healthz
+                    port: {{ .Values.collector.port }}
+                name: kepler-exporter
+                image: quay.io/sustainable_computing_io/kepler:release-{{ .Chart.AppVersion }}
+                env:
+                  - name: BIND_ADDRESS
+                    value: 0.0.0.0:{{ .Values.collector.port }}
+                ports:
+                - name: http
+                  containerPort: {{ .Values.collector.port }}
+                  hostPort: {{ .Values.collector.port }}
+    kepler-exporter-patch:
+      patchType: application/merge-patch+json
+      targetObjectRef:
+          apiVersion: apps/v1
+          kind: DaemonSet
+          name: kepler-exporter
+          namespace: {{ .Release.Namespace }}
+      patchTemplate: |
+        spec:
+          template:
+            spec:
+              nodeSelector:
+                kubernetes.io/os: linux # default
+                node-role.kubernetes.io/app: "" # deploy only on worker nodes

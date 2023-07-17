@@ -10,5 +10,5 @@ metadata:
 spec:
   collector:
     image: quay.io/sustainable_computing_io/kepler:latest
-    collectorPort: 9103
+    collectorPort: {{ .Values.collector.port}}
 ---
