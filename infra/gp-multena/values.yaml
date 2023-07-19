@@ -1,9 +1,58 @@
+GrafanaOperatorDatasources: true
+tls:
+  loki:
+      enabled: true
+      secretName: loki-query-frontend-http
+      cert: tls.crt
+      key: tls.key
+  thanos:
+      enabled: false
+      secretName: thanos-querier-tls
+      cert: tls.crt
+      key: tls.key
+  copy:
+    loki:
+      enabled: true
+      secretNamespace: openshift-logging
+    thanos:
+      enabled: false
+      secretNamespace: openshift-monitoring
+
+multena:
+  provider: configmap
+  jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
+  log:
+    level: INFO
+    logTokens: false
+  admin:
+    bypass: false
+    group: gepardec-run-admins
+  thanos:
+    url: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+    tenantLabel: namespace
+  loki:
+    url: https://loki-query-frontend-http.openshift-logging.svc.cluster.local:3100
+    tenantLabel: kubernetes_namespace_name
+  db:
+    enabled: false
+    user: multitenant
+    passwordPath: "/etc/secrets/db/password"
+    host: localhost
+    port: 3306
+    dbName: example
+    query: "SELECT * FROM users WHERE username = ?"
+
+service:
+  webPort: 8080
+  metricsPort: 8081
+
 replicas: 1
+
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "0.3.1"
-GrafanaOperatorDatasources: true
+  tag: "0.5.0"
+
 probes:
   readinessProbe:
     enabled: true
@@ -15,33 +64,12 @@ probes:
     initialDelaySeconds: 1
     periodSeconds: 10
     timeoutSeconds: 10
+
 serviceAccount:
   create: true
   name: ""
+
 resources:
   requests:
     cpu: 10m
     memory: 20M
-multena:
-  dev: false
-  logLevel: INFO
-  adminGroup: gepardec-run-admins
-  jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
-  thanosUrl: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
-  lokiUrl: https://loki-gateway-http.openshift-logging.svc.cluster.local:8080/api/logs/v1/application/
-  provider: configmap
-  insecureSkipVerify: false
-  logTokens: false
-  tenantLabels:
-    thanos: namespace
-    loki: kubernetes_namespace_name
-  db:
-    user: multitenant
-    existingSecret: ""
-    host: localhost
-    port: 3306
-    dbName: example
-    query: "SELECT * FROM users WHERE username = ?"
-service:
-  port: 8080
-  metricsPort: 8081

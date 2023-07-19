@@ -2,44 +2,48 @@
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: multena-metrics-datasource
+  name: {{ include "gp-multena.name" . }}-metrics-datasource
   namespace: {{ .Release.Namespace }}
 spec:
+  datasource:
+    name: metrics-multena (Thanos)
+    uid: metrics-multena
+    type: prometheus
+    url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
+    access: proxy
+    editable: true
+    isDefault: false
+    jsonData:
+      httpMethod: POST
+      oauthPassThru: true
+      manageAlerts: false
   instanceSelector:
     matchLabels:
-      monitoring.gepardec.com/system: "true"
-  datasource:
-      name: metrics-multena (Thanos)
-      uid: metrics-multena
-      type: prometheus
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
-      access: proxy
-      editable: true
-      isDefault: false
-      jsonData:
-        httpMethod: POST
-        oauthPassThru: true
-        manageAlerts: false
+      monitoring.gepardec.com/system: 'true'
+
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
-  name: multena-application-logs-datasource
+  name: {{ include "gp-multena.name" . }}-logs-datasource
   namespace: {{ .Release.Namespace }}
 spec:
+  datasource:
+    name: logs-multena (Loki-Application)
+    uid: logs-multena
+    type: loki
+    url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
+    access: proxy
+    editable: true
+    isDefault: false
+    jsonData:
+      httpMethod: POST
+      oauthPassThru: true
+      manageAlerts: false
+      httpHeaderName1: X-Scope-OrgID
+    secureJsonData:
+      httpHeaderValue1: "application"
   instanceSelector:
     matchLabels:
-      monitoring.gepardec.com/system: "true"
-  datasource:
-      name: logs-multena (Loki-Application)
-      uid: logs-multena
-      type: loki
-      url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.port }}"
-      access: proxy
-      editable: true
-      isDefault: false
-      jsonData:
-        httpMethod: POST
-        oauthPassThru: true
-        manageAlerts: false
+      monitoring.gepardec.com/system: 'true'
 {{- end }}

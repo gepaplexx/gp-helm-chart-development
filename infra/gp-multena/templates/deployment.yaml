@@ -30,7 +30,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent"  }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.service.webPort }}
               protocol: TCP
             - name: metrics
               containerPort: {{ .Values.service.metricsPort }}
@@ -58,18 +58,26 @@ spec:
             timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds }}
           {{- end }}
           volumeMounts:
-            - mountPath: /etc/pki/ca-trust/source/anchors/
+            - mountPath: /etc/secrets/ca/
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
-              {{- if eq .Values.multena.provider "configmap" }}
+            {{- if eq .Values.multena.provider "configmap" }}
             - mountPath: /etc/config/labels/
               name: multena-labels
-              {{- end }}
-              {{- if eq .Values.multena.provider "mysql" }}
+            {{- end }}
+            {{- if eq .Values.multena.provider "mysql" }}
             - mountPath: /etc/secrets/db/
               name: multena-db-secret
-              {{- end }}
+            {{- end }}
+            {{- if eq .Values.tls.loki.enabled true }}
+            - mountPath: /etc/secrets/ca/loki/
+              name: multena-loki-tls-secret
+            {{- end }}
+            {{- if eq .Values.tls.thanos.enabled true }}
+            - mountPath: /etc/secrets/ca/thanos/
+              name: multena-thanos-tls-secret
+            {{- end }}
       volumes:
         - configMap:
             name: openshift-service-ca.crt
@@ -86,6 +94,16 @@ spec:
         - name: multena-db-secret
           secret:
             secretName: {{ include "gp-multena.secretName" . }}
+          {{- end }}
+          {{- if eq .Values.tls.loki.enabled true }}
+        - name: multena-loki-tls-secret
+          secret:
+            secretName: {{ .Values.tls.loki.secretName }}
+          {{- end }}
+          {{- if eq .Values.tls.thanos.enabled true }}
+        - name: multena-thanos-tls-secret
+          secret:
+            secretName: {{ .Values.tls.thanos.secretName }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

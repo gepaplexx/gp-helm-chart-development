@@ -7,33 +7,42 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 data:
   config.yaml: |-
-      proxy:
-        log_level: {{ .Values.multena.logLevel }}
-        provider: {{ .Values.multena.provider}}
-        thanos_url: {{ .Values.multena.thanosUrl }}
-        loki_url: {{ .Values.multena.lokiUrl }}
-        jwks_cert_url: {{ .Values.multena.jwksCertUrl}}
-        admin_group: {{ .Values.multena.adminGroup }}
-        insecure_skip_verify: {{ .Values.multena.insecureSkipVerify }}
-        log_tokens: {{ .Values.multena.logTokens }}
-        port: {{ .Values.service.port }}
-        metrics_port: {{ .Values.service.metricsPort }}
-        host: 0.0.0.0
-        tenant_labels:
-          thanos: {{ .Values.multena.tenantLabels.thanos }}
-          loki: {{ .Values.multena.tenantLabels.loki }}
-      {{- if eq .Values.multena.provider "mysql" }}
-      db:
-        enabled: true
-        user: {{ .Values.multena.db.user }}
-        password_path: /etc/secrets/db/password
-        host: {{ .Values.multena.db.host }}
-        port: {{ .Values.multena.db.port }}
-        db_name: {{ .Values.multena.db.dbName }}
-        query: {{ .Values.multena.db.query }}
-      {{- end }}
-      dev:
-        enabled: {{ .Values.multena.dev }}
+    log:
+      level: {{ .Values.multena.log.level }}
+      log_tokens: {{ .Values.multena.log.logTokens }}
+    tenant_provider: {{ .Values.multena.provider }}
+    web:
+      proxy_port: {{ .Values.service.webPort }}
+      metrics_port: {{ .Values.service.metricsPort }}
+      host: 0.0.0.0
+      insecure_skip_verify: false
+      trusted_root_ca_path: "/etc/secrets/ca"
+      jwks_cert_url: {{ .Values.multena.jwksCertUrl }}
+    admin:
+      bypass: {{ .Values.multena.admin.bypass }}
+      group: {{ .Values.multena.admin.group }}
+    {{- if .Values.multena.db.enabled }}
+    db:
+      enabled: true
+      user: {{ .Values.multena.db.user }}
+      password_path: {{ .Values.multena.db.passwordPath }}
+      host: {{ .Values.multena.db.host }}
+      port: {{ .Values.multena.db.port }}
+      dbName: {{ .Values.multena.db.dbName }}
+      query: {{ .Values.multena.db.query }}
+    {{- end }}
+    thanos:
+      url: {{ .Values.multena.thanos.url }}
+      tenant_label: {{ .Values.multena.thanos.tenantLabel }}
+      cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
+      key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
+    loki:
+      url: {{ .Values.multena.loki.url }}
+      tenant_label: {{ .Values.multena.loki.tenantLabel }}
+      cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
+      key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"
+
+
 ---
 {{- if eq .Values.multena.provider "configmap" }}
 apiVersion: v1
@@ -45,8 +54,8 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 data:
   labels.yaml: |-
-    groups:
-      - example_group: ["example_namespace"]
     users:
       - example_user: [ "example_namespace" ]
+    groups:
+      - example_group: ["example_namespace"]
 {{- end }}
