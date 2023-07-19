@@ -1,7 +1,7 @@
 GrafanaOperatorDatasources: true
 tls:
   loki:
-      enabled: false
+      enabled: true
       secretName: loki-query-frontend-http
       cert: tls.crt
       key: tls.key
