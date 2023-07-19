@@ -62,22 +62,22 @@ spec:
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
-              {{- if eq .Values.multena.provider "configmap" }}
+            {{- if eq .Values.multena.provider "configmap" }}
             - mountPath: /etc/config/labels/
               name: multena-labels
-              {{- end }}
-              {{- if eq .Values.multena.provider "mysql" }}
+            {{- end }}
+            {{- if eq .Values.multena.provider "mysql" }}
             - mountPath: /etc/secrets/db/
               name: multena-db-secret
-              {{- end }}
-              {{- if eq .Values.tlsCopy.loki.enabled true }}
+            {{- end }}
+            {{- if eq .Values.tls.loki.enabled true }}
             - mountPath: /etc/secrets/ca/loki/
               name: multena-loki-tls-secret
-              {{- end }}
-              {{- if eq .Values.tlsCopy.thanos.enabled true }}
+            {{- end }}
+            {{- if eq .Values.tls.thanos.enabled true }}
             - mountPath: /etc/secrets/ca/thanos/
               name: multena-thanos-tls-secret
-              {{- end }}
+            {{- end }}
       volumes:
         - configMap:
             name: openshift-service-ca.crt
@@ -95,15 +95,15 @@ spec:
           secret:
             secretName: {{ include "gp-multena.secretName" . }}
           {{- end }}
-          {{- if eq .Values.tlsCopy.loki.enabled true }}
+          {{- if eq .Values.tls.loki.enabled true }}
         - name: multena-loki-tls-secret
           secret:
-            secretName: {{ .Values.tlsCopy.loki.secretName }}
+            secretName: {{ .Values.tls.loki.secretName }}
           {{- end }}
-          {{- if eq .Values.tlsCopy.thanos.enabled true }}
+          {{- if eq .Values.tls.thanos.enabled true }}
         - name: multena-thanos-tls-secret
           secret:
-            secretName: {{ .Values.tlsCopy.thanos.secretName }}
+            secretName: {{ .Values.tls.thanos.secretName }}
           {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

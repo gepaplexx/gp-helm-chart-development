@@ -1,4 +1,4 @@
-{{- if .Values.tlsCopy.loki.enabled }}
+{{- if .Values.tls.copy.loki.enabled }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -7,7 +7,7 @@ spec:
   generateExisting: true
   validationFailureAction: enforce
   rules:
-    - name: clone-{{ .Values.tlsCopy.loki.secretName }}-tls
+    - name: clone-{{ .Values.tls.loki.secretName }}-tls
       match:
         any:
           - resources:
@@ -18,15 +18,15 @@ spec:
       generate:
         kind: Secret
         apiVersion: v1
-        name: {{ .Values.tlsCopy.loki.secretName }}
+        name: {{ .Values.tls.loki.secretName }}
         # namespace for the generated resource
         namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{ .Values.tlsCopy.loki.secretNamespace }}
-          name: {{ .Values.tlsCopy.loki.secretName }}
+          namespace: {{ .Values.tls.copy.loki.secretNamespace }}
+          name: {{ .Values.tls.loki.secretName }}
 {{- end }}
-{{- if .Values.tlsCopy.thanos.enabled }}
+{{- if .Values.tls.copy.thanos.enabled  }}
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -35,7 +35,7 @@ spec:
   generateExisting: true
   validationFailureAction: enforce
   rules:
-    - name: clone-{{ .Values.tlsCopy.thanos.secretName }}-tls
+    - name: clone-{{ .Values.tls.thanos.secretName }}-tls
       match:
         any:
           - resources:
@@ -46,11 +46,11 @@ spec:
       generate:
         kind: Secret
         apiVersion: v1
-        name: {{ .Values.tlsCopy.thanos.secretName }}
+        name: {{ .Values.tls.thanos.secretName }}
         # namespace for the generated resource
         namespace: "{{`{{request.object.metadata.name}}`}}"
         synchronize: true
         clone:
-          namespace: {{ .Values.tlsCopy.thanos.secretNamespace }}
-          name: {{ .Values.tlsCopy.thanos.secretName }}
+          namespace: {{ .Values.tls.copy.thanos.secretNamespace }}
+          name: {{ .Values.tls.thanos.secretName }}
 {{- end }}

@@ -34,13 +34,13 @@ data:
     thanos:
       url: {{ .Values.multena.thanos.url }}
       tenant_label: {{ .Values.multena.thanos.tenantLabel }}
-      cert: "/etc/secrets/ca/thanos/tls.crt"
-      key: "/etc/secrets/ca/thanos/tls.key"
+      cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
+      key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
     loki:
       url: {{ .Values.multena.loki.url }}
       tenant_label: {{ .Values.multena.loki.tenantLabel }}
-      cert: "/etc/secrets/ca/loki/tls.crt"
-      key: "/etc/secrets/ca/loki/tls.key"
+      cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
+      key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"
 
 
 ---

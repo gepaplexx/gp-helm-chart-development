@@ -1,13 +1,22 @@
 GrafanaOperatorDatasources: true
-tlsCopy:
+tls:
   loki:
-    enabled: true
-    secretName: loki-query-frontend-http
-    secretNamespace: openshift-logging
+      enabled: false
+      secretName: loki-query-frontend-http
+      cert: tls.crt
+      key: tls.key
   thanos:
-    enabled: false
-    secretName: thanos-querier-tls
-    secretNamespace: openshift-monitoring
+      enabled: false
+      secretName: thanos-querier-tls
+      cert: tls.crt
+      key: tls.key
+  copy:
+    loki:
+      enabled: true
+      secretNamespace: openshift-logging
+    thanos:
+      enabled: false
+      secretNamespace: openshift-monitoring
 
 multena:
   provider: configmap
@@ -42,7 +51,7 @@ replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "0.4.0"
+  tag: "0.5.0"
 
 probes:
   readinessProbe:
