@@ -12,9 +12,6 @@ sonarqube:
     annotations:
       cert-manager.io/cluster-issuer: letsencrypt-production
     tls: true
-  resources:
-    limits:
-      memory: 3072Mi
   persistence:
     enabled: true
   postgresql:
