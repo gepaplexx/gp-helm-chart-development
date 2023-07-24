@@ -14,6 +14,9 @@ sonarqube:
     tls: true
   persistence:
     enabled: true
+  resources:
+    limits:
+      memory: "5120Mi"
   postgresql:
     auth:
       existingSecret: sonarqube-postgresql
