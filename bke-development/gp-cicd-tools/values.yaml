@@ -156,6 +156,10 @@ argo_workflows:
       requests:
         cpu: 500m
         memory: 256Mi
+    links:
+      - name: Workflow Log Dashboard
+        scope: workflow
+        url: https://grafana.play.run.gepardec.com/d/workflow-dashboard/workflow-dashboard?orgId=1&var-workflow=${metadata.name}&var-pod=All&var-container=main&from=${status.startedAtEpoch}&to=${status.finishedAtEpoch}
 
     metricsConfig:
       enabled: true
