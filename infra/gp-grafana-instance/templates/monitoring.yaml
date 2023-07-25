@@ -10,3 +10,24 @@ spec:
   selector:
     matchLabels:
       app: {{ .Release.Name }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: grafana-degraded
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-grafana-instance.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: grafana-degraded
+      rules:
+        - alert: grafana-degraded
+          annotations:
+            description: Grafana is degraded
+            summary: Grafana has been down for 5 minutes
+          expr: 'absent(up{namespace="{{.Release.Namespace}}", container="grafana"})'
+          for: 5m
+          labels:
+            severity: "warning"
+            type: "internal"
