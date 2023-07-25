@@ -2,9 +2,10 @@ apiVersion: redhatcop.redhat.io/v1alpha1
 kind: Patch
 metadata:
   name: patch-argocd-notifications-configmap
+  namespace: syn-patch-operator
 spec:
   serviceAccountRef:
-    name: patch-operator-sa
+    name: patch-sa
   patches:
     patch-argocd-notifications-configmap:
       targetObjectRef:
