@@ -9,4 +9,4 @@ spec:
       port: grafana-http
   selector:
     matchLabels:
-      app: grafana
+      app: {{ .Release.Name }}
