@@ -29,3 +29,6 @@ systemDashboards: true
 patch:
   namespace: syn-patch-operator
   serviceAccount: patch-sa
+argocd:
+  namespace: "gepardec-run-gitops"
+  argocdURL: "https://openshift-gitops.play.run.gepardec.com/"
