@@ -25,9 +25,9 @@ spec:
         - alert: grafana-degraded
           annotations:
             description: Grafana is degraded
-            summary: Grafana is since 5 minutes down
-          expr: 'absent(up{namespace="gp-grafana", container="grafana"})'
+            summary: Grafana has been down for 5 minutes
+          expr: 'absent(up{namespace="{{.Release.Namespace}}", container="grafana"})'
           for: 5m
           labels:
-            severity: "critical"
+            severity: "warning"
             type: "internal"
