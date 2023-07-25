@@ -58,11 +58,10 @@ spec:
               image: {{ .Values.grafana.version }}
               resources:
                 requests:
-                  cpu: "25m"
-                  memory: "125Mi"
+                  cpu: "{{ .Values.resources.requests.cpu }}"
+                  memory: "{{ .Values.resources.requests.memory }}"
                 limits:
-                  cpu: "100m"
-                  memory: "256Mi"
+                  memory: "{{ .Values.resources.limits.memory }}"
               volumeMounts:
                 - mountPath: /var/lib/grafana
                   name: grafana-data

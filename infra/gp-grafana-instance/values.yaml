@@ -20,11 +20,10 @@ sso:
     realmUrl: "https://sso.apps.clustername.basedomain.com/realms/realmname"
 resources:
   requests:
-    cpu: 100m
-    memory: 256m
+    cpu: 25m
+    memory: 128m
   limits:
-    cpu: 500m
-    memory: 1Gi
+    memory: 512Mi
 systemDatasources: true
 systemDashboards: true
 patch:
