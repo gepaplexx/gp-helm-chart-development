@@ -1,0 +1,7 @@
+apiVersion: v2
+name: gp-gchat-alert
+description: A Helm chart for deploying a google-chat alert dispatcher on kubernetes
+
+type: application
+version: 0.1.0
+appVersion: "v2.0.6"
