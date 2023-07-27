@@ -1,0 +1,19 @@
+{{- if .Values.networkPolicy.create -}}
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $.Release.Name }}-allow-from
+  namespace: {{ $.Release.Namespace }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "gp-gchat-alert.selectorLabels" . | nindent 6 }}
+  ingress:
+    {{- range .Values.networkPolicy.allowedNamespaces }}
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: "{{ . }}"
+    {{- end }}
+{{- end }}

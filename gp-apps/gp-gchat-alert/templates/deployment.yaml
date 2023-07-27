@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-gchat-alert.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "gp-gchat-alert.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      annotations:
+        # https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- range $key, $value := .Values.podAnnotations }}
+        {{ $key }}: {{ $value | quote }}
+        {{- end }}
+      labels:
+        {{- include "gp-gchat-alert.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: calert
+          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            {{- range .Values.args }}
+            - {{ . | quote }}
+            {{- end }}
+          ports:
+          - containerPort: {{ .Values.service.port }}
+            protocol: TCP
+          volumeMounts:
+          - mountPath: /app/static/
+            name: config-dir
+          livenessProbe:
+            httpGet:
+              httpHeaders:
+              - name: X-Causation-ID
+                value: kube-health
+              path: "/ping"
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            timeoutSeconds: 3
+          readinessProbe:
+            httpGet:
+              httpHeaders:
+              - name: X-Causation-ID
+                value: kube-health
+              path: "/ping"
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            timeoutSeconds: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: config-dir
+          configMap:
+            name: {{ .Release.Name }}-config
+            items:
+            - key: config.toml
+              path: config.toml
+            {{- range $key, $value := .Values.templates }}
+            - key: {{ $key }}
+              path: {{ $key }}
+            {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
