@@ -7,7 +7,7 @@ app:
   address: "0.0.0.0:6000" # Address of the HTTP Server.
   server_timeout: "60s" # Server timeout for HTTP requests.
   enable_request_logs: true # Whether to log incoming HTTP requests or not.
-  log: "info" # Use `debug` to enable verbose logging. Can be set to `info` otherwise.
+  log: "debug" # Use `debug` to enable verbose logging. Can be set to `info` otherwise.
 
 networkPolicy:
   create: true
@@ -39,16 +39,13 @@ buildAlerts:
 
 templates:
    buildAlert.tmpl: |
-     *({{.Labels.severity | toUpper }}) {{ .Labels.alertname | Title }} - {{.Status | Title }}*
-     {{ range .Alerts }}
+     *{{ .Labels.alertname | Title }} - {{.Status | Title }}*
      *Summary:* {{ .Annotations.summary }}
      *Description:* {{ .Annotations.description }}
      *Details:*
        {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
        {{ end }}
-     {{ end }}
-     #  title: Argo Workflow Fail Alert
-     #  title_link: https://workflows.play.run.gepardec.com/archived-workflows/{{ .GroupLabels.namespace }}/{{ .GroupLabels.id }}
+     *workflow*: https://workflows.play.run.gepardec.com/archived-workflows/{{ .Labels.namespace }}/{{ .Labels.id }}
 
 
 replicaCount: 1
