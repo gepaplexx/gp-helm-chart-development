@@ -14,10 +14,6 @@ spec:
     metadata:
       annotations:
         # https://helm.sh/docs/howto/charts_tips_and_tricks/#automatically-roll-deployments
-        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        {{- range $key, $value := .Values.podAnnotations }}
-        {{ $key }}: {{ $value | quote }}
-        {{- end }}
       labels:
         {{- include "gp-gchat-alert.selectorLabels" . | nindent 8 }}
     spec:
@@ -26,9 +22,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
-            {{- range .Values.args }}
-            - {{ . | quote }}
-            {{- end }}
+            - "--config=/app/static/config.toml"
           ports:
           - containerPort: {{ .Values.service.port }}
             protocol: TCP
@@ -59,24 +53,10 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: config-dir
-          configMap:
-            name: {{ .Release.Name }}-config
+          secret:
+            secretName: {{ .Release.Name }}-config
             items:
             - key: config.toml
               path: config.toml
-            {{- range $key, $value := .Values.templates }}
-            - key: {{ $key }}
-              path: {{ $key }}
-            {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+            - key: buildAlert.tmpl
+              path: buildAlert.tmpl
