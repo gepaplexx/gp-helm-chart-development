@@ -6,21 +6,25 @@
 #      kubectl delete mutatingwebhookconfiguration kyverno-verify-mutating-webhook-cfg;
 
 kyverno:
-  replicaCount: 3
   webhooksCleanup:
     enable: true
   cleanupController:
+    replicas: 2
     resources:
       requests:
         cpu: 20m
     serviceMonitor:
       enabled: true
   admissionController:
+    replicas: 3
     serviceMonitor:
       enabled: true
   backgroundController:
+    replicas: 2
     serviceMonitor:
       enabled: true
   reportsController:
+    replicas: 2
     serviceMonitor:
       enabled: true
+
