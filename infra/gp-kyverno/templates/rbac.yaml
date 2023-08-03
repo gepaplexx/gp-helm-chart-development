@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno-auth-role
+rules:
+  - apiGroups: ["authorization.openshift.io"]
+    resources: ["rolebinidngs"]
+    verbs: ["create", "list", "update", "get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kyverno-auth-rolebinding
+roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: kyverno-auth-role
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}-background-controller
+  namespace: {{ .Release.Namespace }}
