@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  namespace: {{ .Release.Namespace }}
+  labels:
+  {{- include "gp-multena-rbac-collector.labels" . | nindent 4 }}
+data:
+  config.yaml: |
+    log_level: {{ .Values.collector.logLevel }}
+    namespace: {{ .Release.Namespace }}
+    config_map_name: {{ .Values.multena.configmap }}
+    reconcile_loop_interval: {{ .Values.collector.reconcileLoopInterval }}
