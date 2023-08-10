@@ -44,18 +44,3 @@ data:
 
 
 ---
-{{- if eq .Values.multena.provider "configmap" }}
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "gp-multena.name" . }}-labels
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "gp-multena.labels" . | nindent 4 }}
-data:
-  labels.yaml: |-
-    users:
-      - example_user: [ "example_namespace" ]
-    groups:
-      - example_group: ["example_namespace"]
-{{- end }}
