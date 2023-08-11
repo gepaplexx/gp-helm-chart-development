@@ -22,6 +22,21 @@ spec:
         - name: rbac-collector
           image: {{ .Values.image.name }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          readinessProbe:
+            httpGet:
+              port: {{ .Values.collector.healthPort }}
+              path: "/readyz"
+            failureThreshold: 3
+            periodSeconds: 2
+            successThreshold: 1
+            timeoutSeconds: 3
+          livenessProbe:
+            httpGet:
+              port: {{ .Values.collector.healthPort }}
+              path: "/healthz"
+            failureThreshold: 2
+            periodSeconds: 5
+            timeoutSeconds: 10
           resources:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}

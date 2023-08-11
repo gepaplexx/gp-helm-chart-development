@@ -11,3 +11,4 @@ data:
     namespace: {{ .Release.Namespace }}
     config_map_name: {{ .Values.multena.configmap }}
     reconcile_loop_interval: {{ .Values.collector.reconcileLoopInterval }}
+    port: {{ .Values.collector.healthPort}}

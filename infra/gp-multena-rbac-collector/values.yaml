@@ -1,7 +1,7 @@
 image:
   name: ghcr.io/gepaplexx/multena-rbac-collector
   tag: dev
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 resources:
   requests:
     memory: 10Mi
@@ -12,6 +12,7 @@ resources:
 collector:
   logLevel: info
   reconcileLoopInterval: 5
+  healthPort: 8080
 
 multena:
   configmap: gp-multena-labels
