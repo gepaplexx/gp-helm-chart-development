@@ -230,4 +230,14 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - ""
+    resources:
+      - pods/portforward
+    verbs:
+      - get
+      - list
+      - watch
+      - create
+      - delete
 ---
