@@ -1,4 +1,4 @@
-{{- if .Values.postgresql.backup.enabled }}
+{{- if .Values.backup.enabled }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -6,7 +6,7 @@ metadata:
 spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
-  schedule: '{{ .Values.postgresql.backup.schedule }}'
+  schedule: '{{ .Values.backup.schedule }}'
   jobTemplate:
     spec:
       backoffLimit: 1
@@ -26,7 +26,7 @@ spec:
                   && psql -h ${HOSTNAME} -p ${PORT} -U postgres -w -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
                   && PGPASSWORD="${USER_PASSWORD}" pg_dump -h ${HOSTNAME} -p ${PORT} -U ${USER} -w --format tar --file ${BACKUP_NAME} ${DATABASE}
                   && ln -sf ${BACKUP_NAME} latest
-                  && ls -r | tail -n +{{ .Values.postgresql.backup.retain.days }} | xargs rm -f
+                  && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
               resources:
                 limits:
                   memory: "128Mi"
@@ -57,7 +57,7 @@ spec:
               volumeMounts:
                 - name: "backup-volume"
                   mountPath: /backup
-            {{- if and .Values.postgresql.backup.external.enabled .Values.postgresql.backup.external.bucket }}
+            {{- if and .Values.backup.external.enabled .Values.backup.external.bucket }}
             - name: minio-backup-mover
               image: 'quay.io/minio/mc:latest'
               env:
@@ -101,7 +101,7 @@ spec:
             - name: "backup-volume"
               persistentVolumeClaim:
                 claimName: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
-            {{- if .Values.postgresql.backup.external.enabled }}
+            {{- if .Values.backup.external.enabled }}
             - name: "mc-config"
               emptyDir: {}
             {{- end }}

@@ -1,4 +1,4 @@
-{{- if .Values.postgresql.backup.enabled }}
+{{- if .Values.backup.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: "{{ .Values.postgresql.backup.size }}"
+      storage: "{{ .Values.backup.size }}"
   volumeMode: Filesystem
   storageClassName: cephfs-fspool-cluster
 ---
@@ -47,7 +47,7 @@ spec:
           persistentVolumeClaim:
             claimName: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
 ---
-{{- if and .Values.postgresql.backup.external.enabled .Values.postgresql.backup.external.bucket }}
+{{- if and .Values.backup.external.enabled .Values.backup.external.bucket }}
 apiVersion: appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:
@@ -55,8 +55,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   parameters:
-    bucketName: {{ .Values.postgresql.backup.external.bucket }}
-    region: {{ .Values.postgresql.backup.external.region }}
+    bucketName: {{ .Values.backup.external.bucket }}
+    region: {{ .Values.backup.external.region }}
   writeConnectionSecretToRef:
     name: keycloak-backup-ext-credentials
 {{- end }}
