@@ -66,7 +66,7 @@ keycloakConfigCli:
   cluster: dev #c-gepa-play
   
   importer:
-    image: 'docker.io/adorsys/keycloak-config-cli:5.5.0-20.0.1'
+    image: 'docker.io/adorsys/keycloak-config-cli:5.8.0-22.0.0'
   
   identityProvider:
     openshift:
