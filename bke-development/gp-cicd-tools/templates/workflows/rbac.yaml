@@ -161,7 +161,7 @@ subjects:
     name: argo-workflows-server
     namespace: {{ .Release.Namespace }}
 ---
-{{- end -}}
+{{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -230,3 +230,4 @@ rules:
       - get
       - list
       - watch
+---
