@@ -3,6 +3,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}-backup'
+  namespace: {{ .Release.Namespace }}
 spec:
   successfulJobsHistoryLimit: 3
   failedJobsHistoryLimit: 1
