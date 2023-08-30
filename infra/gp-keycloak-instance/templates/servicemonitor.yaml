@@ -2,18 +2,13 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: '{{ include "gp-keycloak-instance.fullname" . }}'
+  namespace: {{ .Release.Namespace }}
 spec:
   endpoints:
     - interval: 2m
-      port: metrics
-      scheme: https
-      tlsConfig:
-        ca:
-          secret:
-            name: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
-            key: tls.crt
-            optional: false
-        serverName: '{{ .Values.ingress.hostname }}'
+      port: http
   selector:
     matchLabels:
-      metrics-service: sso
+      app: keycloak
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/managed-by: keycloak-operator
