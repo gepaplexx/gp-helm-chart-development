@@ -18,6 +18,11 @@ spec:
       value: 'true'
     - name: metrics-enabled
       value: 'true'
+  http:
+    httpEnabled: true
+    httpPort: 8080
+  ingress:
+    enabled: false
   {{- if .Values.persistence.enabled }}
   db:
     vendor: postgres
@@ -30,5 +35,3 @@ spec:
       key: username
       name: keycloak-config
   {{- end }}
-  http:    
-    tlsSecret: '{{ include "gp-keycloak-instance.fullname" . }}-tls'
