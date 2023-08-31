@@ -49,7 +49,7 @@ spec:
             - name: IMPORT_CACHE_ENABLED
               value: "false"
             - name: KEYCLOAK_URL
-              value: "https://{{ include "gp-keycloak-instance.fullname" . }}-service:8443"
+              value: "http://{{ include "gp-keycloak-instance.fullname" . }}-service:8080"
             - name: KEYCLOAK_USER
               valueFrom:
                 secretKeyRef:

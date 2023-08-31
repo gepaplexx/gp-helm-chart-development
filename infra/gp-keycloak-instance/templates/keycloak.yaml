@@ -21,6 +21,7 @@ spec:
   http:
     httpEnabled: true
     httpPort: 8080
+    httpsPort: 8443
   ingress:
     enabled: false
   {{- if .Values.persistence.enabled }}
