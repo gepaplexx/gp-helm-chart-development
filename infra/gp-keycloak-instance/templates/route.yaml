@@ -16,6 +16,6 @@ spec:
     insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
-    name: {{ .Release.Name }}-service
+    name: {{ include "gp-keycloak-instance.fullname" . }}-service
     weight: 100
   wildcardPolicy: None

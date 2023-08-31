@@ -3,6 +3,9 @@ patch:
   serviceAccount: patch-sa
 ingress:
   hostname: sso.cluster.example.com
+  annotations:
+    cert-manager.io/issuer-kind: ClusterIssuer
+    cert-manager.io/issuer-name: letsencrypt-production
 realm:
   internalName: internal
 
