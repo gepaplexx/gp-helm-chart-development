@@ -1,6 +1,6 @@
 subscription:
   channel: stable
-  installPlanApproval: Automatic
+  installPlanApproval: Manual
   disableDefaultInstance: false
 
 rbac:
