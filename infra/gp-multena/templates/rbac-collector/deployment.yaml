@@ -1,25 +1,26 @@
+{{- if .Values.collector.enabled -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
+  name: {{ .Release.Name }}-rbac-collector
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "gp-multena-rbac-collector.labels" . | nindent 4 }}
+    {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "gp-multena-rbac-collector.selectorLabels" . | nindent 6 }}
+      {{- include "gp-multena.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "gp-multena-rbac-collector.selectorLabels" . | nindent 8 }}
+        {{- include "gp-multena.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ .Release.Name }}-sa
+      serviceAccountName: {{ .Release.Name }}-rbac-collector-sa
       containers:
         - name: rbac-collector
-          image: {{ .Values.image.name }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.collector.image.name }}:{{ .Values.collector.image.tag }}
+          imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
           args:
             - serve
             - --level {{ .Values.collector.logLevel }}
@@ -42,7 +43,8 @@ spec:
             timeoutSeconds: 10
           resources:
             requests:
-              cpu: {{ .Values.resources.requests.cpu }}
-              memory: {{ .Values.resources.requests.memory }}
+              cpu: {{ .Values.collector.resources.requests.cpu }}
+              memory: {{ .Values.collector.resources.requests.memory }}
             limits:
-              memory: {{ .Values.resources.limits.memory }}
+              memory: {{ .Values.collector.resources.limits.memory }}
+{{- end -}}

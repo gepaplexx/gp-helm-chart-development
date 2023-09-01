@@ -73,3 +73,23 @@ resources:
   requests:
     cpu: 10m
     memory: 20M
+
+collector:
+  enabled: true
+  logLevel: info
+  healthPort: 8080
+
+  cmName: gp-multena-labels
+  cmNamespace: gp-grafana
+
+  image:
+    name: ghcr.io/gepaplexx/multena-rbac-collector
+    tag: feature-gpx-693-rewrite-v0.1.4
+    pullPolicy: Always
+
+  resources:
+    requests:
+      memory: 10Mi
+      cpu: 10m
+    limits:
+      memory: 20Mi
