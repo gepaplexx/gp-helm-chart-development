@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ .Release.Name }}-rbac-collector-role
+  name: {{ include "gp-multena.name" . }}-rbac-collector-role
   labels:
     {{- include "gp-multena.labels" . | nindent 4 }}
 rules:
@@ -29,22 +29,22 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ .Release.Name }}-rbac-collector-rolebinding
+  name: {{ include "gp-multena.name" . }}-rbac-collector-rolebinding
   labels:
     {{- include "gp-multena.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Release.Name }}-rbac-collector-role
+  name: {{ include "gp-multena.name" . }}-rbac-collector-role
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-rbac-collector-sa
+    name: {{ include "gp-multena.name" . }}-rbac-collector-sa
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Release.Name }}-rbac-collector-sa
+  name: {{ include "gp-multena.name" . }}-rbac-collector-sa
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena.labels" . | nindent 4 }}

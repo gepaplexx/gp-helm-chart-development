@@ -16,7 +16,7 @@ spec:
       labels:
         {{- include "gp-multena.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ .Release.Name }}-rbac-collector-sa
+      serviceAccountName: {{ include "gp-multena.name" . }}-rbac-collector-sa
       containers:
         - name: rbac-collector
           image: {{ .Values.collector.image.name }}:{{ .Values.collector.image.tag }}
