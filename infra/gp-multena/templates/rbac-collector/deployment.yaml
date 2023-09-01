@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}-rbac-collector
+  name: {{ include "gp-multena.name" . }}-rbac-collector
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "gp-multena.labels" . | nindent 4 }}
