@@ -23,9 +23,9 @@ spec:
           imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
           args:
             - serve
-            - --level {{ .Values.collector.logLevel }}
-            - --cmName {{ .Values.collector.cmName }}
-            - --cmNamespace {{ .Values.collector.cmNamespace }}
+            - '--level={{ .Values.collector.logLevel }}'
+            - '--cmName={{ .Values.collector.cmName }}'
+            - '--cmNamespace={{ .Values.collector.cmNamespace }}'
           readinessProbe:
             httpGet:
               port: {{ .Values.collector.healthPort }}

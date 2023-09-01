@@ -34,6 +34,14 @@ roleRef:
   name: {{ .Release.Name }}-role
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-sa
+    name: {{ .Release.Name }}-rbac-collector-sa
     namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-rbac-collector-sa
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
 {{- end -}}

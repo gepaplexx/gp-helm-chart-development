@@ -76,7 +76,7 @@ resources:
 
 collector:
   enabled: true
-  logLevel: info
+  logLevel: 0
   healthPort: 8080
 
   cmName: gp-multena-labels
