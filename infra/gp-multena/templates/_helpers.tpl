@@ -5,6 +5,13 @@ Expand the name of the chart.
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
+{{- define "gp-multena-rbac-collector.name" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- print $name "rbac-collector" | trunc 63 | trimSuffix "-" -}}
+{{- end }}
+
+
+
 {{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
@@ -47,6 +54,11 @@ Selector labels
 */}}
 {{- define "gp-multena.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "gp-multena.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
+{{- define "gp-multena-rbac-collector.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "gp-multena-rbac-collector.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

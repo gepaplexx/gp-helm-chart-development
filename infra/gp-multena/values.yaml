@@ -41,6 +41,7 @@ multena:
     port: 3306
     dbName: example
     query: "SELECT * FROM users WHERE username = ?"
+    existingSecret: ""
 
 service:
   webPort: 8080
