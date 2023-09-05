@@ -7,7 +7,7 @@ Expand the name of the chart.
 
 {{- define "gp-multena-rbac-collector.name" -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
-{{- print $name "rbac-collector" | trunc 63 | trimSuffix "-" -}}
+{{- print $name "-rbac-collector" | trunc 63 | trimSuffix "-" -}}
 {{- end }}
 
 
