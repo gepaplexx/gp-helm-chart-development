@@ -7,7 +7,7 @@ metadata:
   labels:
       {{- include "gp-hashicorp-vault.labels" . | nindent 4 }}
 spec:
-  successfulJobsHistoryLimit: 0
+  successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   schedule: '{{ .Values.backup.schedule }}'
   concurrencyPolicy: Forbid
@@ -75,7 +75,7 @@ spec:
                 - echo "waiting for vault backup to be created"
                   && sleep 10
                   && mc --config-dir /root/.mc alias set minio-backup-mover $HOST $ACCESS_KEY_ID $SECRET_KEY
-                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET
+                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET --overwrite
               resources:
                 requests:
                   memory: 10Mi
