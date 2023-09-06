@@ -18,6 +18,8 @@ spec:
       value: 'true'
     - name: metrics-enabled
       value: 'true'
+    - name: proxy
+      value: 'edge'
   http:
     httpEnabled: true
     httpPort: 8080
