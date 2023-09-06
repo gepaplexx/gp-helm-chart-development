@@ -24,7 +24,6 @@ spec:
                 - export TIMESTAMP="`date '+%Y%m%d-%H%M%S'`"
                   && export BACKUP_NAME="db-backup-${TIMESTAMP}.tar.gz"
                   && cd /backup
-                  && psql -h ${HOSTNAME} -p ${PORT} -U postgres -w -d postgres -c "select pg_terminate_backend(pid) from pg_stat_activity where datname='${DATABASE}';"
                   && PGPASSWORD="${USER_PASSWORD}" pg_dump -h ${HOSTNAME} -p ${PORT} -U ${USER} -w --format tar --file ${BACKUP_NAME} ${DATABASE}
                   && ln -sf ${BACKUP_NAME} latest
                   && ls -r | tail -n +{{ .Values.backup.retain.days }} | xargs rm -f
