@@ -86,7 +86,7 @@ spec:
                 - echo "waiting for keycloak backup to be created"
                   && sleep 10
                   && mc --config-dir /root/.mc alias set minio-backup-mover $HOST $ACCESS_KEY_ID $SECRET_KEY
-                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET
+                  && mc --config-dir /root/.mc mirror /backup/ minio-backup-mover/$BUCKET --overwrite
               resources:
                 requests:
                   memory: 10Mi
