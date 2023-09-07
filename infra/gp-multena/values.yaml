@@ -1,15 +1,16 @@
 GrafanaOperatorDatasources: true
+
 tls:
   loki:
-      enabled: true
-      secretName: loki-query-frontend-http
-      cert: tls.crt
-      key: tls.key
+    enabled: true
+    secretName: loki-query-frontend-http
+    cert: tls.crt
+    key: tls.key
   thanos:
-      enabled: false
-      secretName: thanos-querier-tls
-      cert: tls.crt
-      key: tls.key
+    enabled: false
+    secretName: thanos-querier-tls
+    cert: tls.crt
+    key: tls.key
   copy:
     loki:
       enabled: true
@@ -19,10 +20,8 @@ tls:
       secretNamespace: openshift-monitoring
 
 multena:
-  provider: configmap
-  jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
   log:
-    level: INFO
+    level: 1
     logTokens: false
   admin:
     bypass: false
@@ -41,7 +40,16 @@ multena:
     port: 3306
     dbName: example
     query: "SELECT * FROM users WHERE username = ?"
+    tokenKey: "" # Add a value for tokenKey if needed
     existingSecret: ""
+  web:
+    labelStoreKind: configmap
+    keycloakTokenGroupName: ""
+    serviceAccountToken: ""
+    jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
+  dev:
+    enabled: false
+    username: "" # Add your default value or leave it for manual input
 
 service:
   webPort: 8080
@@ -79,15 +87,12 @@ collector:
   enabled: true
   logLevel: 1
   healthPort: 8080
-
   cmName: gp-multena-labels
   cmNamespace: gp-grafana
-
   image:
     name: ghcr.io/gepaplexx/multena-rbac-collector
     tag: v0.1.5
     pullPolicy: Always
-
   resources:
     requests:
       memory: 40Mi

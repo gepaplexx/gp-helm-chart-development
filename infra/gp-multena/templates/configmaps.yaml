@@ -10,17 +10,26 @@ data:
     log:
       level: {{ .Values.multena.log.level }}
       log_tokens: {{ .Values.multena.log.logTokens }}
-    tenant_provider: {{ .Values.multena.provider }}
+
     web:
       proxy_port: {{ .Values.service.webPort }}
       metrics_port: {{ .Values.service.metricsPort }}
-      host: 0.0.0.0
+      host: "0.0.0.0"
       insecure_skip_verify: false
       trusted_root_ca_path: "/etc/secrets/ca"
-      jwks_cert_url: {{ .Values.multena.jwksCertUrl }}
+      label_store_kind: {{ .Values.multena.web.labelStoreKind }}
+      jwks_cert_url: {{ .Values.multena.web.jwksCertUrl }}
+      keycloak_token_group_name: {{ .Values.multena.web.keycloakTokenGroupName }}
+      service_account_token: {{ .Values.multena.web.serviceAccountToken }}
+
     admin:
       bypass: {{ .Values.multena.admin.bypass }}
       group: {{ .Values.multena.admin.group }}
+
+    dev:
+      enabled: {{ .Values.multena.dev.enabled }}
+      username: {{ .Values.multena.dev.username }}
+
     {{- if .Values.multena.db.enabled }}
     db:
       enabled: true
@@ -30,17 +39,19 @@ data:
       port: {{ .Values.multena.db.port }}
       dbName: {{ .Values.multena.db.dbName }}
       query: {{ .Values.multena.db.query }}
+      token_key: {{ .Values.multena.db.tokenKey }}
     {{- end }}
+
     thanos:
       url: {{ .Values.multena.thanos.url }}
       tenant_label: {{ .Values.multena.thanos.tenantLabel }}
+      use_mutual_tls: {{ .Values.tls.thanos.enabled }}
       cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
       key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
+
     loki:
       url: {{ .Values.multena.loki.url }}
       tenant_label: {{ .Values.multena.loki.tenantLabel }}
+      use_mutual_tls: {{ .Values.tls.loki.enabled }}
       cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
       key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"
-
-
----
