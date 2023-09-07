@@ -47,6 +47,7 @@ multena:
     keycloakTokenGroupName: ""
     serviceAccountToken: ""
     jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
+    insecureSkipVerify: false
   dev:
     enabled: false
     username: "" # Add your default value or leave it for manual input

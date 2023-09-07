@@ -15,7 +15,7 @@ data:
       proxy_port: {{ .Values.service.webPort }}
       metrics_port: {{ .Values.service.metricsPort }}
       host: "0.0.0.0"
-      insecure_skip_verify: false
+      insecure_skip_verify: {{ .Values.multena.web.insecureSkipVerify}}
       trusted_root_ca_path: "/etc/secrets/ca"
       label_store_kind: {{ .Values.multena.web.labelStoreKind }}
       jwks_cert_url: {{ .Values.multena.web.jwksCertUrl }}
