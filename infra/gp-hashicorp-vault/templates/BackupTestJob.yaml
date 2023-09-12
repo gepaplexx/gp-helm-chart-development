@@ -55,9 +55,9 @@ spec:
                   value: /data
               command: ["/bin/sh", "-ec"]
               args:
-                - echo "Creating backup"
+                - echo "Testing if vault backup got created correctly and can be restored"
                   && vault server -config=/vault/config/config.hcl
-                  && sleep 10
+                  & sleep 10
                   && ROOT_TOKEN_FRAGMENT=$(vault operator init -format=json | grep root_token)
                   && ROOT_TOKEN=$(echo ${ROOT_TOKEN_FRAGMENT:17:-1})
                   && vault login $ROOT_TOKEN
@@ -67,7 +67,7 @@ spec:
                   && export VAULT_TOKEN=$(vault write -field=token auth/kubernetes/login role="backup-tester" jwt=$(cat /run/secrets/kubernetes.io/serviceaccount/token))
                   && if [ -z "$(vault auth list | grep oidc)" ]; then echo "oidc auth not found in backup!"; exit 1; fi
                   && if [ -z "$(vault secrets list | grep cluster/config/)" ]; then echo "cluster/config/ secret store not found in backup!"; exit 1; fi
-                  && echo "Backup created"
+                  && echo "Backup & restore successfully"
               resources:
                 requests:
                   memory: {{ .Values.backup.testingResources.requests.memory }}
