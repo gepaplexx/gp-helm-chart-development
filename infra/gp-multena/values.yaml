@@ -1,23 +1,10 @@
 GrafanaOperatorDatasources: true
+replicas: 1
 
-tls:
-  loki:
-    enabled: true
-    secretName: loki-query-frontend-http
-    cert: tls.crt
-    key: tls.key
-  thanos:
-    enabled: false
-    secretName: thanos-querier-tls
-    cert: tls.crt
-    key: tls.key
-  copy:
-    loki:
-      enabled: true
-      secretNamespace: openshift-logging
-    thanos:
-      enabled: false
-      secretNamespace: openshift-monitoring
+image:
+  repository: ghcr.io/gepaplexx/multena-proxy
+  pullPolicy: IfNotPresent
+  tag: "0.6.0"
 
 multena:
   log:
@@ -44,7 +31,7 @@ multena:
     existingSecret: ""
   web:
     labelStoreKind: configmap
-    keycloakTokenGroupName: ""
+    keycloakTokenGroupName: "groups"
     serviceAccountToken: ""
     jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
     insecureSkipVerify: false
@@ -56,12 +43,24 @@ service:
   webPort: 8080
   metricsPort: 8081
 
-replicas: 1
-
-image:
-  repository: ghcr.io/gepaplexx/multena-proxy
-  pullPolicy: Always
-  tag: "0.5.1"
+tls:
+  loki:
+    enabled: true
+    secretName: loki-query-frontend-http
+    cert: tls.crt
+    key: tls.key
+  thanos:
+    enabled: false
+    secretName: thanos-querier-tls
+    cert: tls.crt
+    key: tls.key
+  copy:
+    loki:
+      enabled: true
+      secretNamespace: openshift-logging
+    thanos:
+      enabled: false
+      secretNamespace: openshift-monitoring
 
 probes:
   readinessProbe:
@@ -77,7 +76,6 @@ probes:
 
 serviceAccount:
   create: true
-  name: ""
 
 resources:
   requests:
@@ -88,12 +86,10 @@ collector:
   enabled: true
   logLevel: 1
   healthPort: 8080
-  cmName: gp-multena-labels
-  cmNamespace: gp-grafana
   image:
     name: ghcr.io/gepaplexx/multena-rbac-collector
     tag: 0.1.5
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
   resources:
     requests:
       memory: 40Mi

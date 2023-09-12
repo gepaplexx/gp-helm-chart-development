@@ -2,7 +2,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: copy-secret-policy-loki
+  name: {{ include "gp-multena.name" . }}-copy-secret-policy-loki
 spec:
   generateExisting: true
   validationFailureAction: enforce
@@ -30,7 +30,7 @@ spec:
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: copy-secret-policy-thanos
+  name: {{ include "gp-multena.name" . }}-copy-secret-policy-thanos
 spec:
   generateExisting: true
   validationFailureAction: enforce

@@ -6,8 +6,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   datasource:
-    name: metrics-multena (Thanos)
-    uid: metrics-multena
+    name: {{ include "gp-multena.name" . }}-metrics (Thanos)
+    uid: {{ include "gp-multena.name" . }}-metrics
     type: prometheus
     url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
     access: proxy
@@ -29,8 +29,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   datasource:
-    name: logs-multena (Loki-Application)
-    uid: logs-multena
+    name: {{ include "gp-multena.name" . }}-logs (Loki-Application)
+    uid: {{ include "gp-multena.name" . }}-logs
     type: loki
     url: "http://{{ include "gp-multena.name" . }}:{{ .Values.service.webPort }}"
     access: proxy

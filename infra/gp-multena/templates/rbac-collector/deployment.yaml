@@ -8,6 +8,7 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
   replicas: 1
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       {{- include "gp-multena-rbac-collector.selectorLabels" . | nindent 6 }}
@@ -24,8 +25,8 @@ spec:
           args:
             - serve
             - '--level={{ .Values.collector.logLevel }}'
-            - '--cmName={{ .Values.collector.cmName }}'
-            - '--cmNamespace={{ .Values.collector.cmNamespace }}'
+            - '--cmName={{ include "gp-multena.name" . }}-labels'
+            - '--cmNamespace={{ .Release.Namespace }}'
           readinessProbe:
             httpGet:
               port: {{ .Values.collector.healthPort }}

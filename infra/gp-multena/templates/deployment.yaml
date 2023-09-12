@@ -7,6 +7,7 @@ metadata:
     {{- include "gp-multena.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       {{- include "gp-multena.selectorLabels" . | nindent 6 }}
