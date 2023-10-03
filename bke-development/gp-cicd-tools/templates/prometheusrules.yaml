@@ -223,10 +223,10 @@ spec:
           annotations:
             summary: Argo CD Application-Controller Memory Issue
             description: |
-              Argo CD hat in den letzten 10 Minuten durchschnittlich mehr als 150% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
+              Argo CD hat in den letzten 20 Minuten durchschnittlich mehr als 200% der Memory Requests benötigt. Es ist sehr wahrscheinlich, dass hier ein Problem besteht.
           expr: |
             (sum(
-                avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[10m])
+                avg_over_time(container_memory_working_set_bytes{namespace="{{ .Release.Namespace }}", container!="", image!=""}[20m])
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{ namespace="{{ .Release.Namespace }}", workload="{{ template "gp-cicd-tools.argocd.workload" . }}", workload_type="deployment"}
             ) by (pod)
@@ -234,7 +234,7 @@ spec:
                 kube_pod_container_resource_requests{job="kube-state-metrics",namespace="{{ .Release.Namespace }}", resource="memory"}
               * on(namespace,pod)
                 group_left(workload, workload_type) namespace_workload_pod:kube_pod_owner:relabel{namespace="{{ .Release.Namespace }}",workload="{{ template "gp-cicd-tools.argocd.workload" . }}",workload_type="deployment"}
-            ) by (pod)) > 1.5
+            ) by (pod)) > 2.0
           for: 10m
           labels:
             severity: "warning"
