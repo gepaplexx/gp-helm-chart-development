@@ -1,18 +1,9 @@
-GrafanaOperatorDatasources: true
-replicas: 1
-
-image:
-  repository: ghcr.io/gepaplexx/multena-proxy
-  pullPolicy: IfNotPresent
-  tag: "0.6.0"
-
-multena:
+proxy:
   log:
-    level: 1
-    logTokens: false
+    level: 1 # 0 - debug, 1 - info, 2 - warn, 3 - error, -1 trace (exposes sensitive data)
   admin:
-    bypass: false
-    group: gepardec-run-admins
+    bypass: false # enable admin bypass
+    group: gepardec-run-admins # group name for admin bypass
   thanos:
     url: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
     tenantLabel: namespace
@@ -27,17 +18,36 @@ multena:
     port: 3306
     dbName: example
     query: "SELECT * FROM users WHERE username = ?"
-    tokenKey: "" # Add a value for tokenKey if needed
-    existingSecret: ""
+    tokenKey: "" # field in the jwt to use in the sql query
+    existingSecret: "" # name of the existing secret with the password
   web:
     labelStoreKind: configmap
-    keycloakTokenGroupName: "groups"
-    serviceAccountToken: ""
-    jwksCertUrl: https://sso.keycloak-namespace.svc.cluster.local:8443/realms/internal/protocol/openid-connect/certs
-    insecureSkipVerify: false
-  dev:
-    enabled: false
-    username: "" # Add your default value or leave it for manual input
+    oauthGroupName: "groups"
+    jwksCertUrl: https://sso.play.run.gepardec.com/realms/internal/protocol/openid-connect/certs
+    tlsVerifySkip: false
+
+image:
+  repository: ghcr.io/gepaplexx/multena-proxy
+  pullPolicy: IfNotPresent
+  tag: "feature-gpx-698-rewrite-v0.6.0"
+
+collector:
+  enabled: true
+  logLevel: 1
+  healthPort: 8080
+  image:
+    name: ghcr.io/gepaplexx/multena-rbac-collector
+    tag: 0.1.5
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: 40Mi
+      cpu: 5m
+    limits:
+      memory: 75Mi
+createGrafanaOperatorDatasources: true
+
+replicas: 1
 
 service:
   webPort: 8080
@@ -82,17 +92,4 @@ resources:
     cpu: 10m
     memory: 20M
 
-collector:
-  enabled: true
-  logLevel: 1
-  healthPort: 8080
-  image:
-    name: ghcr.io/gepaplexx/multena-rbac-collector
-    tag: 0.1.5
-    pullPolicy: IfNotPresent
-  resources:
-    requests:
-      memory: 40Mi
-      cpu: 5m
-    limits:
-      memory: 75Mi
+

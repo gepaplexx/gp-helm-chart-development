@@ -8,50 +8,45 @@ metadata:
 data:
   config.yaml: |-
     log:
-      level: {{ .Values.multena.log.level }}
-      log_tokens: {{ .Values.multena.log.logTokens }}
+      level: {{ .Values.proxy.log.level }}
+      log_tokens: false
 
     web:
       proxy_port: {{ .Values.service.webPort }}
       metrics_port: {{ .Values.service.metricsPort }}
       host: "0.0.0.0"
-      insecure_skip_verify: {{ .Values.multena.web.insecureSkipVerify}}
+      tls_verify_skip: {{ .Values.proxy.web.tlsVerifySkip}}
       trusted_root_ca_path: "/etc/secrets/ca"
-      label_store_kind: {{ .Values.multena.web.labelStoreKind }}
-      jwks_cert_url: {{ .Values.multena.web.jwksCertUrl }}
-      keycloak_token_group_name: {{ .Values.multena.web.keycloakTokenGroupName }}
-      service_account_token: {{ .Values.multena.web.serviceAccountToken }}
+      label_store_kind: {{ .Values.proxy.web.labelStoreKind }}
+      jwks_cert_url: {{ .Values.proxy.web.jwksCertUrl }}
+      oauth_group_name: {{ .Values.proxy.web.oauthGroupName }}
 
     admin:
-      bypass: {{ .Values.multena.admin.bypass }}
-      group: {{ .Values.multena.admin.group }}
+      bypass: {{ .Values.proxy.admin.bypass }}
+      group: {{ .Values.proxy.admin.group }}
 
-    dev:
-      enabled: {{ .Values.multena.dev.enabled }}
-      username: {{ .Values.multena.dev.username }}
-
-    {{- if .Values.multena.db.enabled }}
+    {{- if .Values.proxy.db.enabled }}
     db:
       enabled: true
-      user: {{ .Values.multena.db.user }}
-      password_path: {{ .Values.multena.db.passwordPath }}
-      host: {{ .Values.multena.db.host }}
-      port: {{ .Values.multena.db.port }}
-      dbName: {{ .Values.multena.db.dbName }}
-      query: {{ .Values.multena.db.query }}
-      token_key: {{ .Values.multena.db.tokenKey }}
+      user: {{ .Values.proxy.db.user }}
+      password_path: {{ .Values.proxy.db.passwordPath }}
+      host: {{ .Values.proxy.db.host }}
+      port: {{ .Values.proxy.db.port }}
+      dbName: {{ .Values.proxy.db.dbName }}
+      query: {{ .Values.proxy.db.query }}
+      token_key: {{ .Values.proxy.db.tokenKey }}
     {{- end }}
 
     thanos:
-      url: {{ .Values.multena.thanos.url }}
-      tenant_label: {{ .Values.multena.thanos.tenantLabel }}
+      url: {{ .Values.proxy.thanos.url }}
+      tenant_label: {{ .Values.proxy.thanos.tenantLabel }}
       use_mutual_tls: {{ .Values.tls.thanos.enabled }}
       cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
       key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
 
     loki:
-      url: {{ .Values.multena.loki.url }}
-      tenant_label: {{ .Values.multena.loki.tenantLabel }}
+      url: {{ .Values.proxy.loki.url }}
+      tenant_label: {{ .Values.proxy.loki.tenantLabel }}
       use_mutual_tls: {{ .Values.tls.loki.enabled }}
       cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
       key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"

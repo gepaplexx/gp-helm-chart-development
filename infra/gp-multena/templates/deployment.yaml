@@ -63,11 +63,11 @@ spec:
               name: openshift-service-ca
             - mountPath: /etc/config/config/
               name: multena-config
-            {{- if eq .Values.multena.web.labelStoreKind "configmap" }}
+            {{- if eq .Values.proxy.web.labelStoreKind "configmap" }}
             - mountPath: /etc/config/labels/
               name: multena-labels
             {{- end }}
-            {{- if eq .Values.multena.web.labelStoreKind "mysql" }}
+            {{- if eq .Values.proxy.web.labelStoreKind "mysql" }}
             - mountPath: /etc/secrets/db/
               name: multena-db-secret
             {{- end }}
@@ -86,12 +86,12 @@ spec:
         - configMap:
             name: {{ include "gp-multena.name" . }}-config
           name: multena-config
-          {{- if eq .Values.multena.web.labelStoreKind "configmap" }}
+          {{- if eq .Values.proxy.web.labelStoreKind "configmap" }}
         - configMap:
             name: {{ include "gp-multena.name" . }}-labels
           name: multena-labels
           {{- end }}
-          {{- if eq .Values.multena.web.labelStoreKind "mysql" }}
+          {{- if eq .Values.proxy.web.labelStoreKind "mysql" }}
         - name: multena-db-secret
           secret:
             secretName: {{ include "gp-multena.secretName" . }}

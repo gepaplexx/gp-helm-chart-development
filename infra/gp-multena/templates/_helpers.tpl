@@ -74,5 +74,5 @@ Create the name of the service account to use
 {{- end }}
 
 {{- define "gp-multena.secretName" -}}
-{{ .Values.multena.db.existingSecret | default (printf "%s-db-external-secret" (include "gp-multena.name" .)) }}
+{{ .Values.proxy.db.existingSecret | default (printf "%s-db-external-secret" (include "gp-multena.name" .)) }}
 {{- end }}
