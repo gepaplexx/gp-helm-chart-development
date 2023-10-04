@@ -11,29 +11,31 @@ proxy:
     url: https://loki-query-frontend-http.openshift-logging.svc.cluster.local:3100
     tenantLabel: kubernetes_namespace_name
   db:
-    enabled: false
+    enabled: false # enable mysql label provider
     user: multitenant
-    passwordPath: "/etc/secrets/db/password"
-    host: localhost
-    port: 3306
-    dbName: example
-    query: "SELECT * FROM users WHERE username = ?"
+    passwordPath: "/etc/secrets/db/password" # path to the password file
+    host: localhost # host of the db
+    port: 3306 # port of the db
+    dbName: example # name of the db
+    query: "SELECT * FROM users WHERE username = ?" # sql query to execute, must return a list of allowed labels
     tokenKey: "" # field in the jwt to use in the sql query
     existingSecret: "" # name of the existing secret with the password
   web:
-    labelStoreKind: configmap
+    labelStoreKind: configmap # label provider either configmap or mysql
     oauthGroupName: "groups"
     jwksCertUrl: https://sso.play.run.gepardec.com/realms/internal/protocol/openid-connect/certs
-    tlsVerifySkip: false
+    tlsVerifySkip: false # skip tls verification very insecurely!!!
 
+createGrafanaOperatorDatasources: true # create grafana datasources for loki and thanos
+replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "feature-gpx-698-rewrite-v0.6.0"
+  tag: "v0.6.0"
 
 collector:
-  enabled: true
-  logLevel: 1
+  enabled: true # enables rbac collection of cluster
+  logLevel: 1 # 0 - debug, 1 - info, 2 - warn, 3 - error, -1 trace (exposes sensitive data)
   healthPort: 8080
   image:
     name: ghcr.io/gepaplexx/multena-rbac-collector
@@ -45,9 +47,6 @@ collector:
       cpu: 5m
     limits:
       memory: 75Mi
-createGrafanaOperatorDatasources: true
-
-replicas: 1
 
 service:
   webPort: 8080
@@ -55,22 +54,22 @@ service:
 
 tls:
   loki:
-    enabled: true
-    secretName: loki-query-frontend-http
+    enabled: true # enable mTLS for loki
+    secretName: loki-query-frontend-http # name of the secret
     cert: tls.crt
     key: tls.key
   thanos:
-    enabled: false
-    secretName: thanos-querier-tls
+    enabled: false # enable mTLS for thanos
+    secretName: thanos-querier-tls # name of the secret
     cert: tls.crt
     key: tls.key
   copy:
     loki:
-      enabled: true
-      secretNamespace: openshift-logging
+      enabled: true # copies the tls secret from another namespace via kyverno
+      secretNamespace: openshift-logging # namespace of the secret
     thanos:
-      enabled: false
-      secretNamespace: openshift-monitoring
+      enabled: false # copies the tls secret from another namespace via kyverno
+      secretNamespace: openshift-monitoring # namespace of the secret
 
 probes:
   readinessProbe:
