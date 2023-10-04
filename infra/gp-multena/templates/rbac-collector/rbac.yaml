@@ -1,0 +1,51 @@
+{{- if .Values.collector.enabled -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "gp-multena-rbac-collector.name" . }}-role
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+rules:
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["rolebindings"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterrolebindings"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["clusterroles"]
+    verbs: ["get", "list", "watch"]
+
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "create", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "gp-multena-rbac-collector.name" . }}-rolebinding
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "gp-multena-rbac-collector.name" . }}-role
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "gp-multena-rbac-collector.name" . }}-sa
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "gp-multena-rbac-collector.name" . }}-sa
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "gp-multena.labels" . | nindent 4 }}
+{{- end -}}
