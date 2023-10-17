@@ -26,7 +26,12 @@ proxy:
     jwksCertUrl: https://sso.play.run.gepardec.com/realms/internal/protocol/openid-connect/certs
     tlsVerifySkip: false # skip tls verification very insecurely!!!
 
-createGrafanaOperatorDatasources: true # create grafana datasources for loki and thanos
+GrafanaOperatorDatasources:
+  thanos: true
+  loki: true
+  labelSelector:
+    monitoring.gepardec.com/system: 'true'
+
 replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
