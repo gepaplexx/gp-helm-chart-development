@@ -1,3 +1,4 @@
+{{- if .Values.collector.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,3 +15,4 @@ spec:
   selector:
     {{- include "gp-multena-rbac-collector.selectorLabels" . | nindent 4 }}
   type: ClusterIP
+{{- end -}}

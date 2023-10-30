@@ -43,6 +43,10 @@ data:
       use_mutual_tls: {{ .Values.tls.thanos.enabled }}
       cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
       key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
+      headers:
+        {{- range $key, $value := .Values.proxy.thanos.headers }}
+        {{ $key }}: {{ $value }}
+        {{- end }}
 
     loki:
       url: {{ .Values.proxy.loki.url }}
@@ -50,3 +54,7 @@ data:
       use_mutual_tls: {{ .Values.tls.loki.enabled }}
       cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
       key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"
+      headers:
+        {{- range $key, $value := .Values.proxy.loki.headers }}
+        {{ $key }}: {{ $value }}
+        {{- end }}

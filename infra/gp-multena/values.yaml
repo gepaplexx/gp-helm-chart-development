@@ -10,6 +10,8 @@ proxy:
   loki:
     url: https://loki-query-frontend-http.openshift-logging.svc.cluster.local:3100
     tenantLabel: kubernetes_namespace_name
+    headers:
+      X-Scope-OrgID: application
   db:
     enabled: false # enable mysql label provider
     user: multitenant
@@ -36,7 +38,7 @@ replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: "0.6.1"
+  tag: "0.6.3"
 
 collector:
   enabled: true # enables rbac collection of cluster
