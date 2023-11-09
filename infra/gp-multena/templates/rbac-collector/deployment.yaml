@@ -18,6 +18,10 @@ spec:
         {{- include "gp-multena-rbac-collector.selectorLabels" . | nindent 8 }}
     spec:
       serviceAccountName: {{ include "gp-multena-rbac-collector.name" . }}-sa
+      {{- with .Values.collector.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: rbac-collector
           image: {{ .Values.collector.image.name }}:{{ .Values.collector.image.tag }}
