@@ -59,8 +59,10 @@ spec:
             timeoutSeconds: {{ .Values.probes.livenessProbe.timeoutSeconds }}
           {{- end }}
           volumeMounts:
+            {{- if .Values.openshift }}
             - mountPath: /etc/secrets/ca/
               name: openshift-service-ca
+            {{- end }}
             - mountPath: /etc/config/config/
               name: multena-config
             {{- if eq .Values.proxy.web.labelStoreKind "configmap" }}
@@ -80,9 +82,11 @@ spec:
               name: multena-thanos-tls-secret
             {{- end }}
       volumes:
+          {{- if .Values.openshift }}
         - configMap:
             name: openshift-service-ca.crt
           name: openshift-service-ca
+          {{- end }}
         - configMap:
             name: {{ include "gp-multena.name" . }}-config
           name: multena-config
