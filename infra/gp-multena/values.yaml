@@ -30,7 +30,7 @@ proxy:
     jwksCertUrl: https://sso.play.run.gepardec.com/realms/internal/protocol/openid-connect/certs
     tlsVerifySkip: false # skip tls verification very insecurely!!!
   securityContext: {}
-
+  topologySpreadConstraints: []
 
 GrafanaOperatorDatasources:
   thanos: true
