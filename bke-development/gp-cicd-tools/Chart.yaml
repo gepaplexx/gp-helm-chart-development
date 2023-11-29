@@ -15,18 +15,18 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 1.6.0
+version: 1.6.1
 
 dependencies:
   - name: argo-events
     alias: argo_events
     repository: "https://argoproj.github.io/argo-helm"
-    version: ~2.4.0
+    version: ~2.4.1
     condition: argo_events.enabled
   - name: argo-workflows
     alias: argo_workflows
     repository: "https://argoproj.github.io/argo-helm"
-    version: 0.36.1
+    version: ~0.39.5
     condition: argo_workflows.enabled
   - name: postgresql
     repository: "https://charts.bitnami.com/bitnami"
