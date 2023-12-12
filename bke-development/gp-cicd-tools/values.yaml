@@ -56,9 +56,9 @@ argo_events:
       # Die hier angegebenen Versionen werden in die "argo-events-controller-manager" ConfigMap geschrieben.
       # Das ist die Voraussetzung dafür, dass die "EventBus" Ressource den EventBus mit der angegebenen Version starten kann.
         - version: "2.10.1"
-          natsImage: docker.io/nats:2.10.1
-          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.12.0
-          configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.13.0
+          natsImage: docker.io/nats:2.10.7
+          metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.13.0
+          configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.14.0
           startCommand: /nats-server
       # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
         - version: "latest"
