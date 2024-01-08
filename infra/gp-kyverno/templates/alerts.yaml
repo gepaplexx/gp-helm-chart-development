@@ -1,0 +1,21 @@
+apiVersion: loki.grafana.com/v1
+kind: AlertingRule
+metadata:
+  name: kyverno-alerting-rules
+  namespace: {{ .Release.Namespace }}
+spec:
+  tenantID: application
+  groups:
+    - interval: 10m
+      name: kyverno alerts
+      limit: 2
+      rules:
+        - alert: kyverno-cpu-usage-high
+          expr: |
+            sum(rate(container_cpu_usage_seconds_total{cluster="", namespace="gp-kyverno"}[5m])) by (pod) > 0.7
+          for: 10m
+          labels:
+            severity: critical
+          annotations:
+            summary: "CPU usage of a kyverno pod is high"
+            description: "CPU usage of a kyverno pod is high - the alert fires if the CPU usage is higher than 700m for 10 minutes"
