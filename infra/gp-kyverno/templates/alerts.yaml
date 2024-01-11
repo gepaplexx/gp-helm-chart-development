@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   groups:
-    - name: grafana-degraded
+    - name: kyverno-cpu-usage-high
       rules:
         - alert: kyverno-cpu-usage-high
           expr: |
