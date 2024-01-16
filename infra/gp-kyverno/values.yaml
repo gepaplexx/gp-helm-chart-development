@@ -19,10 +19,17 @@ kyverno:
     replicas: 3
     serviceMonitor:
       enabled: true
+    container:
+      resources:
+        limits:
+          memory: "1Gi"
   backgroundController:
     replicas: 2
     serviceMonitor:
       enabled: true
+    resources:
+      limits:
+        memory: "256Mi"
   reportsController:
     replicas: 2
     serviceMonitor:
