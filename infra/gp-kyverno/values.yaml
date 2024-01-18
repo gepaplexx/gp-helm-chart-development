@@ -34,4 +34,5 @@ kyverno:
     replicas: 2
     serviceMonitor:
       enabled: true
-
+  policyReportsCleanup:
+    enabled: false
