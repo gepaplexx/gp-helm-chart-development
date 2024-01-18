@@ -12,6 +12,7 @@ spec:
   generateExisting: true
   rules: 
   - name: allow-from-ns
+    skipBackgroundRequests: true
     match:
       all:
       - resources:
