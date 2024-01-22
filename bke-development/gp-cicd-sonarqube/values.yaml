@@ -41,5 +41,7 @@ sonarqube:
   metrics:
     jmx:
       enabled: true
+      containerSecurityContext:
+        enabled: false
     serviceMonitor:
       enabled: true
