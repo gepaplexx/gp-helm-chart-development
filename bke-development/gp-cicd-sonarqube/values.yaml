@@ -17,6 +17,10 @@ sonarqube:
   resources:
     limits:
       memory: "5120Mi"
+  podSecurityContext:
+    enabled: false
+  containerSecurityContext:
+    enabled: false
   postgresql:
     auth:
       existingSecret: sonarqube-postgresql
