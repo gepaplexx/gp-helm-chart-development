@@ -58,7 +58,7 @@ argo_events:
         - version: "2.10.1"
           natsImage: docker.io/nats:2.10.7
           metricsExporterImage: docker.io/natsio/prometheus-nats-exporter:0.13.0
-          configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.14.0
+          configReloaderImage: docker.io/natsio/nats-server-config-reloader:0.14.1
           startCommand: /nats-server
       # Default-Latest Version wie im Sub-Chart normalerweise konfiguriert.
         - version: "latest"
