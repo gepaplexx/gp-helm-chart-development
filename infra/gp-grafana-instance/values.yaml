@@ -22,9 +22,9 @@ sso:
 resources:
   requests:
     cpu: 25m
-    memory: 128m
+    memory: 256Mi
   limits:
-    memory: 512Mi
+    memory: 1536Mi
 systemDatasources: true
 systemDashboards: true
 patch:
