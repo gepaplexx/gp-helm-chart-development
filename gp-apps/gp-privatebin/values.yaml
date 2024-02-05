@@ -8,7 +8,7 @@ persistence:
   size: 5Gi
   storageClassName: cephfs-fspool-cluster
 ingress:
-  hostname: "pb.$clustername.run.gepardec.com"
+  hostname: "secret.$clustername.run.gepardec.com"
   ingressClassName: "openshift-default"
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-production

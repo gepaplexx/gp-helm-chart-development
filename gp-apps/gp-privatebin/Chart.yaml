@@ -3,5 +3,5 @@ name: gp-privatebin
 description: A helm chart for deploying "private bin" on openshift (https://github.com/PrivateBin/helm-chart)
 
 type: application
-version: 0.1.0
+version: 0.1.1
 appVersion: 1.6.2
