@@ -1,0 +1,27 @@
+replicas: 1
+resources:
+  requests:
+    cpu: 20m
+    memory: 56Mi
+persistence:
+  enabled: true
+  size: 5Gi
+  storageClassName: cephfs-fspool-cluster
+ingress:
+  hostname: "pb.$clustername.run.gepardec.com"
+  ingressClassName: "openshift-default"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+configs:
+  conf.php: |
+    [main]
+    name = "gepardec-pb"
+    fileupload = true
+    sizelimit = 104857600
+    burnafterreadingselected = true
+    syntaxhighlightingtheme = "sons-of-obsidian"
+    template = "bootstrap-dark"
+    [model]
+    class = Filesystem
+    [model_options]
+    dir = PATH "data"
