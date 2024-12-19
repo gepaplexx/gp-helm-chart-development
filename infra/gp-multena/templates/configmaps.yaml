@@ -25,6 +25,12 @@ data:
       bypass: {{ .Values.proxy.admin.bypass }}
       group: {{ .Values.proxy.admin.group }}
 
+    alert:
+      enabled: {{ .Values.proxy.alert.enabled }}
+      token_header: {{ .Values.proxy.alert.tokenHeader }}
+      alert_cert_url: {{ .Values.proxy.alert.certUrl }}
+      alert_cert: {{ .Values.proxy.alert.cert | quote }}
+
     {{- if .Values.proxy.db.enabled }}
     db:
       enabled: true
@@ -43,6 +49,7 @@ data:
       use_mutual_tls: {{ .Values.tls.thanos.enabled }}
       cert: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.cert }}"
       key: "/etc/secrets/ca/thanos/{{ .Values.tls.thanos.key }}"
+      actor_header: {{ .Values.proxy.thanos.actorHeader }}
       headers:
         {{- range $key, $value := .Values.proxy.thanos.headers }}
         {{ $key }}: {{ $value }}
@@ -54,6 +61,7 @@ data:
       use_mutual_tls: {{ .Values.tls.loki.enabled }}
       cert: "/etc/secrets/ca/loki/{{ .Values.tls.loki.cert }}"
       key: "/etc/secrets/ca/loki/{{ .Values.tls.loki.key }}"
+      actor_header: {{ .Values.proxy.loki.actorHeader }}
       headers:
         {{- range $key, $value := .Values.proxy.loki.headers }}
         {{ $key }}: {{ $value }}
