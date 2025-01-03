@@ -48,7 +48,7 @@ replicas: 1
 image:
   repository: ghcr.io/gepaplexx/multena-proxy
   pullPolicy: IfNotPresent
-  tag: {{ .Values.image.tag | default .Chart.AppVersion }}
+  tag: ""
 
 collector:
   enabled: true # enables rbac collection of cluster
