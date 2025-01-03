@@ -12,8 +12,14 @@ proxy:
   loki:
     url: https://loki-query-frontend-http.openshift-logging.svc.cluster.local:3100
     tenantLabel: kubernetes_namespace_name
+    actorHeader: X-Loki-Actor-Path
     headers:
       X-Scope-OrgID: application
+  alert:
+    enabled: false # enable alerting
+    tokenHeader: X-Multena-alert # header to use for the token
+    certUrl: https://sso.play.run.gepardec.com/realms/internal/protocol/openid-connect/certs
+    cert: '' # local jwks cert
   db:
     enabled: false # enable mysql label provider
     user: multitenant
