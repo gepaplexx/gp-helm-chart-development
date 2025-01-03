@@ -2,10 +2,10 @@ apiVersion: v2
 name: gp-hashicorp-vault
 description: A Helm chart for Kubernetes, extending the base HC Vault Helm Chart
 type: application
-version: 2.3.9
+version: 2.4.0
 appVersion: 1.14.0
 
 dependencies:
 - name: "vault"
-  version: "~0.27.0"
+  version: "~0.29.0"
   repository: "https://helm.releases.hashicorp.com"
